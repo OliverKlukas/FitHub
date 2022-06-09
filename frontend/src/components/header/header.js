@@ -3,23 +3,12 @@ import {ReactComponent as AvatarFemale} from "../../resources/avatar_female.svg"
 import {ReactComponent as AvatarMale} from "../../resources/avatar_male.svg";
 import {ReactComponent as Logo} from "../../resources/logo_standard.svg";
 import * as React from 'react';
-import Avatar from '@mui/material/Avatar';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-import ListItemIcon from '@mui/material/ListItemIcon';
 import IconButton from '@mui/material/IconButton';
-import Settings from '@mui/icons-material/Settings';
 import Logout from '@mui/icons-material/Logout';
-import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
 import MenuIcon from '@mui/icons-material/Menu';
-import Container from '@mui/material/Container';
-import Button from '@mui/material/Button';
-import Tooltip from '@mui/material/Tooltip';
-import AdbIcon from '@mui/icons-material/Adb';
-
 
 export function Header(props) {
     // Handle navigation menu actions.
@@ -60,7 +49,7 @@ export function Header(props) {
     };
 
     return (
-        <Stack direction="row" justifyContent="space-between" alignItems="center" my="3vh" mx="2vw">
+        <Stack direction="row" justifyContent="space-between" alignItems="center" my="2vh" mx="2vw">
             <Box>
                 <Box sx={{display: {xs: 'none', md: 'flex'}}}>
                     <Link href="/discovery">
@@ -112,7 +101,7 @@ export function Header(props) {
                 </Box>
                 <Stack direction="row" spacing={4} pr={16} sx={{display: {xs: 'none', md: 'flex'}}}>
                     {Object.keys(pages).map((url) => (
-                        <Link key={url} href={url} underline="hover" color="inherit">
+                        <Link key={url} href={url} underline="none" color="inherit">
                             <h3>
                                 {pages[url]}
                             </h3>
