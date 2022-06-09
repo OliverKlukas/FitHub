@@ -15,14 +15,10 @@ const FitHubTheme = createTheme({
             main: '#00ADB5',
         },
         text: {
-            primary: {
-                main: '#222831',
-            },
-            secondary: {
-                main: '#393E46',
-            }
+            primary: '#222831',
+            secondary: '#393E46',
         }
-    }
+    },
 });
 
 export default FitHubTheme;

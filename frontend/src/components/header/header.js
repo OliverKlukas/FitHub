@@ -1,4 +1,5 @@
 import {Link, Stack} from "@mui/material";
+import Button from '@mui/material/Button';
 import {ReactComponent as AvatarFemale} from "../../resources/avatar_female.svg";
 import {ReactComponent as AvatarMale} from "../../resources/avatar_male.svg";
 import {ReactComponent as Logo} from "../../resources/logo_standard.svg";
@@ -6,9 +7,11 @@ import * as React from 'react';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import IconButton from '@mui/material/IconButton';
-import Logout from '@mui/icons-material/Logout';
 import Box from '@mui/material/Box';
+import {Link as RouterLink} from 'react-router-dom';
 import MenuIcon from '@mui/icons-material/Menu';
+import {HighlightButton} from "../buttons/highlight_button";
+import {LinkButton} from "../buttons/link_button";
 
 export function Header(props) {
     // Handle navigation menu actions.
@@ -101,11 +104,15 @@ export function Header(props) {
                 </Box>
                 <Stack direction="row" spacing={4} pr={16} sx={{display: {xs: 'none', md: 'flex'}}}>
                     {Object.keys(pages).map((url) => (
-                        <Link key={url} href={url} underline="none" color="inherit">
-                            <h3>
-                                {pages[url]}
-                            </h3>
-                        </Link>
+                        <LinkButton
+                            key={url}
+                            variant='text'
+                            component={RouterLink}
+                            to={url}
+                        >
+                            {pages[url]}
+                        </LinkButton>
+
                     ))}
                 </Stack>
             </Box>
