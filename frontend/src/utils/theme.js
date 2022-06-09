@@ -1,22 +1,22 @@
 import {createTheme} from "@mui/material";
 
+/**
+ * Custom MUI theme based on our color palette.
+ *
+ * @type {Theme}
+ */
 const FitHubTheme = createTheme({
     palette: {
         primary: {
             main: '#222831',
-        },
-        secondary: {
+        }, secondary: {
             main: '#393E46',
-        },
-        info: {
+        }, info: {
             main: '#EEEEEE',
-        },
-        warning: {
+        }, warning: {
             main: '#00ADB5',
-        },
-        text: {
-            primary: '#222831',
-            secondary: '#393E46',
+        }, text: {
+            primary: '#222831', secondary: '#393E46',
         }
     },
 });

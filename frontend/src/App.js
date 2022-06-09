@@ -8,15 +8,14 @@ import FitHubTheme from "./utils/theme";
 import {Header} from "./components/header/header";
 
 /**
+ * Supplies FitHub's general structure with a header at top and different routed views below.
  *
- * TODO: replace all the <AboutUs/> references with the dedicated pages.
+ * TODO: replace all the <AboutUs/> references below with the dedicated pages.
  *
  * @returns {JSX.Element}
- * @constructor
  */
 function App() {
-    return (
-        <ThemeProvider theme={FitHubTheme}>
+    return (<ThemeProvider theme={FitHubTheme}>
             <CssBaseline/>
             <BrowserRouter>
                 <div>
@@ -32,8 +31,7 @@ function App() {
                     <Route path="/profile" element={<AboutUs/>}/>
                 </Routes>
             </BrowserRouter>
-        </ThemeProvider>
-);
+        </ThemeProvider>);
 }
 
 export default App;
