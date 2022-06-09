@@ -5,10 +5,17 @@ import {BrowserRouter, Routes, Route} from "react-router-dom";
 import AboutUs from "./views/about_us";
 import './App.css';
 
+/**
+ *
+ * TODO: replace all the <AboutUs/> references with the dedicated pages.
+ *
+ * @returns {JSX.Element}
+ * @constructor
+ */
 function App() {
     return (<BrowserRouter>
             <div>
-                <Header/>
+                <Header gender="male" user_type="content-creator"/>
             </div>
             <Routes>
                 <Route path="/" element={<Discovery/>}/>

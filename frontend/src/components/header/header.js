@@ -22,17 +22,21 @@ import AdbIcon from '@mui/icons-material/Adb';
 
 
 export function Header(props) {
-
-    // Options for settings and page navigation menus.
-    const settings = ['profile', 'contact', 'logout'];
-    let pages = [];
-    if (props.user_type === "content_creator") {
-        pages = ['discovery', 'upload', 'about'];
-    } else {
-        pages = ['discovery', 'plans', 'about'];
-    }
-
     // Handle navigation menu actions.
+    let pages;
+    if (props.user_type === "content-creator") {
+        pages = {
+            "discovery": "Discovery",
+            "upload": "Offer Content",
+            "about": "About us"
+        };
+    } else {
+        pages = {
+            "discovery": "Discovery",
+            "plans": "My Plans",
+            "about": "About us"
+        };
+    }
     const [anchorElSet, setAnchorElSet] = React.useState(null);
     const handleOpenNavMenu = (event) => {
         setAnchorElNav(event.currentTarget);
@@ -42,6 +46,11 @@ export function Header(props) {
     };
 
     // Handle settings menu actions.
+    const settings = {
+        "profile": "Profile",
+        "contact": "Contact",
+        "logout": "Logout"
+    };
     const [anchorElNav, setAnchorElNav] = React.useState(null);
     const handleOpenSetMenu = (event) => {
         setAnchorElSet(event.currentTarget);
@@ -51,14 +60,14 @@ export function Header(props) {
     };
 
     return (
-        <Stack direction="row" justifyContent="space-evenly" alignContent="center" my="2vh" mx="2vw">
-            <Container>
+        <Stack direction="row" justifyContent="space-between" alignItems="center" my="3vh" mx="2vw">
+            <Box>
                 <Box sx={{display: {xs: 'none', md: 'flex'}}}>
-                    <Link href="/">
+                    <Link href="/discovery">
                         <Logo/>
                     </Link>
                 </Box>
-                <Box sx={{flexGrow: 1, display: {xs: 'flex', md: 'none'}}}>
+                <Box sx={{display: {xs: 'flex', md: 'none'}}}>
                     <IconButton
                         size="large"
                         aria-label="account of current user"
@@ -85,33 +94,32 @@ export function Header(props) {
                             display: {xs: 'block', md: 'none'},
                         }}
                     >
-                        {pages.map((page) => (
-                            <MenuItem key={page} href={page} onClick={handleCloseNavMenu}>
-                                <Link href={page} underline="hover" color="inherit">
-                                    {page}
+                        {Object.keys(pages).map((url) => (
+                            <MenuItem key={url} onClick={handleCloseNavMenu}>
+                                <Link href={url} underline="hover" color="inherit">
+                                    {pages[url]}
                                 </Link>
                             </MenuItem>
                         ))}
                     </Menu>
                 </Box>
-            </Container>
-            <Container>
+            </Box>
+            <Box>
                 <Box sx={{display: {xs: 'flex', md: 'none'}}}>
                     <Link href="/discovery">
                         <Logo/>
                     </Link>
                 </Box>
-                <Box sx={{flexGrow: 1, display: {xs: 'none', md: 'flex'}}}>
-                    {pages.map((page) => (
-                        <Link key={page} href={page} underline="hover" color="inherit">
+                <Stack direction="row" spacing={4} pr={16} sx={{display: {xs: 'none', md: 'flex'}}}>
+                    {Object.keys(pages).map((url) => (
+                        <Link key={url} href={url} underline="hover" color="inherit">
                             <h3>
-                                {page}
+                                {pages[url]}
                             </h3>
                         </Link>
                     ))}
-                </Box>
-            </Container>
-
+                </Stack>
+            </Box>
             <Box>
                 <IconButton onClick={handleOpenSetMenu}>
                     {props.gender === "male" ? <AvatarMale/> : <AvatarFemale/>}
@@ -130,14 +138,15 @@ export function Header(props) {
                     open={Boolean(anchorElSet)}
                     onClose={handleCloseSetMenu}
                 >
-                    {settings.map((setting) => (
-                        <MenuItem key={setting} onClick={handleCloseSetMenu}>
-                            <Link href={setting} underline="hover" color="inherit">
-                                {setting}
+                    {Object.keys(settings).map((url) => (
+                        <MenuItem key={url} onClick={handleCloseSetMenu}>
+                            <Link href={url} underline="none" color="inherit">
+                                {settings[url]}
                             </Link>
                         </MenuItem>
                     ))}
                 </Menu>
             </Box>
-        </Stack>);
+        </Stack>
+    );
 }
