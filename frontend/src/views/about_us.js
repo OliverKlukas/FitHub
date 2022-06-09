@@ -1,11 +1,11 @@
 import * as React from 'react';
 
-function Discovery(){
+function AboutUs(){
     return(
         <h1>
-            DISCOVERY VIEW
+            ABOUT US VIEW
         </h1>
     )
 }
 
-export default Discovery;
+export default AboutUs;
