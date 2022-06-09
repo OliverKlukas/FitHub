@@ -3,6 +3,8 @@ import Button from '@mui/material/Button';
 import {ReactComponent as AvatarFemale} from "../../resources/avatar_female.svg";
 import {ReactComponent as AvatarMale} from "../../resources/avatar_male.svg";
 import {ReactComponent as Logo} from "../../resources/logo_standard.svg";
+import {ReactComponent as LogoSmall} from "../../resources/logo_small.svg";
+import {ReactComponent as LogoText} from "../../resources/logo_text.svg";
 import * as React from 'react';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
@@ -99,7 +101,10 @@ export function Header(props) {
             <Box>
                 <Box sx={{display: {xs: 'flex', md: 'none'}}}>
                     <Link href="/discovery">
-                        <Logo/>
+                        <Stack direction="row" alignItems="center" spacing={2}>
+                            <LogoSmall/>
+                            <LogoText/>
+                        </Stack>
                     </Link>
                 </Box>
                 <Stack direction="row" spacing={4} pr={16} sx={{display: {xs: 'none', md: 'flex'}}}>
