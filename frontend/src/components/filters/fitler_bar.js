@@ -249,6 +249,9 @@ export default function FilterBar(){
             </Stack>
             <Stack direction="row">
                 <h4>Selected Filters:</h4>
+                <Typography>
+                    X Delete All
+                </Typography>
             </Stack>
         </Stack>
     );
