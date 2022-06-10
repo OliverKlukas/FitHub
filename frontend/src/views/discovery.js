@@ -2,6 +2,7 @@ import * as React from 'react';
 import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
 import ImageListItemBar from '@mui/material/ImageListItemBar';
+import {Button} from "@mui/material";
 
 function srcset(image, width, height, rows = 1, cols = 1) {
     return {
@@ -11,6 +12,19 @@ function srcset(image, width, height, rows = 1, cols = 1) {
         }&fit=crop&auto=format&dpr=2 2x`,
     };
 }
+
+/**
+ * Copied from: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random
+ * @param min
+ * @param max
+ * @returns {number}
+ */
+function getRandomInt(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min) + min); //The maximum is exclusive and the minimum is inclusive
+}
+
 
 const itemData = [
     {
@@ -107,11 +121,13 @@ function Discovery(){
             gap='2vw'
         >
             {itemData.map((item) => {
-                const cols = item.featured ? 1 : 1;
-                const rows = item.featured ? 2 : 1;
+                const cols = item.featured ? getRandomInt(1,3) : 1;
+                const rows = item.featured ? getRandomInt(1,3) : 1;
 
                 return (
                     <ImageListItem key={item.img} cols={cols} rows={rows}>
+                        <Button style={{display: "block", height: "100%", width: "100%"}} >
+
                         <a style={{display: "block", height: "100%"}} href="#">
                             <img
                                 style={{objectFit: "cover", width: "100%", height: "100%", borderRadius: "10px"}}
@@ -131,6 +147,7 @@ function Discovery(){
                                 position="bottom"
                             />
                         </a>
+                        </Button>
                     </ImageListItem>
                 );
             })}
