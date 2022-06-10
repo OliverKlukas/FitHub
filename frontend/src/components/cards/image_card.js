@@ -35,23 +35,26 @@ function srcset(image, width, height, rows = 1, cols = 1) {
         srcSet: `${image}?w=${width * cols}&h=${height * rows}&fit=crop&auto=format&dpr=2 2x`,
     };
 }
-
+// action area:  sx={{display: "block", width: "100%", height: "100%"}}
+//  img:                   style={{objectFit: "cover", width: "100%", height: "100%", borderRadius: "10px"}}
 const ImageCard = ({item, key}) => {
 
     const dim = item.featured ? getFeatureDim() : [1, 1];
-    const imgWidth = 250;
-    const imgHeight = 200;
+    const imgWidth = 450;
+    const imgHeight = 500;
 
     return (<ImageListItem key={key} cols={dim[0]} rows={dim[1]}>
         <Card
             sx={{
+                display: "block",
+                height: "100%",
+                width: "100%",
                 borderRadius: '10px', ':hover': {
                     boxShadow: 15,
                 }
             }}
         >
-            <CardActionArea href="#"
-            >
+            <CardActionArea href="#" sx={{width: "100%", height: "100%",}}>
                 <img
                     style={{objectFit: "cover", width: "100%", height: "100%", borderRadius: "10px"}}
                     {...srcset(item.img, imgWidth, imgHeight, dim[1], dim[0])}

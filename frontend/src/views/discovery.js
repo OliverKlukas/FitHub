@@ -6,53 +6,53 @@ import MultipleSelectChip from "../components/filters/fitler_bar";
 import FilterBar from "../components/filters/fitler_bar";
 
 const content = [{
-    img: 'https://images.unsplash.com/photo-1551963831-b3b1ca40c98e',
+    img: 'https://images.unsplash.com/photo-1517836357463-d25dfeac3438?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80',
     title: '12-Weeks Full-Body Workout',
     author: 'Igor Felchin',
     featured: true,
 }, {
-    img: 'https://images.unsplash.com/photo-1551782450-a2132b4ba21d',
+    img: 'https://images.unsplash.com/photo-1550345332-09e3ac987658?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80',
     title: 'Crossfit Workout Routine',
     author: 'Osanna Imbi',
 }, {
-    img: 'https://images.unsplash.com/photo-1522770179533-24471fcdba45',
+    img: 'https://images.unsplash.com/photo-1490645935967-10de6ba17061?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1153&q=80',
     title: 'Weight Loss Nutrition Plan',
     author: 'Calixta Tadeusz',
 }, {
-    img: 'https://images.unsplash.com/photo-1444418776041-9c7e33cc5a9c',
+    img: 'https://images.unsplash.com/photo-1593079831268-3381b0db4a77?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1169&q=80',
     title: '9-Weeks Cardio Plan',
     author: 'Emlyn Shaina',
 }, {
-    img: 'https://images.unsplash.com/photo-1533827432537-70133748f5c8',
+    img: 'https://images.unsplash.com/photo-1521986329282-0436c1f1e212?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1176&q=80',
     title: 'Vegan Nutrition Plan',
     author: 'Ernesta Lunete',
 }, {
-    img: 'https://images.unsplash.com/photo-1516802273409-68526ee1bdd6',
+    img: 'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80',
     title: 'Powerlifting Coaching',
     author: 'Arnold Schwarzenegger',
 }, {
-    img: 'https://images.unsplash.com/photo-1558642452-9d2a7deb7f62',
+    img: 'https://images.unsplash.com/photo-1623200216581-969d9479cf7d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80',
     title: 'Home Workout Routines',
     author: 'Konsuke Hardmod',
-    featured: true,
 }, {
-    img: 'https://images.unsplash.com/photo-1518756131217-31eb79b20e8f',
+    img: 'https://images.unsplash.com/photo-1554284126-aa88f22d8b74?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1294&q=80',
     title: 'Personal Weightlifting Coaching',
     author: 'Katie Wassmann',
 }, {
-    img: 'https://images.unsplash.com/photo-1597645587822-e99fa5d45d25',
+    img: 'https://images.unsplash.com/photo-1482049016688-2d3e1b311543?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=710&q=80',
     title: 'Pescatarian Weight Loss Plan',
     author: 'Shelly Purdue',
+    featured: true,
 }, {
-    img: 'https://images.unsplash.com/photo-1567306301408-9b74779a11af',
+    img: 'https://images.unsplash.com/photo-1593476123561-9516f2097158?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80',
     title: 'Professional Running Analysis',
     author: 'Herfeld Roman',
 }, {
-    img: 'https://images.unsplash.com/photo-1471357674240-e1a485acb3e1',
-    title: '12-Weeks Weight Loss Plan',
+    img: 'https://images.unsplash.com/photo-1632781297772-1d68f375d878?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=627&q=80',
+    title: '12-Weeks Weight Gain Plan',
     author: 'Simon Plashek',
 }, {
-    img: 'https://images.unsplash.com/photo-1589118949245-7d38baf380d6',
+    img: 'https://images.unsplash.com/photo-1590771998996-8589ec9b5ac6?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80',
     title: 'Lower Body Training Plan',
     author: 'Susanne Friedrisch',
 },];
