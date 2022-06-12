@@ -4,6 +4,8 @@ import ImageListItemBar from "@mui/material/ImageListItemBar";
 import * as React from "react";
 
 /**
+ * TODO: depreatiate due to interference with filter?
+ *
  * Computes dimensions of a single featured content tile based a random variable.
  *
  * Ensures a minimum size of double the size of a normal tile. Inspired by:
@@ -40,7 +42,7 @@ function srcset(image, width, height, rows = 1, cols = 1) {
 
 export default function ImageCard({item}) {
 
-    const dim = item.featured ? getFeatureDim() : [1, 1];
+    const dim = item.featured ? [1, 2] : [1, 1];
     const imgWidth = 450;
     const imgHeight = 400;
 
