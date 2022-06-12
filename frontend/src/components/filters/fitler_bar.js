@@ -13,7 +13,7 @@ const lifestyle = ['vegan', 'vegetarian', 'pescatarian']
 
 const content_creator = ['Igor Felchin', 'Osanna Imbi', 'Calixta Tadeusz', 'Emlyn Shaina', 'Ernesta Lunete', 'Arnold Schwarzenegger', 'Konsuke Hardmod', 'Katie Wassmann', 'Shelly Purdue', 'Herfeld Roman', 'Simon Plashek', 'Susanne Friedrisch'];
 
-export default function FilterBar({filter, setFilter}) {
+export default function FilterBar({filter, setFilter, priceRange, setPriceRange}) {
 
     /**
      * Deletes a list of String tags from the current set of applied filter.
@@ -61,7 +61,7 @@ export default function FilterBar({filter, setFilter}) {
                                       deleteFilter={deleteFilter} globalFilter={filter}/>
                     </Grid>
                     <Grid item>
-                        <SlideFilter/>
+                        <SlideFilter priceRange={priceRange} setPriceRange={setPriceRange}/>
                     </Grid>
                     <Grid item>
                         <SearchFilter title={"Creator"} tags={content_creator} addFilter={addFilter}

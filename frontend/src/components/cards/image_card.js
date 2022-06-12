@@ -69,13 +69,14 @@ export default function ImageCard({item}) {
                         background: 'linear-gradient(to top, rgba(0,0,0,0.7) 0%, ' + 'rgba(0,0,0,0.3) 70%, rgba(0,0,0,0) 100%)',
                         borderRadius: '10px',
                         '& .MuiImageListItemBar-title':{
-                            fontSize: '24px',
+                            fontSize: '32px',
+                            lineHeight: '36px',
                             fontWeight: '700'
                         },
                         '& .MuiImageListItemBar-subtitle': {
-                            fontSize: '14px',
+                            fontSize: '18px',
                             fontWeight: '500',
-                            lineHeight: '18px'
+                            lineHeight: '22px'
                         }
                     }}
                     title={item.title}
