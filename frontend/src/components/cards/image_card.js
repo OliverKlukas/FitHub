@@ -32,16 +32,19 @@ function getFeatureDim() {
 function srcset(image, width, height, rows = 1, cols = 1) {
     return {
         src: `${image}?w=${width * cols}&h=${height * rows}&fit=crop&auto=format`,
-        srcSet: `${image}?w=${width * cols}&h=${height * rows}&fit=crop&auto=format&dpr=2 2x`,
+        srcSet: `${image}?w=${width * cols}&h=${
+            height * rows
+        }&fit=crop&auto=format&dpr=2 2x`,
     };
 }
-// action area:  sx={{display: "block", width: "100%", height: "100%"}}
-//  img:                   style={{objectFit: "cover", width: "100%", height: "100%", borderRadius: "10px"}}
+
+//TODO action area:  sx={{display: "block", width: "100%", height: "100%"}}
+//TODO  img:                   style={{objectFit: "cover", width: "100%", height: "100%", borderRadius: "10px"}}
 const ImageCard = ({item, key}) => {
 
     const dim = item.featured ? getFeatureDim() : [1, 1];
     const imgWidth = 450;
-    const imgHeight = 500;
+    const imgHeight = 400;
 
     return (<ImageListItem key={key} cols={dim[0]} rows={dim[1]}>
         <Card
@@ -54,7 +57,7 @@ const ImageCard = ({item, key}) => {
                 }
             }}
         >
-            <CardActionArea href="#" sx={{width: "100%", height: "100%",}}>
+            <CardActionArea href="#" sx={{height: "100%"}}>
                 <img
                     style={{objectFit: "cover", width: "100%", height: "100%", borderRadius: "10px"}}
                     {...srcset(item.img, imgWidth, imgHeight, dim[1], dim[0])}
