@@ -12,10 +12,14 @@ export default function Review(reviewer, text, date, title, star_value){
             width: '100%',
             backgroundColor: 'gray'
           }}>
+            <Stack direction="row" spacing={4}>
+
+
             <Rating name="read-only" value={star_value} readOnly />
             <Typography variant="h6" component="div" gutterBottom>
                 {title}
             </Typography>
+            </Stack>
             <Typography variant="body2" component="div" gutterBottom>
                 {text}
             </Typography>

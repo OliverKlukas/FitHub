@@ -1,4 +1,4 @@
-import { Divider } from '@mui/material';
+import { Divider, Typography } from '@mui/material';
 import * as React from 'react';
 import {StandardButton} from "../components/buttons/standard_button";
 import {Stack} from "@mui/material";
@@ -24,15 +24,30 @@ function ContentCreatorProfile(){
     }}>
 
 
-    <Stack>
-        <h1>DISCOVERY VIEW</h1>
-        <Stack direction="row" spacing={4}>
-            <StandardButton variant='contained' onClick={handleClick}>Standard</StandardButton>
-            <HighlightButton variant='contained' onClick={handleClick}>Highlight</HighlightButton>
-            <CancelButton variant='contained' onClick={handleClick}>Cancel</CancelButton>
-            <LinkButton variant='text' onClick={handleClick}>I'm a link!</LinkButton>
+    <Stack direction="row" spacing={10}>
+        <Avatar>
+
+        </Avatar>
+        <Stack direction="column" spacing={2}>
+            <h1> Igor Something</h1>
+            <Typography variant="body1" component="div" gutterBottom>
+                Igor is a real chad and makes some good training my dude
+            </Typography>
+            <Stack direction="row" spacing={3}>
+            <Rating name="read-only" value={4} readOnly />
+            <Typography variant="caption" gutterBottom>
+                512 reviews
+            </Typography>
+            </Stack>
+        </Stack>
+        <Stack direction="column" spacing={4}>
+            <StandardButton variant='contained' onClick={handleClick}>report this content creator</StandardButton>
+            <HighlightButton variant='contained' onClick={handleClick}>write a review</HighlightButton>
         </Stack>
     </Stack>
+    <Divider>
+
+    </Divider>
     <Box sx={{ 
                 width: '100%',
               }}>
@@ -44,9 +59,9 @@ function ContentCreatorProfile(){
               >
               {Review("Pratched", loremIpsum(),"20.06.1997","what a title",3)}
             <Divider/>
-              {Review("Pratched", loremIpsum(),"20.06.1997","what a title",3)}
+              {Review("Pratched", loremIpsum(),"20.06.1997","You seen my dude Igor",5)}
             <Divider/>
-              {Review("Pratched", loremIpsum(),"20.06.1997","what a title",4)}
+              {Review("Karen Kardashian", loremIpsum(),"1.1.2012","If I could give 0 Stars, I would",1)}
             <Divider/>
         </Stack>  
     </Box>
