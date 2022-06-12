@@ -85,7 +85,7 @@ const content = [{
 function Discovery() {
     // Global filter list.
     const [filter, setFilter] = useState([]);
-    const [priceRange, setPriceRange] = React.useState([1, 100]);
+    const [priceRange, setPriceRange] = React.useState([0, 100]);
 
     // Screen size to responsively control the number of content columns.
     const smallScreenSize = useMediaQuery(theme.breakpoints.down('sm'));
@@ -101,7 +101,7 @@ function Discovery() {
             gap={40}
         >
             {filter.length > 0 ? content.map((item) => {
-                if ((item.tags.filter(tag => filter.includes(tag))).length > 0 && item.price >= priceRange[0] && item.price <= priceRange[1]) {
+                if ((item.tags.filter(tag => filter.includes(tag))).length === filter.length && item.price >= priceRange[0] && item.price <= priceRange[1]) {
                     return <ImageCard item={item} key={item.img}/>
                 }
             }) : content.map((item) => {

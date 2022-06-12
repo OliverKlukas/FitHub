@@ -38,6 +38,7 @@ export default function FilterBar({filter, setFilter, priceRange, setPriceRange}
      */
     function deleteAllFilter() {
         setFilter([]);
+        setPriceRange([0,100]);
     }
 
     return (<Stack>
