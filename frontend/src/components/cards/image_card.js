@@ -38,15 +38,13 @@ function srcset(image, width, height, rows = 1, cols = 1) {
     };
 }
 
-//TODO action area:  sx={{display: "block", width: "100%", height: "100%"}}
-//TODO  img:                   style={{objectFit: "cover", width: "100%", height: "100%", borderRadius: "10px"}}
-const ImageCard = ({item, key}) => {
+export default function ImageCard({item}) {
 
     const dim = item.featured ? getFeatureDim() : [1, 1];
     const imgWidth = 450;
     const imgHeight = 400;
 
-    return (<ImageListItem key={key} cols={dim[0]} rows={dim[1]}>
+    return (<ImageListItem cols={dim[0]} rows={dim[1]}>
         <Card
             sx={{
                 display: "block",
@@ -86,5 +84,3 @@ const ImageCard = ({item, key}) => {
         </Card>
     </ImageListItem>);
 }
-
-export default ImageCard;

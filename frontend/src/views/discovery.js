@@ -1,12 +1,9 @@
 import * as React from 'react';
 import ImageList from '@mui/material/ImageList';
 import ImageCard from "../components/cards/image_card";
-import {Stack, Typography} from "@mui/material";
-import MultipleSelectChip from "../components/filters/fitler_bar";
+import {Stack, useMediaQuery} from "@mui/material";
 import FilterBar from "../components/filters/fitler_bar";
-import ImageListItem from "@mui/material/ImageListItem";
-import ImageListItemBar from "@mui/material/ImageListItemBar";
-import IconButton from "@mui/material/IconButton";
+import theme from "../utils/theme";
 
 const content = [{
     img: 'https://images.unsplash.com/photo-1517836357463-d25dfeac3438',
@@ -61,23 +58,22 @@ const content = [{
 },];
 
 function Discovery() {
-    return (
-        <Stack sx={{marginX: 6}}>
+    const smallScreenSize = useMediaQuery(theme.breakpoints.down('sm'));
+
+    return (<Stack sx={{marginX: 6}}>
             <FilterBar/>
             <ImageList
                 sx={{
                     // Promote the list into its own layer in Chrome. This costs memory, but helps keeping high FPS.
-                    transform: 'translateZ(0)', overflow: 'hidden'
+                    transform: 'translateZ(0)',
+                    overflow: 'hidden'
                 }}
-                cols={3}
+                cols = {smallScreenSize ? 1 : 3 }
                 gap={40}
             >
-                {content.map((item) => (
-                    <ImageCard item={item} key={item.img}/>
-                ))}
+                {content.map((item) => (<ImageCard item={item} key={item.img}/>))}
             </ImageList>
-        </Stack>
-        )
+        </Stack>)
 }
 
 export default Discovery;
