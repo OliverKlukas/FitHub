@@ -1,9 +1,8 @@
 import * as React from 'react';
-import {Button, Chip, Grid, Stack, Typography} from "@mui/material";
+import {useState} from 'react';
+import {Button, Chip, Grid, Stack} from "@mui/material";
 import SlideFilter from "./slide_filter";
 import SearchFilter from "./search_filter";
-import {useState} from "react";
-import {LinkButton} from "../buttons/link_button";
 
 
 const category = [
@@ -47,25 +46,31 @@ const content_creator = [
 ];
 
 export default function FilterBar(){
+    const [filter, setFilter] = useState([]);
 
-    const [filter, setFilter] = useState(["test", "test2"]);
-    const [nrFilter, setNrFilter] = useState(2);
-
-    const handleDelete = deleteTag => () => {
-        setFilter(filter.filter(tag => tag !== deleteTag));
-        setNrFilter(nrFilter-1);
+    /**
+     * Deletes a list of String tags from the current set of applied filter.
+     *
+     * @param tags - String[]
+     */
+    function deleteFilter(tags){
+        setFilter(filter => filter.filter(tag => !tags.includes(tag)));
     }
 
-    function addFilter(tag) {
-        if (filter.indexOf(tag) === -1){
-            setFilter(filter => filter.concat(tag));
-            setNrFilter(nrFilter+1);
-        }
+    /**
+     * Adds a list of String tags from the current set of applied filter.
+     *
+     * @param tags - String[]
+     */
+    function addFilter(tags){
+        setFilter(filter => filter.concat(tags));
     }
 
-    function deleteFilter() {
+    /**
+     * Deletes all tags from the current filter.
+     */
+    function deleteAllFilter() {
         setFilter([]);
-        setNrFilter(0);
     }
 
     return(
@@ -74,31 +79,31 @@ export default function FilterBar(){
                 <h4>Filters:</h4>
                 <Grid container>
                     <Grid item>
-                        <SearchFilter title="Category" tags={category} addFilter={addFilter}/>
+                        <SearchFilter title="Category" tags={category} addFilter={addFilter} deleteFilter={deleteFilter} globalFilter={filter}/>
                     </Grid>
                     <Grid item>
-                        <SearchFilter title="Fitness Goal" tags={fitness_goal} addFilter={addFilter}/>
+                        <SearchFilter title="Fitness Goal" tags={fitness_goal} addFilter={addFilter} deleteFilter={deleteFilter} globalFilter={filter}/>
                     </Grid>
                     <Grid item>
-                        <SearchFilter title="Fitness Level" tags={fitness_level} addFilter={addFilter}/>
+                        <SearchFilter title="Fitness Level" tags={fitness_level} addFilter={addFilter} deleteFilter={deleteFilter} globalFilter={filter}/>
                     </Grid>
                     <Grid item>
-                        <SearchFilter title={"Lifestyle"} tags={lifestyle} addFilter={addFilter}/>
+                        <SearchFilter title={"Lifestyle"} tags={lifestyle} addFilter={addFilter} deleteFilter={deleteFilter} globalFilter={filter}/>
                     </Grid>
                     <Grid item>
                         <SlideFilter/>
                     </Grid>
                     <Grid item>
-                        <SearchFilter title={"Creator"} tags={content_creator} addFilter={addFilter}/>
+                        <SearchFilter title={"Creator"} tags={content_creator} addFilter={addFilter} deleteFilter={deleteFilter} globalFilter={filter}/>
                     </Grid>
                 </Grid>
             </Stack>
             <Stack direction="row" alignItems="center">
                 <h4>Selected Filters:</h4>
                 {filter.map((tag) => (
-                    <Chip sx={{ml:1}} key={tag} label={tag} onDelete={handleDelete(tag)} />
+                    <Chip sx={{ml:1}} key={tag} label={tag} onDelete={() => deleteFilter([tag])} />
                 ))}
-                {nrFilter > 0 && <Button variant="text" onClick={deleteFilter}>
+                {filter.length > 0 && <Button variant="text" onClick={deleteAllFilter}>
                     delete all
                 </Button>}
             </Stack>
