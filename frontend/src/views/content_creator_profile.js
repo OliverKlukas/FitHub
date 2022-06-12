@@ -12,9 +12,19 @@ import Rating from '@mui/material/Rating';
 import Review from '../components/reviewlist/review';
 import { loremIpsum, Avatar } from 'react-lorem-ipsum';
 import { height } from '@mui/system';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogContent from '@mui/material/DialogContent';
+import DialogActions from '@mui/material/DialogActions';
+import IconButton from '@mui/material/IconButton';
+import CloseIcon from '@mui/icons-material/Close';
+import PropTypes from 'prop-types'
+import Dialog from '@mui/material';
+import CustomizedDialogs from '../components/popups/popup';
+
 
 
 function ContentCreatorProfile(){
+    
 
     function handleClick(){}
 
@@ -41,11 +51,18 @@ function ContentCreatorProfile(){
             </Stack>
         </Stack>
         <Stack direction="column" spacing={4}>
-            <StandardButton variant='contained' onClick={handleClick}>report this content creator</StandardButton>
-            <HighlightButton variant='contained' onClick={handleClick}>write a review</HighlightButton>
+            <CustomizedDialogs>
+
+            </CustomizedDialogs>
+            <CustomizedDialogs>
+
+            </CustomizedDialogs>
         </Stack>
+        
     </Stack>
-    <Divider>
+    <Divider
+        variant='fullWidth'
+    >
 
     </Divider>
     <Box sx={{ 
@@ -55,17 +72,18 @@ function ContentCreatorProfile(){
               direction="column"
               justifyContent="center"
               alignItems="center"
-              spacing={1} 
+              spacing={2} 
               >
               {Review("Pratched", loremIpsum(),"20.06.1997","what a title",3)}
-            <Divider/>
+
               {Review("Pratched", loremIpsum(),"20.06.1997","You seen my dude Igor",5)}
-            <Divider/>
+
               {Review("Karen Kardashian", loremIpsum(),"1.1.2012","If I could give 0 Stars, I would",1)}
-            <Divider/>
+
         </Stack>  
     </Box>
-    </Box>    
+    </Box>
+    
         
 
     ) 

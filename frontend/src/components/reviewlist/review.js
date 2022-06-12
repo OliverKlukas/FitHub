@@ -9,8 +9,10 @@ import { TextField, Typography } from '@mui/material';
 export default function Review(reviewer, text, date, title, star_value){
     return(
         <Box sx={{ 
-            width: '100%',
-            backgroundColor: 'gray'
+            width: '80%',
+            backgroundColor: 'gray',
+            alignment: 'right',
+            borderRadius: '12px'
           }}>
             <Stack direction="row" spacing={4}>
 
