@@ -2,7 +2,7 @@ import {Autocomplete, TextField} from "@mui/material";
 import * as React from "react";
 import {blue, grey} from "@mui/material/colors";
 
-export default function SearchFilter({title, tags}){
+export default function SearchFilter({title, tags, addFilter}){
     return(
         <Autocomplete
             sx={{ mx: 2, minWidth: 200}}
@@ -10,6 +10,13 @@ export default function SearchFilter({title, tags}){
             disableCloseOnSelect
             id={title}
             options={tags}
+            onChange={(event, value) => {
+                console.log(value);
+                addFilter(value);
+            }}
+            renderTags={() => {
+                return null;
+            }}
             renderInput={(params) => (
                 <TextField
                     {...params}
