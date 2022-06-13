@@ -9,7 +9,7 @@ import { TextField, Typography } from '@mui/material';
 export default function Review(reviewer, text, date, title, star_value){
     return(
         <Box sx={{ 
-            width: '80%',
+            width: '100%',
             backgroundColor: 'gray',
             alignment: 'right',
             borderRadius: '12px'

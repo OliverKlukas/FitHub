@@ -11,6 +11,8 @@ import CloseIcon from '@mui/icons-material/Close';
 import Typography from '@mui/material/Typography';
 import { HighlightButton } from '../buttons/highlight_button';
 import { StandardButton } from '../buttons/standard_button';
+import { Stack } from '@mui/material';
+import { TextField } from '@mui/material';
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiDialogContent-root': {
@@ -50,7 +52,7 @@ BootstrapDialogTitle.propTypes = {
   onClose: PropTypes.func.isRequired,
 };
 
-export default function CustomizedDialogs() {
+export default function ReportDialog(){
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
@@ -62,35 +64,39 @@ export default function CustomizedDialogs() {
 
   return (
     <div>
-     <HighlightButton variant='contained' onClick={handleClickOpen}>write a review</HighlightButton>
+     <StandardButton variant='contained' onClick={handleClickOpen}>report this content creator</StandardButton>
       <BootstrapDialog
         onClose={handleClose}
         aria-labelledby="customized-dialog-title"
         open={open}
       >
         <BootstrapDialogTitle id="customized-dialog-title" onClose={handleClose}>
-          Modal title
+          Write a short report
         </BootstrapDialogTitle>
         <DialogContent dividers>
+          <Stack>
           <Typography gutterBottom>
-            Cras mattis consectetur purus sit amet fermentum. Cras justo odio,
-            dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac
-            consectetur ac, vestibulum at eros.
+            This report will be sent to FitHub and will not be published.
           </Typography>
-          <Typography gutterBottom>
-            Praesent commodo cursus magna, vel scelerisque nisl consectetur et.
-            Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.
-          </Typography>
-          <Typography gutterBottom>
-            Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus
-            magna, vel scelerisque nisl consectetur et. Donec sed odio dui. Donec
-            ullamcorper nulla non metus auctor fringilla.
-          </Typography>
+          <TextField
+          id='outlined-basic'
+          label="Please state the reason for your report here" 
+          variant="outlined"
+          multiline
+          minRows={5}
+          maxRows={5}
+          
+          >
+          </TextField>
+          </Stack>
         </DialogContent>
         <DialogActions>
-          <Button autoFocus onClick={handleClose}>
-            Submit Changes
-          </Button>
+        <StandardButton autoFocus onClick={handleClose}>
+            cancel
+          </StandardButton>
+          <HighlightButton autoFocus onClick={handleClose}>
+            submit 
+          </HighlightButton>
         </DialogActions>
       </BootstrapDialog>
     </div>

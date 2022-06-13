@@ -19,7 +19,9 @@ import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import PropTypes from 'prop-types'
 import Dialog from '@mui/material';
-import CustomizedDialogs from '../components/popups/popup';
+import CustomizedDialogs from '../components/popups/rating_dialog';
+import RatingDialog from '../components/popups/rating_dialog';
+import ReportDialog from '../components/popups/report_dialog';
 
 
 
@@ -30,7 +32,8 @@ function ContentCreatorProfile(){
 
     return(
     <Box sx={{
-        width: '100%'
+        minwidth: '300',
+        maxwidth: '300'
     }}>
 
 
@@ -51,12 +54,12 @@ function ContentCreatorProfile(){
             </Stack>
         </Stack>
         <Stack direction="column" spacing={4}>
-            <CustomizedDialogs>
+            <RatingDialog>
 
-            </CustomizedDialogs>
-            <CustomizedDialogs>
+            </RatingDialog>
+            <ReportDialog>
 
-            </CustomizedDialogs>
+            </ReportDialog>
         </Stack>
         
     </Stack>
@@ -66,7 +69,7 @@ function ContentCreatorProfile(){
 
     </Divider>
     <Box sx={{ 
-                width: '100%',
+                width: '90%',
               }}>
         <Stack
               direction="column"
