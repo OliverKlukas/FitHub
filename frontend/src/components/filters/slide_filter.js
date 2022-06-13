@@ -4,13 +4,20 @@ import {LinkButton} from "../buttons/link_button";
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
 
+/**
+ * Single slide filter component offering range selection for one number value.
+ *
+ * @param priceRange - Number[lower value, higher value] that sets the boundaries for filtered value.
+ * @param setPriceRange - Hook reference to set the priceRange.
+ * @returns {JSX.Element}
+ */
 export default function SlideFilter({priceRange, setPriceRange}) {
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
     const id = open ? 'slide-popover' : undefined;
     const minPriceRange = 10;
 
-    // Handle changed range values of the slide.
+    // Handle changed range values of the slide, copied from: https://mui.com/material-ui/react-slider/#MinimumDistanceSlider.js
     function handleSlide(event, newPriceRange, activeThumb) {
         // Slide has not moved.
         if (!Array.isArray(newPriceRange)) {
@@ -30,18 +37,18 @@ export default function SlideFilter({priceRange, setPriceRange}) {
         }
     }
 
-    // Handle opening/closing of the slide popover.
-    const handleClick = (event) => {
+    const handlePopoverOpen = (event) => {
         setAnchorEl(event.currentTarget);
-    };
-    const handleClose = () => {
+    }
+
+    const handlePopoverClose = () => {
         setAnchorEl(null);
-    };
+    }
 
     return (<div>
         <LinkButton
             variant='text'
-            onClick={handleClick}
+            onClick={handlePopoverOpen}
         >
             <Stack width={200} height={48} direction="row" justifyContent="space-between" alignItems="center">
                 <Typography color={"secondary"} fontWeight={600} fontSize={18}>
@@ -60,7 +67,7 @@ export default function SlideFilter({priceRange, setPriceRange}) {
             id={id}
             open={open}
             anchorEl={anchorEl}
-            onClose={handleClose}
+            onClose={handlePopoverClose}
         >
             <h4 style={{margin: "13px"}}>
                 Desired price range:
