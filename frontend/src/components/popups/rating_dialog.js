@@ -1,6 +1,5 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import Button from '@mui/material/Button';
 import { styled } from '@mui/material/styles';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
@@ -11,7 +10,9 @@ import CloseIcon from '@mui/icons-material/Close';
 import Typography from '@mui/material/Typography';
 import { HighlightButton } from '../buttons/highlight_button';
 import { StandardButton } from '../buttons/standard_button';
-import { Divider, Rating, Stack, TextField } from '@mui/material';
+import { Divider, Rating, Stack, TextField } from '@mui/material'
+import StarIcon from '@mui/icons-material/Star'
+
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiDialogContent-root': {
@@ -92,6 +93,7 @@ export default function RatingDialog(){
           <Rating
             name="simple-controlled"
             value={value}
+            icon={<StarIcon color='warning'></StarIcon>}
             onChange={(event, newValue) => {
             setValue(newValue);
               }}
