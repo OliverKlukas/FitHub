@@ -6,6 +6,7 @@ import './App.css';
 import {CssBaseline, ThemeProvider} from "@mui/material";
 import FitHubTheme from "./utils/theme";
 import {Header} from "./components/header/header";
+import Payment from "./views/payment";
 
 /**
  * Supplies FitHub's general structure with a header at top and different routed views below.
@@ -29,6 +30,7 @@ function App() {
                     <Route path="/about" element={<AboutUs/>}/>
                     <Route path="/contact" element={<AboutUs/>}/>
                     <Route path="/profile" element={<AboutUs/>}/>
+                    <Route path="/payment" element={<Payment/>}/>
                 </Routes>
             </BrowserRouter>
         </ThemeProvider>);
