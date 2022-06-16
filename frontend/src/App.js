@@ -6,6 +6,8 @@ import './App.css';
 import {CssBaseline, ThemeProvider} from "@mui/material";
 import FitHubTheme from "./utils/theme";
 import {Header} from "./components/header/header";
+import Box from "@mui/material/Box";
+import Footer from "./components/footer/footer";
 
 /**
  * Supplies FitHub's general structure with a header at top and different routed views below.
@@ -15,23 +17,26 @@ import {Header} from "./components/header/header";
  * @returns {JSX.Element}
  */
 function App() {
-    return (<ThemeProvider theme={FitHubTheme}>
-            <CssBaseline/>
-            <BrowserRouter>
-                <div>
+    return (
+        <Box sx={{marginX: 6}}>
+            <ThemeProvider theme={FitHubTheme}>
+                <CssBaseline/>
+                <BrowserRouter>
                     <Header gender="male" user_type="content-creator"/>
-                </div>
-                <Routes>
-                    <Route path="/" element={<Discovery/>}/>
-                    <Route path="/discovery" element={<Discovery/>}/>
-                    <Route path="/upload" element={<AboutUs/>}/>
-                    <Route path="/plans" element={<AboutUs/>}/>
-                    <Route path="/about" element={<AboutUs/>}/>
-                    <Route path="/contact" element={<AboutUs/>}/>
-                    <Route path="/profile" element={<AboutUs/>}/>
-                </Routes>
-            </BrowserRouter>
-        </ThemeProvider>);
+                    <Routes>
+                        <Route path="/" element={<Discovery/>}/>
+                        <Route path="/discovery" element={<Discovery/>}/>
+                        <Route path="/upload" element={<AboutUs/>}/>
+                        <Route path="/plans" element={<AboutUs/>}/>
+                        <Route path="/about" element={<AboutUs/>}/>
+                        <Route path="/contact" element={<AboutUs/>}/>
+                        <Route path="/profile" element={<AboutUs/>}/>
+                    </Routes>
+                    <Footer />
+                </BrowserRouter>
+            </ThemeProvider>
+        </Box>
+    );
 }
 
 export default App;
