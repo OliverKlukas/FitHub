@@ -20,7 +20,7 @@ function App() {
         <CssBaseline/>
         <BrowserRouter>
             <Box sx={{marginX: 6}}>
-                <Header gender="male" user_type="content-creator"/>
+                <Header gender="male" userType="content-creator"/>
                 <Box minHeight="75vh">
                     <Routes>
                         <Route path="/" element={<Discovery/>}/>
