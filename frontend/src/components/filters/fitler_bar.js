@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Button, Chip, Grid, Stack} from "@mui/material";
+import {Button, Chip, Grid, Stack, Typography} from "@mui/material";
 import SlideFilter from "./slide_filter";
 import SearchFilter from "./search_filter";
 
@@ -36,9 +36,9 @@ export default function FilterBar({filter, setFilter, priceRange, setPriceRange}
         setPriceRange([0, 100]);
     }
 
-    return (<Stack>
-        <Stack direction="row" spacing={2}>
-            <h4>Filters:</h4>
+    return (<Stack spacing={1.5} marginBottom={1.5}>
+        <Stack direction="row" alignItems="center" spacing={2}>
+            <Typography marginTop={0.75} variant="h3">Filters:</Typography>
             <Grid container>
                 <Grid item>
                     <SearchFilter title="Category" tags={category} addFilter={addFilter} deleteFilter={deleteFilter}
@@ -67,7 +67,7 @@ export default function FilterBar({filter, setFilter, priceRange, setPriceRange}
         </Stack>
         {filter.length > 0 && <Grid container alignItems="center">
             <Grid item>
-                <h4 style={{marginRight: "10px"}}>Selected Filters:</h4>
+                <Typography fontWeight={550} variant="h4" style={{marginRight: "10px"}}>Selected Filters:</Typography>
             </Grid>
             {filter.map((tag) => (
                 <Grid item><Chip sx={{ml: 1}} key={tag} label={tag} onDelete={() => deleteFilter([tag])}/></Grid>))}
