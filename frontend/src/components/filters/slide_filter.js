@@ -51,7 +51,7 @@ export default function SlideFilter({priceRange, setPriceRange}) {
             onClick={handlePopoverOpen}
         >
             <Stack width={200} height={48} direction="row" justifyContent="space-between" alignItems="center">
-                <Typography color={"secondary"} fontWeight={600} fontSize={18}>
+                <Typography color={"secondary"} fontWeight={600} fontSize={20}>
                     Price
                 </Typography>
                 {open ? <ArrowDropUpIcon sx={{color: '#757575'}}/> : <ArrowDropDownIcon style={{color: '#757575'}}/>}
@@ -69,9 +69,9 @@ export default function SlideFilter({priceRange, setPriceRange}) {
             anchorEl={anchorEl}
             onClose={handlePopoverClose}
         >
-            <h4 style={{margin: "13px"}}>
+            <Typography variant="h4" style={{margin: "13px"}}>
                 Desired price range:
-            </h4>
+            </Typography>
             <Stack alignItems="center" sx={{mx: 4}}>
                 <Slider
                     sx={{width: 200}}
