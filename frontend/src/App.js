@@ -7,7 +7,10 @@ import FitHubTheme from "./utils/theme";
 import {Header} from "./components/header/header";
 import Box from "@mui/material/Box";
 import Footer from "./components/footer/footer";
+<<<<<<< HEAD
 import Details from "./views/details";
+=======
+>>>>>>> main
 
 /**
  * Consists of a header at top, the different routed views in the middle and a footer at the bottom.
