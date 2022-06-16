@@ -8,10 +8,13 @@ import DialogActions from '@mui/material/DialogActions';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import Typography from '@mui/material/Typography';
-import { HighlightButton } from '../buttons/highlight_button';
-import { StandardButton } from '../buttons/standard_button';
-import { Stack } from '@mui/material';
-import { TextField } from '@mui/material';
+import { Divider, Rating, Stack, TextField } from '@mui/material'
+import StarIcon from '@mui/icons-material/Star'
+import { HighlightButton } from '../../buttons/highlight_button';
+import { StandardButton } from '../../buttons/standard_button';
+import {ReactComponent as LogoSmall} from "../../../resources/logo_small.svg";
+import {ReactComponent as LogoText} from "../../../resources/logo_text.svg";
+
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiDialogContent-root': {
@@ -51,8 +54,11 @@ BootstrapDialogTitle.propTypes = {
   onClose: PropTypes.func.isRequired,
 };
 
-export default function ReportDialog(){
-  const [open, setOpen] = React.useState(false);
+export default function RatingDialog(){
+
+  const [value, setValue] = React.useState(2); // States for Rating
+
+  const [open, setOpen] = React.useState(false);  // States for popup
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -63,23 +69,49 @@ export default function ReportDialog(){
 
   return (
     <div>
-     <StandardButton variant='contained' onClick={handleClickOpen}>report this content creator</StandardButton>
+     <HighlightButton variant='contained' onClick={handleClickOpen}>write a review</HighlightButton>
       <BootstrapDialog
         onClose={handleClose}
         aria-labelledby="customized-dialog-title"
         open={open}
+        fullWidth={true}
       >
         <BootstrapDialogTitle id="customized-dialog-title" onClose={handleClose}>
-          Write a short report
+          <Stack direction="row" >
+            <Typography maxRows={1}>
+            Create Review 
+            </Typography>
+            <LogoSmall width="80%"/> 
+            <LogoText width="80%"/>
+            </Stack>
         </BootstrapDialogTitle>
         <DialogContent dividers>
-          <Stack>
-          <Typography gutterBottom>
-            This report will be sent to FitHub and will not be published.
-          </Typography>
+        <Stack spacing={1}
+        >
+          <Typography> 
+            Igor Something
+          </Typography> 
+          <Divider>
+
+          </Divider>
+          <Stack direction="row" spacing={40}>
+            <Typography>
+              Overall rating
+            </Typography>
+          <Rating
+            name="simple-controlled"
+            value={value}
+            defaultValue={3}
+            icon={<StarIcon color='warning'></StarIcon>}
+            onChange={(event, newValue) => {
+            setValue(newValue);
+              }}
+          />
+          </Stack>
+
           <TextField
           id='outlined-basic'
-          label="Please state the reason for your report here" 
+          label="Add a written review" 
           variant="outlined"
           multiline
           minRows={5}
@@ -90,10 +122,10 @@ export default function ReportDialog(){
           </Stack>
         </DialogContent>
         <DialogActions>
-        <StandardButton autoFocus onClick={handleClose}>
+          <StandardButton autoFocus onClick={handleClose} variant="contained">
             cancel
           </StandardButton>
-          <HighlightButton autoFocus onClick={handleClose}>
+          <HighlightButton autoFocus onClick={handleClose} variant="contained">
             submit 
           </HighlightButton>
         </DialogActions>

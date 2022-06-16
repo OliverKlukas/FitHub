@@ -3,11 +3,10 @@ import * as React from 'react';
 import {Stack} from "@mui/material";
 import Box from '@mui/material/Box';
 import Rating from '@mui/material/Rating';
-import Review from '../components/reviewlist/review';
+import Review from '../components/profilecomponents/reviewlist/review';
 import { loremIpsum, Avatar } from 'react-lorem-ipsum';
-import RatingDialog from '../components/popups/rating_dialog';
-import ReportDialog from '../components/popups/report_dialog';
 import StarIcon from '@mui/icons-material/Star'
+import ProfileDialogButtons from '../components/profilecomponents/popups/profile_dialog_buttons';
 
 
 function ContentCreatorProfile(){
@@ -40,14 +39,9 @@ function ContentCreatorProfile(){
             </Typography>
             </Stack>
         </Stack>
-        <Stack direction="column" spacing={4}>
-            <RatingDialog>
-
-            </RatingDialog>
-            <ReportDialog>
-
-            </ReportDialog>
-        </Stack>
+        <ProfileDialogButtons>
+            
+        </ProfileDialogButtons>
         
     </Stack>
     <Divider
