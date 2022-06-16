@@ -7,6 +7,7 @@ import FitHubTheme from "./utils/theme";
 import {Header} from "./components/header/header";
 import Box from "@mui/material/Box";
 import Footer from "./components/footer/footer";
+import Details from "./views/details";
 
 /**
  * Consists of a header at top, the different routed views in the middle and a footer at the bottom.
@@ -30,6 +31,7 @@ function App() {
                         <Route path="/about" element={<AboutUs/>}/>
                         <Route path="/contact" element={<AboutUs/>}/>
                         <Route path="/profile" element={<AboutUs/>}/>
+                        <Route path="/details" element={<Details/>}/>
                     </Routes>
                 </Box>
                 <Footer/>
