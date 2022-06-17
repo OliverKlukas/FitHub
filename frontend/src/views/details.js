@@ -1,4 +1,4 @@
-import {Stack, Typography} from "@mui/material";
+import {Link, Stack, Typography} from "@mui/material";
 import Carousel from 'react-material-ui-carousel'
 import {Link as RouterLink, useParams} from "react-router-dom";
 import {content} from "../utils/content";
@@ -13,7 +13,7 @@ export default function Details() {
     return (
         <Stack spacing={3} marginBottom={10} marginTop={6}>
             <Stack direction="row">
-                <Carousel animation="slide" interval={6000} duration={1200} indicators={false} navButtonsAlwaysVisible={true} height="60vh" sx={{width: "60%", borderRadius: 5}}>
+                <Carousel animation="slide" interval={6000} duration={1200} indicators={false} navButtonsAlwaysVisible={true} height="60vh" sx={{width: {xs: "100%", md: "100%", lg: "60%", xl: "60%"}, borderRadius: 5}}>
                     {
                         item.media.map( (url, index) =>
                             <img width="100%" height="100%" key={index} src={url} style={{objectFit: "cover"}} />
@@ -21,7 +21,7 @@ export default function Details() {
                     }
                 </Carousel>
             </Stack>
-            <Stack spacing={4} width="60%">
+            <Stack spacing={4} sx={{width: {xs: "100%", md: "100%", lg: "60%", xl: "60%"}}}>
                 <Stack>
                     <Stack direction="row" justifyContent="space-between" spacing={4}>
                         <Typography variant="h1">
@@ -33,7 +33,7 @@ export default function Details() {
                     </Stack>
                     <Stack marginBottom={2} direction="row" justifyContent="space-between" spacing={4}>
                         <Typography>
-                            by {item.author}
+                            by <Link color="inherit" underline="hover" href={`/profile/${item.author}`}>{item.author}</Link>
                         </Typography>
                         <Typography>
                             total price
