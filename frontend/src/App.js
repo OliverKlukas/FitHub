@@ -7,15 +7,11 @@ import FitHubTheme from "./utils/theme";
 import {Header} from "./components/header/header";
 import Box from "@mui/material/Box";
 import Footer from "./components/footer/footer";
-<<<<<<< HEAD
 import Details from "./views/details";
-=======
->>>>>>> main
+import PageNotFound from "./views/page_not_found";
 
 /**
  * Consists of a header at top, the different routed views in the middle and a footer at the bottom.
- *
- * TODO: replace all the <AboutUs/> references below with the dedicated pages.
  *
  * @returns {JSX.Element}
  */
@@ -27,14 +23,11 @@ function App() {
                 <Header gender="male" userType="content-creator"/>
                 <Box minHeight="75vh">
                     <Routes>
+                        <Route path="*" element={<PageNotFound/>}/>
                         <Route path="/" element={<Discovery/>}/>
                         <Route path="/discovery" element={<Discovery/>}/>
-                        <Route path="/upload" element={<AboutUs/>}/>
-                        <Route path="/plans" element={<AboutUs/>}/>
                         <Route path="/about" element={<AboutUs/>}/>
-                        <Route path="/contact" element={<AboutUs/>}/>
-                        <Route path="/profile" element={<AboutUs/>}/>
-                        <Route path="/details" element={<Details/>}/>
+                        <Route path="/details/:id" element={<Details/>}/>
                     </Routes>
                 </Box>
                 <Footer/>
