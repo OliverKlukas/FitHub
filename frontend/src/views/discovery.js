@@ -94,27 +94,23 @@ function Discovery() {
     // Number[] of price range that the content list should currently be filtered for.
     const [priceRange, setPriceRange] = React.useState([0, 100]);
 
-    // Screen size to responsively control the number of content columns.
-    const smallScreenSize = useMediaQuery(theme.breakpoints.down('sm'));
+    // Screen size hooks to responsively control the number of content columns.
+    const sm = useMediaQuery(theme.breakpoints.down('sm'));
+    const lg = useMediaQuery(theme.breakpoints.down('lg'));
 
-    return (<Stack sx={{marginX: 6}}>
+    return (<Stack>
         <FilterBar filter={filter} setFilter={setFilter} priceRange={priceRange} setPriceRange={setPriceRange}/>
         <ImageList
             sx={{
                 // Promotes image list into its own layer in Chrome, costs memory, but helps keeping high FPS.
-                transform: 'translateZ(0)', overflow: 'hidden'
+                transform: 'translateZ(0)', overflow: 'hidden',
             }}
-            cols={smallScreenSize ? 1 : 3}
+            cols={sm ? 1 : lg ? 2 : 3}
             gap={40}
         >
-            {filter.length > 0 ? content.map((item) => {
-                if ((item.tags.filter(tag => filter.includes(tag))).length === filter.length && item.price >= priceRange[0] && item.price <= priceRange[1]) {
+            {content.map((item) => {
+                if (item.price >= priceRange[0] && item.price <= priceRange[1] && (filter.length === 0 || (item.tags.filter(tag => filter.includes(tag))).length === filter.length)) {
                     return <ImageCard item={item} key={item.img}/>
-                }
-            }) : content.map((item) => {
-                if (item.price >= priceRange[0] && item.price <= priceRange[1]) {
-                    return <ImageCard item={item} key={item.img}/>
-
                 }
             })}
         </ImageList>
