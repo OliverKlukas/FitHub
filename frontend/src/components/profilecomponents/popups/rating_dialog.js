@@ -16,7 +16,7 @@ import {ReactComponent as LogoSmall} from "../../../resources/logo_small.svg";
 import {ReactComponent as LogoText} from "../../../resources/logo_text.svg";
 
 
-const BootstrapDialog = styled(Dialog)(({ theme }) => ({
+const RatingDial = styled(Dialog)(({ theme }) => ({
   '& .MuiDialogContent-root': {
     padding: theme.spacing(2),
   },
@@ -25,7 +25,7 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   },
 }));
 
-const BootstrapDialogTitle = (props) => {
+const RatingDialTitle = (props) => {
   const { children, onClose, ...other } = props;
 
   return (
@@ -49,7 +49,7 @@ const BootstrapDialogTitle = (props) => {
   );
 };
 
-BootstrapDialogTitle.propTypes = {
+RatingDialTitle.propTypes = {
   children: PropTypes.node,
   onClose: PropTypes.func.isRequired,
 };
@@ -70,13 +70,13 @@ export default function RatingDialog(){
   return (
     <div>
      <HighlightButton variant='contained' onClick={handleClickOpen}>write a review</HighlightButton>
-      <BootstrapDialog
+      <RatingDial
         onClose={handleClose}
         aria-labelledby="customized-dialog-title"
         open={open}
         fullWidth={true}
       >
-        <BootstrapDialogTitle id="customized-dialog-title" onClose={handleClose}>
+        <RatingDialTitle id="customized-dialog-title" onClose={handleClose}>
           <Stack direction="row" >
             <Typography maxRows={1}>
             Create Review 
@@ -84,7 +84,7 @@ export default function RatingDialog(){
             <LogoSmall width="80%"/> 
             <LogoText width="80%"/>
             </Stack>
-        </BootstrapDialogTitle>
+        </RatingDialTitle>
         <DialogContent dividers>
         <Stack spacing={1}
         >
@@ -129,7 +129,7 @@ export default function RatingDialog(){
             submit 
           </HighlightButton>
         </DialogActions>
-      </BootstrapDialog>
+      </RatingDial>
     </div>
   );
 }

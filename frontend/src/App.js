@@ -2,11 +2,11 @@ import * as React from 'react';
 import Discovery from "./views/discovery";
 import {BrowserRouter, Routes, Route} from "react-router-dom";
 import AboutUs from "./views/about_us";
-import ContentCreatorProfile from './views/content_creator_profile';
 import './App.css';
 import {CssBaseline, ThemeProvider} from "@mui/material";
 import FitHubTheme from "./utils/theme";
 import {Header} from "./components/header/header";
+import ProfileViews from './views/profile_views';
 
 /**
  * Supplies FitHub's general structure with a header at top and different routed views below.
@@ -29,8 +29,7 @@ function App() {
                     <Route path="/plans" element={<AboutUs/>}/>
                     <Route path="/about" element={<AboutUs/>}/>
                     <Route path="/contact" element={<AboutUs/>}/>
-                    <Route path="/profile" element={<AboutUs/>}/>
-                    <Route path="/ContentCreator" element={<ContentCreatorProfile/>}/>
+                    <Route path="/profile" element={<ProfileViews/>}/>
                 </Routes>
             </BrowserRouter>
         </ThemeProvider>);
