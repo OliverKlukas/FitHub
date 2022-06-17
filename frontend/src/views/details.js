@@ -1,4 +1,5 @@
 import {Stack, Typography} from "@mui/material";
+import Carousel from 'react-material-ui-carousel'
 import {Link as RouterLink, useParams} from "react-router-dom";
 import {content} from "../utils/content";
 import {HighlightButton} from "../components/buttons/highlight_button";
@@ -9,19 +10,20 @@ export default function Details() {
     let {id} = useParams();
     const item = content.find((item) => item.id == id);
 
-    // Handle download of content sample.
-    function handleDownload(){
-
-    }
-
     return (
-        <Stack>
+        <Stack spacing={3} marginBottom={10} marginTop={6}>
             <Stack direction="row">
-
+                <Carousel animation="slide" interval={6000} duration={1200} indicators={false} navButtonsAlwaysVisible={true} height="60vh" sx={{width: "60%", borderRadius: 5}}>
+                    {
+                        item.media.map( (url, index) =>
+                            <img width="100%" height="100%" key={index} src={url} style={{objectFit: "cover"}} />
+                        )
+                    }
+                </Carousel>
             </Stack>
             <Stack spacing={4} width="60%">
                 <Stack>
-                    <Stack direction="row" justifyContent="space-between">
+                    <Stack direction="row" justifyContent="space-between" spacing={4}>
                         <Typography variant="h1">
                             {item.title}
                         </Typography>
@@ -29,7 +31,7 @@ export default function Details() {
                             {item.price}€
                         </Typography>
                     </Stack>
-                    <Stack marginBottom={2} direction="row" justifyContent="space-between">
+                    <Stack marginBottom={2} direction="row" justifyContent="space-between" spacing={4}>
                         <Typography>
                             by {item.author}
                         </Typography>
