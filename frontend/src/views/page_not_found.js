@@ -29,7 +29,7 @@ export default function PageNotFound() {
                     transform: "translate( -50%, -50% )",
                     textAlign: "center",
                 }}>
-                    <Typography color="white" variant="h1" fontSize={100} fontWeight={600}>
+                    <Typography color="white" variant="h1" fontSize={90} fontWeight={600}>
                         Oops! 404: page not found
                     </Typography>
                     <Typography color="white" variant="h3" marginTop={2} fontSize={40} fontWeight={400}>

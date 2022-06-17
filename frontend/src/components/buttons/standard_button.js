@@ -11,6 +11,8 @@ export const StandardButton = styled(Button)(({theme}) => ({
     color: '#FFFFFF',
     width: ['max-content'],
     backgroundColor: '#393E46',
+    border: '1px solid',
+    borderColor: '#393E46',
     fontStyle: 'normal',
     borderRadius: 6,
     fontWeight: 700,
@@ -18,6 +20,6 @@ export const StandardButton = styled(Button)(({theme}) => ({
     textTransform: ['none'],
     textAlign: 'center',
     '&:hover': {
-        color: '#393E46', backgroundColor: '#EEEEEE',
+        color: '#393E46', borderColor: '#EEEEEE', backgroundColor: '#EEEEEE',
     }
 }))
