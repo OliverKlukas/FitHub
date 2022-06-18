@@ -1,51 +1,49 @@
-import {Avatar, Link, Rating, Stack, Typography} from "@mui/material";
+import {Avatar, Box, Link, Rating, Stack, Typography} from "@mui/material";
 import Carousel from 'react-material-ui-carousel'
 import {Link as RouterLink, useParams} from "react-router-dom";
 import {content} from "../utils/content";
 import {HighlightButton} from "../components/buttons/highlight_button";
 import {StandardButton} from "../components/buttons/standard_button";
 import StarIcon from '@mui/icons-material/Star';
+import {Star} from "@mui/icons-material";
 
 export default function Details() {
     // Match url id to content item.
     let {id} = useParams();
     const item = content.find((item) => item.id == id);
 
-    let ratings = [];
-    const reviews = [1, 2, 3, 4, 5];
-    for(let item of reviews){
-        ratings.push(item.star)
-    }
-
-
-    return (<Stack spacing={3} marginBottom={10} marginTop={6}>
-        <Stack direction="row">
+    return (<Stack spacing={3} marginBottom={10} marginTop={5}>
+        <Stack direction="row" justifyContent="space-between">
             <Carousel animation="slide" interval={6000} duration={1200} indicators={false}
                       navButtonsAlwaysVisible={true} height="60vh"
-                      sx={{width: {xs: "100%", md: "100%", lg: "60%", xl: "60%"}, borderRadius: 5}}>
+                      sx={{width: {xs: "100%", md: "100%", lg: "60%", xl: "60%"}, borderRadius: 5, boxShadow: 5}}>
                 {item.media.map((url, index) => <img width="100%" height="100%" key={index} src={url}
                                                      style={{objectFit: "cover"}}/>)}
             </Carousel>
-            <Stack>
-                <Avatar variant="circular"/>
-                <Stack direction="column" spacing={2}>
-                    <h1>{item.author}</h1>
-                    <Typography variant="body1" sx={{
-                        width: "60%"
-                    }} gutterBottom>
-                        TODO description
-                    </Typography>
-                    <Stack direction="row" spacing={3}>
-                        <Rating name="read-only" value={ratings.reduce((p, c) => {
-                            return (p + c)
-                        }) / reviews.length} readOnly icon={<StarIcon color='warning'></StarIcon>}/>
-                        {/* Calucaltes the average rating of all reviews, there are countless other ways to calculate this, using reduce, needs a numbers array, hence the ratings array */}
-                        <Typography variant="caption">
-                            {reviews.length} reviews
+            <Box justifyContent="center" sx={{display: {xs: "none", md: "none", lg: "flex"}, width: "35%"}}>
+                <Stack alignItems="center" justifyContent="center">
+                    <Link underline="none" href={`/profile/${item.author.name}`}>
+                        <Avatar sx={{width: "15vw", height: "15vw", marginBottom: 3, boxShadow: 5, ":hover": {
+                                opacity: 0.8,
+                                boxShadow: 15,
+                            }}} alt="content creator" src={item.author.img}/>
+                    </Link>
+                    <Stack>
+                        <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={3} marginTop={0.5} marginBottom={2}>
+                            <Rating size="large" sx={{"& .MuiRating-iconEmpty": {color: "info.main"}, "& .MuiRating-iconFilled": {color: "warning.main"}}}
+                                    name="read-only" value={item.author.rating} readOnly emptyIcon={<Star fontSize="inherit" />}
+                            />
+                            <Link color="inherit" underline="hover" href={`/profile/${item.author.name}`}>512 reviews</Link>
+                        </Stack>
+                        <Typography variant="h1">
+                            {item.author.name}
+                        </Typography>
+                        <Typography lineHeight={1.3}>
+                            {item.author.title}
                         </Typography>
                     </Stack>
                 </Stack>
-            </Stack>
+            </Box>
         </Stack>
         <Stack spacing={4} sx={{width: {xs: "100%", md: "100%", lg: "60%", xl: "60%"}}}>
             <Stack>
@@ -60,7 +58,7 @@ export default function Details() {
                 <Stack marginBottom={2} direction="row" justifyContent="space-between" spacing={4}>
                     <Typography>
                         by <Link color="inherit" underline="hover"
-                                 href={`/profile/${item.author}`}>{item.author}</Link>
+                                 href={`/profile/${item.author.name}`}>{item.author.name}</Link>
                     </Typography>
                     <Typography>
                         total price

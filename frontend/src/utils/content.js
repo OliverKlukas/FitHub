@@ -5,7 +5,12 @@ export const content = [{
     id: 1000,
     img: 'https://images.unsplash.com/photo-1517836357463-d25dfeac3438',
     title: '12-Weeks Full-Body Workout',
-    author: 'Igor Felchin',
+    author: {
+        name: 'Igor Felchin',
+        title: 'professional bodybuilder & fitness coach',
+        img: 'https://images.unsplash.com/photo-1584466977773-e625c37cdd50',
+        rating: 3,
+    },
     price: 50,
     media: [
         'https://images.unsplash.com/photo-1517836357463-d25dfeac3438',
@@ -19,7 +24,12 @@ export const content = [{
     id: 1001,
     img: 'https://images.unsplash.com/photo-1550345332-09e3ac987658',
     title: 'Crossfit Workout Routine',
-    author: 'Osanna Imbi',
+    author: {
+        name: 'Osanna Imbi',
+        title: 'ex-professional runner & fitness enthusiast',
+        img: 'https://images.unsplash.com/photo-1554244933-d876deb6b2ff',
+        rating: 4,
+    },
     price: 89,
     media: [
         'https://images.unsplash.com/photo-1550345332-09e3ac987658',
@@ -32,7 +42,12 @@ export const content = [{
     id: 1002,
     img: 'https://images.unsplash.com/photo-1490645935967-10de6ba17061',
     title: 'Weight Loss Nutrition Plan',
-    author: 'Calixta Tadeusz',
+    author: {
+        name: 'Calixta Tadeusz',
+        title: 'studied nutritionist (B.Sc.)',
+        img: 'https://images.unsplash.com/photo-1554244933-d876deb6b2ff',
+        rating: 2,
+    },
     price: 25,
     media: [
         'https://images.unsplash.com/photo-1490645935967-10de6ba17061',
@@ -45,7 +60,12 @@ export const content = [{
     id: 1003,
     img: 'https://images.unsplash.com/photo-1593079831268-3381b0db4a77',
     title: '9-Weeks Cardio Plan',
-    author: 'Emlyn Shaina',
+    author: {
+        name: 'Emlyn Shaina',
+        title: 'ex-professional runner & fitness enthusiast',
+        img: 'https://images.unsplash.com/photo-1554244933-d876deb6b2ff',
+        rating: 5,
+    },
     price: 5,
     media: [
         'https://images.unsplash.com/photo-1593079831268-3381b0db4a77',
@@ -58,7 +78,12 @@ export const content = [{
     id: 1004,
     img: 'https://images.unsplash.com/photo-1521986329282-0436c1f1e212',
     title: 'Vegan Nutrition Plan',
-    author: 'Ernesta Lunete',
+    author: {
+        name: 'Ernesta Lunete',
+        title: 'studied nutritionist (B.Sc.)',
+        img: 'https://images.unsplash.com/photo-1554244933-d876deb6b2ff',
+        rating: 5,
+    },
     price: 59,
     media: [
         'https://images.unsplash.com/photo-1521986329282-0436c1f1e212',
@@ -71,7 +96,12 @@ export const content = [{
     id: 1005,
     img: 'https://images.unsplash.com/photo-1517838277536-f5f99be501cd',
     title: 'Powerlifting Coaching',
-    author: 'Arnold Schwarzenegger',
+    author: {
+        name: 'Arnold Schwarzenegger',
+        title: 'professional bodybuilder & fitness coach',
+        img: 'https://images.unsplash.com/photo-1584466977773-e625c37cdd50',
+        rating: 5,
+    },
     price: 99,
     media: [
         'https://images.unsplash.com/photo-1517838277536-f5f99be501cd',
@@ -84,7 +114,12 @@ export const content = [{
     id: 1006,
     img: 'https://images.unsplash.com/photo-1623200216581-969d9479cf7d',
     title: 'Home Workout Routines',
-    author: 'Konsuke Hardmod',
+    author: {
+        name: 'Konsuke Hardmod',
+        title: 'ex-professional runner & fitness enthusiast',
+        img: 'https://images.unsplash.com/photo-1584466977773-e625c37cdd50',
+        rating: 3,
+    },
     price: 79,
     media: [
         'https://images.unsplash.com/photo-1623200216581-969d9479cf7d',
@@ -97,7 +132,12 @@ export const content = [{
     id: 1007,
     img: 'https://images.unsplash.com/photo-1554284126-aa88f22d8b74',
     title: 'Personal Weightlifting Coaching',
-    author: 'Katie Wassmann',
+    author: {
+        name: 'Katie Wassmann',
+        title: 'professional bodybuilder & fitness coach',
+        img: 'https://images.unsplash.com/photo-1554244933-d876deb6b2ff',
+        rating: 5,
+    },
     price: 99,
     media: [
         'https://images.unsplash.com/photo-1554284126-aa88f22d8b74',
@@ -110,7 +150,12 @@ export const content = [{
     id: 1008,
     img: 'https://images.unsplash.com/photo-1482049016688-2d3e1b311543',
     title: 'Pescatarian Weight Loss Plan',
-    author: 'Shelly Purdue',
+    author: {
+        name: 'Shelly Purdue',
+        title: 'studied nutritionist (B.Sc.)',
+        img: 'https://images.unsplash.com/photo-1554244933-d876deb6b2ff',
+        rating: 3,
+    },
     price: 19,
     media: [
         'https://images.unsplash.com/photo-1482049016688-2d3e1b311543',
@@ -124,7 +169,12 @@ export const content = [{
     id: 1009,
     img: 'https://images.unsplash.com/photo-1593476123561-9516f2097158',
     title: 'Professional Running Analysis',
-    author: 'Herfeld Roman',
+    author: {
+        name: 'Herfeld Roman',
+        title: 'ex-professional runner & fitness enthusiast',
+        img: 'https://images.unsplash.com/photo-1584466977773-e625c37cdd50',
+        rating: 3,
+    },
     price: 29,
     media: [
         'https://images.unsplash.com/photo-1593476123561-9516f2097158',
@@ -137,7 +187,12 @@ export const content = [{
     id: 1010,
     img: 'https://images.unsplash.com/photo-1632781297772-1d68f375d878',
     title: '12-Weeks Weight Gain Plan',
-    author: 'Simon Plashek',
+    author: {
+        name: 'Simon Plashek',
+        title: 'professional bodybuilder & fitness coach',
+        img: 'https://images.unsplash.com/photo-1584466977773-e625c37cdd50',
+        rating: 3,
+    },
     price: 89,
     media: [
         'https://images.unsplash.com/photo-1632781297772-1d68f375d878',
@@ -150,7 +205,12 @@ export const content = [{
     id: 1011,
     img: 'https://images.unsplash.com/photo-1590771998996-8589ec9b5ac6',
     title: 'Lower Body Training Plan',
-    author: 'Susanne Friedrisch',
+    author: {
+        name: 'Susanne Friedrisch',
+        title: 'professional bodybuilder & fitness coach',
+        img: 'https://images.unsplash.com/photo-1554244933-d876deb6b2ff',
+        rating: 5,
+    },
     price: 12,
     media: [
         'https://images.unsplash.com/photo-1590771998996-8589ec9b5ac6',
