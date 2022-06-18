@@ -4,9 +4,13 @@ import {Link as RouterLink, useParams} from "react-router-dom";
 import {content} from "../utils/content";
 import {HighlightButton} from "../components/buttons/highlight_button";
 import {StandardButton} from "../components/buttons/standard_button";
-import StarIcon from '@mui/icons-material/Star';
 import {Star} from "@mui/icons-material";
 
+/**
+ * Detailed view that conveys the most important information of a content item.
+ *
+ * @returns {JSX.Element}
+ */
 export default function Details() {
     // Match url id to content item.
     let {id} = useParams();
@@ -23,17 +27,24 @@ export default function Details() {
             <Box justifyContent="center" sx={{display: {xs: "none", md: "none", lg: "flex"}, width: "35%"}}>
                 <Stack alignItems="center" justifyContent="center">
                     <Link underline="none" href={`/profile/${item.author.name}`}>
-                        <Avatar sx={{width: "15vw", height: "15vw", marginBottom: 3, boxShadow: 5, ":hover": {
-                                opacity: 0.8,
-                                boxShadow: 15,
-                            }}} alt="content creator" src={item.author.img}/>
+                        <Avatar sx={{
+                            width: "15vw", height: "15vw", marginBottom: 3, boxShadow: 5, ":hover": {
+                                opacity: 0.8, boxShadow: 15,
+                            }
+                        }} alt="content creator" src={item.author.img}/>
                     </Link>
                     <Stack>
-                        <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={3} marginTop={0.5} marginBottom={2}>
-                            <Rating size="large" sx={{"& .MuiRating-iconEmpty": {color: "info.main"}, "& .MuiRating-iconFilled": {color: "warning.main"}}}
-                                    name="read-only" value={item.author.rating} readOnly emptyIcon={<Star fontSize="inherit" />}
+                        <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={3}
+                               marginTop={0.5} marginBottom={2}>
+                            <Rating size="large" sx={{
+                                "& .MuiRating-iconEmpty": {color: "info.main"},
+                                "& .MuiRating-iconFilled": {color: "warning.main"}
+                            }}
+                                    name="read-only" value={item.author.rating} readOnly
+                                    emptyIcon={<Star fontSize="inherit"/>}
                             />
-                            <Link color="inherit" underline="hover" href={`/profile/${item.author.name}`}>512 reviews</Link>
+                            <Link color="inherit" underline="hover" href={`/profile/${item.author.name}`}>512
+                                reviews</Link>
                         </Stack>
                         <Typography variant="h1">
                             {item.author.name}
@@ -72,15 +83,7 @@ export default function Details() {
                     Description
                 </Typography>
                 <Typography>
-                    This 12 weeks training plan is designed for people of all ages, that want to improve their
-                    overall fitness. This 12 weeks training plan is designed for people of all ages, that want to
-                    improve their overall fitness.
-                    The plan includes daily exercises with detailed instructions, tips and recommendations for
-                    optional excercises to strengthen your stamina. The plan includes daily exercises with detailed
-                    instructions, tips and recommendations for optional excercises to strengthen your stamina. There
-                    is an easy and hard variation of each exercise included, so you can adapt this plan to your
-                    fitness level.
-                    No equipment is required. No equipment is required. No equipment is required.
+                    {item.description}
                 </Typography>
             </Stack>
             <Stack spacing={1}>
@@ -88,15 +91,14 @@ export default function Details() {
                     Duration
                 </Typography>
                 <Typography>
-                    12 weeks with daily workouts and 96 different exercises.
+                    {item.duration}
                 </Typography>
             </Stack>
             <Stack spacing={2}>
                 <Typography variant="h3">
                     Sample Workout
                 </Typography>
-                <StandardButton variant="contained" component={RouterLink} target="_blank" to={"/sample.pdf"}
-                                download>
+                <StandardButton variant="contained" component={RouterLink} target="_blank" to={"/sample.pdf"} download>
                     Download
                 </StandardButton>
             </Stack>

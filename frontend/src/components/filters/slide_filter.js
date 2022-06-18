@@ -11,7 +11,7 @@ import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
  * @param setPriceRange - Hook reference to set the priceRange.
  * @returns {JSX.Element}
  */
-export default function SlideFilter({priceRange, setPriceRange}) {
+export default function SlideFilter({priceRange, setPriceRange, setPriceFiltered}) {
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
     const id = open ? 'slide-popover' : undefined;
@@ -35,6 +35,8 @@ export default function SlideFilter({priceRange, setPriceRange}) {
         } else {
             setPriceRange(newPriceRange);
         }
+        // Set chip for price filter.
+        setPriceFiltered(true);
     }
 
     const handlePopoverOpen = (event) => {
