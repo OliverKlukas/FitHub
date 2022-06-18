@@ -1,8 +1,8 @@
 import * as React from 'react';
+import {useState} from 'react';
 import {Button, Chip, Grid, Stack, Typography} from "@mui/material";
 import SlideFilter from "./slide_filter";
 import SearchFilter from "./search_filter";
-import {useState} from "react";
 
 const category = ['training plan', 'nutrition plan', 'coaching']
 const fitnessGoal = ['weight-loss', 'weight-gain', 'muscle-growth', 'cardio']
@@ -40,7 +40,7 @@ export default function FilterBar({filter, setFilter, priceRange, setPriceRange}
     }
 
     // Resets the price filter and displayed chip.
-    function resetPriceFilter(){
+    function resetPriceFilter() {
         setPriceFiltered(false);
         setPriceRange([0, 100]);
     }
@@ -66,7 +66,8 @@ export default function FilterBar({filter, setFilter, priceRange, setPriceRange}
                                   deleteFilter={deleteFilter} globalFilter={filter}/>
                 </Grid>
                 <Grid item>
-                    <SlideFilter priceRange={priceRange} setPriceRange={setPriceRange} setPriceFiltered={setPriceFiltered}/>
+                    <SlideFilter priceRange={priceRange} setPriceRange={setPriceRange}
+                                 setPriceFiltered={setPriceFiltered}/>
                 </Grid>
                 <Grid item>
                     <SearchFilter title={"Creator"} tags={contentCreator} addFilter={addFilter}
@@ -79,8 +80,9 @@ export default function FilterBar({filter, setFilter, priceRange, setPriceRange}
                 <Typography fontWeight={550} variant="h4" style={{marginRight: "10px"}}>Selected Filters:</Typography>
             </Grid>
             {filter.map((tag) => (
-                <Grid item><Chip sx={{ml: 1}} key={tag} label={tag} onDelete={() => deleteFilter([tag])}/></Grid>))}
-            {priceFiltered && <Chip sx={{ml: 1}} label={`Price: ${priceRange[0]} - ${priceRange[1]}€`} onDelete={resetPriceFilter}/>}
+                <Grid item key={tag} ><Chip sx={{ml: 1}} label={tag} onDelete={() => deleteFilter([tag])}/></Grid>))}
+            {priceFiltered &&
+                <Chip sx={{ml: 1}} label={`Price: ${priceRange[0]} - ${priceRange[1]}€`} onDelete={resetPriceFilter}/>}
             <Grid item>
                 <Button sx={{ml: 2}} variant="text" onClick={deleteAllFilter}>
                     delete all

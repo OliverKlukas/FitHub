@@ -1,5 +1,5 @@
 /**
- * TODO: Database mockup that shall be replaced with our backend.
+ * Database mockup that shall be replaced with our backend.
  */
 export const content = [{
     id: 1000,

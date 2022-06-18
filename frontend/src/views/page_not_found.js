@@ -3,7 +3,7 @@ import * as React from "react";
 import p404image from "./../resources/404.jpg";
 
 /**
- * Simple 404 page not found view to guide users back to webpage in case of routing errors.
+ * 404 page not found view to guide users back to webpage in case of routing errors.
  *
  * @returns {JSX.Element} Returns 404 page.
  */
