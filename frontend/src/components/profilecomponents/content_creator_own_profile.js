@@ -1,12 +1,13 @@
 import { Divider, Typography, useThemeProps } from '@mui/material';
 import * as React from 'react';
-import {Stack} from "@mui/material";
+import {Stack, TextField} from "@mui/material";
 import Box from '@mui/material/Box';
 import Rating from '@mui/material/Rating';
 import Review from './reviewlist/review';
 import {  Avatar } from 'react-lorem-ipsum';
 import StarIcon from '@mui/icons-material/Star';
-import ProfileDialogButtons from './popups/profile_dialog_buttons';
+import { HighlightButton } from '../buttons/highlight_button';
+
 
 function ContentCreatorOwnProfile(name,description,reviews){
        
@@ -31,16 +32,27 @@ function ContentCreatorOwnProfile(name,description,reviews){
         </Avatar>
         <Stack direction="column" spacing={2}>
             <h1>{name}</h1>
-            <Typography variant="body1" sx={{ width:"60%"
-            }} gutterBottom>
-                {description}
-            </Typography>
+            <TextField
+            id='outlined-basic'
+            label="Edit Description and Update to save" 
+            variant="outlined"
+            multiline
+            minRows={5}
+            maxRows={5}
+            defaultValue={description}
+            sx={{ 
+                width: '150%',
+              }}>
+            </TextField>
             <Stack direction="row" spacing={3}>
             <Rating name="read-only" value={ratings.reduce((p,c)=>{return(p+c)})/reviews.length} readOnly icon={<StarIcon color='warning'></StarIcon>} /> 
                 {/* Calucaltes the average rating of all reviews, there are countless other ways to calculate this, using reduce, needs a numbers array, hence the ratings array */}
             <Typography variant="caption" >
                 {reviews.length} reviews
             </Typography>
+            <HighlightButton>
+                Update
+            </HighlightButton>
             </Stack>
         </Stack>
     </Stack>

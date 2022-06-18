@@ -26,13 +26,21 @@ const content = [{
 
 ]
 
-
-function ProfileViews(){
-    return(
+        {/** 
         <Stack>
         {ContentCreatorProfile("Igor Something", "This is where a real trainer would have their description, this is intentionally a rather long text, to check for formatting with longer texts", content) 
         }
+    </Stack> //Add functionality that it swaps between the two views depending on the user
+    
+    */}
+function ProfileViews(){
+    return(
+
+    <Stack>
+    {ContentCreatorOwnProfile("Igor Something", "This is where a real trainer would have their description, this is intentionally a rather long text, to check for formatting with longer texts", content) 
+     }
     </Stack>
+
     )
 }
 
