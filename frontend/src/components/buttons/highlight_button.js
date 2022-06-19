@@ -11,6 +11,8 @@ export const HighlightButton = styled(Button)(({theme}) => ({
     color: '#FFFFFF',
     width: ['max-content'],
     backgroundColor: '#00ADB5',
+    border: '1px solid',
+    borderColor: '#00ADB5',
     fontStyle: 'normal',
     borderRadius: 6,
     fontWeight: 700,
@@ -18,6 +20,6 @@ export const HighlightButton = styled(Button)(({theme}) => ({
     textTransform: ['none'],
     textAlign: 'center',
     '&:hover': {
-        color: '#00ADB5', border: '1px solid', borderColor: '#00ADB5', backgroundColor: '#FFFFFF'
+        color: '#00ADB5', borderColor: '#00ADB5', backgroundColor: '#FFFFFF'
     }
 }))
