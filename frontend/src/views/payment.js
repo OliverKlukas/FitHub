@@ -1,13 +1,22 @@
 import * as React from 'react';
-import Grid from '@mui/material/Grid';
-import Stack from '@mui/material/Stack';
-import Checkbox from '@mui/material/Checkbox';
-import FormControlLabel from '@mui/material/FormControlLabel';
+import {Box, FormControlLabel, Checkbox, Grid, Divider, Stack, Typography} from "@mui/material";
+import {Link as RouterLink, useParams} from "react-router-dom";
 import {HighlightButton} from "../components/buttons/highlight_button";
+import {content} from "../utils/content";
 
+
+/**
+ * Payment page with the most important information AGBs and payment method selection.
+ *
+ * @returns {JSX.Element} Returns payment page.
+ */
 
 
 function Payment() {
+
+  // Match url id to content item.
+  let {id} = useParams();
+  const item = content.find((item) => item.id == id);
 
 
   function handleClick(){}
@@ -22,85 +31,141 @@ function Payment() {
   
   return (
   
-    <Stack spacing={2} padding="25px"> 
+    <Stack spacing={3} marginBottom={10} marginTop={5} alignItems="center">
 
-      <Grid item container paddingLeft="25px" paddingRight="25px" paddingBottom="25px" backgroundColor="#EEEEEE" borderRadius="8px" spacing={1} width="80%" justifyContent="flex-start">
+      <Stack padding={5} backgroundColor="#EEEEEE" sx={{width: {xs: "100%", md: "100%", lg: "80%", xl: "60%"}, borderRadius: 5, boxShadow: 5}}>
 
-        <Grid item xs={12}> <h1>Plan Information</h1> </Grid>
+        <Typography variant="h1">
+          {item.title}
+        </Typography>
 
-        <Grid item xs={12} className="line"></Grid>
-        <Grid item xs={12} className="line"></Grid>
+        <Divider sx={{mt: 3, bgcolor: "#222831"}}/>
+    
+        <Divider sx={{mt: 1, mb: 3, bgcolor: "#222831"}}/>
 
-        <Grid item>     
+        <Stack direction="row" spacing={3}>
 
-          <img 
-            style={{objectFit: "cover", width: "95%", height: "95%", borderRadius: "8px"}}
-            {...srcset('https://images.unsplash.com/photo-1517836357463-d25dfeac3438', 250, 200)}
-            alt="Bild"
-          /> 
+          <Box sx={{ display: { xs: 'none', md: 'block' }}}>
 
-        </Grid>
-      
-        <Grid item xs={12} sm container >
-      
-          <Grid item xs={4} md={2}> Title</Grid>
-          <Grid item xs={8} md={10}>12-Weeks Full-Body Workout</Grid>
+            <img 
+                style={{borderRadius: "8px"}}
+                {...srcset(item.img, 300, 220)}
+                alt="Bild"
+              />        
+                
+          </Box>
 
-          <Grid item xs={12} className="line"></Grid>
-  
-          <Grid item xs={4} md={2}> Content Creator</Grid>
-          <Grid item xs={8} md={10}>Igor Féichín</Grid>
+          <Box sx={{ width: '100%' }}>
 
-          <Grid item xs={12} className="line"></Grid>
+          <Stack>
 
-          <Grid item xs={4} md={2}>Duration</Grid>
-          <Grid item xs={8} md={10}>12 weeks with 3 workouts per day</Grid>
+            <Stack direction="row" alignItems="flex-start" justifyContent="space-between" spacing={4}>
 
-          <Grid item xs={12} className="line"></Grid>
+              <Typography variant="h3">
+                Title
+              </Typography>
 
-          <Grid item xs={4} md={2}>Price</Grid>
-          <Grid item xs={8} md={10}>49,99€</Grid>
+              <Typography variant="h4">
 
-        </Grid>
+                {item.title}
+              </Typography>
 
-        <Grid item xs={12} className="line"></Grid>
+            </Stack>
 
-        <Grid item xs={4} md={2}>Description</Grid>
-        <Grid item xs={8} md={10}>
-          This 12 week training plan is designed for people of all ages, that want to improve their overall fitness. 
-          The plan includes daily exercises with detailed instructions, tips and recommendations for optional excercises to strengthen your stamina. There is an easy and hard variation of each exercise included, so you can adapt this plan to your fitness level. 
-          No equipment is required.
-        </Grid>  
+            <Divider sx={{my: 2, bgcolor: "#222831"}}/>
 
-        
+            <Stack direction="row" alignItems="flex-start" justifyContent="space-between" spacing={4}>
 
-        <Grid item xs={12} className="line"></Grid>
+              <Typography variant="h3">
+                Content Creator
+              </Typography>
 
-      </Grid>
-  
-      <h1>Payment Options:</h1>
+              <Typography variant="h4">
+                {item.author.name}
+              </Typography>
 
-      <Grid container paddingLeft="25px" backgroundColor="#EEEEEE" borderRadius="8px" left="2%" width="80%" justifyContent="flex-start">
+            </Stack>
 
-        <Grid item>
-          <FormControlLabel control={<Checkbox/>} label="PayPal" />
-        </Grid>
+            <Divider sx={{my: 2, bgcolor: "#222831"}}/>
 
-      </Grid>
+            <Stack direction="row" alignItems="flex-start" justifyContent="space-between" spacing={4}>
+              <Typography variant="h3">
+                Duration
+              </Typography>
 
-      <h1>Legal Notices:</h1>
+              <Typography variant="h4">            
+                {item.duration}
+              </Typography>
 
-      <Grid container paddingLeft="25px" backgroundColor="#EEEEEE" borderRadius="8px" left="2%" width="80%" justifyContent="flex-start">
+            </Stack>
 
-        <Grid item>
-          <FormControlLabel control={<Checkbox/>} label="I have read and agree to the Terms & Conditions" />
-        </Grid>
+            <Divider sx={{my: 2, bgcolor: "#222831"}}/>
 
-      </Grid>
+            <Stack direction="row" alignItems="flex-start" justifyContent="space-between" spacing={4}>
+              <Typography variant="h3">
+                Price
+              </Typography>
 
+              <Typography variant="h4">            
+                {item.price}€
+              </Typography>
 
-      <HighlightButton variant='contained' onClick={handleClick}>Buy Now</HighlightButton>
-        
+            </Stack>
+
+            <Divider sx={{mt: 2, mb: 0, bgcolor: "#222831"}}/>         
+
+          </Stack>
+
+          </Box>            
+
+        </Stack>
+
+        <Stack direction="row" alignItems="flex-start" justifyContent="space-between" spacing={4} sx={{mt: 2, ml:{xs: 3, md: 0}}}>
+              <Typography variant="h3">
+                Description
+              </Typography>
+
+              <Typography variant="h4">            
+                {item.description}
+              </Typography>
+
+            </Stack>
+
+            <Divider sx={{mt: 3, ml:{xs: 3, md: 0}, bgcolor: "#222831"}}/> 
+
+      </Stack>
+
+      <Box alignItems="flex-start" sx={{width: {xs: "100%", md: "100%", lg: "80%", xl: "60%"}}}>
+        <Typography variant="h2">
+          Payment Options:
+        </Typography>
+      </Box>  
+
+      <Stack paddingLeft={3} backgroundColor="#EEEEEE" sx={{width: {xs: "100%", md: "100%", lg: "80%", xl: "60%"}, borderRadius: 2, boxShadow: 5}}>
+        <FormControlLabel control={<Checkbox/>} label="PayPal" />
+      </Stack>
+
+      <Box alignItems="flex-start" sx={{width: {xs: "100%", md: "100%", lg: "80%", xl: "60%"}}}>
+        <Typography variant="h2">
+          Legal Notices:
+        </Typography>
+      </Box>  
+
+      <Stack paddingLeft={3} direction="row" alignItems="center" backgroundColor="#EEEEEE" sx={{width: {xs: "100%", md: "100%", lg: "80%", xl: "60%"}, borderRadius: 2, boxShadow: 5}}>
+
+        <FormControlLabel control={<Checkbox/>}/>
+
+        <Typography>
+          I have read and agree to the 
+        </Typography>
+
+        <Typography component={RouterLink} to={`/terms`} paddingLeft={0.5}>
+          Terms & Conditions
+        </Typography>
+
+      </Stack>
+
+      <HighlightButton variant='contained' onClick={handleClick}>Buy Now</HighlightButton>      
       
     </Stack>
 
