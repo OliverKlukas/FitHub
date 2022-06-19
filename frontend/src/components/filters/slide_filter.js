@@ -11,7 +11,7 @@ import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
  * @param setPriceRange - Hook reference to set the priceRange.
  * @returns {JSX.Element}
  */
-export default function SlideFilter({priceRange, setPriceRange}) {
+export default function SlideFilter({priceRange, setPriceRange, setPriceFiltered}) {
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
     const id = open ? 'slide-popover' : undefined;
@@ -35,6 +35,8 @@ export default function SlideFilter({priceRange, setPriceRange}) {
         } else {
             setPriceRange(newPriceRange);
         }
+        // Set chip for price filter.
+        setPriceFiltered(true);
     }
 
     const handlePopoverOpen = (event) => {
@@ -51,7 +53,7 @@ export default function SlideFilter({priceRange, setPriceRange}) {
             onClick={handlePopoverOpen}
         >
             <Stack width={200} height={48} direction="row" justifyContent="space-between" alignItems="center">
-                <Typography color={"secondary"} fontWeight={600} fontSize={18}>
+                <Typography color={"secondary"} fontWeight={600} fontSize={20}>
                     Price
                 </Typography>
                 {open ? <ArrowDropUpIcon sx={{color: '#757575'}}/> : <ArrowDropDownIcon style={{color: '#757575'}}/>}
@@ -69,9 +71,9 @@ export default function SlideFilter({priceRange, setPriceRange}) {
             anchorEl={anchorEl}
             onClose={handlePopoverClose}
         >
-            <h4 style={{margin: "13px"}}>
+            <Typography variant="h4" style={{margin: "13px"}}>
                 Desired price range:
-            </h4>
+            </Typography>
             <Stack alignItems="center" sx={{mx: 4}}>
                 <Slider
                     sx={{width: 200}}

@@ -46,7 +46,7 @@ export default function SearchFilter({title, tags, addFilter, deleteFilter, glob
                 {...params}
                 sx={{
                     '& label': {
-                        color: 'secondary.main', fontSize: 18, fontWeight: 600,
+                        color: 'secondary.main', fontSize: 20, fontWeight: 600, lineHeight: "24px",
                     }, '& label.Mui-focused': {
                         color: 'primary.main',
                     }, '& .MuiInput-underline:after': {

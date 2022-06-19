@@ -1,5 +1,6 @@
 import * as React from 'react';
-import {Button, Chip, Grid, Stack} from "@mui/material";
+import {useState} from 'react';
+import {Button, Chip, Grid, Stack, Typography} from "@mui/material";
 import SlideFilter from "./slide_filter";
 import SearchFilter from "./search_filter";
 
@@ -19,6 +20,8 @@ const contentCreator = ['Igor Felchin', 'Osanna Imbi', 'Calixta Tadeusz', 'Emlyn
  * @returns {JSX.Element} - Returns filter component.
  */
 export default function FilterBar({filter, setFilter, priceRange, setPriceRange}) {
+    // Hook to track if the price was filtered.
+    const [priceFiltered, setPriceFiltered] = useState(false);
 
     // Deletes a String[] tags from the current set of applied filter
     function deleteFilter(tags) {
@@ -33,12 +36,18 @@ export default function FilterBar({filter, setFilter, priceRange, setPriceRange}
     // Deletes all tags from current filter.
     function deleteAllFilter() {
         setFilter([]);
+        resetPriceFilter();
+    }
+
+    // Resets the price filter and displayed chip.
+    function resetPriceFilter() {
+        setPriceFiltered(false);
         setPriceRange([0, 100]);
     }
 
-    return (<Stack>
-        <Stack direction="row" spacing={2}>
-            <h4>Filters:</h4>
+    return (<Stack spacing={1.5} marginBottom={1.5}>
+        <Stack direction="row" alignItems="center" spacing={2}>
+            <Typography marginTop={0.75} variant="h3">Filters:</Typography>
             <Grid container>
                 <Grid item>
                     <SearchFilter title="Category" tags={category} addFilter={addFilter} deleteFilter={deleteFilter}
@@ -57,7 +66,8 @@ export default function FilterBar({filter, setFilter, priceRange, setPriceRange}
                                   deleteFilter={deleteFilter} globalFilter={filter}/>
                 </Grid>
                 <Grid item>
-                    <SlideFilter priceRange={priceRange} setPriceRange={setPriceRange}/>
+                    <SlideFilter priceRange={priceRange} setPriceRange={setPriceRange}
+                                 setPriceFiltered={setPriceFiltered}/>
                 </Grid>
                 <Grid item>
                     <SearchFilter title={"Creator"} tags={contentCreator} addFilter={addFilter}
@@ -65,12 +75,14 @@ export default function FilterBar({filter, setFilter, priceRange, setPriceRange}
                 </Grid>
             </Grid>
         </Stack>
-        {filter.length > 0 && <Grid container alignItems="center">
+        {(filter.length > 0 || priceFiltered) && <Grid container alignItems="center">
             <Grid item>
-                <h4 style={{marginRight: "10px"}}>Selected Filters:</h4>
+                <Typography fontWeight={550} variant="h4" style={{marginRight: "10px"}}>Selected Filters:</Typography>
             </Grid>
             {filter.map((tag) => (
-                <Grid item><Chip sx={{ml: 1}} key={tag} label={tag} onDelete={() => deleteFilter([tag])}/></Grid>))}
+                <Grid item key={tag} ><Chip sx={{ml: 1}} label={tag} onDelete={() => deleteFilter([tag])}/></Grid>))}
+            {priceFiltered &&
+                <Chip sx={{ml: 1}} label={`Price: ${priceRange[0]} - ${priceRange[1]}€`} onDelete={resetPriceFilter}/>}
             <Grid item>
                 <Button sx={{ml: 2}} variant="text" onClick={deleteAllFilter}>
                     delete all

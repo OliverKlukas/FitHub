@@ -16,14 +16,14 @@ import {LinkButton} from "../buttons/link_button";
 /**
  *  Header bar component that is visible on all views.
  *
- * @param props - props.gender={"male" | "female"} (default: "female") and props.user_type={"content-creator" | "user"}
- *                (default: "user") are supported.
+ * @param gender - Specifies the gender="male" | "female" which dictates the profile SVG's appearance.
+ * @param userType - Specifies the userType="content-creator" | "user" which dictates user specific customizations.
  * @returns {JSX.Element}
  */
-export function Header(props) {
+export function Header({gender, userType}) {
     // Sub-urls and link names for available page views.
     let pages;
-    if (props.user_type === "content-creator") {
+    if (userType === "content-creator") {
         pages = {
             "discovery": "Discovery", "upload": "Offer Content", "about": "About us"
         };
@@ -56,7 +56,7 @@ export function Header(props) {
         setAnchorElSet(null);
     };
 
-    return (<Stack direction="row" justifyContent="space-between" alignItems="center" my="2vh" mx="2vw">
+    return (<Stack direction="row" justifyContent="space-between" alignItems="center" my={2}>
         <Box>
             <Box sx={{display: {xs: 'none', md: 'flex'}}}>
                 <Link href={"/discovery"}>
@@ -122,7 +122,7 @@ export function Header(props) {
         </Box>
         <Box>
             <IconButton onClick={handleOpenSetMenu}>
-                {props.gender === "male" ? <AvatarMale/> : <AvatarFemale/>}
+                {gender === "male" ? <AvatarMale/> : <AvatarFemale/>}
             </IconButton>
             <Menu
                 sx={{mt: '60px'}}
