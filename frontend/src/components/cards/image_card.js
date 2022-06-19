@@ -41,7 +41,7 @@ export default function ImageCard({item}) {
                 }
             }}
         >
-            <CardActionArea href="#" sx={{height: "100%"}}>
+            <CardActionArea href={`/details/${item.id}`} sx={{height: "100%"}}>
                 <img
                     style={{objectFit: "cover", width: "100%", height: "100%", borderRadius: "10px"}}
                     {...srcset(item.img, imgWidth, imgHeight, dim[1], dim[0])}
@@ -60,7 +60,7 @@ export default function ImageCard({item}) {
                         }
                     }}
                     title={item.title}
-                    subtitle={"by " + item.author}
+                    subtitle={"by " + item.author.name}
                     position="bottom"
                 />
             </CardActionArea>
