@@ -14,7 +14,7 @@ import { HighlightButton } from '../../buttons/highlight_button';
 import { StandardButton } from '../../buttons/standard_button';
 import {ReactComponent as LogoSmall} from "../../../resources/logo_small.svg";
 import {ReactComponent as LogoText} from "../../../resources/logo_text.svg";
-
+import loremIpsum from 'react-lorem-ipsum';
 
 const RatingDial = styled(Dialog)(({ theme }) => ({
   '& .MuiDialogContent-root': {
@@ -54,11 +54,24 @@ RatingDialTitle.propTypes = {
   onClose: PropTypes.func.isRequired,
 };
 
-export default function RatingDialog(){
+export default function RatingDialog(submitReview){
 
   const [value, setValue] = React.useState(2); // States for Rating
 
   const [open, setOpen] = React.useState(false);  // States for popup
+  
+  var today = new Date()
+  var dd = String(today.getDate()).padStart(2, '0');
+  var mm = String(today.getMonth() + 1).padStart(2, '0');
+  var yyyy = today.getFullYear();
+
+  const review = {
+    author: "Another User",
+    text: loremIpsum(),
+    title: "I like it",
+    date: today,
+    star: 1,
+}
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -66,6 +79,10 @@ export default function RatingDialog(){
   const handleClose = () => {
     setOpen(false);
   };
+  const handleSubmit = () => {
+    setOpen(false);
+    submitReview(review)
+  }
 
   return (
     <div>
@@ -78,11 +95,9 @@ export default function RatingDialog(){
       >
         <RatingDialTitle id="customized-dialog-title" onClose={handleClose}>
           <Stack direction="row" >
-            <Typography maxRows={1}>
+            <Typography maxRows={1} variant='h3'> 
             Create Review 
             </Typography>
-            <LogoSmall width="80%"/> 
-            <LogoText width="80%"/>
             </Stack>
         </RatingDialTitle>
         <DialogContent dividers>
@@ -125,7 +140,7 @@ export default function RatingDialog(){
           <StandardButton autoFocus onClick={handleClose} variant="contained">
             cancel
           </StandardButton>
-          <HighlightButton autoFocus onClick={handleClose} variant="contained">
+          <HighlightButton autoFocus onClick={handleSubmit} variant="contained">
             submit 
           </HighlightButton>
         </DialogActions>

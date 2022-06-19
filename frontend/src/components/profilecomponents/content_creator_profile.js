@@ -6,12 +6,23 @@ import Rating from '@mui/material/Rating';
 import Review from './reviewlist/review';
 import {  Avatar } from 'react-lorem-ipsum';
 import StarIcon from '@mui/icons-material/Star';
-import ProfileDialogButtons from './popups/profile_dialog_buttons';
+import RatingDialog from './popups/rating_dialog';
+import ReportDialog from './popups/report_dialog';
 
 function ContentCreatorProfile(name,description,reviews){
        
     function handleClick(){}
 
+    const [reviewdata, setData] = React.useState('');
+
+    const submitReview = (review) => {
+        setData(review)
+    }
+
+    const updateReviews = () => {
+        
+    }
+ 
     const ratings= []
     for(let item of reviews){
         ratings.push(item.star)
@@ -43,9 +54,14 @@ function ContentCreatorProfile(name,description,reviews){
             </Typography>
             </Stack>
         </Stack>
-        <ProfileDialogButtons>
-            
-        </ProfileDialogButtons>
+        <Stack direction="column" spacing={4}>
+            <RatingDialog  submitReview={submitReview}>
+
+            </RatingDialog>
+            <ReportDialog>
+
+            </ReportDialog>
+        </Stack>
         
     </Stack>
     <Divider
