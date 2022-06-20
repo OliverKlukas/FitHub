@@ -10,10 +10,10 @@ import CloseIcon from '@mui/icons-material/Close';
 import Typography from '@mui/material/Typography';
 import { HighlightButton } from '../../buttons/highlight_button';
 import { StandardButton } from '../../buttons/standard_button';
-import { Stack } from '@mui/material';
-import { TextField } from '@mui/material';
+import { Stack, Snackbar,TextField } from '@mui/material';
 
-const BootstrapDialog = styled(Dialog)(({ theme }) => ({
+
+const ReportDial = styled(Dialog)(({ theme }) => ({
   '& .MuiDialogContent-root': {
     padding: theme.spacing(2),
   },
@@ -22,8 +22,9 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   },
 }));
 
-const BootstrapDialogTitle = (props) => {
+const ReportDialTitle = (props) => {
   const { children, onClose, ...other } = props;
+  
 
   return (
     <DialogTitle sx={{ m: 0, p: 2 }} {...other}>
@@ -46,13 +47,15 @@ const BootstrapDialogTitle = (props) => {
   );
 };
 
-BootstrapDialogTitle.propTypes = {
+ReportDialTitle.propTypes = {
   children: PropTypes.node,
   onClose: PropTypes.func.isRequired,
 };
 
 export default function ReportDialog(){
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = React.useState(false); // States for Popup
+
+  const [snackopen, setsnackOpen] = React.useState(false); // States for Snackbar
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -60,18 +63,26 @@ export default function ReportDialog(){
   const handleClose = () => {
     setOpen(false);
   };
+  const handleSubmit = () => {
+    setOpen(false);
+    setsnackOpen(true);
+  }
+  const handleSnackClose= () => {
+    setsnackOpen(false)
+  }
+
 
   return (
     <div>
      <StandardButton variant='contained' onClick={handleClickOpen}>report this content creator</StandardButton>
-      <BootstrapDialog
+      <ReportDial
         onClose={handleClose}
         aria-labelledby="customized-dialog-title"
         open={open}
       >
-        <BootstrapDialogTitle id="customized-dialog-title" onClose={handleClose}>
+        <ReportDialTitle id="customized-dialog-title" onClose={handleClose}>
           Write a short report
-        </BootstrapDialogTitle>
+        </ReportDialTitle>
         <DialogContent dividers>
           <Stack>
           <Typography gutterBottom>
@@ -93,11 +104,17 @@ export default function ReportDialog(){
         <StandardButton autoFocus onClick={handleClose} variant="contained">
             cancel
           </StandardButton>
-          <HighlightButton autoFocus onClick={handleClose} variant="contained">
+          <HighlightButton autoFocus onClick={handleSubmit} variant="contained">
             submit 
           </HighlightButton>
         </DialogActions>
-      </BootstrapDialog>
+      </ReportDial>
+      <Snackbar
+            open={snackopen}
+            autoHideDuration={6000}
+            onClose={handleSnackClose}
+            message="Report Submitted"
+          />
     </div>
   );
 }

@@ -8,7 +8,7 @@ import DialogActions from '@mui/material/DialogActions';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import Typography from '@mui/material/Typography';
-import { Divider, Rating, Stack, TextField } from '@mui/material'
+import { Divider, Rating, Snackbar, Stack, TextField } from '@mui/material'
 import StarIcon from '@mui/icons-material/Star'
 import { HighlightButton } from '../../buttons/highlight_button';
 import { StandardButton } from '../../buttons/standard_button';
@@ -59,6 +59,8 @@ export default function RatingDialog(submitReview){
   const [value, setValue] = React.useState(2); // States for Rating
 
   const [open, setOpen] = React.useState(false);  // States for popup
+
+  const [snackopen, setsnackOpen] = React.useState(false); // States for Snackbar
   
   var today = new Date()
   var dd = String(today.getDate()).padStart(2, '0');
@@ -69,7 +71,7 @@ export default function RatingDialog(submitReview){
     author: "Another User",
     text: loremIpsum(),
     title: "I like it",
-    date: today,
+    date: dd+mm+yyyy,
     star: 1,
 }
 
@@ -79,8 +81,14 @@ export default function RatingDialog(submitReview){
   const handleClose = () => {
     setOpen(false);
   };
+
+  const handleSnackClose= () => {
+    setsnackOpen(false)
+  }
+
   const handleSubmit = () => {
     setOpen(false);
+    setsnackOpen(true);
     submitReview(review)
   }
 
@@ -145,6 +153,12 @@ export default function RatingDialog(submitReview){
           </HighlightButton>
         </DialogActions>
       </RatingDial>
+      <Snackbar
+            open={snackopen}
+            autoHideDuration={6000}
+            onClose={handleSnackClose}
+            message="Review Submitted"
+          />
     </div>
   );
 }
