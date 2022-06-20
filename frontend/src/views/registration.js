@@ -12,7 +12,7 @@ function Registration() {
         direction="column"
         alignItems="center"
         justifyContent="center"
-        style={{ minHeight: '100vh' }}
+        style={{ minHeight: '50vh' }}
         >
         <Grid item xs={1} >
             <Stack direction="column" spacing={3} 
@@ -85,7 +85,7 @@ function Registration() {
                 </Typography>
             </Stack>
         </Grid>     
-        </Grid> 
+    </Grid> 
     )
 }
 
