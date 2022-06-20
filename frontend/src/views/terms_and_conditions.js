@@ -57,10 +57,14 @@ function TermsAndConditions() {
         their parent or guardian to use the Site. If you are a minor, you must have your parent or guardian read and agree to these Terms of Use prior to you using the Site.
       </Typography>
 
-      <Typography>
-            
-          2. INTELLECTUAL PROPERTY RIGHTS
+      
 
+      <Typography variant="h2">
+        2. INTELLECTUAL PROPERTY RIGHTS
+      </Typography>
+            
+          
+      <Typography>
           Unless otherwise indicated, the Site and the Marketplace Offerings are our proprietary property and all source code, databases,
           functionality, software, website designs, audio, video, text, photographs, and
           graphics on the Site (collectively, the “Content”) and the trademarks, service
@@ -79,7 +83,11 @@ function TermsAndConditions() {
           which you have properly gained access solely for your personal, non-commercial
           use. We reserve all rights not expressly granted to you in and to the Site, the Content and the Marks.
 
-          3. USER REPRESENTATIONS By using the Site or the Marketplace Offerings, you represent and warrant that:
+      <Typography variant="h2">
+        3. USER REPRESENTATIONS
+      </Typography>
+
+           By using the Site or the Marketplace Offerings, you represent and warrant that:
           1 all registration information you submit will be true, accurate, current, and complete; 
           2 you will maintain the accuracy of such information and pro
           mptly update such registration information as necessary;
@@ -114,7 +122,11 @@ function TermsAndConditions() {
           any Marketplace Offerings and the Site is provided for informational and
           advertising purposes only.
 
-          4. USER REGISTRATION
+          <Typography variant="h2">
+            4. USER REGISTRATION
+          </Typography>
+ 
+          
 
           You may be
           required to register with the Site in order to access the Marketplace Offerings. You agree to keep your password
@@ -131,7 +143,11 @@ function TermsAndConditions() {
           the Marketplace Offerings purchased by you will meet your expectations or that
           any errors in the Site will be corrected.
 
-          6. PURCHASES AND PAYMENT
+          <Typography variant="h2">
+            6. PURCHASES AND PAYMENT
+          </Typography>
+
+          
           We accept the following forms of payment:-  PayPal
             You agree to provide current, complete, and accurate purchase and account information for all purchases of the Marketplace Offerings made via the Site. You further agree to promptly update account and payment information, including email address, 
             payment method, and payment card expiration date, so that we can complete your transactions and contact you as needed. Sales tax will be added to the price of purchases as deemed required by us. We may change prices at any time. All payments shall be in Euros
@@ -141,12 +157,19 @@ function TermsAndConditions() {
           clude orders placed by or under the same customer account, the same payment method, and/or orders that use the same billing or shipping address. We reserve the right to limit or prohibit orders that, in our sole judgment, appear to be placed by dealers, resellers,
           or distributors
           
-          7. REFUNDS POLICY
+          
+          <Typography variant="h2">
+            7. REFUNDS POLICY
+          </Typography>
+          
           
           Please review our Return Policy posted on the Site prior
           to making any purchases.
+          <Typography variant="h2">
+            8. PROHIBITED ACTIVITIES
+          </Typography>
 
-          8. PROHIBITED ACTIVITIES
+          
 
           You may not access or use the Site for any purpose other than that for which we make the Site available. The Site may not be used in connection with any commercial endeavors except those that are specif
           ically endorsed or approved by us.
@@ -176,7 +199,11 @@ function TermsAndConditions() {
                           stem, including without limitation, any spider, robot, cheat utility, scraper, or offline reader that accesses the Site, or using or launching any unauthorized script or other software.Use a buying agent or purchasing agent to make purchases on the Site.Make any unauthorized use of the Marketplace Offerings, including collecting usernames and/or emai
                           l addresses of users by electronic or other means for the purpose of sending unsolicited email, or creating user accounts by automated means or under false pretenses.Use the Marketplace Offerings as part of any effort to compete with us or otherwise use the Site and/or the Content for any revenue-gen
                             erating endeavor or commercial enterprise.
-          9. USER GENERATED CONTRIBUTIONS
+
+          <Typography variant="h2">
+            9. USER GENERATED CONTRIBUTIONS
+          </Typography>
+          
 
           The Site mayinvite you to chat, contribute to, or participate in blogs, message boards,
           online forums, and other functionality, and may provide you with the
@@ -190,7 +217,10 @@ function TermsAndConditions() {
           represent and warrant that:
           Any use of the Site or the Marketplace Offerings in violation of the foregoing violates these Terms of Use and may result in, among other things, termination or suspension of your rights to use the Site and the Marketplace Offerings.
 
-          10. CONTRIBUTION LICENSE
+          <Typography variant="h2">
+            10. CONTRIBUTION LICENSE
+          </Typography>
+          
           By posting your
           Contributions to any part of the Site
 
@@ -209,7 +239,10 @@ function TermsAndConditions() {
           We have the right, in our sole and absolute discretion, (1) to edit, redact, or otherwise change any Contributions; (2) to re-categorize any Contributions to place them in more appropriate locations 
           on the Site; and (3) to pre-screen or delete any Contributions at any time and for any reason, without notice. We have no obligation to monitor your Contributions.
             
-          11. GUIDELINES FOR REVIEWS
+          <Typography variant="h2">
+            11. GUIDELINES FOR REVIEWS
+          </Typography>
+          
           We may provide you areas on the Site to leave reviews or ratings. When posting a review, you must comply with the following criteria: (1) you should have firsthand experience with the person/entity 
           being reviewed; (2) your reviews should not contain offensive profanity, or abusive, racist, offensive, or hate language; (3) your reviews should not contain discriminatory references based on religion, race, gender, national origin, age, marital status, sexual 
           orientation, or disability; (4) your reviews should not contain references to illegal activity; (5) you should not be affiliated with competitors if posting negative reviews; (6) you should not make any conclusions as to the legality of conduct; (7) you may not 
@@ -225,13 +258,20 @@ function TermsAndConditions() {
           sublicensable right and license to reproduce, modify, translate, transmit by
           any means, display, perform, and/or distribute all content relating to reviews.
 
+          
+          <Typography variant="h2">
             12. SUBMISSIONS
-            You acknowledge and agree that any questions, comments, suggestions, ideas, feedback, or other information regarding the Site or the Marketplace Offerings ("Submissions") provided by you to us are non-confidential and shall become our sole property. 
-            We shall own exclusive rights, including all intellectual property rights, and shall be entitled to the unrestricted use and dissemination of these Submissions for any lawful purpose, commercial or otherwise, without acknowledgment or compensation to you. 
-            You hereby waive all moral rights to any such Submissions, and you hereby warrant that any such Submissions are original with you or that you have the right to submit such Submissions. You agree there shall be no recourse against us for any alleged or actual 
-            infringement or misappropriation of any proprietary right in your Submissions.
+          </Typography>
+          
+          You acknowledge and agree that any questions, comments, suggestions, ideas, feedback, or other information regarding the Site or the Marketplace Offerings ("Submissions") provided by you to us are non-confidential and shall become our sole property. 
+          We shall own exclusive rights, including all intellectual property rights, and shall be entitled to the unrestricted use and dissemination of these Submissions for any lawful purpose, commercial or otherwise, without acknowledgment or compensation to you. 
+          You hereby waive all moral rights to any such Submissions, and you hereby warrant that any such Submissions are original with you or that you have the right to submit such Submissions. You agree there shall be no recourse against us for any alleged or actual 
+          infringement or misappropriation of any proprietary right in your Submissions.
 
-          13. THIRD-PARTYWEBSITES AND CONTENT
+          <Typography variant="h2">
+            13. THIRD-PARTYWEBSITES AND CONTENT
+          </Typography>
+          
             
           The Site may contain (or you may be sent via the Site or the Marketplace Offerings) links to other websites  as well as articles, photographs, text, graphics, pictures, designs, music, sound, video, information, applications, software, and other content or items 
           belonging to or originating from third parties ("Third-Party Content"). Such Third-Party Websites and Third-Party Content are not investigated, monitored, or checked for accuracy, appropriateness, or completeness by us, and we are not responsible for any Third 
@@ -243,13 +283,20 @@ function TermsAndConditions() {
           will be through other websites and from other companies, and we take no responsibility whatsoever in relation to such purchases which are exclusively between you and the applicable third party. You agree and acknowledge that we do not endorse the products or 
           services offered on Third-Party Websites and you shall hold us harmless from any harm caused by your purchase of such products or services. Additionally, you shall hold us harmless from any losses sustained by you or 
           harm caused to you relating to or resulting in any way from any Third-Party Content or any contact with Third-Party Websites.
-          14. ADVERTISERS;
+          
+          <Typography variant="h2">
+            14. ADVERTISERS;
+          </Typography>
+          
           We allow advertisers to display their advertisements and other information in certain areas of the Site, such as sidebar advertisements or banner advertisements. If you are an advertiser, you shall 
           take full responsibility for any advertisements you place on the Site and any services provided on the Site or products sold through those advertisements. Further, as an advertiser, you warrant and represent that you possess all rights and authority to place 
           advertisements on the Site, including, but not limited to, intellectual property rights, publicity rights, and contractual rights. 
           We simply provide the space to place such advertisements, and we have no other relationship with advertisers.
               
-          15. SITE MANAGEMENT
+          <Typography variant="h2">
+            15. SITE MANAGEMENT
+          </Typography>
+          
             
           We reserve the
           right, but not the obligation, to: (1) monitor the Site for violations of
@@ -265,7 +312,11 @@ function TermsAndConditions() {
           designed to protect our rights and property and to facilitate the proper
           functioning of the Site and the Marketplace Offerings.
               
-          16. COPYRIGHT INFRINGEMENTS
+
+          <Typography variant="h2">
+            16. COPYRIGHT INFRINGEMENTS
+          </Typography>
+          
           We respect the
           intellectual property rights of others. If you believe that any material available on or through the Site
           infringes upon any copyright you own or control, please immediately notify us
@@ -277,7 +328,11 @@ function TermsAndConditions() {
           located on or linked to by the Site infringes your copyright, you should
           consider first contacting an attorney.
 
-          17. TERM AND TERMINATION
+
+          <Typography variant="h2">
+            17. TERM AND TERMINATION
+          </Typography>
+          
           These Terms of Use shall remain in full force and effect while you use the Site. WITHOUT LIMITING ANY OTHER PROVISION OF THESE TERMS OF USE, WE RESERVE THE RIGHT TO, IN OUR SOLE DISCRETION AND WITHOUT 
           NOTICE OR LIABILITY, DENY ACCESS TO AND USE OF THE SITE AND THE MARKETPLACE OFFERINGS (INCLUDING BLOCKING CERTAIN IP ADDRESSES), TO ANY PERSON FOR ANY REASON OR FOR NO REASON, INCLUDING WITHOUT LIMITATION FOR BREACH OF ANY REPRESENTATION, WARRANTY, OR COVENANT CONT
           AINED IN THESE TERMS OF USE OR OF ANY APPLICABLE LAW OR REGULATION. WE MAY TERMINATE YOUR USE OR PARTICIPATION IN THE SITE AND THE MARKETPLACE OFFERINGS OR DELETE YOUR ACCOUNT AND ANY CONTENT OR IN
@@ -289,7 +344,10 @@ function TermsAndConditions() {
           take appropriate legal action, including without limitation pursuing civil,
           criminal, and injunctive redress.
 
-          18. MODIFICATIONS AND INTERRUPTIONS
+          <Typography variant="h2">
+            18. MODIFICATIONS AND INTERRUPTIONS
+          </Typography>
+          
           We reserve the right to change, modify, or remove the contents of the Site at any time or for any reason at our sole discretion without notice. However, we have no obligation to update any information on our Site. We also reserve the right to modify or disconti
           nue all or part of the Marketplace Offerings without notice at any time. We will not be liable to you or any third party for any modification, price change, suspension, or discontinuance of the Site or the Marketplace Offerings.
           We cannot guarantee
@@ -303,41 +361,56 @@ function TermsAndConditions() {
           construed to obligate us to maintain and support the Site or the Marketplace Offerings or to supply any
           corrections, updates, or releases in connection therewith.
             
-          19. GOVERNING LAW
+          <Typography variant="h2">
+            19. GOVERNING LAW
+          </Typography>
+          
           These conditions are governed by and interpreted following the laws of Germany, and the use of the United Nations Convention of Contracts for the International Sales of Goods is expressly excluded. If your habitual residence is in the EU, and you are a consumer, you additionally possess the protection provid
           ed to you by obligatory provisions of the law in your country to residence. Fithub and yourself both agree to submit to the non-exclusive jurisdiction of the courts of Munich, which means that you may ma
           ke a claim to defend your consumer protection rights in regards to these Conditions of Use in, or in the EU country in which you reside.
             
-          20. DISPUTE RESOLUTION
-            
-          Informal Negotiations
+          <Typography variant="h2">
+            20. DISPUTE RESOLUTION
+          </Typography>
+          
+          <Typography variant="h3">
+            Informal Negotiations
+          </Typography>
+          
             
           To expedite resolution and control the cost of any dispute, controversy, or claim related to these Terms of Use (each "Dispute" and collec
           tively, the "Disputes") brought by either you or us (individually, a "Party" and collectively, the "Parties"), the Parties agree to first attempt to negotiate any Dispute (except those Disputes expressly provided below) informally for at least thirty (30) days before initiating arbitration. Such informal negotiations commence upon written notice from one Party to the other Party.
             
+          <Typography variant="h3">
             Binding Arbitration
+          </Typography>
+          
 
           Any dispute arising from the relationships between the Parties to this contract shall be determined by one arbitrator who will be chosen in accordance with the Arbitration and Internal Rules of the European Court of Arbitration being part of t
           he European Centre of Arbitration having its seat in Strasbourg, and which are in force at the time the application for arbitration is filed, and of which adoption of this clause constitutes acceptance. The seat of arbitration shall be Munich, Germany. The language of the proceedings shall be English. Applicable rules of substantive law shall be the law of  Germany
             
+          <Typography variant="h3">
             Restrictions
+          </Typography>  
+          
             
           The Parties agree that any arbitration shall be limited to the Dispute between the Parties individually. To the full extent permitted by law, (a) no arbitration
           shall be joined with any other proceeding; (b) there is no right or authority for any Dispute to be arbitrated on a class-action basis or to utilize class action procedures; and (c) there is no right or authority for any Dispute to be brought in a purported re
           presentative capacity on behalf of the general public or any other persons.
 
-            
-          Exceptions to Informal Negotiations and Arbitration
+          <Typography variant="h3">
+            Exceptions to Informal Negotiations and Arbitration
+          </Typography>
+          
             
           The Parties agree that the following Disputes are not subject to the above provisions concerning informal negotiations and bind
             ing arbitration: (a) any Disputes seeking to enforce or protect, or concerning the validity of, any of the intellectual property rights of a Party; (b) any Dispute related to, or arising from, allegations of theft, piracy, invasion of privacy, or unauthorized 
             use; and (c) any claim for injunctive relief. If this provision is found to be illegal or unenforceable, then neither Party will elect to arbitrate any Dispute falling within that portion of this provision found to be illegal or unenforceable and such Dispute
             shall be decided by a court of competent jurisdiction within the courts listed for jurisdiction above, and the Parties agree to submit to the personal jurisdiction of that court.
-            
-            
-          21. CORRECTIONS
-
-
+                     
+          <Typography variant="h2">
+            21. CORRECTIONS
+          </Typography>            
             
           There may be
           information on the Site that contains typographical errors, inaccuracies, or
@@ -346,8 +419,10 @@ function TermsAndConditions() {
           inaccuracies, or omissions and to change or update the information on the Site
           at any time, without prior notice.
 
-          22. DISCLAIMER
-          Calibri;color:#595959;mso-themecolor:text1;mso-themetint:166;"
+          <Typography variant="h2">
+            22. DISCLAIMER
+          </Typography>
+          
           THE SITE AND THE MARKETPLACE OFFERINGS ARE PROVIDED
           ON AN AS-IS AND AS-AVAILABLE BASIS. YOU
           AGREE THAT YOUR USE OF THE SITE AND OUR SERVICES WILL BE AT YOUR SOLE RISK. TO THE
@@ -375,7 +450,10 @@ function TermsAndConditions() {
           PURCHASE OF A PRODUCT OR SERVICE THROUGH ANY MEDIUM OR IN ANY ENVIRONMENT, YOU
           SHOULD USE YOUR BEST JUDGMENT AND EXERCISE CAUTION WHERE APPROPRIATE.
             
-          23. LIMITATIONS OF LIABILITY
+          <Typography variant="h2">
+            23. LIMITATIONS OF LIABILITY
+          </Typography>
+          
             IN NO EVENT WILL WE OR OUR DIRECTORS, EMPLOYEES, OR AGENTS BE LIABLE TO YOU OR ANY THIRD PARTY FOR ANY DIRECT, INDIRECT, CONSEQUENTIAL, EXEMPLARY, INCIDENTAL, SPECIAL, OR PUNITIVE DAMAGES, INCLUDING LOST PROFIT, LOST REVENUE, LOSS OF DATA, OR OTHER DAMAGES 
             ARISING FROM YOUR USE OF THE SITE OR THE MARKETPLACE OFFERINGS, EVEN IF WE HAVE BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES. 
             NOTWITHSTANDING ANYTHING TO THE CONTRARY CONTAINED HEREIN, OUR LIABILITY TO YOU FOR ANY CAUSE WHATSOEVER AND REGARDLESS OF THE FORM OF THE ACTION, WILL AT ALL TIMES BE LIMITED TO THE
@@ -385,7 +463,10 @@ function TermsAndConditions() {
             ABOVE DISCLAIMERS OR LIMITATIONS MAY NOT APPLY TO YOU, AND YOU MAY HAVE ADDITIONAL RIGHTS.
               
 
-          24. INDEMNIFICATION
+          <Typography variant="h2">
+            24. INDEMNIFICATION
+          </Typography>
+          
           You agree to
           defend, indemnify, and hold us harmless, including our subsidiaries,
           affiliates, and all of our respective officers, agents, partners, and
@@ -399,30 +480,39 @@ function TermsAndConditions() {
           we reserve the right, at your expense, to assume the exclusive defense and control of any matter for which you are required to indemnify us, and you agree to cooperate, at your expense, with our defense of such claims. We will use reasonable efforts to notify you 
           of any such claim, action, or proceeding which is subject to this indemnification upon becoming aware of it.
 
-          25. USER DATA
-          We will maintain
-          certain data that you transmit to the Site for the purpose of managing the
-          performance of the Marketplace Offerings, as well as data relating to your use of the Marketplace Offerings. Although we perform regular routine backups
-          of data, you are solely responsible for all data that you transmit or that
-          relates to any activity you have undertaken using the Marketplace Offerings. You agree
-          that we shall have no liability to you for any loss or corruption of any such
-          data, and you hereby waive any right of action against us arising from any such
-          loss or corruption of such data.
+          <Typography variant="h2">
+            25. USER DATA
+          </Typography>
+          
+          We will maintain certain data that you transmit to the Site for the purpose of managing the performance of the Marketplace Offerings, 
+          as well as data relating to your use of the Marketplace Offerings. 
+          Although we perform regular routine backups of data, you are solely responsible for all data that you transmit or that relates to any activity you have undertaken 
+          using the Marketplace Offerings. You agree that we shall have no liability to you for any loss or corruption of any such data, and you hereby waive any right of action 
+          against us arising from any such loss or corruption of such data.
 
-          26. ELECTRONIC COMMUNICATIONS, TRANSACTIONS, AND SIGNATURES
-          Visiting the Site, sending us emails, and completing online forms constitute electronic communications. You consent to receive electronic communications, and you agree that all agreements, notices, disclosures, and other communications we provide to you 
-          electronically, via email and on the Site, satisfy any legal requirement that such communication be in writing. YOU HEREBY AGREE TO THE USE OF ELECTRONIC SIGNATURES, CONTRACTS, ORDERS, AND OTHER RECORDS, AND TO ELECTRONIC DELIVERY OF NOTICES, POLICIES, AND 
+          <Typography variant="h2">
+            26. ELECTRONIC COMMUNICATIONS, TRANSACTIONS, AND SIGNATURES
+          </Typography>
+          
+          Visiting the Site, sending us emails, and completing online forms constitute electronic communications. You consent to receive electronic communications, 
+          and you agree that all agreements, notices, disclosures, and other communications we provide to you electronically, via email and on the Site, satisfy any legal requirement that such communication be in writing. YOU HEREBY AGREE TO THE USE OF ELECTRONIC SIGNATURES, CONTRACTS, ORDERS, AND OTHER RECORDS, AND TO ELECTRONIC DELIVERY OF NOTICES, POLICIES, AND 
           RECORDS OF TRANSACTIONS INITIATED OR COMPLETED BY US OR VIA THE SITE. You hereby waive any rights or requirements under any statutes, regulations, rules, ordinances, or other laws in any jurisdiction which require an original signature or delivery or retention
           of non-electronic records, or to payments or the granting of credits by any means other than electronic means.
 
-          27. CALIFORNIA USERS AND RESIDENTS
+          <Typography variant="h2">
+            27. CALIFORNIA USERS AND RESIDENTS
+          </Typography>
+          
           with us is not satisfactorily resolved, you can contact the Complaint
           Assistance Unit of the Division of Consumer Services of the California
           Department of Consumer Affairs in writing at 1625 North Market Blvd., Suite N
           112, Sacramento, California 95834 or by telephone at (800) 952-5210 or (916)
           445-1254.
 
-          28. MISCELLANEOUS
+          <Typography variant="h2">
+            28. MISCELLANEOUS
+          </Typography>
+          
           These Terms of Use and any policies or operating rules posted by us on the Site or in respect to the Marketplace Offerings constitute the entire agreement and understanding between you and us. 
           Our failure to exercise or enforce any right or provision of these Terms of Use shall not operate as a waiver of such right or provision. These Terms of Use operate to the fullest extent permissible by law. 
           We may assign any or all of our rights and obligations to others at any time. We shall not be responsible or liable for any loss, damage, delay, or failure to act caused by any cause beyond our reasonable control. 
