@@ -60,11 +60,7 @@ export default function ImageCard({item}) {
                         }
                     }}
                     title={item.title}
-<<<<<<< HEAD
-                    subtitle={"by " + item.author} // Add Link to Content Creator?
-=======
                     subtitle={"by " + item.author.name}
->>>>>>> main
                     position="bottom"
                 />
             </CardActionArea>
