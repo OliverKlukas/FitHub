@@ -9,6 +9,8 @@ import Box from "@mui/material/Box";
 import Footer from "./components/footer/footer";
 import Details from "./views/details";
 import PageNotFound from "./views/page_not_found";
+import Payment from "./views/payment";
+import TermsAndConditions from "./views/terms_and_conditions";
 
 /**
  * Consists of a header at top, the different routed views in the middle and a footer at the bottom.
@@ -28,6 +30,8 @@ function App() {
                         <Route path="/discovery" element={<Discovery/>}/>
                         <Route path="/about" element={<AboutUs/>}/>
                         <Route path="/details/:id" element={<Details/>}/>
+                        <Route path="/payment/:id" element={<Payment/>}/>
+                        <Route path="/terms-and-conditions" element={<TermsAndConditions/>}/>
                     </Routes>
                 </Box>
                 <Footer/>
