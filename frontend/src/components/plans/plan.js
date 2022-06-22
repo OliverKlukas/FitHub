@@ -48,7 +48,7 @@ export default function Plan({item}) {
                             by {item.author.name}
                         </Typography>
                         <Typography variant="h4">
-                            {item.author.rating}
+                            {item.duration}
                         </Typography>
                     </Stack>
                     
