@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Box, FormControlLabel, Checkbox, Grid, Divider, Stack, Typography} from "@mui/material";
+import {Box, FormControlLabel, Checkbox, Divider, Stack, Typography} from "@mui/material";
 import {Link as RouterLink, useParams} from "react-router-dom";
 import {HighlightButton} from "../components/buttons/highlight_button";
 import {content} from "../utils/content";
@@ -16,8 +16,14 @@ function Payment() {
 
   // Match url id to content item.
   let {id} = useParams();
+  // eslint-disable-next-line
   const item = content.find((item) => item.id == id);
 
+  const [tncChecked, setTncChecked] = React.useState(false);
+
+  const handleTncChange = (event) => {
+    setTncChecked(event.target.checked);
+  };
 
   function handleClick(){}
 
@@ -153,15 +159,10 @@ function Payment() {
 
       <Stack paddingLeft={3} direction="row" alignItems="center" backgroundColor="#EEEEEE" sx={{width: {xs: "100%", md: "100%", lg: "80%", xl: "60%"}, borderRadius: 2, boxShadow: 5}}>
 
-        <FormControlLabel control={<Checkbox/>}/>
-
-        <Typography>
-          I have read and agree to the 
-        </Typography>
-
-        <Typography component={RouterLink} to={`/terms`} paddingLeft={0.5}>
-          Terms & Conditions
-        </Typography>
+          <FormControlLabel 
+            control={<Checkbox checked={tncChecked} onChange={handleTncChange} inputProps={{ 'aria-label': 'controlled' }}/>}
+            label={<Typography component={RouterLink} to={`/terms-and-conditions`}> I have read and agree to the Terms and Conditions </Typography>} 
+          />
 
       </Stack>
 
