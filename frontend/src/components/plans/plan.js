@@ -1,11 +1,11 @@
-import {Stack, Grid, Typography} from "@mui/material";
+import {Stack, Typography} from "@mui/material";
 import * as React from "react";
 import {HighlightButton} from "../../components/buttons/highlight_button"
 import {StandardButton} from "../../components/buttons/standard_button";
 import {Link as RouterLink} from "react-router-dom";
 
 /**
- * Single content my plans view component including an overview of price, content creator, a download button, a review button that links to the content creators profile and a customer support button.
+ * my plans view content component including an overview of price, content creator, a download button, a review button that links to the content creators profile and a customer support button.
  *
  * @param item - To be displayed content item, expected to adhere to the database scheme of content.
  * @returns {JSX.Element} - Returns ImageListItem.
@@ -19,49 +19,50 @@ export default function Plan({item}) {
         };
     }
 
-    const imgWidth = 250;
+    const imgWidth = 200;
     const imgHeight = 200;
 
     return (
-        <Stack>   
-            <Grid container spacing={2}>
-                <Grid item>
-                    <img
-                        style={{borderRadius: "10px"}}
-                        {...srcset(item.img, imgWidth, imgHeight)}
-                        alt={item.title}
-                    />
-                </Grid>
-                <Grid item xs={12} sm container>
-                    <Grid item justifyContent="space-between" xs container direction="column" spacing={2} >
-                        <Grid item xs>
-                            <Typography variant="h2" >
-                                {item.title}
-                            </Typography>
-                        </Grid>
-                        <Grid item xs>
-                            <Typography variant="h4" gutterBottom>
-                                {item.author.name}
-                            </Typography>
-                            <Typography variant="h4">
-                                {item.author.rating}
-                            </Typography>
-                        </Grid>
-                    </Grid>
-                    <Grid item justifyContent="space-between" xs container direction="column" spacing={2} >
-                        <Grid item>
-                            <HighlightButton variant='contained' component={RouterLink} target="_blank" to={"/sample.pdf"} download>Download</HighlightButton>  
-                        </Grid>
-                        <Grid item>
-                            <StandardButton variant="contained" component={RouterLink} to={`/discovery`}>Contact customer support</StandardButton>
-                        </Grid>
-                        <Grid item>
-                            <StandardButton variant="contained" component={RouterLink} to={`/discovery`}>Write a review</StandardButton>
-                        </Grid>
-                    </Grid>
-                </Grid>
-            </Grid>
+
+        <Stack direction="row" padding={2} spacing={2} justifyContent="space-between" backgroundColor="#EEEEEE" sx={{borderRadius: 5, boxShadow: 5, width:{xs: "100%", lg: "80%", xl: "70%"}}}>
+
+            <Stack direction="row" spacing={2}>
+
+                <img
+                    style={{borderRadius: "10px"}}
+                    {...srcset(item.img, imgWidth, imgHeight)}
+                    alt={item.title}
+                />
+
+                <Stack justifyContent="space-between">
+                    <Stack spacing={2}>
+                        <Typography variant="h2" >
+                            {item.title}
+                        </Typography>
+                        <Typography variant="h3" >
+                            Price: {item.price} €
+                        </Typography> 
+                    </Stack>
+                    <Stack spacing={2}>
+                        <Typography variant="h4">
+                            by {item.author.name}
+                        </Typography>
+                        <Typography variant="h4">
+                            {item.author.rating}
+                        </Typography>
+                    </Stack>
+                    
+                </Stack>
+
+            </Stack>                 
+   
+            <Stack justifyContent="space-between">
+                <HighlightButton variant='contained' sx={{width:300}} component={RouterLink} target="_blank" to={"/sample.pdf"} download>Download</HighlightButton>
+                <StandardButton variant="contained" sx={{width:300}} component={RouterLink} to={`/profile`}>Contact customer support</StandardButton>
+                <StandardButton variant="contained" sx={{width:300}}component={RouterLink} to={`/profile`}>Write a review</StandardButton>
+            </Stack>
+            
         </Stack>
-  
+
     );
 }

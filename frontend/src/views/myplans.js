@@ -1,4 +1,4 @@
-import {Stack} from "@mui/material";
+import {Stack, Typography} from "@mui/material";
 import {useParams} from "react-router-dom";
 import {consumer} from "../utils/consumer";
 import {content} from "../utils/content";
@@ -20,7 +20,11 @@ export default function MyPlans() {
     const item = consumer.find((item) => item.id == id);
 
     return (
-        <Stack spacing={3} marginBottom={10} marginTop={5}>
+        <Stack spacing={4} marginTop={5}>
+
+            <Typography variant="h1">
+                My Plans
+            </Typography>
 
             {content.map((con) => {
                 if (item.boughtContent.includes(con.id)) {
