@@ -5,8 +5,10 @@ import AboutUs from "./views/about_us";
 import {CssBaseline, ThemeProvider} from "@mui/material";
 import FitHubTheme from "./utils/theme";
 import {Header} from "./components/header/header";
+import ProfileViews from './views/profile_views';
 import Box from "@mui/material/Box";
 import Footer from "./components/footer/footer";
+import Registration from './views/registration';
 import Details from "./views/details";
 import PageNotFound from "./views/page_not_found";
 import Payment from "./views/payment";
@@ -28,7 +30,12 @@ function App() {
                         <Route path="*" element={<PageNotFound/>}/>
                         <Route path="/" element={<Discovery/>}/>
                         <Route path="/discovery" element={<Discovery/>}/>
+                        <Route path="/upload" element={<AboutUs/>}/>
+                        <Route path="/plans" element={<AboutUs/>}/>
                         <Route path="/about" element={<AboutUs/>}/>
+                        <Route path="/contact" element={<AboutUs/>}/>
+                        <Route path="/profile" element={<ProfileViews/>}/>
+                        <Route path="/registration" element={<Registration/>}/>
                         <Route path="/details/:id" element={<Details/>}/>
                         <Route path="/payment/:id" element={<Payment/>}/>
                         <Route path="/terms-and-conditions" element={<TermsAndConditions/>}/>
