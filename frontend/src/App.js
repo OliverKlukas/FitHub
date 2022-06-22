@@ -11,6 +11,8 @@ import Footer from "./components/footer/footer";
 import Registration from './views/registration';
 import Details from "./views/details";
 import PageNotFound from "./views/page_not_found";
+import Payment from "./views/payment";
+import TermsAndConditions from "./views/terms_and_conditions";
 
 /**
  * Consists of a header at top, the different routed views in the middle and a footer at the bottom.
@@ -35,6 +37,8 @@ function App() {
                         <Route path="/profile" element={<ProfileViews/>}/>
                         <Route path="/registration" element={<Registration/>}/>
                         <Route path="/details/:id" element={<Details/>}/>
+                        <Route path="/payment/:id" element={<Payment/>}/>
+                        <Route path="/terms-and-conditions" element={<TermsAndConditions/>}/>
                     </Routes>
                 </Box>
                 <Footer/>
