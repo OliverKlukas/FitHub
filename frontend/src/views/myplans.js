@@ -16,6 +16,7 @@ export default function MyPlans() {
 
     // Match url id to consumer item.
     let {id} = useParams();
+    
     // eslint-disable-next-line
     const item = consumer.find((item) => item.id == id);
 
