@@ -1,26 +1,31 @@
 import * as React from 'react';
-import {Box, FormControlLabel, Checkbox, Grid, Divider, Stack, Typography} from "@mui/material";
+import {Box, FormControl, FormControlLabel, Checkbox, Divider, Stack, Typography, Radio, RadioGroup, FormLabel} from "@mui/material";
 import {Link as RouterLink, useParams} from "react-router-dom";
 import {HighlightButton} from "../components/buttons/highlight_button";
 import {content} from "../utils/content";
 
-
 /**
- * Payment page with the most important information AGBs and payment method selection.
+ * Payment page with the most important information about the content item, a link to our Terms and Conditions the customer has to accept and the payment method selection.
  *
  * @returns {JSX.Element} Returns payment page.
  */
-
 
 function Payment() {
 
   // Match url id to content item.
   let {id} = useParams();
+  // eslint-disable-next-line
   const item = content.find((item) => item.id == id);
 
+  const [tncChecked, setTncChecked] = React.useState(false);
+
+  const handleTncChange = (event) => {
+    setTncChecked(event.target.checked);
+  };
+
+  const error = [tncChecked].filter((v) => v).length !== 1;
 
   function handleClick(){}
-
 
   function srcset(image, width, height, rows = 1, cols = 1) {
     return {
@@ -48,10 +53,10 @@ function Payment() {
           <Box sx={{ display: { xs: 'none', md: 'block' }}}>
 
             <img 
-                style={{borderRadius: "8px"}}
-                {...srcset(item.img, 300, 220)}
-                alt="Bild"
-              />        
+              style={{borderRadius: "8px"}}
+              {...srcset(item.img, 300, 220)}
+              alt="Bild"
+            />        
                 
           </Box>
 
@@ -121,17 +126,17 @@ function Payment() {
         </Stack>
 
         <Stack direction="row" alignItems="flex-start" justifyContent="space-between" spacing={4} sx={{mt: 2, ml:{xs: 3, md: 0}}}>
-              <Typography variant="h3">
-                Description
-              </Typography>
+          <Typography variant="h3">
+            Description
+          </Typography>
 
-              <Typography variant="h4">            
-                {item.description}
-              </Typography>
+          <Typography variant="h4">            
+            {item.description}
+          </Typography>
 
-            </Stack>
+        </Stack>
 
-            <Divider sx={{mt: 3, ml:{xs: 3, md: 0}, bgcolor: "#222831"}}/> 
+        <Divider sx={{mt: 3, ml:{xs: 3, md: 0}, bgcolor: "#222831"}}/> 
 
       </Stack>
 
@@ -142,7 +147,9 @@ function Payment() {
       </Box>  
 
       <Stack paddingLeft={3} backgroundColor="#EEEEEE" sx={{width: {xs: "100%", md: "100%", lg: "80%", xl: "60%"}, borderRadius: 2, boxShadow: 5}}>
-        <FormControlLabel control={<Checkbox/>} label="PayPal" />
+        <RadioGroup defaultValue="payPal">
+          <FormControlLabel control={<Radio />} value="payPal" label="PayPal" />
+        </RadioGroup>         
       </Stack>
 
       <Box alignItems="flex-start" sx={{width: {xs: "100%", md: "100%", lg: "80%", xl: "60%"}}}>
@@ -152,20 +159,22 @@ function Payment() {
       </Box>  
 
       <Stack paddingLeft={3} direction="row" alignItems="center" backgroundColor="#EEEEEE" sx={{width: {xs: "100%", md: "100%", lg: "80%", xl: "60%"}, borderRadius: 2, boxShadow: 5}}>
+  
+          <FormControl error={error} component="fieldset" variant="standard">
 
-        <FormControlLabel control={<Checkbox/>}/>
+            <FormLabel sx={{pt: 1}} component="legend"> <Typography variant="h4">Agree to the Terms and Conditions:</Typography></FormLabel>
 
-        <Typography>
-          I have read and agree to the 
-        </Typography>
-
-        <Typography component={RouterLink} to={`/terms`} paddingLeft={0.5}>
-          Terms & Conditions
-        </Typography>
-
+            <FormControlLabel 
+              control={<Checkbox checked={tncChecked} onChange={handleTncChange}/>}
+              label={<Typography component={RouterLink} to={`/terms-and-conditions`}> I have read and agree to the Terms and Conditions </Typography>} 
+            />
+          </FormControl>           
+      
       </Stack>
 
-      <HighlightButton variant='contained' onClick={handleClick}>Buy Now</HighlightButton>      
+      <FormControl>
+        <HighlightButton variant='contained' onClick={handleClick}>Buy Now</HighlightButton>      
+      </FormControl>
       
     </Stack>
 

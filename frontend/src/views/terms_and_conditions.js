@@ -3,7 +3,7 @@ import {Stack, Typography, Link, Box} from "@mui/material";
 
 
 /**
- * Payment page with the most important information AGBs and payment method selection.
+ * Terms and Conditions page generated with https://termly.io/products/terms-and-conditions-generator/
  *
  * @returns {JSX.Element} Returns payment page.
  */
