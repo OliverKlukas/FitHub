@@ -7,29 +7,79 @@ import {Link as RouterLink, useParams} from "react-router-dom";
 
 function Registration() {
 
-    const [formerror, setformError] = React.useState(true)
+    const [passworderror, setPasswordError] = React.useState(false)
+    const [emailerror, setEmailError] = React.useState(false)
+    const [errormessage, setErrorMessage] = React.useState("")
 
     const [snackopen, setsnackOpen] = React.useState(false); // States for Snackbar
 
-    const [state, setState] = React.useState({
-        firstname: "",
-        lastname: "",
-        ContentCreator: false,
-        Email: "",
-        Description: "",
 
-    })
+    const [firstname, setFirstName] = React.useState("");
+    const [lastname, setLastName] = React.useState(""); 
+    const [password, setPassword] = React.useState("");
+    const [password2, setPassword2] = React.useState("");
+    const [isContentCreator, setIsContentCreator] = React.useState(false);
+    const [description, setDescription] = React.useState("");
+    const [email, setEmail] = React.useState("");
+
+    const onChangeFirstName = (e) => {
+        setFirstName(e.target.value);
+    };
+    const onChangeLastName = (e) => {
+        setLastName(e.target.value);
+    };
+    const onChangePassword = (e) => {
+        setPassword(e.target.value);
+        setPasswordError(false);
+    };
+    const onChangePassword2 = (e) => {
+        setPassword2(e.target.value);
+        setPasswordError(false);
+    };
+    const onChangeisContentCreator= (e) => {
+        setIsContentCreator(e.target.value);
+    };
+    const onChangeDescription = (e) => {
+        setDescription(e.target.value);
+    };
+    const onChangeEmail = (e) => {
+        setEmail(e.target.value);
+    };
+    const comparePasswords = () => {
+        if (password !== "" && password2 !== "") {
+            if (password !== password2) {
+                setPasswordError(true);
+                setErrorMessage("Passwords do not match")
+                setsnackOpen(true);
+            } else {
+                setPasswordError(false);
+            }
+        }
+    };
+    const validateEmail = () => {
+        if (email.toLowerCase().match(
+          /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+        ) === null ) {
+            setEmailError(true)
+            setErrorMessage("Not a email")
+            setsnackOpen(true)
+        }   else {
+            setEmailError(false)
+        }
+
+    }
 
     const handleSnackClose= () => {
         setsnackOpen(false)
       }
     
     const handleSubmit = () => {
-        setsnackOpen(true);
+        comparePasswords();
 
       }
     
     return (
+
         <Grid
         container
         spacing={0}
@@ -51,9 +101,13 @@ function Registration() {
                     
                     <TextField 
                     label="First Name"
+                    onChange={onChangeFirstName}
                     >
                     </TextField>
-                    <TextField label="Last Name">
+                    <TextField 
+                    label="Last Name"
+                    onChange={onChangeLastName}
+                    >
 
                     </TextField>
                 </Stack>
@@ -63,14 +117,18 @@ function Registration() {
                         aria-labelledby="Account_Type_Selector"
                         name="Account Type"
                     >
-                            <FormControlLabel value="Content Creator" control={<Radio />} label="I want to upload and sell Fitness Content" />
-                            <FormControlLabel value="Customer" control={<Radio />} label="I want to buy Fitness Content" />
+                            <FormControlLabel value="Content Creator" control={<Radio />} label="I want to upload and sell Fitness Content" onChange={onChangeisContentCreator}/>
+                            <FormControlLabel value="Customer" control={<Radio />} label="I want to buy Fitness Content" onChange={onChangeisContentCreator}/>
                     </RadioGroup>
                 </FormControl>
                 <Typography variant='h4' inputtype='email'>
                     Email
                 </Typography>
-                <TextField label="Email"
+                <TextField 
+                label="Email"
+                onChange={onChangeEmail}
+                onBlur={validateEmail}
+                error={emailerror}
                 >
                 </TextField>
                 <Typography variant='h4'>
@@ -81,12 +139,18 @@ function Registration() {
                     id="standard-password-input"
                     type="password"
                     variant="standard"
+                    onChange={onChangePassword}
+                    error={passworderror}
+                    onBlur={comparePasswords}
                     >
                     </TextField>
                     <TextField label="Repeat Password"
                     id="standard-password-input"
                     type="password"
                     variant="standard"
+                    onChange={onChangePassword2}
+                    error={passworderror}
+                    onBlur={comparePasswords}
                     >
                     </TextField>
                 </Stack>
@@ -96,10 +160,23 @@ function Registration() {
                 minRows={5}
                 maxRows={5}
                 defaultValue="You can enter a short a description of yourself and the content you create, this description can always be edited through your profile page"
+                onChange={onChangeDescription}
                 >
 
                 </TextField>
-                <HighlightButton variant="contained" component={RouterLink}  to={"/discovery"}g onClick={handleSubmit}>
+                <HighlightButton variant="contained"  onClick={handleSubmit}
+                disabled={
+                    firstname === "" ||
+                    lastname === "" ||
+                    password === "" ||
+                    password2 === "" ||
+                    passworderror ||
+                    email === "" ||
+                    description === "" ||
+                    password !== password2 ||
+                    emailerror
+                    }
+                >
                     Save and Submit
                 </HighlightButton>
                 <Stack direction="row" alignItems="center" >
@@ -112,15 +189,17 @@ function Registration() {
                     </Typography>
 
                 </Stack>
+                <Snackbar
+                open={snackopen}
+                autoHideDuration={6000}
+                onClose={handleSnackClose}
+                message={errormessage}
+                /> 
             </Stack>
         </Grid>   
-        <Snackbar
-          open={snackopen}
-          autoHideDuration={6000}
-          onClose={handleSnackClose}
-          message="Form Error"
-        />
-    </Grid> 
+
+    </Grid>
+
 
     )
 }
