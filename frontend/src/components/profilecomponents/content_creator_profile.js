@@ -11,7 +11,6 @@ import ReportDialog from './popups/report_dialog';
 
 function ContentCreatorProfile(name,description,reviews){
        
-    function handleClick(){}
 
     const [reviewdata, setData] = React.useState('');
 
@@ -19,11 +18,8 @@ function ContentCreatorProfile(name,description,reviews){
         setData(review)
     }
 
-    const updateReviews = () => {
-        
-    }
  
-    const ratings= []
+    const ratings= [] /* Needed to use reduce over the array to calculate Rating */
     for(let item of reviews){
         ratings.push(item.star)
     }
