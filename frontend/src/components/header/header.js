@@ -23,14 +23,17 @@ import {LinkButton} from "../buttons/link_button";
 export function Header({gender, userType}) {
     // Sub-urls and link names for available page views.
     let pages;
+    let icondirection;
     if (userType === "content-creator") {
         pages = {
             "discovery": "Discovery", "upload": "Offer Content", "about": "About us"
         };
+        icondirection = "/landing"
     } else {
         pages = {
             "discovery": "Discovery", "plans": "My Plans", "about": "About us"
         };
+        icondirection = "/discovery"
     }
 
     // Anchor hook to open/close the navigation menu when option selected or clicked off.
@@ -59,7 +62,7 @@ export function Header({gender, userType}) {
     return (<Stack direction="row" justifyContent="space-between" alignItems="center" my={2}>
         <Box>
             <Box sx={{display: {xs: 'none', md: 'flex'}}}>
-                <Link href={"/discovery"}>
+                <Link href={icondirection}>
                     <Logo/>
                 </Link>
             </Box>
