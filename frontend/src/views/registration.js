@@ -1,10 +1,23 @@
-import { TextField, Stack, Box, Typography, Grid, RadioGroup, Radio, FormControlLabel, FormControl, FormLabel} from '@mui/material';
+import { TextField, Stack, Snackbar, Box, Typography, Grid, RadioGroup, Radio, FormControlLabel, FormControl, FormLabel} from '@mui/material';
 import { border, display, minWidth } from '@mui/system';
 import * as React from 'react';
 import { HighlightButton } from '../components/buttons/highlight_button';
+import {Link as RouterLink, useParams} from "react-router-dom";
 
 
 function Registration() {
+
+    const [snackopen, setsnackOpen] = React.useState(false); // States for Snackbar
+
+    const handleSnackClose= () => {
+        setsnackOpen(false)
+      }
+    
+    const handleSubmit = () => {
+        setsnackOpen(true);
+
+      }
+    
     return (
         <Grid
         container
@@ -75,7 +88,7 @@ function Registration() {
                 >
 
                 </TextField>
-                <HighlightButton>
+                <HighlightButton variant="contained" component={RouterLink}  to={"/discovery"} onClick={handleSubmit}>
                     Save and Submit
                 </HighlightButton>
                 <Typography variant='caption' justifyContent="center"
@@ -84,8 +97,15 @@ function Registration() {
                 By creating an account you agree to FitHub's Conditions of Use & Sale. 
                 </Typography>
             </Stack>
-        </Grid>     
+        </Grid>   
+        <Snackbar
+          open={snackopen}
+          autoHideDuration={6000}
+          onClose={handleSnackClose}
+          message="Succesfully Registered"
+        />
     </Grid> 
+
     )
 }
 
