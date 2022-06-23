@@ -7,7 +7,18 @@ import {Link as RouterLink, useParams} from "react-router-dom";
 
 function Registration() {
 
+    const [formerror, setformError] = React.useState(true)
+
     const [snackopen, setsnackOpen] = React.useState(false); // States for Snackbar
+
+    const [state, setState] = React.useState({
+        firstname: "",
+        lastname: "",
+        ContentCreator: false,
+        Email: "",
+        Description: "",
+
+    })
 
     const handleSnackClose= () => {
         setsnackOpen(false)
@@ -38,8 +49,8 @@ function Registration() {
                 </Typography>
                 <Stack direction="row" spacing={5}>
                     
-                    <TextField label="First Name"
-                                
+                    <TextField 
+                    label="First Name"
                     >
                     </TextField>
                     <TextField label="Last Name">
@@ -84,25 +95,30 @@ function Registration() {
                 multiline
                 minRows={5}
                 maxRows={5}
-                defaultValue="You can enter a short a description of yourself and the content you create, this description can always be edited through your profifle page"
+                defaultValue="You can enter a short a description of yourself and the content you create, this description can always be edited through your profile page"
                 >
 
                 </TextField>
-                <HighlightButton variant="contained" component={RouterLink}  to={"/discovery"} onClick={handleSubmit}>
+                <HighlightButton variant="contained" component={RouterLink}  to={"/discovery"}g onClick={handleSubmit}>
                     Save and Submit
                 </HighlightButton>
-                <Typography variant='caption' justifyContent="center"
-                alignItems="center"
-                gutterBottom>
-                By creating an account you agree to FitHub's Conditions of Use & Sale. 
-                </Typography>
+                <Stack direction="row" alignItems="center" >
+                    <Typography variant="caption">
+                    By creating an account I agree to the 
+                    </Typography>
+
+                    <Typography component={RouterLink} to={`/terms`} paddingLeft={0.5} variant="caption">
+                    Terms & Conditions
+                    </Typography>
+
+                </Stack>
             </Stack>
         </Grid>   
         <Snackbar
           open={snackopen}
           autoHideDuration={6000}
           onClose={handleSnackClose}
-          message="Succesfully Registered"
+          message="Form Error"
         />
     </Grid> 
 
