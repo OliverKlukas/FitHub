@@ -2,7 +2,8 @@ import { TextField, Stack, Snackbar, Box, Typography, Grid, RadioGroup, Radio, F
 import { border, display, minWidth } from '@mui/system';
 import * as React from 'react';
 import { HighlightButton } from '../components/buttons/highlight_button';
-import {Link as RouterLink, useParams} from "react-router-dom";
+import {Link as RouterLink, renderMatches, useParams} from "react-router-dom";
+import UploadButton from '../components/buttons/upload_button';
 
 
 function Registration() {
@@ -21,6 +22,7 @@ function Registration() {
     const [isContentCreator, setIsContentCreator] = React.useState(false);
     const [description, setDescription] = React.useState("");
     const [email, setEmail] = React.useState("");
+    /*const [uploadedPicture, setUploadedPicture] = React.useState( null) */
 
     const onChangeFirstName = (e) => {
         setFirstName(e.target.value);
@@ -36,15 +38,23 @@ function Registration() {
         setPassword2(e.target.value);
         setPasswordError(false);
     };
-    const onChangeisContentCreator= (e) => {
-        setIsContentCreator(e.target.value);
+    const onChangeisContentCreator= () => {
+        setIsContentCreator(true);
     };
+    const onChangeisNotContentCreator = () => {
+        setIsContentCreator(false)
+    }
     const onChangeDescription = (e) => {
         setDescription(e.target.value);
     };
     const onChangeEmail = (e) => {
         setEmail(e.target.value);
     };
+    /*const onChangePictureUpload = (e) => {
+        setUploadedPicture(e.target.value)
+    } */
+
+    /*Compares the Passwords and sends a error_Message when they are not equal, called on blur (so if left either of the pw texfields)*/ 
     const comparePasswords = () => {
         if (password !== "" && password2 !== "") {
             if (password !== password2) {
@@ -56,6 +66,10 @@ function Registration() {
             }
         }
     };
+
+    /** valiades the entered email adress, is called on blur (so if left the email texfield), the regex is provided by the open source Chromium implementation and should therefore 
+    only reliably match to correct e-mail adress formats; this method of validation does not ensure the email is a actual email and can be disabled quite easily by disabling
+    javascript, but it does protect against misspellings, which is most import for email, which doubles as a login name **/
     const validateEmail = () => {
         if (email.toLowerCase().match(
           /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
@@ -118,7 +132,7 @@ function Registration() {
                         name="Account Type"
                     >
                             <FormControlLabel value="Content Creator" control={<Radio />} label="I want to upload and sell Fitness Content" onChange={onChangeisContentCreator}/>
-                            <FormControlLabel value="Customer" control={<Radio />} label="I want to buy Fitness Content" onChange={onChangeisContentCreator}/>
+                            <FormControlLabel value="Customer" control={<Radio />} label="I want to buy Fitness Content" onChange={onChangeisNotContentCreator}/>
                     </RadioGroup>
                 </FormControl>
                 <Typography variant='h4' inputtype='email'>
@@ -154,16 +168,25 @@ function Registration() {
                     >
                     </TextField>
                 </Stack>
-                <TextField 
-                alignItems="left"
-                multiline
-                minRows={5}
-                maxRows={5}
-                defaultValue="You can enter a short a description of yourself and the content you create, this description can always be edited through your profile page"
-                onChange={onChangeDescription}
-                >
+                {isContentCreator &&
+                        <Grid>
+                            <TextField
+                                alignItems="left"
+                                multiline
+                                minRows={5}
+                                maxRows={5}
+                                defaultValue="You can enter a short a description of yourself and the content you create, this description can always be edited through your profile page"
+                                onChange={onChangeDescription}
+                            >
 
-                </TextField>
+                            </TextField>
+                            <Typography variant='h4'>
+                                Upload a Profile Picture
+                            </Typography>
+                            <UploadButton id="markting-upload" uploadFormat="image/*" givenId="marketing-upload" multiUpload={false} />
+                        </Grid> 
+
+                }
                 <HighlightButton variant="contained"  onClick={handleSubmit}
                 disabled={
                     firstname === "" ||
@@ -172,9 +195,10 @@ function Registration() {
                     password2 === "" ||
                     passworderror ||
                     email === "" ||
-                    description === "" ||
                     password !== password2 ||
-                    emailerror
+                    emailerror ||
+                    isContentCreator && description ==="" /*||
+                    isContentCreator && uploadedPicture === null*/
                     }
                 >
                     Save and Submit
