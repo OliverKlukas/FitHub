@@ -5,7 +5,7 @@ import {HighlightButton} from "../components/buttons/highlight_button";
 import {content} from "../utils/content";
 
 /**
- * Payment page with the most important information about the content item, a link to the AGBs and payment method selection.
+ * Payment page with the most important information about the content item, a link to our Terms and Conditions the customer has to accept and the payment method selection.
  *
  * @returns {JSX.Element} Returns payment page.
  */
