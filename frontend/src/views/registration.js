@@ -67,7 +67,7 @@ function Registration() {
                             <FormControlLabel value="Customer" control={<Radio />} label="I want to buy Fitness Content" />
                     </RadioGroup>
                 </FormControl>
-                <Typography variant='h4'>
+                <Typography variant='h4' inputtype='email'>
                     Email
                 </Typography>
                 <TextField label="Email"
@@ -107,7 +107,7 @@ function Registration() {
                     By creating an account I agree to the 
                     </Typography>
 
-                    <Typography component={RouterLink} to={`/terms`} paddingLeft={0.5} variant="caption">
+                    <Typography component={RouterLink} to={`/terms-and-conditions`} target="'_blank" paddingLeft={0.5} variant="caption">
                     Terms & Conditions
                     </Typography>
 
