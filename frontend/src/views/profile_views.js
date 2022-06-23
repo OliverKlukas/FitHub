@@ -1,6 +1,7 @@
 import ContentCreatorProfile from '../components/profilecomponents/content_creator_profile';
 import { loremIpsum, Avatar } from 'react-lorem-ipsum';
 import { Stack } from "@mui/material";
+import {Link as RouterLink, useParams} from "react-router-dom";
 import ContentCreatorOwnProfile from '../components/profilecomponents/content_creator_own_profile';
 
 
