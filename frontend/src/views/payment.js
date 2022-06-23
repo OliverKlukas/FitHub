@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {Box, FormControl, FormControlLabel, Checkbox, Divider, Stack, Typography, Radio, RadioGroup, FormLabel} from "@mui/material";
-import {Link as RouterLink, useParams} from "react-router-dom";
+import {useNavigate, Link as RouterLink, useParams} from "react-router-dom";
 import {HighlightButton} from "../components/buttons/highlight_button";
 import {content} from "../utils/content";
 
@@ -23,10 +23,13 @@ function Payment() {
     setTncChecked(event.target.checked);
   };
 
-  const error = [tncChecked].filter((v) => v).length !== 1;
+  let navigate = useNavigate();
 
-  function handleClick(){}
-
+  function handleSubmit(event) {
+    event.preventDefault();  
+      navigate(`/profile`);
+  }
+  
   function srcset(image, width, height, rows = 1, cols = 1) {
     return {
         src: `${image}?w=${width * cols}&h=${height * rows}&fit=crop&auto=format`,
@@ -152,31 +155,43 @@ function Payment() {
         </RadioGroup>         
       </Stack>
 
-      <Box alignItems="flex-start" sx={{width: {xs: "100%", md: "100%", lg: "80%", xl: "60%"}}}>
-        <Typography variant="h2">
-          Legal Notices:
-        </Typography>
-      </Box>  
+        <Box alignItems="flex-start" sx={{width: {xs: "100%", md: "100%", lg: "80%", xl: "60%"}}}>
+          <Typography variant="h2">
+            Legal Notices:
+          </Typography>
+        </Box>  
+              
+        <Stack paddingLeft={3} direction="row" alignItems="center" backgroundColor="#EEEEEE" sx={{width: {xs: "100%", md: "100%", lg: "80%", xl: "60%"}, borderRadius: 2, boxShadow: 5}}>
 
-      <Stack paddingLeft={3} direction="row" alignItems="center" backgroundColor="#EEEEEE" sx={{width: {xs: "100%", md: "100%", lg: "80%", xl: "60%"}, borderRadius: 2, boxShadow: 5}}>
-  
-          <FormControl error={error} component="fieldset" variant="standard">
+          <FormControl component="fieldset" variant="standard">
 
             <FormLabel sx={{pt: 1}} component="legend"> <Typography variant="h4">Agree to the Terms and Conditions:</Typography></FormLabel>
 
             <FormControlLabel 
               control={<Checkbox checked={tncChecked} onChange={handleTncChange}/>}
-              label={<Typography component={RouterLink} to={`/terms-and-conditions`}> I have read and agree to the Terms and Conditions </Typography>} 
+              label={
+                <Stack direction="row" spacing={0.5}>
+                  <Typography>I have read the</Typography>
+                  <Typography component={RouterLink} color='inherit' to={`/terms-and-conditions`}>Terms and Conditions </Typography>
+                </Stack>
+              } 
             />
-          </FormControl>           
-      
-      </Stack>
 
-      <FormControl>
-        <HighlightButton variant='contained' onClick={handleClick}>Buy Now</HighlightButton>      
-      </FormControl>
-      
-    </Stack>
+          </FormControl>
+          
+        </Stack>
+
+        <Stack>
+
+          <form onSubmit={handleSubmit}>
+          <FormControl>
+            <HighlightButton variant='contained' type="submit">Buy Now</HighlightButton>      
+          </FormControl>
+          </form>
+
+        </Stack>      
+        
+      </Stack>
 
   );
 }
