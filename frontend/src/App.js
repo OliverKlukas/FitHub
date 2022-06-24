@@ -16,6 +16,7 @@ import TermsAndConditions from "./views/terms_and_conditions";
 import MyPlans from "./views/myplans";
 import LandingPage from "./views/landing_page";
 import ContentUpload from './views/content_upload'; 
+import SignIn from './views/sign_in';
 
 /**
  * Consists of a header at top, the different routed views in the middle and a footer at the bottom.
@@ -23,11 +24,14 @@ import ContentUpload from './views/content_upload';
  * @returns {JSX.Element}
  */
 function App() {
+
+    const [signedIn, setSignedIn] = React.useState(false)
+
     return (<ThemeProvider theme={FitHubTheme}>
         <CssBaseline/>
         <BrowserRouter>
             <Box sx={{marginX: 6}}>
-                <Header gender="male" userType="content-creator"/>
+                <Header gender="male" userType="content-creator" signedIn={signedIn}/>
                 <Box minHeight="75vh">
                     <Routes>
                         <Route path="*" element={<PageNotFound/>}/>
@@ -43,7 +47,8 @@ function App() {
                         <Route path="/details/:id" element={<Details/>}/>
                         <Route path="/payment/:id" element={<Payment/>}/>
                         <Route path="/terms-and-conditions" element={<TermsAndConditions/>}/>
-                        <Route path="/myplans/:id" element={<MyPlans/>}/>                    
+                        <Route path="/myplans/:id" element={<MyPlans/>}/>           
+                        <Route path="/signin" element={<SignIn/>}/>      
                     </Routes>
                 </Box>
                 <Footer/>
