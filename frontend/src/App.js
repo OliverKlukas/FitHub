@@ -13,6 +13,9 @@ import Details from "./views/details";
 import PageNotFound from "./views/page_not_found";
 import Payment from "./views/payment";
 import TermsAndConditions from "./views/terms_and_conditions";
+import MyPlans from "./views/myplans";
+import LandingPage from "./views/landing_page";
+import ContentUpload from './views/content_upload'; 
 
 /**
  * Consists of a header at top, the different routed views in the middle and a footer at the bottom.
@@ -29,8 +32,9 @@ function App() {
                     <Routes>
                         <Route path="*" element={<PageNotFound/>}/>
                         <Route path="/" element={<Discovery/>}/>
+                        <Route path="/landing" element={<LandingPage/>}/>
                         <Route path="/discovery" element={<Discovery/>}/>
-                        <Route path="/upload" element={<AboutUs/>}/>
+                        <Route path="/upload" element={<ContentUpload/>}/>
                         <Route path="/plans" element={<AboutUs/>}/>
                         <Route path="/about" element={<AboutUs/>}/>
                         <Route path="/contact" element={<AboutUs/>}/>
@@ -39,6 +43,7 @@ function App() {
                         <Route path="/details/:id" element={<Details/>}/>
                         <Route path="/payment/:id" element={<Payment/>}/>
                         <Route path="/terms-and-conditions" element={<TermsAndConditions/>}/>
+                        <Route path="/myplans/:id" element={<MyPlans/>}/>                    
                     </Routes>
                 </Box>
                 <Footer/>
