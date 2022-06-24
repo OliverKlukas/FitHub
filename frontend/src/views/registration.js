@@ -22,7 +22,7 @@ function Registration() {
     const [isContentCreator, setIsContentCreator] = React.useState(false);
     const [description, setDescription] = React.useState("");
     const [email, setEmail] = React.useState("");
-    /*const [uploadedPicture, setUploadedPicture] = React.useState( null) */
+    const [uploadedPicture, setUploadedPicture] = React.useState(false) 
 
     const onChangeFirstName = (e) => {
         setFirstName(e.target.value);
@@ -50,9 +50,9 @@ function Registration() {
     const onChangeEmail = (e) => {
         setEmail(e.target.value);
     };
-    /*const onChangePictureUpload = (e) => {
-        setUploadedPicture(e.target.value)
-    } */
+    const onChangePictureUpload = () => {
+        setUploadedPicture(true)
+    } 
 
     /*Compares the Passwords and sends a error_Message when they are not equal, called on blur (so if left either of the pw texfields)*/ 
     const comparePasswords = () => {
@@ -183,7 +183,7 @@ function Registration() {
                             <Typography variant='h4'>
                                 Upload a Profile Picture
                             </Typography>
-                            <UploadButton id="markting-upload" uploadFormat="image/*" givenId="marketing-upload" multiUpload={false} />
+                            <UploadButton id="markting-upload" uploadFormat="image/*" givenId="marketing-upload" multiUpload={false} onClick={onChangePictureUpload}/>
                         </Grid> 
 
                 }
