@@ -14,7 +14,7 @@ const UserSchema = new mongoose.Schema({
         unique: true
     },
     // role of the user, used for rights management
-    role: {
+    role: {  //potentially add a admin role for "Employees"
         type: String,
         // role can only take the values "customer" and "contentCreator"
         enum: ["customer", "contentCreator"],
@@ -24,6 +24,10 @@ const UserSchema = new mongoose.Schema({
     description: {
         type: String,
         required: false
+    },
+    profilePicture: {
+        type: Binary,
+        reqired: false
     }
 });
 
