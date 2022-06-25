@@ -4,7 +4,7 @@ const express    = require('express');
 const bodyParser = require('body-parser');
 const helmet     = require('helmet');
 
-const auth = require('./routes/auth')
+const auth = require('./routes/auth');
 
 const api = express();
 
@@ -22,7 +22,7 @@ api.get('/', (req, res) => {
 });
 
 // TODO API Routes (import from src/routes)
-api.use('/auth', auth)
+api.use('/auth', auth);
 
 
 module.exports = api;

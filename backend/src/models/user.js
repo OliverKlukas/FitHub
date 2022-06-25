@@ -48,12 +48,12 @@ const UserSchema = new mongoose.Schema({
         required: false
     },
     profilePicture: {
-        type: Binarydata,
-        reqired: false
+        data: Buffer,
+        reqired: false,
+        contenType: String
     },
     reviews: [ReviewSchema],
-    boughtcontent: [ContentSchema],
-    opts // needed for calculated fields like the amount of stars if we want to backend calculate thes
+    //opts // needed for calculated fields like the amount of stars if we want to backend calculate thes
 });
 
 UserSchema.set("versionKey", false);
