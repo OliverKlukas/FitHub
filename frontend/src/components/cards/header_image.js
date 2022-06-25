@@ -41,7 +41,7 @@ export default function HeaderCard({item}) {
                 }
             }}
         >
-            <CardActionArea href="#" sx={{height: "100%"}}>
+            <CardActionArea href="/profile" sx={{height: "100%"}}>
                 <img
                     style={{objectFit: "cover", width: "100%", height: "100%", borderRadius: "10px"}}
                     {...srcset(item.img, imgWidth, imgHeight, dim[1], dim[0])}

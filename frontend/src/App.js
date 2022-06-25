@@ -34,6 +34,7 @@ function App() {
                         <Route path="/" element={<Discovery/>}/>
                         <Route path="/landing" element={<LandingPage/>}/>
                         <Route path="/discovery" element={<Discovery/>}/>
+                        <Route path="/upload/:option" element={<ContentUpload/>}/>
                         <Route path="/upload" element={<ContentUpload/>}/>
                         <Route path="/plans" element={<AboutUs/>}/>
                         <Route path="/about" element={<AboutUs/>}/>

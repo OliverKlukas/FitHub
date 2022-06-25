@@ -9,12 +9,15 @@ import theme from "../utils/theme";
 
 
 const content = [{
+    option: "training",
     img: 'https://images.unsplash.com/photo-1517836357463-d25dfeac3438',
     title: 'Training Plans'
 },  {
+    option: "nutrition",
     img: 'https://images.unsplash.com/photo-1490645935967-10de6ba17061',
     title: 'Nutrition Plan'
 }, {
+    option: "coaching",
     img: 'https://images.unsplash.com/photo-1554284126-aa88f22d8b74',
     title: 'Coaching'
 }];
