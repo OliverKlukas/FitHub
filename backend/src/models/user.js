@@ -1,5 +1,6 @@
 "use strict";
 
+
 const mongoose = require("mongoose");
 
 
@@ -21,6 +22,14 @@ const UserSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    firstName: {
+        type: String,
+        required: true
+    },
+    lastName: {
+        type: String,
+        required: true
+    },
     password: {
         type: String, /* TODO make into a pw hash instead of plaintext pw */
         required: true,
@@ -33,7 +42,7 @@ const UserSchema = new mongoose.Schema({
         enum: ["customer", "contentCreator"],
         // if not specified the role "customer" is chosen
         default: "customer"
-    },
+    }, 
     description: {
         type: String,
         required: false
@@ -42,10 +51,9 @@ const UserSchema = new mongoose.Schema({
         type: Binarydata,
         reqired: false
     },
-    reviews: {
-        [ReviewSchema]
-    },
-    opts // needed for calculated fields like the amount of stars if we want to backend calculate these
+    reviews: [ReviewSchema],
+    boughtcontent: [ContentSchema],
+    opts // needed for calculated fields like the amount of stars if we want to backend calculate thes
 });
 
 UserSchema.set("versionKey", false);
