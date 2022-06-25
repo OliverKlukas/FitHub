@@ -2,6 +2,19 @@
 
 const mongoose = require("mongoose");
 
+
+const ReviewSchema = new mongoose.Schema({
+    userId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+    star: {
+        type: Number,
+        min: 1,
+        max: 5,
+    },
+    text: {
+        type: String,
+    }
+})
+
 // Define the user schema
 const UserSchema = new mongoose.Schema({
     email: {
@@ -26,9 +39,13 @@ const UserSchema = new mongoose.Schema({
         required: false
     },
     profilePicture: {
-        type: Binary,
+        type: Binarydata,
         reqired: false
-    }
+    },
+    reviews: {
+        [ReviewSchema]
+    },
+    opts // needed for calculated fields like the amount of stars if we want to backend calculate these
 });
 
 UserSchema.set("versionKey", false);
