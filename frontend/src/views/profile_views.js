@@ -1,4 +1,5 @@
 import ContentCreatorProfile from '../components/profilecomponents/content_creator_profile';
+import React from 'react';
 import { loremIpsum, Avatar } from 'react-lorem-ipsum';
 import { Stack } from "@mui/material";
 import ContentCreatorOwnProfile from '../components/profilecomponents/content_creator_own_profile';
@@ -31,14 +32,29 @@ const content = [{
     {ContentCreatorOwnProfile("Igor Something", "This is where a real trainer would have their description, this is intentionally a rather long text, to check for formatting with longer texts", content) 
      }
     </Stack> //Add functionality that it swaps between the two views depending on the user
+
+            {ownProfileBoolean &&
+                ContentCreatorOwnProfile("Igor Something", "This is where a real trainer would have their description, this is intentionally a rather long text, to check for formatting with longer texts", content)
+                || ContentCreatorProfile("Igor Something", "This is where a real trainer would have their description, this is intentionally a rather long text, to check for formatting with longer texts", content)
+            }
     
     */}
-function ProfileViews() {
+function ProfileViews(ownProfileBoolean) {
+
+    const [ownProfile, setOwnProfile] = React.useState(ownProfileBoolean)
+
+
     return (
 
         <Stack>
-            {ContentCreatorProfile("Igor Something", "This is where a real trainer would have their description, this is intentionally a rather long text, to check for formatting with longer texts", content)
+
+
+            {ownProfileBoolean
+                ? <ContentCreatorOwnProfile name="Igor Something" description="This is where a real trainer would have their description" reviews={content} />
+                : <ContentCreatorProfile name="Igor Something" description="This is where a real trainer would have their description" reviews={content} />
             }
+
+            {console.log(ownProfileBoolean)}
 
 
         </Stack>

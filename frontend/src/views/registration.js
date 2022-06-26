@@ -196,8 +196,8 @@ function Registration() {
                             email === "" ||
                             password !== password2 ||
                             emailerror ||
-                            isContentCreator && description === "" /*||
-                    isContentCreator && uploadedPicture === null*/
+                            isContentCreator && description === "" ||
+                            isContentCreator && uploadedPicture 
                         }
                     >
                         Save and Submit

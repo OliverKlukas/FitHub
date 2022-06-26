@@ -47,7 +47,7 @@ export function Header({gender, userType, signedIn}) {
     };
     // Sub-urls and link names for available user menu options.
     const settings = {
-        "profile": "Profile", "contact": "Contact", "logout": "Logout"
+        "profile/200": "Profile", "contact": "Contact", "logout": "Logout"
     };
 
     // Anchor hook to open/close the user settings menu when option selected or clicked off.
