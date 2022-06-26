@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 const helmet     = require('helmet');
 
 const auth = require('./routes/auth');
+const content = require('./routes/content')
 
 const api = express();
 

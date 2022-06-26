@@ -65,7 +65,7 @@ const register = async (req, res) => {
     } catch (error) {
         return res.status(500).json({
             error: "Internal server error",
-            message: "Error",
+            message: error.message,
         });
     }
 }
@@ -112,15 +112,41 @@ const login = async (req, res) => {
         return res.status(200).json({
             token: token,
         });
-    } catch (err) {
+    } catch (error) {
         return res.status(404).json({
             error: "User Not Found",
-            message: "User Not Found",
+            message: error.message,
         });
     }
 };
 
+const userdata = async (req, res) => {
+    try {
+        let user = await UserModel.findOne({
+            email: req.body.email,
+        }).exec();  //get user from database
+        return res.status(200).json({
+            firstname: user.firstName,
+            lastname: user.lastName,
+            role: user.role,
+            email: user.email
+        })
+
+    } catch (error) {
+        return res.status(500).json({
+            error: "Internal Server error",
+            message: error.message
+        })
+    }
+};
+
+const logout = (req, res) => {
+    res.status(200).send({token:null})
+}
+
 module.exports = {
     register,
     login,
+    userdata,
+    logout,
 };
