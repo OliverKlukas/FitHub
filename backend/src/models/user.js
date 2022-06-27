@@ -5,7 +5,8 @@ const mongoose = require("mongoose");
 
 
 const ReviewSchema = new mongoose.Schema({
-    userId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+    creatorId: { type: mongoose.Schema.Types.ObjectId, ref: "Creator" },
+    userId: {type: mongoose.Schema.Types.ObjectId, ref: "User"},
     star: {
         type: Number,
         min: 1,
@@ -48,9 +49,7 @@ const UserSchema = new mongoose.Schema({
         required: false
     },
     profilePicture: {
-        data: Buffer,
-        reqired: false,
-        contenType: String
+        type: binData,
     },
     reviews: [ReviewSchema],
     //opts // needed for calculated fields like the amount of stars if we want to backend calculate thes

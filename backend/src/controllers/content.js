@@ -1,12 +1,9 @@
 "use Strict"
 
-const jwt = require("jsonwebtoken");
-const bcrypt = require("bcryptjs");
+
 
 const config = require("../config");
-const ContentModel.findOne({
-    contentId: req.body.contentId
-}) = require("../models/content");
+const ContentModel = require("../models/content");
 
 //Method Untested, likely errors, basic structure and body checking should be fine
 const uploadContent = async (req, res) => {

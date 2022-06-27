@@ -144,9 +144,54 @@ const logout = (req, res) => {
     res.status(200).send({ token: null });
 };
 
+const addreview = (req, res) => {
+    if (!Object.prototype.hasOwnProperty.call(req.body, "userId"))
+    return res.status(400).json({
+        error: "Bad Request",
+        message: "The request body must contain a userId property",
+    });
+    if (!Object.prototype.hasOwnProperty.call(req.body, "creatorId"))
+    return res.status(400).json({
+        error: "Bad Request",
+        message: "The request body must contain a creatorId property",
+    });
+    if (!Object.prototype.hasOwnProperty.call(req.body, "star"))
+    return res.status(400).json({
+        error: "Bad Request",
+        message: "The request body must contain a star property",
+    });
+    if (!Object.prototype.hasOwnProperty.call(req.body, "text"))
+    return res.status(400).json({
+        error: "Bad Request",
+        message: "The request body must contain a text property",
+    });
+    try {
+        const review = {
+            creatorId: req.body.creatorId,
+            userId: req.body.userId,
+            star: req.body.star,
+            text: req.body.text,
+        }
+
+        let retreview = await.Usermodel.create(review);
+
+        return res.status(200).json({
+            retreview
+        });
+
+    } catch (error) {
+        return res.status(500).json({
+            error: "Internal Server error",
+            message: error.message
+        });
+    }
+}
+
+
 module.exports = {
     register,
     login,
     userdata,
     logout,
+    addreview,
 };
