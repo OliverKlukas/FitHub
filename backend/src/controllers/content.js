@@ -134,7 +134,8 @@ const deleteContent = async (req, res) => {
 }
 
 
-// untested, likely errors, needs just a contentId, since everyone can request these details
+// untested, likely errors, needs just a contentId, since everyone can request these details, this call is for all areas where content details are displayed, does not
+// return the plan pdfs
 const accessContentDetails = async (req, res) => {
     if (!Object.prototype.hasOwnProperty.call(req.body, "contentId"))
     return res.status(400).json({
@@ -142,7 +143,22 @@ const accessContentDetails = async (req, res) => {
         message: "The request body must contain a contentId property",
     });
     try {
-        
+        let content = await ContentModel.findOne({
+            contentId: req.body.contentID
+        })
+        return res.status(200).json({
+            contentId: content.contentId,
+            title: content.title,
+            category: content.category,
+            userId: content.userId,
+            price: content.price,
+            img: content.img,
+            duration: content.duration,
+            intensity: content.intensity,
+            fullSupport: content.fullSupport,
+            tags: content.tags,
+        })
+
     } catch (error) {
         return res.status(500).json({
             error: "Internal server error",
@@ -169,6 +185,15 @@ const accessBoughtContent = async (req, res) => {
         message: "The request body must contain a isCreator property",
     });
     try {
+        //TODO check whether allowed to access
+
+        let content = await ContentModel.findOne({
+            contentId: req.body.contentID
+        })
+
+        return res.status(200).json({
+            plans: content.plans,
+        })
         
     } catch (error) {
         return res.status(500).json({
@@ -178,7 +203,7 @@ const accessBoughtContent = async (req, res) => {
     }
 }
 
-// untested, likely errors, needs contentId and usedId since only owner (and maybe admin) is allowed to access it
+// untested, likely errors, needs contentId and usedId since only owner (and TODO maybe admin, this could be done with middleware) is allowed to access it
 const updateContent = async (req, res) => {
     if (!Object.prototype.hasOwnProperty.call(req.body, "contentId"))
     return res.status(400).json({
