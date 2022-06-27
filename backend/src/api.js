@@ -24,6 +24,7 @@ api.get('/', (req, res) => {
 
 // TODO API Routes (import from src/routes)
 api.use('/auth', auth);
+api.use('/content', content)
 
 
 module.exports = api;
