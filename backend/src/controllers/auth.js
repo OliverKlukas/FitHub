@@ -7,6 +7,9 @@ const config = require("../config");
 const UserModel = require("../models/user");
 
 
+
+// needs password, email, firstName, lastname and role TODO if it has role Content Creator it also needs description and picture, returns token if succesful
+// TODO add email is already used check?
 const register = async (req, res) => {
     // check request body for all required data
     if (!Object.prototype.hasOwnProperty.call(req.body, "password"))
@@ -70,7 +73,7 @@ const register = async (req, res) => {
     }
 }
 
-
+// needs email and password, returns login token
 const login = async (req, res) => {
     // check if the body of the request contains all necessary properties
     if (!Object.prototype.hasOwnProperty.call(req.body, "password"))
@@ -120,6 +123,9 @@ const login = async (req, res) => {
     }
 };
 
+
+// TESTMETHOD  returns userdata to check if the data was correctly generated, needs to be changed later to send the public data if
+// the given first name and last name map to a content creator
 const userdata = async (req, res) => {
     try {
         let user = await UserModel.findOne({
@@ -140,10 +146,15 @@ const userdata = async (req, res) => {
     }
 };
 
+
+// main functionality of this needs to be in TODO middleware
 const logout = (req, res) => {
     res.status(200).send({ token: null });
 };
 
+
+
+// adds a review, somewhat untested
 const addreview = (req, res) => {
     if (!Object.prototype.hasOwnProperty.call(req.body, "userId"))
     return res.status(400).json({
@@ -185,7 +196,82 @@ const addreview = (req, res) => {
             message: error.message
         });
     }
+};
+
+
+//updates review, somewhat untested, needs the reviewID and the creatorId, only if the creatorId is equal does the request resolve, should also TODO check middleware
+const updatereview = (req, res) => {
+    if (!Object.prototype.hasOwnProperty.call(req.body, "reviewId"))
+    return res.status(400).json({
+        error: "Bad Request",
+        message: "The request body must contain a reviewId property",
+    });
+    if (!Object.prototype.hasOwnProperty.call(req.body, "creatorId"))
+    return res.status(400).json({
+        error: "Bad Request",
+        message: "The request body must contain a creatorId property",
+    });
+    try {
+            //TODO unsure how this should be implemented
+    } catch (error) {
+        return res.status(500).json({
+            error: "Internal Server error",
+            message: error.message
+        });
+    }
 }
+
+// deletes review, somewhat untested, needs the reviewId and the CreatorId, only if the creatorid is equal does the request resolve, should also TODO check middleware
+const deletereview = (req, res) => {
+    if (!Object.prototype.hasOwnProperty.call(req.body, "reviewId"))
+    return res.status(400).json({
+        error: "Bad Request",
+        message: "The request body must contain a reviewId property",
+    });
+    if (!Object.prototype.hasOwnProperty.call(req.body, "creatorId"))
+    return res.status(400).json({
+        error: "Bad Request",
+        message: "The request body must contain a creatorId property",
+    });
+    try {
+        let review = UserModel.findOneAndDelete({
+            creatorId: req.body.creatorId
+        })
+        return res.status(200).json({
+            message: "Succesfully deleted Account"
+        })
+        
+    } catch (error) {
+        return res.status(500).json({
+            error: "Internal Server error",
+            message: error.message
+        });
+    }
+}
+
+// TODO needs to check middleware and then deletes the account
+const deleteuser = (req,res) => {
+    if (!Object.prototype.hasOwnProperty.call(req.body, "email"))
+    return res.status(400).json({
+        error: "Bad Request",
+        message: "The request body must contain a email property",
+    });
+    try {
+        UserModel.findOneAndDelete({
+            email: req.body.email
+        });
+        return res.status(200).json({
+            message: "Succesfully deleted Account"
+        })
+        
+    } catch (error) {
+        return res.status(500).json({
+            error: "Internal Server error",
+            message: error.message
+        });
+    }
+}
+
 
 
 module.exports = {
@@ -193,5 +279,8 @@ module.exports = {
     login,
     userdata,
     logout,
+    deleteuser,
     addreview,
+    updatereview,
+    deletereview,
 };
