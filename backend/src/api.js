@@ -5,7 +5,7 @@ const bodyParser = require('body-parser');
 const helmet     = require('helmet');
 
 const auth = require('./routes/auth');
-const content = require('./routes/content')
+const contentrouter = require('./routes/content')
 
 const api = express();
 
@@ -24,7 +24,7 @@ api.get('/', (req, res) => {
 
 // TODO API Routes (import from src/routes)
 api.use('/auth', auth);
-api.use('/content', content)
+api.use('/content', contentrouter)
 
 
 module.exports = api;

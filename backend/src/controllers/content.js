@@ -222,10 +222,10 @@ const updateContent = async (req, res) => {
     }
 }
 
-module.exports(
+module.exports = {
     uploadContent,
     deleteContent,
     accessContentDetails,
     updateContent,
     accessBoughtContent,
-);
+};

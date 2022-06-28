@@ -48,8 +48,8 @@ const UserSchema = new mongoose.Schema({
         type: String,
         required: false
     },
-    profilePicture: {
-        type: binData,
+    profilePicturep: {
+        type: String,
     },
     reviews: [ReviewSchema],
     //opts // needed for calculated fields like the amount of stars if we want to backend calculate thes

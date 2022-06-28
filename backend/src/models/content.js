@@ -1,5 +1,6 @@
 "use strict";
-import { createModel } from 'mongoose-gridfs';
+
+//const { createModel } = require('mongoose-gridfs');
 
 const mongoose = require("mongoose");
 
@@ -10,7 +11,10 @@ const ImageSchema = new mongoose.Schema({
      }
 })
 
-const Attachment = createModel();
+//const Attachment = createModel();
+const Attachment = new mongoose.Schema ({
+    pdf: {data: Buffer, contentType: String}
+})
 
 const TagSchema = new mongoose.Schema({ tag: {type: String}})
 

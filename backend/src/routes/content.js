@@ -10,3 +10,5 @@ router.delete("/delete",ContentController.deleteContent)
 router.get("/contentdetails",ContentController.accessContentDetails)
 router.get("/boughtcontent", ContentController.accessBoughtContent)
 router.put("/update",ContentController.updateContent)
+
+module.exports = router;
