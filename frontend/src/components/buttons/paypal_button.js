@@ -32,9 +32,7 @@ export const PaypalCheckoutButton = (props) => {
     return (
         <PayPalButtons
         style={{
-            layout: "horizontal",
-            color: 'blue',
-            height: 40,
+            layout: "vertical"
         }}
         onClick={(data, actions) => {
             // validate on button click, client or server side

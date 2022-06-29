@@ -5,6 +5,7 @@ import { HighlightButton } from "../components/buttons/highlight_button";
 import { PaypalCheckoutButton } from "../components/buttons/paypal_button";
 import { content } from "../utils/content";
 import { PayPalScriptProvider } from "@paypal/react-paypal-js";
+import { useState } from "react";
 
 /**
  * get image src path.
@@ -63,11 +64,14 @@ export default function Payment() {
     // check if the terms and conditions are accepted; if accepted go to myplans; if not accepted open the snackbar to display an error message
     const handleSubmit = () => {
         if (termsChecked) {
-            navigate(`/myplans/2000`);
+            setShow(true);
+            //navigate(`/myplans/2000`);
         } else {
             setsnackOpen(true);
         }
     };
+
+    const [show, setShow] = useState(false);
 
     const product = {
         description: "Beispiel",
@@ -159,21 +163,20 @@ export default function Payment() {
                         label={
                             <Stack direction="row" spacing={0.5}>
                                 <Typography>I have read the</Typography>
-                                <Typography component={RouterLink} color="inherit" to={`/terms-and-conditions`}>
+                                <Typography component={RouterLink} target="_blank" color="inherit" to={`/terms-and-conditions`}>
                                     Terms and Conditions{" "}
                                 </Typography>
                             </Stack>
                         }
                     />
                 </Stack>
-                {/*<HighlightButton variant="contained" type="submit" onClick={handleSubmit}>
+                <HighlightButton variant="contained" type="submit" onClick={handleSubmit}>
                     Buy Now
-                    </HighlightButton>*/}
-
-                <div className="paypal-button-container">
+                </HighlightButton>
+                {show ? (
                     <PaypalCheckoutButton product={product} />
-                </div>
-
+                ) : null}
+                    
                 <Snackbar open={snackopen} autoHideDuration={6000} onClose={handleSnackClose} message={"You have to accept FitHub's Terms and Conditions before continuing."} />
             </Stack>
         </PayPalScriptProvider>
