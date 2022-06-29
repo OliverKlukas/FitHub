@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Box, FormControlLabel, Checkbox, Divider, Stack, Typography, Radio, RadioGroup, Snackbar } from "@mui/material";
-import { useNavigate, Link as RouterLink, useParams } from "react-router-dom";
+import { Link as RouterLink, useParams } from "react-router-dom";
 import { HighlightButton } from "../components/buttons/highlight_button";
 import { PaypalCheckoutButton } from "../components/buttons/paypal_button";
 import { content } from "../utils/content";
@@ -31,11 +31,19 @@ function srcset(image, width, height) {
 export default function Payment() {
     // Match url id to content item.
     let { id } = useParams();
+
+    // get the content item from the database
     // eslint-disable-next-line
-
-    const [openDialog, setOpenDialog] = React.useState(false);
-
     const item = content.find((item) => item.id == id);
+
+    // get the description from the item and store it in product that will be passed to the paypal checkout button
+    const product = {
+        description: item.title,
+        price: item.price,
+    };
+
+    // if show is false, the standard payment view with payment method selection and terms and conditions accepting is displayed. If show true, only the paypal buttons will be displayed
+    const [show, setShow] = useState(false);
 
     // state for payment method: by default payPal
     const [paymentMethod, setPaymentMethod] = React.useState("payPal");
@@ -61,9 +69,6 @@ export default function Payment() {
         setsnackOpen(false);
     };
 
-    // handle routing to the myplans view after payment
-    let navigate = useNavigate();
-
     // check if the terms and conditions are accepted; if accepted go to myplans; if not accepted open the snackbar to display an error message
     const handleSubmit = () => {
         if (termsChecked) {
@@ -72,13 +77,6 @@ export default function Payment() {
         } else {
             setsnackOpen(true);
         }
-    };
-
-    const [show, setShow] = useState(false);
-
-    const product = {
-        description: "Beispiel",
-        price: 10,
     };
 
     return (
