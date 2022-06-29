@@ -32,6 +32,9 @@ export default function Payment() {
     // Match url id to content item.
     let { id } = useParams();
     // eslint-disable-next-line
+
+    const [openDialog, setOpenDialog] = React.useState(false);
+
     const item = content.find((item) => item.id == id);
 
     // state for payment method: by default payPal
@@ -79,7 +82,7 @@ export default function Payment() {
     };
 
     return (
-        <PayPalScriptProvider options={{"client-id": "AfSE031dbgxgbMRlT8Ec3OBL00O8o0dShOB_NIHd4vHg5tFVfLRGeERRMV9MZfcxG9_AhXwXZiG7vKRS", "currency": "EUR"}}>
+        <PayPalScriptProvider options={{ "client-id": "AfSE031dbgxgbMRlT8Ec3OBL00O8o0dShOB_NIHd4vHg5tFVfLRGeERRMV9MZfcxG9_AhXwXZiG7vKRS", currency: "EUR" }}>
             <Stack spacing={3} marginBottom={10} marginTop={5} alignItems="center">
                 <Stack
                     padding={5}
@@ -128,55 +131,62 @@ export default function Payment() {
                     </Stack>
                     <Divider sx={{ mt: 3, ml: { xs: 3, md: 0 }, bgcolor: "#222831" }} />
                 </Stack>
-                <Box alignItems="flex-start" sx={{ width: { xs: "100%", md: "100%", lg: "80%", xl: "60%" } }}>
-                    <Typography variant="h2">Payment Options:</Typography>
-                </Box>
-                <Stack
-                    paddingLeft={3}
-                    backgroundColor="#EEEEEE"
-                    sx={{
-                        width: { xs: "100%", md: "100%", lg: "80%", xl: "60%" },
-                        borderRadius: 2,
-                        boxShadow: 5,
-                    }}
-                >
-                    <RadioGroup value={paymentMethod} onChange={handlePaymentChange}>
-                        <FormControlLabel control={<Radio />} value="payPal" label="PayPal" />
-                    </RadioGroup>
-                </Stack>
-                <Box alignItems="flex-start" sx={{ width: { xs: "100%", md: "100%", lg: "80%", xl: "60%" } }}>
-                    <Typography variant="h2">Legal Notices:</Typography>
-                </Box>
-                <Stack
-                    paddingLeft={3}
-                    direction="row"
-                    alignItems="center"
-                    backgroundColor="#EEEEEE"
-                    sx={{
-                        width: { xs: "100%", md: "100%", lg: "80%", xl: "60%" },
-                        borderRadius: 2,
-                        boxShadow: 5,
-                    }}
-                >
-                    <FormControlLabel
-                        control={<Checkbox checked={termsChecked} onChange={handleTermsChange} />}
-                        label={
-                            <Stack direction="row" spacing={0.5}>
-                                <Typography>I have read the</Typography>
-                                <Typography component={RouterLink} target="_blank" color="inherit" to={`/terms-and-conditions`}>
-                                    Terms and Conditions{" "}
-                                </Typography>
-                            </Stack>
-                        }
-                    />
-                </Stack>
-                <HighlightButton variant="contained" type="submit" onClick={handleSubmit}>
-                    Buy Now
-                </HighlightButton>
-                {show ? (
-                    <PaypalCheckoutButton product={product} />
-                ) : null}
-                    
+                {show ? null : (
+                    <Box alignItems="flex-start" sx={{ width: { xs: "100%", md: "100%", lg: "80%", xl: "60%" } }}>
+                        <Typography variant="h2">Payment Options:</Typography>
+                    </Box>
+                )}
+                {show ? null : (
+                    <Stack
+                        paddingLeft={3}
+                        backgroundColor="#EEEEEE"
+                        sx={{
+                            width: { xs: "100%", md: "100%", lg: "80%", xl: "60%" },
+                            borderRadius: 2,
+                            boxShadow: 5,
+                        }}
+                    >
+                        <RadioGroup value={paymentMethod} onChange={handlePaymentChange}>
+                            <FormControlLabel control={<Radio />} value="payPal" label="PayPal" />
+                        </RadioGroup>
+                    </Stack>
+                )}
+                {show ? null : (
+                    <Box alignItems="flex-start" sx={{ width: { xs: "100%", md: "100%", lg: "80%", xl: "60%" } }}>
+                        <Typography variant="h2">Legal Notices:</Typography>
+                    </Box>
+                )}
+                {show ? null : (
+                    <Stack
+                        paddingLeft={3}
+                        direction="row"
+                        alignItems="center"
+                        backgroundColor="#EEEEEE"
+                        sx={{
+                            width: { xs: "100%", md: "100%", lg: "80%", xl: "60%" },
+                            borderRadius: 2,
+                            boxShadow: 5,
+                        }}
+                    >
+                        <FormControlLabel
+                            control={<Checkbox checked={termsChecked} onChange={handleTermsChange} />}
+                            label={
+                                <Stack direction="row" spacing={0.5}>
+                                    <Typography>I have read the</Typography>
+                                    <Typography component={RouterLink} target="_blank" color="inherit" to={`/terms-and-conditions`}>
+                                        Terms and Conditions{" "}
+                                    </Typography>
+                                </Stack>
+                            }
+                        />
+                    </Stack>
+                )}
+                {show ? null : (
+                    <HighlightButton variant="contained" type="submit" onClick={handleSubmit}>
+                        Buy Now
+                    </HighlightButton>
+                )}
+                {show ? <PaypalCheckoutButton product={product} /> : null}
                 <Snackbar open={snackopen} autoHideDuration={6000} onClose={handleSnackClose} message={"You have to accept FitHub's Terms and Conditions before continuing."} />
             </Stack>
         </PayPalScriptProvider>
