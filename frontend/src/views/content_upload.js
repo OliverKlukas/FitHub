@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Grid, Stack, Typography, Link} from "@mui/material";
+import {Grid, Stack, Typography, Link, Snackbar} from "@mui/material";
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
@@ -12,7 +12,8 @@ import {StandardButton} from "../components/buttons/standard_button";
 import {CancelButton} from "../components/buttons/cancel_button";
 import Autocomplete from '@mui/material/Autocomplete';
 import UploadButton from '../components/buttons/upload_button';
-import {useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
+import MuiAlert from '@mui/material/Alert';
 
 
 const preInputValue = "Type here...";
@@ -22,6 +23,15 @@ const lifestyle = ['vegan', 'vegetarian', 'pescatarian', 'meat-based'];
 
 function ContentUpload(){
   let {option} = useParams();  
+
+  let navigate = useNavigate();
+
+  function handleCancelSubmit(event) {
+    event.preventDefault();  
+      navigate(`/landing`);
+      
+  } 
+
   return(
         
     <Stack spacing={2}> 
@@ -269,9 +279,13 @@ function ContentUpload(){
         </Grid>
         <Grid item xs={12}>
           <Stack spacing={2} direction="row">
-            <CancelButton variant="contained" target="_blank" back>
+          <form onSubmit={handleCancelSubmit}>
+          <FormControl>
+            <CancelButton variant="contained" type="submit">
                     Cancel
             </CancelButton>
+            </FormControl>
+          </form>
             <StandardButton variant="contained">
               Publish
             </StandardButton>

@@ -16,6 +16,7 @@ import TermsAndConditions from "./views/terms_and_conditions";
 import MyPlans from "./views/myplans";
 import LandingPage from "./views/landing_page";
 import ContentUpload from './views/content_upload'; 
+import MyContent from "./views/mycontent";
 
 /**
  * Consists of a header at top, the different routed views in the middle and a footer at the bottom.
@@ -44,7 +45,8 @@ function App() {
                         <Route path="/details/:id" element={<Details/>}/>
                         <Route path="/payment/:id" element={<Payment/>}/>
                         <Route path="/terms-and-conditions" element={<TermsAndConditions/>}/>
-                        <Route path="/myplans/:id" element={<MyPlans/>}/>                    
+                        <Route path="/myplans/:id" element={<MyPlans/>}/>
+                        <Route path="/mycontent/:id" element={<MyContent/>}/>                     
                     </Routes>
                 </Box>
                 <Footer/>
