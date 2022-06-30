@@ -20,7 +20,7 @@ import {LinkButton} from "../buttons/link_button";
  * @param userType - Specifies the userType="content-creator" | "user" which dictates user specific customizations.
  * @returns {JSX.Element}
  */
-export function Header({gender, userType}) {
+export function Header({gender, userType, signedIn}) {
     // Sub-urls and link names for available page views.
     let pages;
     let icondirection;
@@ -38,13 +38,13 @@ export function Header({gender, userType}) {
 
     // Anchor hook to open/close the navigation menu when option selected or clicked off.
     const [anchorElSet, setAnchorElSet] = React.useState(null);
+
     const handleOpenNavMenu = (event) => {
         setAnchorElNav(event.currentTarget);
     };
     const handleCloseNavMenu = () => {
         setAnchorElNav(null);
     };
-
     // Sub-urls and link names for available user menu options.
     const settings = {
         "profile": "Profile", "contact": "Contact", "logout": "Logout"
@@ -54,6 +54,7 @@ export function Header({gender, userType}) {
     const [anchorElNav, setAnchorElNav] = React.useState(null);
     const handleOpenSetMenu = (event) => {
         setAnchorElSet(event.currentTarget);
+        console.log(signedIn);
     };
     const handleCloseSetMenu = () => {
         setAnchorElSet(null);

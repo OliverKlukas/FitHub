@@ -12,8 +12,8 @@ import { Divider, Rating, Snackbar, Stack, TextField } from '@mui/material'
 import StarIcon from '@mui/icons-material/Star'
 import { HighlightButton } from '../../buttons/highlight_button';
 import { StandardButton } from '../../buttons/standard_button';
-import {ReactComponent as LogoSmall} from "../../../resources/logo_small.svg";
-import {ReactComponent as LogoText} from "../../../resources/logo_text.svg";
+import { ReactComponent as LogoSmall } from "../../../resources/logo_small.svg";
+import { ReactComponent as LogoText } from "../../../resources/logo_text.svg";
 import loremIpsum from 'react-lorem-ipsum';
 
 const RatingDial = styled(Dialog)(({ theme }) => ({
@@ -54,14 +54,14 @@ RatingDialTitle.propTypes = {
   onClose: PropTypes.func.isRequired,
 };
 
-export default function RatingDialog(submitReview){
+export default function RatingDialog(submitReview) {
 
   const [value, setValue] = React.useState(2); // States for Rating
 
   const [open, setOpen] = React.useState(false);  // States for popup
 
   const [snackopen, setsnackOpen] = React.useState(false); // States for Snackbar
-  
+
   var today = new Date()
   var dd = String(today.getDate()).padStart(2, '0');
   var mm = String(today.getMonth() + 1).padStart(2, '0');
@@ -71,9 +71,9 @@ export default function RatingDialog(submitReview){
     author: "Another User",
     text: loremIpsum(),
     title: "I like it",
-    date: dd+mm+yyyy,
+    date: dd + mm + yyyy,
     star: 1,
-}
+  }
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -82,7 +82,7 @@ export default function RatingDialog(submitReview){
     setOpen(false);
   };
 
-  const handleSnackClose= () => {
+  const handleSnackClose = () => {
     setsnackOpen(false)
   }
 
@@ -94,7 +94,7 @@ export default function RatingDialog(submitReview){
 
   return (
     <div>
-     <HighlightButton variant='contained' onClick={handleClickOpen}>write a review</HighlightButton>
+      <HighlightButton variant='contained' onClick={handleClickOpen}>write a review</HighlightButton>
       <RatingDial
         onClose={handleClose}
         aria-labelledby="customized-dialog-title"
@@ -103,45 +103,45 @@ export default function RatingDialog(submitReview){
       >
         <RatingDialTitle id="customized-dialog-title" onClose={handleClose}>
           <Stack direction="row" >
-            <Typography maxRows={1} variant='h3'> 
-            Create Review 
+            <Typography maxRows={1} variant='h3'>
+              Create Review
             </Typography>
-            </Stack>
+          </Stack>
         </RatingDialTitle>
         <DialogContent dividers>
-        <Stack spacing={1}
-        >
-          <Typography> 
-            Igor Something
-          </Typography> 
-          <Divider>
-
-          </Divider>
-          <Stack direction="row" spacing={40}>
-            <Typography>
-              Overall rating
-            </Typography>
-          <Rating
-            name="simple-controlled"
-            value={value}
-            defaultValue={3}
-            icon={<StarIcon color='warning'></StarIcon>}
-            onChange={(event, newValue) => {
-            setValue(newValue);
-              }}
-          />
-          </Stack>
-
-          <TextField
-          id='outlined-basic'
-          label="Add a written review" 
-          variant="outlined"
-          multiline
-          minRows={5}
-          maxRows={5}
-          
+          <Stack spacing={1}
           >
-          </TextField>
+            <Typography>
+              Igor Something
+            </Typography>
+            <Divider>
+
+            </Divider>
+            <Stack direction="row" spacing={40}>
+              <Typography>
+                Overall rating
+              </Typography>
+              <Rating
+                name="simple-controlled"
+                value={value}
+                defaultValue={3}
+                icon={<StarIcon color='warning'></StarIcon>}
+                onChange={(event, newValue) => {
+                  setValue(newValue);
+                }}
+              />
+            </Stack>
+
+            <TextField
+              id='outlined-basic'
+              label="Add a written review"
+              variant="outlined"
+              multiline
+              minRows={5}
+              maxRows={5}
+
+            >
+            </TextField>
           </Stack>
         </DialogContent>
         <DialogActions>
@@ -149,16 +149,16 @@ export default function RatingDialog(submitReview){
             cancel
           </StandardButton>
           <HighlightButton autoFocus onClick={handleSubmit} variant="contained">
-            submit 
+            submit
           </HighlightButton>
         </DialogActions>
       </RatingDial>
       <Snackbar
-            open={snackopen}
-            autoHideDuration={6000}
-            onClose={handleSnackClose}
-            message="Review Submitted"
-          />
+        open={snackopen}
+        autoHideDuration={6000}
+        onClose={handleSnackClose}
+        message="Review Submitted"
+      />
     </div>
   );
 }

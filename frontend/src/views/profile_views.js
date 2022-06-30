@@ -1,7 +1,6 @@
 import ContentCreatorProfile from '../components/profilecomponents/content_creator_profile';
 import { loremIpsum, Avatar } from 'react-lorem-ipsum';
 import { Stack } from "@mui/material";
-import {Link as RouterLink, useParams} from "react-router-dom";
 import ContentCreatorOwnProfile from '../components/profilecomponents/content_creator_own_profile';
 
 
@@ -27,22 +26,22 @@ const content = [{
 
 ]
 
-        {/** 
+{/** 
         <Stack>
     {ContentCreatorOwnProfile("Igor Something", "This is where a real trainer would have their description, this is intentionally a rather long text, to check for formatting with longer texts", content) 
      }
     </Stack> //Add functionality that it swaps between the two views depending on the user
     
     */}
-function ProfileViews(){
-    return(
+function ProfileViews() {
+    return (
 
-    <Stack>
-        {ContentCreatorProfile("Igor Something", "This is where a real trainer would have their description, this is intentionally a rather long text, to check for formatting with longer texts", content) 
-        }
+        <Stack>
+            {ContentCreatorProfile("Igor Something", "This is where a real trainer would have their description, this is intentionally a rather long text, to check for formatting with longer texts", content)
+            }
 
 
-    </Stack>
+        </Stack>
 
     )
 }
