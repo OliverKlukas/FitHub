@@ -30,19 +30,24 @@ const list = async (req, res) => {
  * @returns {Promise<*>}
  */
 const create = async (req, res) => {
-  // check if the body of the request contains all necessary properties
-  if (Object.keys(req.body).length === 0)
-    return res.status(400).json({
-      error: "Bad Request",
-      message: "The request body is empty",
-    });
 
-  // handle the request
+  // Checks if the body of the request contains all necessary content properties.
+  const requiredProps = ["contentID", "userID", "category", "title", "price", "img", "duration", "intensity", "fullSupport", "tags", "plans"];
+  for(let prop in requiredProps){
+    if(!Object.prototype.hasOwnProperty.call(req.body, prop)){
+      return res.status(400).json({
+        error: "Bad Request",
+        message: `The request body must contain a ${prop} property`,
+      });
+    }
+  }
+
+  // Handle the given content creation request.
   try {
-    // create content in database
+    // Create content in database with supplied request body.
     let content = await ContentModel.create(req.body);
 
-    // return created movie
+    // Return success status with created content as json.
     return res.status(201).json(content);
   } catch (err) {
     console.log(err);
