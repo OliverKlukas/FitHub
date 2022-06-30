@@ -48,7 +48,7 @@ function App() {
                         <Route path="/payment/:id" element={<Payment/>}/>
                         <Route path="/terms-and-conditions" element={<TermsAndConditions/>}/>
                         <Route path="/myplans/:id" element={<MyPlans/>}/>           
-                        <Route path="/signin" element={<SignIn/>}/>      
+                        <Route path="/login" element={<SignIn/>}/>      
                     </Routes>
                 </Box>
                 <Footer/>
