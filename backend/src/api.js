@@ -5,7 +5,8 @@ const bodyParser = require("body-parser");
 const helmet = require("helmet");
 
 const auth = require("./routes/auth");
-const contentrouter = require("./routes/content");
+const content = require("./routes/content");
+const middlewares = require('./middlewares');
 
 const api = express();
 
@@ -13,6 +14,7 @@ const api = express();
 api.use(helmet());
 api.use(bodyParser.json());
 api.use(bodyParser.urlencoded({ extended: false }));
+api.use(middlewares.allowCrossDomain);
 
 // Basic route
 api.get("/", (req, res) => {
@@ -21,8 +23,8 @@ api.get("/", (req, res) => {
   });
 });
 
-// TODO API Routes (import from src/routes)
+// API routes from api.js.
 api.use("/auth", auth);
-api.use("/content", contentrouter);
+api.use("/content", content);
 
 module.exports = api;

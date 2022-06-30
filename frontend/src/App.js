@@ -17,6 +17,11 @@ import MyPlans from "./views/myplans";
 import LandingPage from "./views/landing_page";
 import ContentUpload from "./views/content_upload";
 import SignIn from "./views/sign_in";
+import ContentListViewTest from "./views/contentTest";
+import {Provider} from "react-redux";
+import {applyMiddleware, createStore} from "redux";
+import reducers from "./redux/reducers";
+import thunkMiddleware from "redux-thunk";
 
 /**
  * Consists of a header at top, the different routed views in the middle and a footer at the bottom.
@@ -26,8 +31,12 @@ import SignIn from "./views/sign_in";
 function App() {
   const [signedIn, setSignedIn] = React.useState(false);
 
+  // create store for redux
+  const store = createStore(reducers, applyMiddleware(thunkMiddleware));
+
   return (
     <ThemeProvider theme={FitHubTheme}>
+      <Provider store={store}>
       <CssBaseline />
       <BrowserRouter>
         <Box sx={{ marginX: 6 }}>
@@ -39,7 +48,7 @@ function App() {
           <Box minHeight="75vh">
             <Routes>
               <Route path="*" element={<PageNotFound />} />
-              <Route path="/" element={<Discovery />} />
+              <Route path="/" element={<ContentListViewTest />} />
               <Route path="/landing" element={<LandingPage />} />
               <Route path="/discovery" element={<Discovery />} />
               <Route path="/upload" element={<ContentUpload />} />
@@ -61,6 +70,7 @@ function App() {
           <Footer />
         </Box>
       </BrowserRouter>
+      </Provider>
     </ThemeProvider>
   );
 }
