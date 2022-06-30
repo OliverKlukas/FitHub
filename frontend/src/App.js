@@ -16,6 +16,7 @@ import TermsAndConditions from "./views/terms_and_conditions";
 import MyPlans from "./views/myplans";
 import LandingPage from "./views/landing_page";
 import ContentUpload from './views/content_upload'; 
+import SignIn from './views/sign_in';
 import MyContent from "./views/mycontent";
 
 /**
@@ -46,6 +47,7 @@ function App() {
                         <Route path="/payment/:id" element={<Payment/>}/>
                         <Route path="/terms-and-conditions" element={<TermsAndConditions/>}/>
                         <Route path="/myplans/:id" element={<MyPlans/>}/>
+                        <Route path="/signin" element={<SignIn/>}/>
                         <Route path="/mycontent/:id" element={<MyContent/>}/>                     
                     </Routes>
                 </Box>
