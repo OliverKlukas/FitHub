@@ -1,15 +1,16 @@
 module.exports = {
-  'env': {
-    'browser': true,
-    'es2021': true,
+  env: {
+    browser: true,
+    es2021: true,
   },
-  'extends': [
-    'google',
-  ],
-  'parserOptions': {
-    'ecmaVersion': 'latest',
-    'sourceType': 'module',
+  extends: ["google", "prettier"],
+  parserOptions: {
+    ecmaVersion: "latest",
+    sourceType: "module",
   },
-  'rules': {
+  plugins: ["prettier"],
+  rules: {
+    "no-multiple-empty-lines": ["error", { max: 1, maxEOF: 0 }],
+    "prettier/prettier": "error",
   },
 };
