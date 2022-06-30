@@ -17,6 +17,7 @@ import MyPlans from "./views/myplans";
 import LandingPage from "./views/landing_page";
 import ContentUpload from './views/content_upload'; 
 import SignIn from './views/sign_in';
+import MyContent from "./views/mycontent";
 
 /**
  * Consists of a header at top, the different routed views in the middle and a footer at the bottom.
@@ -38,6 +39,7 @@ function App() {
                         <Route path="/" element={<Discovery/>}/>
                         <Route path="/landing" element={<LandingPage/>}/>
                         <Route path="/discovery" element={<Discovery/>}/>
+                        <Route path="/upload/:option" element={<ContentUpload/>}/>
                         <Route path="/upload" element={<ContentUpload/>}/>
                         <Route path="/plans" element={<AboutUs/>}/>
                         <Route path="/about" element={<AboutUs/>}/>
@@ -47,8 +49,9 @@ function App() {
                         <Route path="/details/:id" element={<Details/>}/>
                         <Route path="/payment/:id" element={<Payment/>}/>
                         <Route path="/terms-and-conditions" element={<TermsAndConditions/>}/>
-                        <Route path="/myplans/:id" element={<MyPlans/>}/>           
-                        <Route path="/signin" element={<SignIn/>}/>      
+                        <Route path="/myplans/:id" element={<MyPlans/>}/>
+                        <Route path="/signin" element={<SignIn/>}/>
+                        <Route path="/mycontent/:id" element={<MyContent/>}/>                     
                     </Routes>
                 </Box>
                 <Footer/>

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Grid, Stack, Typography} from "@mui/material";
+import {Grid, Stack, Typography, Link, Snackbar} from "@mui/material";
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
@@ -7,12 +7,13 @@ import FormControl from '@mui/material/FormControl';
 import TextField from '@mui/material/TextField';
 import EuroSymbol from "@mui/icons-material/Euro";
 import InputAdornment from '@mui/material/InputAdornment';
-import FormGroup from '@mui/material/FormGroup';
 import Checkbox from '@mui/material/Checkbox';
 import {StandardButton} from "../components/buttons/standard_button";
 import {CancelButton} from "../components/buttons/cancel_button";
 import Autocomplete from '@mui/material/Autocomplete';
 import UploadButton from '../components/buttons/upload_button';
+import {useNavigate, useParams} from "react-router-dom";
+import MuiAlert from '@mui/material/Alert';
 
 
 const preInputValue = "Type here...";
@@ -21,7 +22,17 @@ const fitnessLevel = ['beginner', 'advanced', 'professional'];
 const lifestyle = ['vegan', 'vegetarian', 'pescatarian', 'meat-based'];
 
 function ContentUpload(){
-    return(
+  let {option} = useParams();  
+
+  let navigate = useNavigate();
+
+  function handleCancelSubmit(event) {
+    event.preventDefault();  
+      navigate(`/landing`);
+      
+  } 
+
+  return(
         
     <Stack spacing={2}> 
 
@@ -42,7 +53,7 @@ function ContentUpload(){
       <RadioGroup
         row
         aria-labelledby="category-radio-buttons-group-label"
-        defaultValue= "training"
+        defaultValue = { option ? option : "training"}
         name="row-radio-buttons-group"
       >
         <FormControlLabel value="training" control={<Radio />} label="Training Plan" />
@@ -208,7 +219,7 @@ function ContentUpload(){
            <Stack spacing = {1}>
            <UploadButton id="markting-upload" uploadFormat="image/*" givenId="marketing-upload" multiUpload={true}/>
            <Grid xs={4.5}>
-           <Typography variant="body2" fontSize="small">Please upload pictures that represents your offer (example dishes, workouts etc). Be aware and respect our terms & conditions including image rights</Typography>
+           <Typography variant="body2" fontSize="small">Please upload pictures that represents your offer (example dishes, workouts etc). Be aware and respect our <Link color="#393E46" fontSize={14} fontWeight={300} underline="always" href="/terms-and-conditions">Terms & Conditions</Link> including image rights</Typography>
            </Grid>
            </Stack>
         </Stack>
@@ -247,24 +258,37 @@ function ContentUpload(){
         <Typography variant="h3">Legal Notices</Typography>
         </Grid>
         <Grid item xs={10}>
-        <FormGroup>
-          <FormControlLabel control={<Checkbox />} label="Yes, email me for marketing events like vouchers and sales weekends!" />
-          <FormControlLabel control={<Checkbox />} label="Yes, I am offering full-time support for any buyer" />
-        </FormGroup>
-        <FormGroup>
-        <FormControlLabel control={<Checkbox />} label="Yes, I ensure delivery of the expected quality and know intentional fooling attemps will result in penalties like a an account ban" />
-        <FormControlLabel control={<Checkbox />} label="Yes, I hereby accept the terms & conditions of FitHub" />
-        </FormGroup>
+        <Stack item spacing={0.5}>
+        <Stack direction="row" alignItems="center">
+             <Checkbox />
+             <Typography variant="body1">Yes, EMail me for marketing events like vouchers & sales weekends</Typography>
+        </Stack>
+          <Stack direction="row" alignItems="center">
+          <Checkbox />
+             <Typography variant="body1">Yes, I am offering full-time support for the buyers</Typography>
+          </Stack>
+        <Stack direction="row" alignItems="center">
+        <Checkbox />
+          <Typography variant="body1">Yes, I ensure delivery of the expected quality and know intentional fooling attempts will result in penalties like an account ban</Typography>
+          </Stack>
+        <Stack direction="row" alignItems="center">
+        <Checkbox />
+          <Typography variant="body1">Yes, I hereby accept the <Link color="#393E46" fontSize={14} fontWeight={300} underline="always" href="/terms-and-conditions">Terms & Conditions</Link> of FitHub</Typography>
+          </Stack>
+        </Stack>
         </Grid>
         <Grid item xs={12}>
           <Stack spacing={2} direction="row">
-            <CancelButton variant="contained" target="_blank" back>
+          <form onSubmit={handleCancelSubmit}>
+          <FormControl>
+            <CancelButton variant="contained" type="submit">
                     Cancel
             </CancelButton>
+            </FormControl>
+          </form>
             <StandardButton variant="contained">
               Publish
             </StandardButton>
-
           </Stack>
         </Grid>
     </Grid>
