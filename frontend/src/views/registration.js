@@ -1,3 +1,6 @@
+/* eslint-disable prettier/prettier */
+/* eslint-disable react/prop-types */
+/* eslint-disable valid-jsdoc */
 import {
     TextField,
     Stack,
@@ -10,12 +13,18 @@ import {
     FormControl,
     FormLabel,
 } from "@mui/material";
-import * as React from "react";
+import React from "react";
 import { HighlightButton } from "../components/buttons/highlight_button";
 import { Link as RouterLink } from "react-router-dom";
 import UploadButton from "../components/buttons/upload_button";
+import UserService from "../services/userService";
 
-function Registration() {
+/**
+ *
+ * @param {props} props
+ */
+function Registration(props) {
+
     const [passworderror, setPasswordError] = React.useState(false);
     const [emailerror, setEmailError] = React.useState(false);
     const [errormessage, setErrorMessage] = React.useState("");
@@ -94,8 +103,14 @@ function Registration() {
         setsnackOpen(false);
     };
 
-    const handleSubmit = () => {
-        comparePasswords();
+    const handleSubmit = async () => {
+        if (isContentCreator) {
+            const resp = await UserService.registerContentCreator(email, password, firstname, lastname,description,uploadedPicture);
+            console.log(resp)
+        } else {
+            const resp = await UserService.registerCustomer(email, password, firstname, lastname);
+            console.log(resp)
+        }
     };
     return (
         <Grid
@@ -193,8 +208,7 @@ function Registration() {
                     <HighlightButton
                         variant="contained"
                         onClick={handleSubmit}
-                        component={RouterLink}
-                        to={"/discovery"}
+                        // TODO add link again once submit is working
                         disabled={
                             firstname === "" ||
                             lastname === "" ||
@@ -204,8 +218,8 @@ function Registration() {
                             email === "" ||
                             password !== password2 ||
                             emailerror ||
-                            (isContentCreator && description === "") /* ||
-                        isContentCreator && uploadedPicture === null*/
+                            (isContentCreator && description === "") ||
+                            (isContentCreator && uploadedPicture === "")
                         }
                     >
                         Save and Submit
@@ -237,4 +251,4 @@ function Registration() {
     );
 }
 
-export default Registration;
+export default (Registration);

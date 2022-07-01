@@ -1,3 +1,6 @@
+/* eslint-disable prettier/prettier */
+/* eslint-disable require-jsdoc */
+
 import HttpService from "./httpService";
 
 export default class ContentService {
@@ -18,7 +21,7 @@ export default class ContentService {
       );
     });
   }
-  
+
   static createContent(content) {
     content.id = Math.floor(Math.random() * 100000000 + 1).toString();
     return new Promise((resolve, reject) => {
@@ -34,4 +37,5 @@ export default class ContentService {
       );
     });
   }
+// eslint-disable-next-line prettier/prettier
 }

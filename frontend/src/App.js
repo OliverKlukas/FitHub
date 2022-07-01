@@ -1,3 +1,5 @@
+/* eslint-disable prettier/prettier */
+/* eslint-disable no-unused-vars */
 import * as React from "react";
 import Discovery from "./views/discovery";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
@@ -18,8 +20,8 @@ import LandingPage from "./views/landing_page";
 import ContentUpload from "./views/content_upload";
 import SignIn from "./views/sign_in";
 import ContentListViewTest from "./views/contentTest";
-import {Provider} from "react-redux";
-import {applyMiddleware, createStore} from "redux";
+import { Provider } from "react-redux";
+import { applyMiddleware, createStore } from "redux";
 import reducers from "./redux/reducers";
 import thunkMiddleware from "redux-thunk";
 
@@ -37,39 +39,39 @@ function App() {
   return (
     <ThemeProvider theme={FitHubTheme}>
       <Provider store={store}>
-      <CssBaseline />
-      <BrowserRouter>
-        <Box sx={{ marginX: 6 }}>
-          <Header
-            gender="male"
-            userType="content-creator"
-            signedIn={signedIn}
-          />
-          <Box minHeight="75vh">
-            <Routes>
-              <Route path="*" element={<PageNotFound />} />
-              <Route path="/" element={<ContentListViewTest />} />
-              <Route path="/landing" element={<LandingPage />} />
-              <Route path="/discovery" element={<Discovery />} />
-              <Route path="/upload" element={<ContentUpload />} />
-              <Route path="/plans" element={<AboutUs />} />
-              <Route path="/about" element={<AboutUs />} />
-              <Route path="/contact" element={<AboutUs />} />
-              <Route path="/profile/:id" element={<ProfileViews />} />
-              <Route path="/registration" element={<Registration />} />
-              <Route path="/details/:id" element={<Details />} />
-              <Route path="/payment/:id" element={<Payment />} />
-              <Route
-                path="/terms-and-conditions"
-                element={<TermsAndConditions />}
-              />
-              <Route path="/myplans/:id" element={<MyPlans />} />
-              <Route path="/signin" element={<SignIn />} />
-            </Routes>
+        <CssBaseline />
+        <BrowserRouter>
+          <Box sx={{ marginX: 6 }}>
+            <Header
+              gender="male"
+              userType="content-creator"
+              signedIn={signedIn}
+            />
+            <Box minHeight="75vh">
+              <Routes>
+                <Route path="*" element={<PageNotFound />} />
+                <Route path="/" element={<ContentListViewTest />} />
+                <Route path="/landing" element={<LandingPage />} />
+                <Route path="/discovery" element={<Discovery />} />
+                <Route path="/upload" element={<ContentUpload />} />
+                <Route path="/plans" element={<AboutUs />} />
+                <Route path="/about" element={<AboutUs />} />
+                <Route path="/contact" element={<AboutUs />} />
+                <Route path="/profile/:id" element={<ProfileViews />} />
+                <Route path="/registration" element={<Registration />} />
+                <Route path="/details/:id" element={<Details />} />
+                <Route path="/payment/:id" element={<Payment />} />
+                <Route
+                  path="/terms-and-conditions"
+                  element={<TermsAndConditions />}
+                />
+                <Route path="/myplans/:id" element={<MyPlans />} />
+                <Route path="/signin" element={<SignIn />} />
+              </Routes>
+            </Box>
+            <Footer />
           </Box>
-          <Footer />
-        </Box>
-      </BrowserRouter>
+        </BrowserRouter>
       </Provider>
     </ThemeProvider>
   );
