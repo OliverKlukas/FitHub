@@ -22,47 +22,59 @@ function srcset(image, width, height, rows = 1, cols = 1) {
     };
 }
 
+let reflink = "";
 /**
- * Single content card component including an interactive action area.
- *
- * @param item - To be displayed content item, expected to adhere to the database scheme of content.
- * @returns {JSX.Element} - Returns ImageListItem.
+ * 
+ * @param {*} item - List with Image link, title name, etc
+ * @param {*} iheight - height for img -> difference Header Image & Tiles 
+ * @param {*} iwidth - width for img -> difference Header Image & Tiles 
+ * @param {*} ilink - href link
+ * @param {*} isHeader - header has other fonts sizes for text (default true)
+ * @returns - image with included text 
  */
-export default function SectionCard({item}) {
-    const dim = item.featured ? [1, 2] : [1, 1];
-    const imgWidth = 350;
-    const imgHeight = 400;
+export default function ImageCard({item, iheight, iwidth, ilink, isHeader=true}) {
 
-    return (<ImageListItem cols={dim[0]} rows={dim[1]}>
-        <Card
-            sx={{
-                display: "block", height: "100%", width: "100%", borderRadius: '10px', ':hover': {
-                    boxShadow: 15,
-                }
-            }}
-        >
-            <CardActionArea href={`/upload/${item.option}`} sx={{height: "100%"}}>
-                <img
+    if(isHeader){
+         reflink = ilink; //TOFO: add profile id 
+    }else{
+         reflink = ilink + "/" + item.option;
+    }
+    return (
+        <CardActionArea href={reflink} sx={{height: "100%"}}>
+            <img
                     style={{objectFit: "cover", width: "100%", height: "100%", borderRadius: "10px"}}
-                    {...srcset(item.img, imgWidth, imgHeight, dim[1], dim[0])}
+                    {...srcset(item.img, iwidth, iheight)}
                     alt={item.title}
                     loading="lazy"
+            />
+            { isHeader ? (
+            <ImageListItemBar
+                sx={{
+                    background: 'linear-gradient(to top, rgba(0,0,0,0.7) 0%, ' + 'rgba(0,0,0,0.3) 70%, rgba(0,0,0,0) 100%)',
+                    borderRadius: '10px',
+                    '& .MuiImageListItemBar-title': {
+                        fontSize: '50px', lineHeight: '60px', fontWeight: '700'
+                    },
+                    '& .MuiImageListItemBar-subtitle': {
+                        fontSize: '18px', fontWeight: '600', lineHeight: '22px'
+                    }
+                    }}
+                title={item.title} 
+                subtitle={item.subtitle}
                 />
-                <ImageListItemBar
+                ):(
+                    <ImageListItemBar
                     sx={{
                         background: 'linear-gradient(to top, rgba(0,0,0,0.7) 0%, ' + 'rgba(0,0,0,0.3) 70%, rgba(0,0,0,0) 100%)',
                         borderRadius: '10px',
                         '& .MuiImageListItemBar-title': {
                             fontSize: '32px', lineHeight: '36px', fontWeight: '700'
-                        },
-                        '& .MuiImageListItemBar-subtitle': {
-                            fontSize: '18px', fontWeight: '500', lineHeight: '22px'
                         }
                     }}
                     title={item.title}
                     position="bottom"
-                />
-            </CardActionArea>
-        </Card>
-    </ImageListItem>);
-}
+                    />
+                ) }
+        </CardActionArea>
+    )
+    }

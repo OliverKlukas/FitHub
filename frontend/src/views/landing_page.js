@@ -1,9 +1,6 @@
 import * as React from 'react';
-import ImageList from '@mui/material/ImageList';
-import HeaderCard from "../components/cards/header_image";
-import SectionCard from "../components/cards/section_image";
-import {Stack, useMediaQuery} from "@mui/material";
-import theme from "../utils/theme";
+import {Stack} from "@mui/material";
+import LandingImage from "../components/cards/image_landingpage";
 
 
 
@@ -11,7 +8,7 @@ import theme from "../utils/theme";
 const content = [{
     option: "training",
     img: 'https://images.unsplash.com/photo-1517836357463-d25dfeac3438',
-    title: 'Training Plans'
+    title: 'Training Plan'
 },  {
     option: "nutrition",
     img: 'https://images.unsplash.com/photo-1490645935967-10de6ba17061',
@@ -28,41 +25,16 @@ const header = {
     subtitle: 'Lets get started, offer your content right away'
 };
 
-
-
-
-
 function LandingPage(){
-    const smallScreenSize = useMediaQuery(theme.breakpoints.down('sm'));
-    return(<Stack sx={{marginX: 6}}>
-        
-        <ImageList
-        sx={{
-            // Promotes image list into its own layer in Chrome, costs memory, but helps keeping high FPS.
-            transform: 'translateZ(0)', overflow: 'hidden'
-        }}
-        cols={smallScreenSize ? 1 : 1}
-        gap={30}
-        >
-          <HeaderCard item={header} key={header.img}/>
-        </ImageList>
-        <ImageList
-        sx={{
-            // Promotes image list into its own layer in Chrome, costs memory, but helps keeping high FPS.
-            transform: 'translateZ(0)', overflow: 'hidden'
-        }}
-        cols={smallScreenSize ? 1 : 3}
-        gap={30}
-        >
-            {content.map((item) => {
-                
-                return <SectionCard item={item} key={item.img}/>
-                
-            })}
 
-        
+    return(<Stack item sx={{marginX: 6}} spacing={1}>
 
-        </ImageList>
+        <LandingImage ilink="/profile" iwidth={950} iheight={200} item={header}/>
+        <Stack item direction="row" spacing={1}>
+        <LandingImage ilink='/upload' iwidth={350} iheight={400} item={content[0]} isHeader={false}/>
+        <LandingImage ilink='/upload' iwidth={350} iheight={400} item={content[1]} isHeader={false}/>
+        <LandingImage ilink='/upload' iwidth={350} iheight={400} item={content[2]} isHeader={false}/>
+        </Stack>
         </Stack>
     )
 }

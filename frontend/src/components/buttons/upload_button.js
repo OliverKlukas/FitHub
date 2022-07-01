@@ -7,6 +7,13 @@ import Typography from "@mui/material/Typography";
 import MuiAlert from '@mui/material/Alert';
 
 
+/**
+ * 
+ * @param {*} uploadFormat allowed format for upload (e.g. here pdf or images)
+ * @param {*} givenId  html id for the input
+ * @param {*} multiUpload boolean if input allows multiple files 
+ * @returns 
+ */
 export default function UploadButton({uploadFormat,givenId,multiUpload}) {
     const Input = styled('input')({
         display: 'none',
@@ -23,16 +30,16 @@ export default function UploadButton({uploadFormat,givenId,multiUpload}) {
     const [snackopen, setsnackOpen] = React.useState(false);
 
     const changeHandler = (event) => {
-        setSelectedFile(event.target.files[0]);
+        setSelectedFile(event.target.files);
         setIsFilePicked(true);
         setsnackOpen(true);
       };
 
     //deactivates snack bar again
     const handleSnackClose= () => {
-        setsnackOpen(false)
+        setsnackOpen(false);
       }
-      
+
 
   return (
     <Grid item xs={2}>
@@ -43,11 +50,14 @@ export default function UploadButton({uploadFormat,givenId,multiUpload}) {
               Upload
           </StandardButton>
       </label>
-      <Grid item minWidth={100}>
+      <Grid item minWidth={300}>
       {isFilePicked ? (
         <div>
-        <Typography variant="body2" fontSize="small">Filename: {selectedFile.name}</Typography>
-      </div>
+        <Typography variant="body2" fontSize="small">Filename: </Typography>
+        {Array.from(selectedFile).map((item) => (
+            <Typography variant="body2" fontSize="small">{item.name} </Typography>
+          ))}
+        </div>
      ) : (
       <Typography variant="body2" fontSize="small">Select a file</Typography>
       )}
