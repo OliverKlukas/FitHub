@@ -16,8 +16,7 @@ const list = async (req, res) => {
   } catch (err) {
     console.log(err);
     return res.status(500).json({
-      error: "Internal server error",
-      message: err.message,
+      error: "Internal server error: " + err.message,
     });
   }
 };
@@ -32,8 +31,7 @@ const list = async (req, res) => {
 const create = async (req, res) => {
   // Checks if the body of the request contains all necessary content properties.
   const requiredProps = [
-    "ownerId",
-    "id",
+      "_id",
     "category",
     "title",
     "price",
@@ -44,14 +42,13 @@ const create = async (req, res) => {
     "tags",
     "featured",
   ];
-  for (const prop in requiredProps) {
+  /*for (let prop in requiredProps) {
     if (!Object.prototype.hasOwnProperty.call(req.body, prop)) {
       return res.status(400).json({
-        error: "Bad Request",
-        message: `The request body must contain a ${prop} property`,
+        error: `Bad Request: the request body must contain a ${prop} property`,
       });
     }
-  }
+  }*/
 
   // Handle the given content creation request.
   try {
@@ -63,8 +60,7 @@ const create = async (req, res) => {
   } catch (err) {
     console.log(err);
     return res.status(500).json({
-      error: "Internal server error",
-      message: err.message,
+      error: "Internal server error:" + err.message,
     });
   }
 };

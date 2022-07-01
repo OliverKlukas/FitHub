@@ -28,47 +28,43 @@ function ContentUpload(props) {
     // Handle navigation with react router.
     const navigate = useNavigate();
 
-    // Hooks to save filled out upload form.
+    // Hooks to save filled out upload form, all need pre-defined value.
     const [category, setCategory] = useState(selectedCategory);
     const [title, setTitle] = useState("");
-    const [price, setPrice] = useState();
+    const [price, setPrice] = useState("");
     const [description, setDescription] = useState("");
-    const [duration, setDuration] = useState();
-    const [intensity, setIntensity] = useState();
+    const [duration, setDuration] = useState("");
+    const [intensity, setIntensity] = useState("");
     const [goalTags, setGoalTags] = useState([]);
     const [levelTags, setLevelTags] = useState([]);
     const [lifestyleTags, setLifestyleTags] = useState([]);
     const [support, setSupport] = useState(false);
 
     function handleCancelSubmit() {
-        navigate(`/landing`);
+        navigate("/landing");
     }
 
     // Merge all hooks together and publish it to mongodb.
-    function publishContent() {
-        console.log({
-            category: category,
-            title: title,
-            description: description,
-            price: price,
-            duration: duration,
-            intensity: intensity,
-            support: support,
-            tags: goalTags.concat(levelTags, lifestyleTags),
-            featured: false,
-        });
-        const res = props.addContent({
-            category: category,
-            title: title,
-            description: description,
-            price: price,
-            duration: duration,
-            intensity: intensity,
-            support: support,
-            tags: goalTags.concat(levelTags, lifestyleTags),
-            featured: false,
-        })
-        console.log(res);
+    async function publishContent(event) {
+        event.preventDefault();
+        try {
+            // TODO: fix waiting for a response here to not go to standard
+            const response = await props.addContent({
+                category: category,
+                title: title,
+                description: description,
+                price: parseInt(price),
+                duration: parseInt(duration),
+                intensity: parseInt(intensity),
+                support: support,
+                tags: goalTags.concat(levelTags, lifestyleTags),
+                featured: false,
+            });
+            navigate("/");
+        } catch(error) {
+            console.log(error);
+        }
+
     }
 
     return (<Stack
@@ -135,7 +131,7 @@ function ContentUpload(props) {
                 id="price-input"
                 placeholder={preInputValue}
                 value={price}
-                onChange={(event) => setPrice(parseInt(event.target.value))}
+                onChange={(event) => setPrice(event.target.value)}
                 helperText="Prices must include VAT and represent the total costs you expect buyers to pay"
                 variant="filled"
                 size="small"
@@ -172,7 +168,7 @@ function ContentUpload(props) {
                     label="Duration"
                     multiline
                     value={duration}
-                    onChange={(event) => setDuration(parseInt(event.target.value))}
+                    onChange={(event) => setDuration(event.target.value)}
                     type="number"
                     variant="filled"
                     placeholder={preInputValue}
@@ -184,7 +180,7 @@ function ContentUpload(props) {
                     label="Intensity"
                     multiline
                     value={intensity}
-                    onChange={(event) => setIntensity(parseInt(event.target.value))}
+                    onChange={(event) => setIntensity(event.target.value)}
                     variant="filled"
                     placeholder={preInputValue}
                     helperText="Trainings per week"

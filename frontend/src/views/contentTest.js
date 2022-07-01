@@ -41,9 +41,7 @@ function ContentListViewTest(props) {
     <div>
       {contents.map((content) => (
         <div key={content._id}>
-          {content.title}
-          {console.log(content)}
-          {content._id}
+          {JSON.stringify(content)}
         </div>
       ))}
       <StandardButton variant="contained" onClick={onAddContent}>

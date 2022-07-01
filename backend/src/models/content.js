@@ -57,7 +57,11 @@ const ContentSchema = new mongoose.Schema({
     support: {
         type: Boolean, required: true
     },
-    tags: [TagSchema],
+    tags: [
+        {
+            type: String
+        }
+    ],
     // Denotes whether owner bought premium placement for this content.
     featured: {
         type: Boolean, required: true

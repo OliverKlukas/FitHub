@@ -9,7 +9,7 @@ export function getContents() {
   // when the backend call was failed
   function onFailure(error) {
     // error handling
-    console.log("failed to get all content", error);
+    console.log("Get all content failed with", error);
   }
 
   return async (dispatch) => {
@@ -29,7 +29,8 @@ export function addContent(content) {
     return { type: "ADDCONTENT_SUCCESS" };
   }
   function onFailure(error) {
-    console.log("add content failure", error);
+    console.log("Add content failed with", error);
+    return {type: "ADDCONTENT_FAILURE"};
   }
 
   return async (dispatch) => {
