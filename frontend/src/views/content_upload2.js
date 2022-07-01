@@ -87,95 +87,15 @@ function ContentUpload(props) {
             </Grid>
 
             <Grid item xs={12}>
-                <Stack spacing={2} direction="row">
-                    <Grid item sx={{minWidth: 200}}>
-                        <Typography variant="subtitle1">Full Plan:</Typography>
-                    </Grid>
-                    <Stack spacing={1}>
-                        <UploadButton
-                            uploadFormat=".pdf"
-                            givenId="plan-upload"
-                            multiUpload={false}
-                        />
-                        <Grid item xs={5}>
-                            <Typography variant="body2" fontSize="small">
-                                Please upload the pdf file that contains the complete training
-                                plan that buyers are going to receive
-                            </Typography>
-                        </Grid>
-                    </Stack>
-                </Stack>
             </Grid>
 
             <Grid item xs={12}>
-                <Stack spacing={2} direction="row">
-                    <Grid item sx={{minWidth: 200}}>
-                        <Typography variant="subtitle1">Sample:</Typography>
-                    </Grid>
-                    <Stack spacing={1}>
-                        <UploadButton
-                            uploadFormat=".pdf"
-                            givenId="sample-upload"
-                            multiUpload={false}
-                        />
-                        <Grid item xs={5}>
-                            <Typography variant="body2" fontSize="small">
-                                Please upload a sample pdf file which gives buyers an
-                                impression of the full plan
-                            </Typography>
-                        </Grid>
-                    </Stack>
-                </Stack>
             </Grid>
             <Grid item xs={12}>
-                <Typography variant="h3">Legal Notices</Typography>
             </Grid>
             <Grid item xs={10}>
-                <Stack item spacing={0.5}>
-                    <Stack direction="row" alignItems="center">
-                        <Checkbox/>
-                        <Typography variant="body1">
-                            Yes, EMail me for marketing events like vouchers & sales
-                            weekends
-                        </Typography>
-                    </Stack>
-                    <Stack direction="row" alignItems="center">
-                        <Checkbox value={support} onChange={(event) => setSupport(event.target.checked)}/>
-                        <Typography variant="body1">
-                            Yes, I am offering full-time support for the buyers
-                        </Typography>
-                    </Stack>
-                    <Stack direction="row" alignItems="center">
-                        <Checkbox/>
-                        <Typography variant="body1">
-                            Yes, I ensure delivery of the expected quality and know
-                            intentional fooling attempts will result in penalties like an
-                            account ban
-                        </Typography>
-                    </Stack>
-                    <Stack direction="row" alignItems="center">
-                        <Checkbox/>
-                        <Typography variant="body1">
-                            Yes, I hereby accept the
-                            <Link
-                                color="#393E46"
-                                fontSize={14}
-                                fontWeight={300}
-                                underline="always"
-                                href="/terms-and-conditions"
-                            >
-                                Terms & Conditions
-                            </Link>
-                            of FitHub
-                        </Typography>
-                    </Stack>
-                </Stack>
             </Grid>
             <Grid item xs={12}>
-                <Stack spacing={2} direction="row">
-                    <CancelButton variant="contained" onClick={handleCancelSubmit}>Cancel</CancelButton>
-                    <StandardButton variant="contained" onClick={publishContent}>Publish</StandardButton>
-                </Stack>
             </Grid>
         </Grid>);
 }

@@ -7,15 +7,15 @@ import FormControl from "@mui/material/FormControl";
 import TextField from "@mui/material/TextField";
 import EuroSymbol from "@mui/icons-material/Euro";
 import InputAdornment from "@mui/material/InputAdornment";
-import Checkbox from "@mui/material/Checkbox";
-import {StandardButton} from "../components/buttons/standard_button";
-import {CancelButton} from "../components/buttons/cancel_button";
 import Autocomplete from "@mui/material/Autocomplete";
 import UploadButton from "../components/buttons/upload_button";
 import {useNavigate, useParams} from "react-router-dom";
 import {useState} from "react";
 import {connect} from "react-redux";
 import {addContent} from "../redux/actions";
+import Checkbox from "@mui/material/Checkbox";
+import {CancelButton} from "../components/buttons/cancel_button";
+import {StandardButton} from "../components/buttons/standard_button";
 
 const preInputValue = "Type here...";
 const fitnessGoal = ["weight-loss", "weight-gain", "muscle-growth", "cardio"];
@@ -72,9 +72,7 @@ function ContentUpload(props) {
     }
 
     return (<Stack
-        paddingLeft="1px"
-        paddingRight="25px"
-        paddingBottom="25px"
+        padding={3}
         backgroundColor="#EEEEEE"
         borderRadius="8px"
         spacing={2}
@@ -245,10 +243,7 @@ function ContentUpload(props) {
             <Typography sx={{minWidth: 200}} variant="subtitle1">Marketing Material:</Typography>
             <Stack spacing={1}>
                 <UploadButton
-                    uploadFormat="image/*"
-                    givenId="marketing-upload"
-                    multiUpload={true}
-                />
+                    uploadFormat="image/*" givenId="marketing-upload" multiUpload={true}                />
                 <Typography variant="body2" fontSize="small" maxWidth={300}>
                     Please upload pictures that represents your offer (example
                     dishes, workouts etc). Be aware and respect our  <Link
@@ -260,6 +255,74 @@ function ContentUpload(props) {
                 >Terms & Conditions</Link>  including image rights
                 </Typography>
             </Stack>
+        </Stack>
+        <Stack spacing={2} direction="row">
+            <Typography sx={{minWidth: 200}} variant="subtitle1">Full Plan:</Typography>
+            <Stack spacing={1}>
+                <UploadButton
+
+                    uploadFormat=".pdf"
+                    givenId="plan-upload"
+                    multiUpload={false}
+                />
+                    <Typography variant="body2" fontSize="small" maxWidth={300}>
+                        Please upload the pdf file that contains the complete training
+                        plan that buyers are going to receive
+                    </Typography>
+            </Stack>
+        </Stack>
+        <Stack spacing={2} direction="row">
+                <Typography sx={{minWidth: 200}} variant="subtitle1">Sample:</Typography>
+            <Stack spacing={1}>
+                <UploadButton
+                    uploadFormat=".pdf"
+                    givenId="sample-upload"
+                    multiUpload={false}
+                />
+                <Typography variant="body2" fontSize="small" maxWidth={300}>
+                    Please upload a sample pdf file which gives buyers an
+                    impression of the full plan
+                </Typography>
+            </Stack>
+        </Stack>
+        <Typography variant="h3">Legal Notices</Typography>
+        <Stack spacing={0.5}>
+            <Stack direction="row" alignItems="center">
+                <Checkbox/>
+                <Typography variant="body1">
+                    Yes, email me for marketing events like vouchers & sales weekends
+                </Typography>
+            </Stack>
+            <Stack direction="row" alignItems="center">
+                <Checkbox value={support} onChange={(event) => setSupport(event.target.checked)}/>
+                <Typography variant="body1">
+                    Yes, I am offering full-time support for the buyers
+                </Typography>
+            </Stack>
+            <Stack direction="row" alignItems="center">
+                <Checkbox/>
+                <Typography variant="body1">
+                    Yes, I ensure delivery of the expected quality and know
+                    intentional fooling attempts will result in penalties like an
+                    account ban
+                </Typography>
+            </Stack>
+            <Stack direction="row" alignItems="center">
+                <Checkbox/>
+                <Typography variant="body1">
+                    Yes, I hereby accept the  <Link
+                        color="#393E46"
+                        fontSize={14}
+                        fontWeight={300}
+                        underline="always"
+                        href="/terms-and-conditions"
+                    >Terms & Conditions</Link>  of FitHub
+                </Typography>
+            </Stack>
+        </Stack>
+        <Stack spacing={2} direction="row">
+            <CancelButton variant="contained" onClick={handleCancelSubmit}>Cancel</CancelButton>
+            <StandardButton variant="contained" onClick={publishContent}>Publish</StandardButton>
         </Stack>
     </Stack>);
 }
