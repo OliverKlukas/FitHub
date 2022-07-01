@@ -5,6 +5,7 @@ import { content } from "../utils/content";
 import { HighlightButton } from "../components/buttons/highlight_button";
 import { StandardButton } from "../components/buttons/standard_button";
 import { Star } from "@mui/icons-material";
+import * as React from "react";
 
 /**
  * Detailed view that conveys the most important information of a content item.

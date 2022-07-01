@@ -11,4 +11,8 @@ router.get("/", ContentController.list);
 // Create new content.
 router.post("/", ContentController.create);
 
+// TODO: update existing content.
+
+// TODO: delete existing content.
+
 module.exports = router;

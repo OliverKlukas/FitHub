@@ -6,7 +6,7 @@ const helmet = require("helmet");
 
 const auth = require("./routes/auth");
 const content = require("./routes/content");
-const middlewares = require('./middlewares');
+const middlewares = require("./middlewares");
 
 const api = express();
 

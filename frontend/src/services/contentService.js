@@ -18,9 +18,9 @@ export default class ContentService {
       );
     });
   }
-  
+
   static createContent(content) {
-    content.id = Math.floor(Math.random() * 100000000 + 1).toString();
+    content.id = Math.floor(Math.random() * 100000000 + 1).toString(); // TODO move to creation.
     return new Promise((resolve, reject) => {
       HttpService.post(
         ContentService.baseURL(),

@@ -1,1 +1,1 @@
-export * from "./contentActions"
+export * from "./contentActions";

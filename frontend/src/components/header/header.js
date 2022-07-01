@@ -27,7 +27,7 @@ export function Header({ gender, userType, signedIn }) {
   if (userType === "content-creator") {
     pages = {
       discovery: "Discovery",
-      upload: "Offer Content",
+      "upload/training": "Offer Content",
       about: "About us",
     };
     icondirection = "/landing";
