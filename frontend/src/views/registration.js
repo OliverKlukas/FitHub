@@ -21,9 +21,6 @@ import * as React from 'react';
 import { HighlightButton } from '../components/buttons/highlight_button';
 import { Link as RouterLink, } from "react-router-dom";
 import UploadButton from '../components/buttons/upload_button';
-import { registerContentCreator, registerCustomer} from '../utils/redux/actions'
-
-
 
 >>>>>>> feature-authentication
 
@@ -90,7 +87,7 @@ function Registration() {
     const [isContentCreator, setIsContentCreator] = React.useState(false);
     const [description, setDescription] = React.useState("");
     const [email, setEmail] = React.useState("");
-    const [uploadedPicture, setUploadedPicture] = React.useState("")
+    const [uploadedPicture, setUploadedPicture] = React.useState(false)
 
     const onChangeFirstName = (e) => {
         setFirstName(e.target.value);
@@ -227,11 +224,8 @@ function Registration() {
               />
 =======
     const handleSubmit = () => {
-        if (isContentCreator) {
-            this.dispatch(registerContentCreator(email,password,firstname,lastname,description,uploadedPicture))
-        } else {
-            this.dispatch(registerCustomer(email,password,firstname,lastname))
-        }
+        comparePasswords();
+
     }
 
     return (
@@ -329,7 +323,7 @@ function Registration() {
                         </Grid>
 
                     }
-                    <HighlightButton variant="contained" onClick={handleSubmit} 
+                    <HighlightButton variant="contained" onClick={handleSubmit} component={RouterLink} to={'/discovery'}
                         disabled={
                             firstname === "" ||
                             lastname === "" ||
@@ -339,8 +333,8 @@ function Registration() {
                             email === "" ||
                             password !== password2 ||
                             emailerror ||
-                            (isContentCreator && description === "") ||
-                            (isContentCreator && uploadedPicture === "")
+                            isContentCreator && description === "" /*||
+                    isContentCreator && uploadedPicture === null*/
                         }
                     >
                         Save and Submit
