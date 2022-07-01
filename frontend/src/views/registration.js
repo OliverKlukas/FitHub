@@ -3,6 +3,9 @@ import * as React from 'react';
 import { HighlightButton } from '../components/buttons/highlight_button';
 import { Link as RouterLink, } from "react-router-dom";
 import UploadButton from '../components/buttons/upload_button';
+import { registerContentCreator, registerCustomer} from '../utils/redux/actions'
+
+
 
 
 function Registration() {
@@ -21,7 +24,7 @@ function Registration() {
     const [isContentCreator, setIsContentCreator] = React.useState(false);
     const [description, setDescription] = React.useState("");
     const [email, setEmail] = React.useState("");
-    const [uploadedPicture, setUploadedPicture] = React.useState(false)
+    const [uploadedPicture, setUploadedPicture] = React.useState("")
 
     const onChangeFirstName = (e) => {
         setFirstName(e.target.value);
@@ -87,8 +90,11 @@ function Registration() {
     }
 
     const handleSubmit = () => {
-        comparePasswords();
-
+        if (isContentCreator) {
+            this.dispatch(registerContentCreator(email,password,firstname,lastname,description,uploadedPicture))
+        } else {
+            this.dispatch(registerCustomer(email,password,firstname,lastname))
+        }
     }
 
     return (
@@ -186,7 +192,7 @@ function Registration() {
                         </Grid>
 
                     }
-                    <HighlightButton variant="contained" onClick={handleSubmit} component={RouterLink} to={'/discovery'}
+                    <HighlightButton variant="contained" onClick={handleSubmit} 
                         disabled={
                             firstname === "" ||
                             lastname === "" ||
@@ -196,8 +202,8 @@ function Registration() {
                             email === "" ||
                             password !== password2 ||
                             emailerror ||
-                            isContentCreator && description === "" /*||
-                    isContentCreator && uploadedPicture === null*/
+                            (isContentCreator && description === "") ||
+                            (isContentCreator && uploadedPicture === "")
                         }
                     >
                         Save and Submit
