@@ -1,5 +1,5 @@
 import * as React from "react";
-import {Grid, Stack, Typography, Link, Snackbar, Box} from "@mui/material";
+import {Grid, Stack, Typography, Link, Snackbar, Box, Alert} from "@mui/material";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
@@ -40,16 +40,24 @@ function ContentUpload(props) {
     const [lifestyleTags, setLifestyleTags] = useState([]);
     const [support, setSupport] = useState(false);
 
+    // Handle publishing failure and success
+    const [pubFailure, setPubFailure] = useState(false);
+    const [pubSuccess, setPubSuccess] = useState(false);
+
     function handleCancelSubmit() {
         navigate("/landing");
     }
 
+    // User input verification and hand-off to backend database publication.
+    function handlePublishContent(){
+        // TODO: verify that the above defined hooks match our criteria, i.e. with regex that we could put i.e. into utils folder and use project wide
+        publishContent();
+    }
+
     // Merge all hooks together and publish it to mongodb.
-    async function publishContent(event) {
-        event.preventDefault();
+    async function publishContent() {
         try {
-            // TODO: fix waiting for a response here to not go to standard
-            const response = await props.addContent({
+            await props.addContent({
                 category: category,
                 title: title,
                 description: description,
@@ -59,12 +67,12 @@ function ContentUpload(props) {
                 support: support,
                 tags: goalTags.concat(levelTags, lifestyleTags),
                 featured: false,
-            });
-            navigate("/");
-        } catch(error) {
-            console.log(error);
+            })
+            setPubSuccess(true);
+        } catch (error) {
+            setPubFailure(true);
+            console.log("Publishing content failed!");
         }
-
     }
 
     return (<Stack
@@ -318,8 +326,14 @@ function ContentUpload(props) {
         </Stack>
         <Stack spacing={2} direction="row">
             <CancelButton variant="contained" onClick={handleCancelSubmit}>Cancel</CancelButton>
-            <StandardButton variant="contained" onClick={publishContent}>Publish</StandardButton>
+            <StandardButton variant="contained" onClick={handlePublishContent}>Publish</StandardButton>
         </Stack>
+        <Snackbar open={pubFailure} autoHideDuration={6000} onClose={() => setPubFailure(false)} >
+            <Alert onClose={() => setPubFailure(false)} severity="error" sx={{ width: '100%' }}>Publication of content failed!</Alert>
+        </Snackbar>
+        <Snackbar open={pubSuccess} autoHideDuration={1800} onClose={() => navigate("/")} >
+            <Alert onClose={() => navigate("/")} severity="success" sx={{ width: '100%' }}>Successfully published your content!</Alert>
+        </Snackbar>
     </Stack>);
 }
 

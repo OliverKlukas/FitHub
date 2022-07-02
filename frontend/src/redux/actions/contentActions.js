@@ -1,5 +1,10 @@
 import ContentService from "../../services/contentService";
 
+/**
+ * Redux action that promises to retrieve all content in db.
+ *
+ * @returns {(function(*): Promise<void>)|*}
+ */
 export function getContents() {
   // when the backend call was successfull and the movies are retrieved
   // in the dispatcher the movies will be added to the global state
@@ -24,21 +29,27 @@ export function getContents() {
   };
 }
 
+/**
+ * Redux action that promises to add content to db async.
+ *
+ * @param content
+ * @returns {(function(*): Promise<void>)|*}
+ */
 export function addContent(content) {
   function onSuccess() {
     return { type: "ADDCONTENT_SUCCESS" };
   }
   function onFailure(error) {
-    console.log("Add content failed with", error);
-    return {type: "ADDCONTENT_FAILURE"};
+    throw new Error(error);
   }
 
   return async (dispatch) => {
     try {
       await ContentService.createContent(content);
       dispatch(onSuccess());
-    } catch (e) {
-      onFailure(e);
+    } catch (error) {
+      dispatch(onFailure(error));
     }
   };
 }
+
