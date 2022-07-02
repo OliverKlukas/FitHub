@@ -13,17 +13,23 @@ import {
     FormControl,
     FormLabel,
 } from "@mui/material";
-import React from "react";
+import React, { useEffect } from "react";
 import { HighlightButton } from "../components/buttons/highlight_button";
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
 import UploadButton from "../components/buttons/upload_button";
 import UserService from "../services/userService";
+import { registerContentCreator, registerCustomer } from "../redux/actions";
+import { connect, useSelector } from "react-redux";
 
 /**
  *
  * @param {props} props
  */
 function Registration(props) {
+
+    const user = useSelector((state) => state.user);
+    
+    const navigate = useNavigate();
 
     const [passworderror, setPasswordError] = React.useState(false);
     const [emailerror, setEmailError] = React.useState(false);
@@ -38,8 +44,32 @@ function Registration(props) {
     const [isContentCreator, setIsContentCreator] = React.useState(false);
     const [description, setDescription] = React.useState("");
     const [email, setEmail] = React.useState("");
-    const [uploadedPicture, setUploadedPicture] = React.useState(false);
+    const [uploadedPicture, setUploadedPicture] = React.useState("");
 
+    useEffect(() => {
+        if (user.user) {
+            navigate("/landing");
+        }
+    }, [user, props.history]);
+
+    // eslint-disable-next-line no-unused-vars
+    const handleSubmit1 = async () => {
+        if (isContentCreator) {
+            const resp = await UserService.registerContentCreator(email, password, firstname, lastname,description,uploadedPicture);
+            console.log(resp)
+        } else {
+            const resp = await UserService.registerCustomer(email, password, firstname, lastname);
+            console.log(resp)
+        }
+    };
+    const handleSubmit = () => {
+        if (isContentCreator) {
+            props.dispatch(registerContentCreator(email,password,firstname,lastname,description,uploadedPicture))
+        } else {
+            props.dispatch(registerCustomer(email,password,firstname,lastname))
+        }
+
+    }
     const onChangeFirstName = (e) => {
         setFirstName(e.target.value);
     };
@@ -103,15 +133,6 @@ function Registration(props) {
         setsnackOpen(false);
     };
 
-    const handleSubmit = async () => {
-        if (isContentCreator) {
-            const resp = await UserService.registerContentCreator(email, password, firstname, lastname,description,uploadedPicture);
-            console.log(resp)
-        } else {
-            const resp = await UserService.registerCustomer(email, password, firstname, lastname);
-            console.log(resp)
-        }
-    };
     return (
         <Grid
             container
@@ -251,4 +272,4 @@ function Registration(props) {
     );
 }
 
-export default (Registration);
+export default connect()(Registration);

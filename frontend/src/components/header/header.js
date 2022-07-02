@@ -1,3 +1,6 @@
+/* eslint-disable prettier/prettier */
+/* eslint-disable react/prop-types */
+/* eslint-disable valid-jsdoc */
 import * as React from "react";
 import { Link, Stack } from "@mui/material";
 import { ReactComponent as AvatarFemale } from "../../resources/avatar_female.svg";
@@ -12,19 +15,25 @@ import Box from "@mui/material/Box";
 import { Link as RouterLink } from "react-router-dom";
 import MenuIcon from "@mui/icons-material/Menu";
 import { LinkButton } from "../buttons/link_button";
+// import { logout } from "../redux/actions";
+import {  useSelector } from "react-redux";
 
 /**
  *  Header bar component that is visible on all views.
- *
+ * 
+ * @param {props} props - for user management
  * @param gender - Specifies the gender="male" | "female" which dictates the profile SVG's appearance.
  * @param userType - Specifies the userType="content-creator" | "user" which dictates user specific customizations.
  * @return {JSX.Element}
  */
-export function Header({ gender, userType, signedIn }) {
+export function Header({ gender, userType }, props) {
   // Sub-urls and link names for available page views.
+  const user = useSelector((state) => state.user);
   let pages;
   let icondirection;
-  if (userType === "content-creator") {
+
+  console.log(user.user)
+  if (!user.user.role==="customer") {
     pages = {
       discovery: "Discovery",
       upload: "Offer Content",
@@ -60,7 +69,6 @@ export function Header({ gender, userType, signedIn }) {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const handleOpenSetMenu = (event) => {
     setAnchorElSet(event.currentTarget);
-    console.log(signedIn);
   };
   const handleCloseSetMenu = () => {
     setAnchorElSet(null);

@@ -31,7 +31,6 @@ import thunkMiddleware from "redux-thunk";
  * @return {JSX.Element}
  */
 function App() {
-  const [signedIn, setSignedIn] = React.useState(false);
 
   // create store for redux
   const store = createStore(reducers, applyMiddleware(thunkMiddleware));
@@ -45,7 +44,6 @@ function App() {
             <Header
               gender="male"
               userType="content-creator"
-              signedIn={signedIn}
             />
             <Box minHeight="75vh">
               <Routes>
