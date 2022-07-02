@@ -8,6 +8,7 @@ import { HighlightButton } from "../components/buttons/highlight_button";
 import { StandardButton } from "../components/buttons/standard_button";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { connect, useSelector } from "react-redux";
+import { login} from "../redux/actions"
 
 /**
  *
@@ -50,7 +51,8 @@ function SignIn(props) {
     }
   };
   const handleSubmit = () => {
-    /* TODO BackendLogic  */
+    props.dispatch(login(email,password))
+    navigate("/plans");
   };
   const handleButtonToRegistration = () => {
     /* Placeholder in case we still want something to be done with this button and not just link */
@@ -83,8 +85,6 @@ function SignIn(props) {
           <HighlightButton
             variant="contained"
             onClick={handleSubmit}
-            component={RouterLink}
-            to={`/plans`}
             disabled={email === "" || password === "" || emailerror}
           >
             Sign-In

@@ -17,7 +17,6 @@ import React, { useEffect } from "react";
 import { HighlightButton } from "../components/buttons/highlight_button";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import UploadButton from "../components/buttons/upload_button";
-import UserService from "../services/userService";
 import { registerContentCreator, registerCustomer } from "../redux/actions";
 import { connect, useSelector } from "react-redux";
 
@@ -52,16 +51,6 @@ function Registration(props) {
         }
     }, [user, props.history]);
 
-    // eslint-disable-next-line no-unused-vars
-    const handleSubmit1 = async () => {
-        if (isContentCreator) {
-            const resp = await UserService.registerContentCreator(email, password, firstname, lastname,description,uploadedPicture);
-            console.log(resp)
-        } else {
-            const resp = await UserService.registerCustomer(email, password, firstname, lastname);
-            console.log(resp)
-        }
-    };
     const handleSubmit = () => {
         if (isContentCreator) {
             props.dispatch(registerContentCreator(email,password,firstname,lastname,description,uploadedPicture))

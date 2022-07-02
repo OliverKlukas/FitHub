@@ -8,7 +8,7 @@ const middleware = require("../middleware")
 const AuthController = require("../controllers/auth")
 
 router.post("/register",AuthController.register) //register a new user 
-router.get("/login",AuthController.login)   //login
+router.post("/login",AuthController.login)   //login
 router.get("/userdata", AuthController.userdata) // display publicly available user data, only works for Content Creators
 //router.get("/me", middleware.checkAuthentication, AuthController.me) // displays own user data, needs to be logged in
 router.post("/logout", middleware.checkAuthentication, AuthController.logout)  //logout

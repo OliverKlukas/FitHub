@@ -33,7 +33,7 @@ export function Header({ gender, userType }, props) {
   let icondirection;
 
   console.log(user.user)
-  if (!user.user.role==="customer") {
+  if (true) {
     pages = {
       discovery: "Discovery",
       upload: "Offer Content",
@@ -60,9 +60,9 @@ export function Header({ gender, userType }, props) {
   };
   // Sub-urls and link names for available user menu options.
   const settings = {
-    profile: "Profile",
     contact: "Contact",
-    logout: "Logout",
+    signin: "Login",
+    registration: "Registration"
   };
 
   // Anchor hook to open/close the user settings menu when option selected or clicked off.
@@ -173,13 +173,18 @@ export function Header({ gender, userType }, props) {
           open={Boolean(anchorElSet)}
           onClose={handleCloseSetMenu}
         >
-          {Object.keys(settings).map((url) => (
-            <MenuItem key={url} onClick={handleCloseSetMenu}>
-              <Link href={url} underline="none" color="inherit">
-                {settings[url]}
-              </Link>
-            </MenuItem>
-          ))}
+          { user.user 
+          ? [
+                  ]
+          : [
+            Object.keys(settings).map((url) => (
+              <MenuItem key={url} onClick={handleCloseSetMenu}>
+                <Link href={url} underline="none" color="inherit">
+                  {settings[url]}
+                </Link>
+              </MenuItem>
+            )) ]
+          }
         </Menu>
       </Box>
     </Stack>
