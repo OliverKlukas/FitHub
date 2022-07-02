@@ -29,27 +29,6 @@ const list = async (req, res) => {
  * @return {Promise<*>}
  */
 const create = async (req, res) => {
-  // Checks if the body of the request contains all necessary content properties.
-  const requiredProps = [
-      "_id",
-    "category",
-    "title",
-    "price",
-    "media",
-    "duration",
-    "intensity",
-    "fullSupport",
-    "tags",
-    "featured",
-  ];
-  /*for (let prop in requiredProps) {
-    if (!Object.prototype.hasOwnProperty.call(req.body, prop)) {
-      return res.status(400).json({
-        error: `Bad Request: the request body must contain a ${prop} property`,
-      });
-    }
-  }*/
-
   // Handle the given content creation request.
   try {
     // Create content in database with supplied request body.

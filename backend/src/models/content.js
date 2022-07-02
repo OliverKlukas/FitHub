@@ -3,13 +3,6 @@
 const mongoose = require("mongoose");
 
 /**
- * Defines schema for tags that are used to filter for content in frontend.
- *
- * @type {module:mongoose.Schema<any, Model<any, any, any, any>, {}, {}, any, {}, DefaultTypeKey, {tag: {type: StringConstructor}}>}
- */
-const TagSchema = new mongoose.Schema({tag: {type: String}})
-
-/**
  * Defines that images are strings in our db.
  *
  * @type {module:mongoose.Schema<any, Model<any, any, any, any>, {}, {}, any, {}, DefaultTypeKey, {img: {type: StringConstructor}}>}
@@ -27,7 +20,7 @@ const ImageSchema = new mongoose.Schema({
  */
 const ContentSchema = new mongoose.Schema({
     //TODO: ownerId: {type: mongoose.Schema.Types.ObjectId, ref: "User"},
-    //TODO: id: {type: mongoose.Schema.Types.ObjectId, ref: "Content"},
+    _id: {type: String, required: true},
     category: {
         type: String, // category can only take the values "training", "nutrition" or "coaching"
         enum: ["training", "nutrition", "coaching"], // if not specified the category "training" is chosen
@@ -43,10 +36,13 @@ const ContentSchema = new mongoose.Schema({
         type: Number, min: 1, get: getPrice, //workaround to include cents (shift of comma)
         set: setPrice, required: true
     },
-    /* TODO: media: {
-        type: [ImageSchema],
+    media: {
+        type: [{
+            data: Buffer,
+            contentType: String
+        }],
         required: true
-    },*/
+    },
     // Amount of weeks the plan is designed for.
     duration: {
         type: Number, min: 1, required: true
@@ -59,7 +55,8 @@ const ContentSchema = new mongoose.Schema({
     },
     tags: [
         {
-            type: String
+            type: String,
+            required: true
         }
     ],
     // Denotes whether owner bought premium placement for this content.
