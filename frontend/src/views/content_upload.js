@@ -68,6 +68,7 @@ function ContentUpload(props) {
                 title: title,
                 description: description,
                 price: parseInt(price),
+                // TODO: hier weitermahcen mit dem einfügen der medien und verändern des upload buttons media: ,
                 duration: parseInt(duration),
                 intensity: parseInt(intensity),
                 support: support,
