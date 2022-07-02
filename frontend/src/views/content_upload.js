@@ -40,9 +40,15 @@ function ContentUpload(props) {
     const [lifestyleTags, setLifestyleTags] = useState([]);
     const [support, setSupport] = useState(false);
 
-    // Handle publishing failure and success
+    // Handle publishing failure and success.
     const [pubFailure, setPubFailure] = useState(false);
     const [pubSuccess, setPubSuccess] = useState(false);
+
+    // Switch to discovery view after successful publication and reload in order to show item.
+    function handlePublicationSuccess(){
+        navigate("/discovery");
+        window.location.reload();
+    }
 
     function handleCancelSubmit() {
         navigate("/landing");
@@ -331,8 +337,8 @@ function ContentUpload(props) {
         <Snackbar open={pubFailure} autoHideDuration={6000} onClose={() => setPubFailure(false)} >
             <Alert onClose={() => setPubFailure(false)} severity="error" sx={{ width: '100%' }}>Publication of content failed!</Alert>
         </Snackbar>
-        <Snackbar open={pubSuccess} autoHideDuration={1800} onClose={() => navigate("/")} >
-            <Alert onClose={() => navigate("/")} severity="success" sx={{ width: '100%' }}>Successfully published your content!</Alert>
+        <Snackbar open={pubSuccess} autoHideDuration={1800} onClose={handlePublicationSuccess} >
+            <Alert onClose={handlePublicationSuccess} severity="success" sx={{ width: '100%' }}>Successfully published your content!</Alert>
         </Snackbar>
     </Stack>);
 }

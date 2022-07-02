@@ -35,7 +35,16 @@ export default function ImageCard({ item }) {
   const imgWidth = 450;
   const imgHeight = 400;
 
-  return (
+  // TODO: fix these from the database!
+  const img = "https://images.unsplash.com/photo-1632781297772-1d68f375d878";
+  const author =  {
+          name: "Simon Plashek",
+          title: "professional bodybuilder & fitness coach",
+          img: "https://images.unsplash.com/photo-1584466977773-e625c37cdd50",
+          rating: 3,
+      }
+
+      return (
     <ImageListItem cols={dim[0]} rows={dim[1]}>
       <Card
         sx={{
@@ -48,7 +57,7 @@ export default function ImageCard({ item }) {
           },
         }}
       >
-        <CardActionArea href={`/details/${item.id}`} sx={{ height: "100%" }}>
+        <CardActionArea href={`/details/${item._id}`} sx={{ height: "100%" }}>
           <img
             style={{
               objectFit: "cover",
@@ -56,7 +65,7 @@ export default function ImageCard({ item }) {
               height: "100%",
               borderRadius: "10px",
             }}
-            {...srcset(item.img, imgWidth, imgHeight, dim[1], dim[0])}
+            {...srcset(img, imgWidth, imgHeight, dim[1], dim[0])}
             alt={item.title}
             loading="lazy"
           />
@@ -78,7 +87,7 @@ export default function ImageCard({ item }) {
               },
             }}
             title={item.title}
-            subtitle={"by " + item.author.name}
+            subtitle={"by " + author.name}
             position="bottom"
           />
         </CardActionArea>

@@ -5,11 +5,11 @@ import ContentService from "../../services/contentService";
  *
  * @returns {(function(*): Promise<void>)|*}
  */
-export function getContents() {
-  // when the backend call was successfull and the movies are retrieved
-  // in the dispatcher the movies will be added to the global state
+export function getContentList() {
+  // when the backend call was successful and the contents are retrieved
+  // in the dispatcher the contents will be added to the global state
   function onSuccess(contents) {
-    return { type: "GETCONTENTS_SUCCESS", contents: contents };
+    return { type: "GETCONTENTLIST_SUCCESS", contents: contents };
   }
   // when the backend call was failed
   function onFailure(error) {
@@ -19,7 +19,7 @@ export function getContents() {
 
   return async (dispatch) => {
     try {
-      // ask for the movies in the backend
+      // ask for all content in the backend
       const contents = await ContentService.getContents();
       // call onSuccess in context of redux
       dispatch(onSuccess(contents));
