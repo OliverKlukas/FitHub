@@ -38,7 +38,7 @@ export default class ContentService {
   static createContent(content) {
     return new Promise((resolve, reject) => {
       HttpService.post(
-        ContentService.baseURL(),
+        this.baseURL(),
         content,
         function (data) {
           resolve(data);
@@ -59,7 +59,7 @@ export default class ContentService {
   static getContent(id) {
     return new Promise(async (resolve, reject) => {
       HttpService.get(
-          `${ContentService.baseURL()}/${id}`,
+          `${this.baseURL()}/${id}`,
           function (data) {
             if (data !== undefined || Object.keys(data).length !== 0) {
               resolve(data);
@@ -74,6 +74,49 @@ export default class ContentService {
     });
   }
 
+  /**
+   * Delete single content by id.
+   *
+   * @param id
+   * @returns {Promise<unknown>}
+   */
+  static deleteContent(id) {
+    return new Promise((resolve, reject) => {
+      HttpService.remove(
+          `${this.baseURL()}/${id}`,
+          function (data) {
+            if (data.message !== undefined) {
+              resolve(data.message);
+            } else {
+              reject("Error while deleting content");
+            }
+          },
+          function (textStatus) {
+            reject(textStatus);
+          }
+      );
+    });
+  }
+
+  /**
+   * Update single content with new version.
+   * @param content
+   * @returns {Promise<unknown>}
+   */
+  static updateContent(content) {
+    return new Promise((resolve, reject) => {
+      HttpService.put(
+          `${this.baseURL()}/${content.id}`,
+          content,
+          function (data) {
+            resolve(data);
+          },
+          function (textStatus) {
+            reject(textStatus);
+          }
+      );
+    });
+  }
 }
 
 

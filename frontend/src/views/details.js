@@ -6,16 +6,32 @@ import { HighlightButton } from "../components/buttons/highlight_button";
 import { StandardButton } from "../components/buttons/standard_button";
 import { Star } from "@mui/icons-material";
 import * as React from "react";
+import {getContent} from "../redux/actions";
+import {connect, useSelector} from "react-redux";
+import {useEffect} from "react";
+
+// TODO: once user is connected I need the info from there
+const author =  {
+  name: "Simon Plashek",
+  title: "professional bodybuilder & fitness coach",
+  img: "https://images.unsplash.com/photo-1584466977773-e625c37cdd50",
+  rating: 3,
+}
 
 /**
  * Detailed view that conveys the most important information of a content item.
  *
  * @return {JSX.Element}
  */
-export default function Details() {
+function Details(props) {
   // Match url id to content item.
   const { id } = useParams();
-  const item = content.find((item) => item.id == id);
+  const item = useSelector((state) => state.item);
+
+  // On open load the movie.
+  useEffect(() => {
+    getContent(id);
+  }, [item]);
 
   return (
     <Stack spacing={3} marginBottom={10} marginTop={5}>
@@ -33,12 +49,12 @@ export default function Details() {
             boxShadow: 5,
           }}
         >
-          {item.media.map((url, index) => (
+          {item.media.map((data, index) => (
             <img
               width="100%"
               height="100%"
               key={index}
-              src={url}
+              src={data}
               style={{ objectFit: "cover" }}
             />
           ))}
@@ -48,7 +64,7 @@ export default function Details() {
           sx={{ display: { xs: "none", md: "none", lg: "flex" }, width: "35%" }}
         >
           <Stack alignItems="center" justifyContent="center">
-            <Link underline="none" href={`/profile/${item.author.name}`}>
+            <Link underline="none" href={`/profile/${author.name}`}>
               <Avatar
                 sx={{
                   width: "15vw",
@@ -61,7 +77,7 @@ export default function Details() {
                   },
                 }}
                 alt="content creator"
-                src={item.author.img}
+                src={author.img}
               />
             </Link>
             <Stack>
@@ -80,20 +96,20 @@ export default function Details() {
                     "& .MuiRating-iconFilled": { color: "warning.main" },
                   }}
                   name="read-only"
-                  value={item.author.rating}
+                  value={author.rating}
                   readOnly
                   emptyIcon={<Star fontSize="inherit" />}
                 />
                 <Link
                   color="inherit"
                   underline="hover"
-                  href={`/profile/${item.author.name}`}
+                  href={`/profile/${author.name}`}
                 >
                   512 reviews
                 </Link>
               </Stack>
-              <Typography variant="h1">{item.author.name}</Typography>
-              <Typography lineHeight={1.3}>{item.author.title}</Typography>
+              <Typography variant="h1">{author.name}</Typography>
+              <Typography lineHeight={1.3}>{author.title}</Typography>
             </Stack>
           </Stack>
         </Box>
@@ -118,9 +134,9 @@ export default function Details() {
               <Link
                 color="inherit"
                 underline="hover"
-                href={`/profile/${item.author.name}`}
+                href={`/profile/${author.name}`}
               >
-                {item.author.name}
+                {author.name}
               </Link>
             </Typography>
             <Typography>total price</Typography>
@@ -157,3 +173,11 @@ export default function Details() {
     </Stack>
   );
 }
+
+// Includes dispatch within the prop parameters.
+const mapDispatchToProps = (dispatch) => ({
+  getContent, dispatch,
+});
+
+// Connect() establishes the connection to the redux functionalities.
+export default connect(null, mapDispatchToProps)(Details);

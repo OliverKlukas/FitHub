@@ -57,7 +57,7 @@ export default function ImageCard({ item }) {
           },
         }}
       >
-        <CardActionArea href={`/details/${item._id}`} sx={{ height: "100%" }}>
+        <CardActionArea href={`/details/${item.id}`} sx={{ height: "100%" }}>
           <img
             style={{
               objectFit: "cover",
