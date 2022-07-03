@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 "use strict";
 
 const mongoose = require("mongoose");
@@ -30,11 +31,11 @@ const UserSchema = new mongoose.Schema({
     required: true,
   },
   password: {
-    type: String /* TODO make into a pw hash instead of plaintext pw */,
+    type: String,
     required: true,
     unique: true,
   },
-  // role of the user, used for rights management
+  // role of the user
   role: {
     // potentially add a admin role for "Employees"
     type: String,
@@ -45,7 +46,6 @@ const UserSchema = new mongoose.Schema({
   },
   description: {
     type: String,
-    required: false,
   },
   profilePicturep: {
     type: String,

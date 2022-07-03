@@ -1,4 +1,5 @@
 /* eslint-disable prettier/prettier */
+/* eslint-disable react/jsx-key */
 /* eslint-disable react/prop-types */
 /* eslint-disable valid-jsdoc */
 import * as React from "react";
@@ -48,7 +49,6 @@ function Header(props) {
     signin: "Log In",
     about: "About us"
   }
-  console.log(user.user)
 
   // Anchor hook to open/close the navigation menu when option selected or clicked off.
   const [anchorElSet, setAnchorElSet] = React.useState(null);

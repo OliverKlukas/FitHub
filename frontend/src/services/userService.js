@@ -71,4 +71,39 @@ export default class UserService {
   static logout() {
     window.localStorage.removeItem("jwtToken");
   }
+  static userdataloggedin(fName,lName,mail) {
+    return new Promise((resolve,reject) => {
+      HttpService.post(
+        `${UserService.baseURL()}/userdata`,
+        {
+          email : mail,
+          firstName : fName,
+          lastName : lName,
+        },
+        function(data) {
+          resolve(data)
+        },
+        function(textStatus) {
+          reject(textStatus)
+        }
+      );
+    });
+  }
+  static userdata(fName,lName) {
+    return new Promise((resolve,reject) => {
+      HttpService.post(
+        `${UserService.baseURL()}/userdata`,
+        {
+          firstName : fName,
+          lastName : lName,
+        },
+        function(data) {
+          resolve(data)
+        },
+        function(textStatus) {
+          reject(textStatus)
+        }
+      );
+    });
+  }
 }

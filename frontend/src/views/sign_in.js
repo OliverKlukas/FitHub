@@ -11,8 +11,8 @@ import { connect, useSelector } from "react-redux";
 import { login} from "../redux/actions"
 
 /**
- *
- * @param {props} props
+ * Login View
+ * @param {props} props for user state management
  */
 function SignIn(props) {
 

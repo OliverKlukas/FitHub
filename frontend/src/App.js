@@ -7,7 +7,7 @@ import AboutUs from "./views/about_us";
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import FitHubTheme from "./utils/theme";
 import Header from "./components/header/header";
-import ProfileViews from "./views/profile_views";
+import Profile from "./views/profile";
 import Box from "@mui/material/Box";
 import Footer from "./components/footer/footer";
 import Registration from "./views/registration";
@@ -55,7 +55,7 @@ function App() {
                 <Route path="/plans" element={<AboutUs />} />
                 <Route path="/about" element={<AboutUs />} />
                 <Route path="/contact" element={<AboutUs />} />
-                <Route path="/profile/:id" element={<ProfileViews />} />
+                <Route path="/profile/:firstName/:lastName" element={<Profile />} />
                 <Route path="/registration" element={<Registration />} />
                 <Route path="/details/:id" element={<Details />} />
                 <Route path="/payment/:id" element={<Payment />} />

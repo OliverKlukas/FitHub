@@ -21,8 +21,8 @@ import { registerContentCreator, registerCustomer } from "../redux/actions";
 import { connect, useSelector } from "react-redux";
 
 /**
- *
- * @param {props} props
+ * Registration View
+ * @param {props} props for user state management
  */
 function Registration(props) {
 
