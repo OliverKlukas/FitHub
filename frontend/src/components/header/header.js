@@ -23,31 +23,29 @@ import { logout } from "../../redux/actions";
 /**
  *  Header bar component that is visible on all views.
  * 
- * @param {props} props - for user management
- * @param gender - Specifies the gender="male" | "female" which dictates the profile SVG's appearance.
- * @param userType - Specifies the userType="content-creator" | "user" which dictates user specific customizations.
+ * @param {props} props - for user state management
  * @return {JSX.Element}
  */
 function Header(props) {
-  // Sub-urls and link names for available page views.
+  // Needed for user state management
   const user = useSelector((state) => state.user);
-
+  // Header Center for a Content Creator
   const pagesContentCreator = {
     discovery: "Discovery",
     upload: "Offer Content",
     about: "About us",
   };
   const icondirection = "/discovery";
-
+  // Header Center for a Customer
   const pagesCustomer = {
     discovery: "Discovery",
     plans: "My Plans",
     about: "About us",
   };
-
+  // Header Center if the user is not logged in
   const pagesLoggedOut = {
     discovery: "Discovery",
-    registration: "Registration",
+    signin: "Log In",
     about: "About us"
   }
   console.log(user.user)
@@ -61,7 +59,7 @@ function Header(props) {
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
   };
-  // Sub-urls and link names for available user menu options.
+  // Sub-urls and link names for available user menu options when the user is not logged in
   const settings = {
     contact: "Contact",
     signin: "Login",
@@ -150,7 +148,7 @@ function Header(props) {
           sx={{ display: { xs: "none", md: "flex" } }}
         >
           {user.user
-            ? [user.user.role === "customer"
+            ? [(user.user.role === "customer")
               ? [
                 Object.keys(pagesCustomer).map((url) => (
                   <LinkButton
@@ -218,7 +216,11 @@ function Header(props) {
                 id="composition-menu"
                 aria-labelledby="composition-button"
               >
-                <MenuItem key="profile" onClick={handleCloseSetMenu}>Profile</MenuItem>
+                <MenuItem key="profile" onClick={handleCloseSetMenu}>
+                  <Link href="/profile/:id" underline="none" color="inherit">
+                    Profile
+                  </Link>
+                </MenuItem>
                 <MenuItem key="logout" onClick={handlelogout}>Logout</MenuItem>
               </MenuList>
             </Menu>
