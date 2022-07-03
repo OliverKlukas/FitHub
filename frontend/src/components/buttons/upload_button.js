@@ -55,8 +55,8 @@ export default function UploadButton({uploadFormat, givenId, multiUpload, setUpl
 
     return (<Stack direction="row" spacing={2} alignItems="center">
             <label htmlFor={givenId}>
-                <Input sx={{display: "none"}} accept={uploadFormat} id={givenId} multiple={multiUpload} type="file"
-                       onChange={handleUpload}/>
+                <input style={{display: "none"}} accept={uploadFormat} id={givenId} type="file"
+                       onChange={handleUpload} multiple={multiUpload}/>
                 <StandardButton variant="contained" component="span" upload="true">
                     Upload
                 </StandardButton>

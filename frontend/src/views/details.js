@@ -1,7 +1,6 @@
 import {Alert, Avatar, Box, CircularProgress, Link, Rating, Stack, Typography} from "@mui/material";
 import Carousel from "react-material-ui-carousel";
 import { Link as RouterLink, useParams } from "react-router-dom";
-import { content } from "../utils/content";
 import { HighlightButton } from "../components/buttons/highlight_button";
 import { StandardButton } from "../components/buttons/standard_button";
 import { Star } from "@mui/icons-material";
