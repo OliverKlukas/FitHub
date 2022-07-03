@@ -26,7 +26,7 @@ function SignIn(props) {
 
   useEffect(() => {
     if (user.user) {
-        navigate("/landing");
+        navigate("/discovery");
     }
   }, [user, props.history]);
 
@@ -52,7 +52,7 @@ function SignIn(props) {
   };
   const handleSubmit = () => {
     props.dispatch(login(email,password))
-    navigate("/plans");
+    navigate("/discovery");
   };
   const handleButtonToRegistration = () => {
     /* Placeholder in case we still want something to be done with this button and not just link */

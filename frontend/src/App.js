@@ -6,7 +6,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import AboutUs from "./views/about_us";
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import FitHubTheme from "./utils/theme";
-import { Header } from "./components/header/header";
+import Header from "./components/header/header";
 import ProfileViews from "./views/profile_views";
 import Box from "@mui/material/Box";
 import Footer from "./components/footer/footer";

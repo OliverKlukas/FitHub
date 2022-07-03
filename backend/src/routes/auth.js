@@ -1,19 +1,21 @@
+/* eslint-disable prettier/prettier */
 "use strict";
 
 const express = require("express");
+// eslint-disable-next-line new-cap
 const router = express.Router();
 
-const middleware = require("../middleware")
+const middleware = require("../middleware");
 
-const AuthController = require("../controllers/auth")
+const AuthController = require("../controllers/auth");
 
-router.post("/register",AuthController.register) //register a new user 
-router.post("/login",AuthController.login)   //login
-router.get("/userdata", AuthController.userdata) // display publicly available user data, only works for Content Creators
-//router.get("/me", middleware.checkAuthentication, AuthController.me) // displays own user data, needs to be logged in
-router.post("/logout", middleware.checkAuthentication, AuthController.logout)  //logout
-//router.post("/addreview", middleware.checkAuthentication, AuthController.addreview) //publishes a review
-//router.put("/updatereview", middleware.checkAuthentication, AuthController.updatereview) //update a review
-//router.delete("/deletereview", middleware.checkAuthentication, AuthController.deletereview) // delete a review
+router.post("/register", AuthController.register); // register a new user
+router.post("/login", AuthController.login); // login
+router.get("/userdata", AuthController.userdata); // display publicly available user data, only works for Content Creators
+// router.get("/me", middleware.checkAuthentication, AuthController.me) // displays own user data, needs to be logged in
+router.post("/logout", middleware.checkAuthentication, AuthController.logout); // logout
+// router.post("/addreview", middleware.checkAuthentication, AuthController.addreview) //publishes a review
+// router.put("/updatereview", middleware.checkAuthentication, AuthController.updatereview) //update a review
+// router.delete("/deletereview", middleware.checkAuthentication, AuthController.deletereview) // delete a review
 
 module.exports = router;

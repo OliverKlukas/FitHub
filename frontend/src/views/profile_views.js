@@ -1,6 +1,10 @@
+/* eslint-disable prettier/prettier */
+/* eslint-disable new-cap */
+/* eslint-disable require-jsdoc */
 import ContentCreatorProfile from "../components/profilecomponents/content_creator_profile";
-import { loremIpsum, Avatar } from "react-lorem-ipsum";
+import { loremIpsum } from "react-lorem-ipsum";
 import { Stack } from "@mui/material";
+// eslint-disable-next-line no-unused-vars
 import ContentCreatorOwnProfile from "../components/profilecomponents/content_creator_own_profile";
 
 const content = [
@@ -38,7 +42,8 @@ const content = [
 }
 function ProfileViews() {
   return (
-    <Stack>
+    // eslint-disable-next-line react/react-in-jsx-scope
+    <Stack>      
       {ContentCreatorProfile(
         "Igor Something",
         "This is where a real trainer would have their description, this is intentionally a rather long text, to check for formatting with longer texts",
