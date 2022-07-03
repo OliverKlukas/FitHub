@@ -5,6 +5,7 @@ import * as React from "react";
 
 /**
  * Computes image size for optimal display in ImageList grid.
+ *      // TODO after image style:             {...srcset(img, imgWidth, imgHeight, dim[1], dim[0])} - brauche ich das noch?
  *
  * Copied from: https://mui.com/material-ui/react-image-list/#CustomImageList.js
  *
@@ -35,8 +36,7 @@ export default function ImageCard({ item }) {
   const imgWidth = 450;
   const imgHeight = 400;
 
-  // TODO: fix these from the database!
-  const img = "https://images.unsplash.com/photo-1632781297772-1d68f375d878";
+  // TODO: once user is connected I need the info from there
   const author =  {
           name: "Simon Plashek",
           title: "professional bodybuilder & fitness coach",
@@ -65,7 +65,7 @@ export default function ImageCard({ item }) {
               height: "100%",
               borderRadius: "10px",
             }}
-            {...srcset(img, imgWidth, imgHeight, dim[1], dim[0])}
+            src={item.media[0]}
             alt={item.title}
             loading="lazy"
           />

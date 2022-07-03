@@ -10,6 +10,10 @@ const middlewares = require("./middlewares");
 
 const api = express();
 
+// Set server file size limits.
+api.use(express.json({limit: '100mb'}));
+api.use(express.urlencoded({limit: '100mb'}));
+
 // Adding Basic Middlewares
 api.use(helmet());
 api.use(bodyParser.json());

@@ -3,66 +3,53 @@
 const mongoose = require("mongoose");
 
 /**
- * Defines that images are strings in our db.
- *
- * @type {module:mongoose.Schema<any, Model<any, any, any, any>, {}, {}, any, {}, DefaultTypeKey, {img: {type: StringConstructor}}>}
- */
-const ImageSchema = new mongoose.Schema({
-    img: {
-        type: String
-    }
-})
-
-/**
  * Defines schema for fitness, nutrition and coaching content.
  *
- * @type {module:mongoose.Schema<any, Model<any, any, any, any>, {}, {}, any, {}, DefaultTypeKey, {duration: {min: number, type: NumberConstructor, required: boolean}, intensity: {min: number, type: NumberConstructor, required: boolean}, img: {default: string, type: StringConstructor}, price: {min: number, set: (function(*)), get: (function(*): string), type: NumberConstructor, required: boolean}, contentId: {ref: string, type: ObjectId}, fullSupport: {default: boolean, type: BooleanConstructor}, category: {default: string, type: StringConstructor, enum: string[]}, title: {type: StringConstructor, required: boolean}, userId: {ref: string, type: ObjectId}, tags: module:mongoose.Schema<any, Model<any, any, any, any>, {}, {}, any, {}, DefaultTypeKey, {tag: {type: StringConstructor}}>[]}>}
+ * Expected to be a JSON of: {
+ *     _id: unique identifier of content,
+ *     title: title of content,
+ *     description: text outlining content,
+ *     price: number including cents workaround,
+ *     duration: amount of weeks,
+ *     intensity: activities per week,
+ *     support: content and buyer are supported by creator,
+ *     tags: list of string tags the content corresponds to,
+ *     featured: content is prominently featured on discovery,
+ *     media: list of images,
+ *     plan: pdf of plan,
+ *     sample: pdf of plan sample,
+ * }
+ *
  */
 const ContentSchema = new mongoose.Schema({
-    //TODO: ownerId: {type: mongoose.Schema.Types.ObjectId, ref: "User"},
-    _id: {type: String, required: true},
-    category: {
-        type: String, // category can only take the values "training", "nutrition" or "coaching"
-        enum: ["training", "nutrition", "coaching"], // if not specified the category "training" is chosen
-        required: true
-    },
-    title: {
+    //TODO add when connecting user backend: ownerId: {type: mongoose.Schema.Types.ObjectId, ref: "User"},
+    id: {type: String, required: true}, category: {
+        type: String, enum: ["training", "nutrition", "coaching"], required: true
+    }, title: {
         type: String, required: true
-    },
-    description: {
+    }, description: {
         type: String, required: true
-    },
-    price: {
-        type: Number, min: 1, get: getPrice, //workaround to include cents (shift of comma)
-        set: setPrice, required: true
-    },
-    media: {
+    }, price: {
+        type: Number, min: 1, get: getPrice, set: setPrice, required: true
+    }, duration: {
+        type: Number, min: 1, required: true
+    }, intensity: {
+        type: Number, min: 1, required: true
+    }, support: {
+        type: Boolean, required: true
+    }, tags: [{
+        type: String, required: true
+    }], featured: {
+        type: Boolean, required: true
+    }, media: {
         type: [{
-            data: Buffer,
-            contentType: String
-        }],
-        required: true
+            type: String
+        }], required: true
+    }, plan: {
+        type: String, required: true
+    }, sample: {
+        type: String, required: true
     },
-    // Amount of weeks the plan is designed for.
-    duration: {
-        type: Number, min: 1, required: true
-    }, // Intensity of the plans and coachings is measured in "activities per week".
-    intensity: {
-        type: Number, min: 1, required: true
-    }, // Content creator can checkmark whether they offer full-time support.
-    support: {
-        type: Boolean, required: true
-    },
-    tags: [
-        {
-            type: String,
-            required: true
-        }
-    ],
-    // Denotes whether owner bought premium placement for this content.
-    featured: {
-        type: Boolean, required: true
-    }
 })
 
 /**

@@ -8,8 +8,8 @@ import ContentService from "../../services/contentService";
 export function getContentList() {
   // when the backend call was successful and the contents are retrieved
   // in the dispatcher the contents will be added to the global state
-  function onSuccess(contents) {
-    return { type: "GETCONTENTLIST_SUCCESS", contents: contents };
+  function onSuccess(contentList) {
+    return { type: "GETCONTENTLIST_SUCCESS", contentList: contentList };
   }
   // when the backend call was failed
   function onFailure(error) {
@@ -20,9 +20,9 @@ export function getContentList() {
   return async (dispatch) => {
     try {
       // ask for all content in the backend
-      const contents = await ContentService.getContents();
+      const contentList = await ContentService.getContentList();
       // call onSuccess in context of redux
-      dispatch(onSuccess(contents));
+      dispatch(onSuccess(contentList));
     } catch (e) {
       onFailure(e);
     }
@@ -53,3 +53,76 @@ export function addContent(content) {
   };
 }
 
+/**
+ * Update a single content item.
+ *
+ * @param changeContent
+ * @returns {(function(*): Promise<void>)|*}
+ */
+export function changeContent(changeContent) {
+  function onSuccess(content) {
+    return { type: "UPDATECONTENT_SUCCESS", content: content };
+  }
+
+  function onFailure(error) {
+    console.log("change content failure", error);
+  }
+
+  return async (dispatch) => {
+    try {
+      let content = await ContentService.updateContent(changeContent);
+      dispatch(onSuccess(content));
+    } catch (e) {
+      onFailure(e);
+    }
+  };
+}
+
+/**
+ * Retrieves a single content item.
+ *
+ * @param id
+ * @returns {(function(*, *): Promise<void>)|*}
+ */
+export const getContent = (id) => {
+  function onSuccess(content) {
+    return { type: "GETCONTENT_SUCCESS", content: content };
+  }
+  function onFailure(error) {
+    console.log("failed to load a content", error);
+  }
+
+  return async (dispatch, getState) => {
+    try {
+      let content = await ContentService.getContent(id);
+      dispatch(onSuccess(content));
+    } catch (e) {
+      onFailure(e);
+    }
+  };
+};
+
+/**
+ * Deletes content item by id.
+ *
+ * @param id
+ * @returns {(function(*): Promise<void>)|*}
+ */
+export function deleteContent(id) {
+  function onSuccess(contentList) {
+    return { type: "DELETECONTENT_SUCCESS", contentList: contentList };
+  }
+  function onFailure(error) {
+    console.log("delete movie failure", error);
+  }
+
+  return async (dispatch) => {
+    try {
+      await ContentService.deleteContent(id);
+      let contentList = await ContentService.getContentList();
+      dispatch(onSuccess(contentList));
+    } catch (e) {
+      onFailure(e);
+    }
+  };
+}

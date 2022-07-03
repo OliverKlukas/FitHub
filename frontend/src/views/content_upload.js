@@ -22,6 +22,12 @@ const fitnessGoal = ["weight-loss", "weight-gain", "muscle-growth", "cardio"];
 const fitnessLevel = ["beginner", "advanced", "professional"];
 const lifestyle = ["vegan", "vegetarian", "pescatarian", "meat-based"];
 
+/**
+ * Handles the upload of new content to database.
+ *
+ * @param props - receives database function addContent via props.
+ *
+ */
 function ContentUpload(props) {
     const {selectedCategory} = useParams();
 
@@ -39,23 +45,27 @@ function ContentUpload(props) {
     const [levelTags, setLevelTags] = useState([]);
     const [lifestyleTags, setLifestyleTags] = useState([]);
     const [support, setSupport] = useState(false);
+    const [media, setMedia] = useState([]);
+    const [plan, setPlan] = useState([]);
+    const [sample, setSample] = useState([]);
 
     // Handle publishing failure and success.
     const [pubFailure, setPubFailure] = useState(false);
     const [pubSuccess, setPubSuccess] = useState(false);
 
     // Switch to discovery view after successful publication and reload in order to show item.
-    function handlePublicationSuccess(){
+    function handlePublicationSuccess() {
         navigate("/discovery");
         window.location.reload();
     }
 
+    // Cancel the upload of content.
     function handleCancelSubmit() {
         navigate("/landing");
     }
 
     // User input verification and hand-off to backend database publication.
-    function handlePublishContent(){
+    function handlePublishContent() {
         // TODO: verify that the above defined hooks match our criteria, i.e. with regex that we could put i.e. into utils folder and use project wide
         publishContent();
     }
@@ -64,16 +74,19 @@ function ContentUpload(props) {
     async function publishContent() {
         try {
             await props.addContent({
+                id: Math.floor(Math.random() * 100000000 + 1).toString(),
                 category: category,
                 title: title,
                 description: description,
                 price: parseInt(price),
-                // TODO: hier weitermahcen mit dem einfügen der medien und verändern des upload buttons media: ,
                 duration: parseInt(duration),
                 intensity: parseInt(intensity),
                 support: support,
                 tags: goalTags.concat(levelTags, lifestyleTags),
                 featured: false,
+                media: media,
+                plan: plan[0],
+                sample: sample[0],
             })
             setPubSuccess(true);
         } catch (error) {
@@ -254,16 +267,16 @@ function ContentUpload(props) {
             <Typography sx={{minWidth: 200}} variant="subtitle1">Marketing Material:</Typography>
             <Stack spacing={1}>
                 <UploadButton
-                    uploadFormat="image/*" givenId="marketing-upload" multiUpload={true}                />
+                    uploadFormat="image/*" givenId="marketing-upload" multiUpload={true} setUpload={setMedia}/>
                 <Typography variant="body2" fontSize="small" maxWidth={300}>
                     Please upload pictures that represents your offer (example
-                    dishes, workouts etc). Be aware and respect our  <Link
+                    dishes, workouts etc). Be aware and respect our <Link
                     color="#393E46"
                     fontSize={14}
                     fontWeight={300}
                     underline="always"
                     href="/terms-and-conditions"
-                >Terms & Conditions</Link>  including image rights
+                >Terms & Conditions</Link> including image rights
                 </Typography>
             </Stack>
         </Stack>
@@ -271,24 +284,25 @@ function ContentUpload(props) {
             <Typography sx={{minWidth: 200}} variant="subtitle1">Full Plan:</Typography>
             <Stack spacing={1}>
                 <UploadButton
-
                     uploadFormat=".pdf"
                     givenId="plan-upload"
                     multiUpload={false}
+                    setUpload={setPlan}
                 />
-                    <Typography variant="body2" fontSize="small" maxWidth={300}>
-                        Please upload the pdf file that contains the complete training
-                        plan that buyers are going to receive
-                    </Typography>
+                <Typography variant="body2" fontSize="small" maxWidth={300}>
+                    Please upload the pdf file that contains the complete training
+                    plan that buyers are going to receive
+                </Typography>
             </Stack>
         </Stack>
         <Stack spacing={2} direction="row">
-                <Typography sx={{minWidth: 200}} variant="subtitle1">Sample:</Typography>
+            <Typography sx={{minWidth: 200}} variant="subtitle1">Sample:</Typography>
             <Stack spacing={1}>
                 <UploadButton
                     uploadFormat=".pdf"
                     givenId="sample-upload"
                     multiUpload={false}
+                    setUpload={setSample}
                 />
                 <Typography variant="body2" fontSize="small" maxWidth={300}>
                     Please upload a sample pdf file which gives buyers an
@@ -321,13 +335,13 @@ function ContentUpload(props) {
             <Stack direction="row" alignItems="center">
                 <Checkbox/>
                 <Typography variant="body1">
-                    Yes, I hereby accept the  <Link
-                        color="#393E46"
-                        fontSize={14}
-                        fontWeight={300}
-                        underline="always"
-                        href="/terms-and-conditions"
-                    >Terms & Conditions</Link>  of FitHub
+                    Yes, I hereby accept the <Link
+                    color="#393E46"
+                    fontSize={14}
+                    fontWeight={300}
+                    underline="always"
+                    href="/terms-and-conditions"
+                >Terms & Conditions</Link> of FitHub
                 </Typography>
             </Stack>
         </Stack>
@@ -335,11 +349,13 @@ function ContentUpload(props) {
             <CancelButton variant="contained" onClick={handleCancelSubmit}>Cancel</CancelButton>
             <StandardButton variant="contained" onClick={handlePublishContent}>Publish</StandardButton>
         </Stack>
-        <Snackbar open={pubFailure} autoHideDuration={6000} onClose={() => setPubFailure(false)} >
-            <Alert onClose={() => setPubFailure(false)} severity="error" sx={{ width: '100%' }}>Publication of content failed!</Alert>
+        <Snackbar open={pubFailure} autoHideDuration={6000} onClose={() => setPubFailure(false)}>
+            <Alert onClose={() => setPubFailure(false)} severity="error" sx={{width: '100%'}}>Publication of content
+                failed!</Alert>
         </Snackbar>
-        <Snackbar open={pubSuccess} autoHideDuration={1800} onClose={handlePublicationSuccess} >
-            <Alert onClose={handlePublicationSuccess} severity="success" sx={{ width: '100%' }}>Successfully published your content!</Alert>
+        <Snackbar open={pubSuccess} autoHideDuration={1800} onClose={handlePublicationSuccess}>
+            <Alert onClose={handlePublicationSuccess} severity="success" sx={{width: '100%'}}>Successfully published
+                your content!</Alert>
         </Snackbar>
     </Stack>);
 }

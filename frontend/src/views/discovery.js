@@ -16,7 +16,7 @@ import {getContentList} from "../redux/actions";
  */
 function Discovery(props) {
     // State from the redux store for contents.
-    const contentList = useSelector((state) => state.entities.contents);
+    const contentList = useSelector((state) => state.entities.contentList);
 
     // Load content when the page is loaded or the contents have changed.
     useEffect(() => {
