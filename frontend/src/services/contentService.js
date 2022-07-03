@@ -36,7 +36,8 @@ export default class ContentService {
    * @returns {Promise<unknown>}
    */
   static createContent(content) {
-    return new Promise((resolve, reject) => {
+      content.id = Math.floor(Math.random() * 100000000 + 1).toString();
+      return new Promise((resolve, reject) => {
       HttpService.post(
         this.baseURL(),
         content,
@@ -106,7 +107,7 @@ export default class ContentService {
   static updateContent(content) {
     return new Promise((resolve, reject) => {
       HttpService.put(
-          `${this.baseURL()}/${content.id}`,
+          `${this.baseURL()}/${content._id}`,
           content,
           function (data) {
             resolve(data);

@@ -23,7 +23,7 @@ const mongoose = require("mongoose");
  */
 const ContentSchema = new mongoose.Schema({
     //TODO add when connecting user backend: ownerId: {type: mongoose.Schema.Types.ObjectId, ref: "User"},
-    id: {type: String, required: true}, category: {
+    category: {
         type: String, enum: ["training", "nutrition", "coaching"], required: true
     }, title: {
         type: String, required: true

@@ -1,4 +1,4 @@
-import { Avatar, Box, Link, Rating, Stack, Typography } from "@mui/material";
+import {Alert, Avatar, Box, CircularProgress, Link, Rating, Stack, Typography} from "@mui/material";
 import Carousel from "react-material-ui-carousel";
 import { Link as RouterLink, useParams } from "react-router-dom";
 import { content } from "../utils/content";
@@ -26,14 +26,23 @@ const author =  {
 function Details(props) {
   // Match url id to content item.
   const { id } = useParams();
-  const item = useSelector((state) => state.item);
+  const singleContent = useSelector((state) => {
+    return state.singleContent;
+  });
 
   // On open load the movie.
   useEffect(() => {
-    getContent(id);
-  }, [item]);
+    props.getContent(id);
+  }, [singleContent.content]);
 
-  return (
+  return !singleContent.content && !singleContent.error ? (
+      // Loading content.
+      <Box display="flex" justifyContent="center" alignItems="center" minHeight="80vh">
+        <CircularProgress/>
+      </Box>
+    ) : singleContent.error ? (
+      <Alert severity="error">Loading content went wrong, sorry!</Alert>
+  ) : (
     <Stack spacing={3} marginBottom={10} marginTop={5}>
       <Stack direction="row" justifyContent="space-between">
         <Carousel
@@ -49,7 +58,7 @@ function Details(props) {
             boxShadow: 5,
           }}
         >
-          {item.media.map((data, index) => (
+          {singleContent.content.media.map((data, index) => (
             <img
               width="100%"
               height="100%"
@@ -120,8 +129,8 @@ function Details(props) {
       >
         <Stack>
           <Stack direction="row" justifyContent="space-between" spacing={4}>
-            <Typography variant="h1">{item.title}</Typography>
-            <Typography variant="h1">{item.price}€</Typography>
+            <Typography variant="h1">{singleContent.content.title}</Typography>
+            <Typography variant="h1">{singleContent.content.price}€</Typography>
           </Stack>
           <Stack
             marginBottom={2}
@@ -151,11 +160,11 @@ function Details(props) {
         </Stack>
         <Stack spacing={1}>
           <Typography variant="h3">Description</Typography>
-          <Typography>{item.description}</Typography>
+          <Typography>{singleContent.content.description}</Typography>
         </Stack>
         <Stack spacing={1}>
           <Typography variant="h3">Duration</Typography>
-          <Typography>{item.duration}</Typography>
+          <Typography>{singleContent.content.duration}</Typography>
         </Stack>
         <Stack spacing={2}>
           <Typography variant="h3">Sample Workout</Typography>
@@ -174,10 +183,5 @@ function Details(props) {
   );
 }
 
-// Includes dispatch within the prop parameters.
-const mapDispatchToProps = (dispatch) => ({
-  getContent, dispatch,
-});
-
 // Connect() establishes the connection to the redux functionalities.
-export default connect(null, mapDispatchToProps)(Details);
+export default connect(null, { getContent})(Details);

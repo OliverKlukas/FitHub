@@ -74,7 +74,6 @@ function ContentUpload(props) {
     async function publishContent() {
         try {
             await props.addContent({
-                id: Math.floor(Math.random() * 100000000 + 1).toString(),
                 category: category,
                 title: title,
                 description: description,

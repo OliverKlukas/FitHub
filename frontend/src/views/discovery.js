@@ -43,7 +43,9 @@ function Discovery(props) {
     // Check first if no content loaded and trigger useEffect in that case.
     return !contentList ? (
         // Loading content.
-        <CircularProgress/>
+        <Box display="flex" justifyContent="center" alignItems="center" minHeight="80vh">
+            <CircularProgress/>
+        </Box>
     ) : !Array.isArray(contentList) ? (
         // Handle that content list might be corrupt.
         <Alert severity="error">Loading content list went wrong, sorry!</Alert>
