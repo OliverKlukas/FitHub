@@ -9,7 +9,7 @@ const mongoose = require("mongoose");
  *     _id: unique identifier of content,
  *     title: title of content,
  *     description: text outlining content,
- *     price: number including cents workaround,
+ *     price: string as cents workaround,
  *     duration: amount of weeks,
  *     intensity: activities per week,
  *     support: content and buyer are supported by creator,
@@ -30,7 +30,7 @@ const ContentSchema = new mongoose.Schema({
     }, description: {
         type: String, required: true
     }, price: {
-        type: Number, min: 1, get: getPrice, set: setPrice, required: true
+        type: String, required: true
     }, duration: {
         type: Number, min: 1, required: true
     }, intensity: {
@@ -51,25 +51,5 @@ const ContentSchema = new mongoose.Schema({
         type: String, required: true
     },
 })
-
-/**
- * TODO:
- *
- * @param num
- * @returns {string}
- */
-function getPrice(num) {
-    return (num / 100).toFixed(2);
-}
-
-/**
- * TODO:
- *
- * @param num
- * @returns {number}
- */
-function setPrice(num) {
-    return num * 100;
-}
 
 module.exports = mongoose.model("Content", ContentSchema);

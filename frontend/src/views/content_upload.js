@@ -77,7 +77,7 @@ function ContentUpload(props) {
                 category: category,
                 title: title,
                 description: description,
-                price: parseInt(price),
+                price: price,
                 duration: parseInt(duration),
                 intensity: parseInt(intensity),
                 support: support,

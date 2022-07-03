@@ -5,7 +5,7 @@ import * as React from "react";
 
 /**
  * Computes image size for optimal display in ImageList grid.
- *      // TODO after image style:             {...srcset(img, imgWidth, imgHeight, dim[1], dim[0])} - brauche ich das noch?
+ *      // TODO after image style:             {...srcset(item.media[0], imgWidth, imgHeight, dim[1], dim[0])}             - brauche ich das noch?
  *
  * Copied from: https://mui.com/material-ui/react-image-list/#CustomImageList.js
  *
