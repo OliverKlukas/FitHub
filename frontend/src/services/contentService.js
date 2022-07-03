@@ -11,8 +11,6 @@ export default class ContentService {
   /**
    * Retrieve list of all contents in db.
    *
-   * TODO: change this to a filter based request
-   *
    * @returns {Promise<unknown>}
    */
   static getContentList() {

@@ -34,7 +34,7 @@ function Discovery(props) {
     const [filter, setFilter] = useState([]);
 
     // Number[] of price range that the content list should currently be filtered for.
-    const [priceRange, setPriceRange] = React.useState([0, 100]);
+    const [priceRange, setPriceRange] = React.useState([0.0, 100.0]);
 
     // Screen size hooks to responsively control the number of content columns.
     const sm = useMediaQuery(theme.breakpoints.down("sm"));
@@ -71,11 +71,9 @@ function Discovery(props) {
                     gap={40}
                 >
                     {contentList.map((item) => {
-                        return <ImageCard item={item} key={item._id}/>;
-                        /*
-                        if (item.price >= priceRange[0] && item.price <= priceRange[1] && (filter.length === 0 || item.tags.filter((tag) => filter.includes(tag)).length === filter.length)) {
-
-                        }*/
+                        if (parseFloat(item.price) >= priceRange[0] && parseFloat(item.price) <= priceRange[1] && (filter.length === 0 || item.tags.filter((tag) => filter.includes(tag)).length === filter.length)) {
+                            return <ImageCard item={item} key={item._id}/>;
+                        }
                     })}
                 </ImageList>
             }
