@@ -168,11 +168,9 @@ function Details(props) {
         <Stack spacing={2}>
           <Typography variant="h3">Sample Workout</Typography>
           <StandardButton
-            variant="contained"
-            component={RouterLink}
-            target="_blank"
-            to={"/sample.pdf"}
-            download
+              variant="contained"
+              href={singleContent.content.sample}
+              download={singleContent.content.title}
           >
             Download
           </StandardButton>
