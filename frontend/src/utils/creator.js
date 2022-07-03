@@ -5,7 +5,7 @@
     id: 3000,
     name: 'Mike Tyson',
     eMailAdress: 'mikeymike@web.de',
-    offeredContent:  [1000, 1001, 1002],
+    offeredContent:  [1000, 1001, 1002, 1003, 1004, 1005],
     rating: 2
 }, {
     id: 3001,

@@ -18,6 +18,7 @@ import LandingPage from "./views/landing_page";
 import ContentUpload from './views/content_upload'; 
 import SignIn from './views/sign_in';
 import MyContent from "./views/mycontent";
+import Dashboard from './views/dashboard';
 
 /**
  * Consists of a header at top, the different routed views in the middle and a footer at the bottom.
@@ -51,7 +52,8 @@ function App() {
                         <Route path="/terms-and-conditions" element={<TermsAndConditions/>}/>
                         <Route path="/myplans/:id" element={<MyPlans/>}/>
                         <Route path="/signin" element={<SignIn/>}/>
-                        <Route path="/mycontent/:id" element={<MyContent/>}/>                     
+                        <Route path="/mycontent/:id" element={<MyContent/>}/> 
+                        <Route path="/dashboard/:id" element={<Dashboard/>}/>                    
                     </Routes>
                 </Box>
                 <Footer/>
