@@ -18,7 +18,7 @@ export default class UserService {
           password: pass,
           firstName: fName,
           lastName: lName,
-          role: "Customer",
+          role: "customer",
         },
         function (data) {
           resolve(data);
@@ -38,7 +38,7 @@ export default class UserService {
           password: pass,
           firstName: fName,
           lastName: lName,
-          role: "Content Creator",
+          role: "contentCreator",
           description: descr,
           profilePicture: picture,
         },

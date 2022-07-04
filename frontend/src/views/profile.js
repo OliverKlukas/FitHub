@@ -4,7 +4,7 @@
 /* eslint-disable valid-jsdoc */
 import { Divider, Typography } from "@mui/material";
 import React, { useEffect } from "react";
-import { Stack } from "@mui/material";
+import { Stack, TextField } from "@mui/material";
 import Box from "@mui/material/Box";
 import Rating from "@mui/material/Rating";
 import Review from "../components/profilecomponents/reviewlist/review";
@@ -98,15 +98,33 @@ function Profile(props) {
           <Avatar variant="circular"></Avatar>
           <Stack direction="column" spacing={2}>
             <h1>{data.name}</h1>
-            <Typography
-              variant="body1"
-              sx={{
-                width: "60%",
-              }}
-              gutterBottom
-            >
-              {data.description}
-            </Typography>
+            {data.isOwnProfile ? [
+              <TextField
+                id="outlined-basic"
+                label="Edit Description and Update to save"
+                key={"editableProfileDescription"}
+                variant="outlined"
+                multiline
+                minRows={5}
+                maxRows={5}
+                defaultValue={data.description}
+                sx={{
+                  width: "150%",
+                }}
+              ></TextField>
+            ] : [
+              <Typography
+                variant="body1"
+                key={"ownprofiledescription"}
+                sx={{
+                  width: "60%",
+                }}
+                gutterBottom
+              >
+                {data.description}
+              </Typography>
+            ]}
+            { data.isContentCreator ? 
             <Stack direction="row" spacing={3}>
               <Rating
                 name="read-only"
@@ -121,12 +139,13 @@ function Profile(props) {
               <Typography variant="caption">
                 {reviews.length} reviews
               </Typography>
-            </Stack>
+            </Stack> : [] }
           </Stack>
+          {data.isContentCreator ?
           <Stack direction="column" spacing={4}>
             <RatingDialog></RatingDialog>
             <ReportDialog></ReportDialog>
-          </Stack>
+          </Stack> : [] }
         </Stack>
         <Divider variant="fullWidth"></Divider>
         <Box
@@ -141,7 +160,8 @@ function Profile(props) {
             spacing={2}
           >
 
-            { // maps over the reviews array and returns a review for each review
+            { data.isContentCreator ?
+            // maps over the reviews array and returns a review for each review
               reviews.map((review) => {
                 // eslint-disable-next-line new-cap
                 return Review(
@@ -151,7 +171,7 @@ function Profile(props) {
                   review.title,
                   review.star
                 );
-              })}
+              }) : [] }
           </Stack>
         </Box>
       </Stack>
