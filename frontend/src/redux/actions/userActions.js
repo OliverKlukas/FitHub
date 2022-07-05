@@ -73,5 +73,38 @@ export function registerContentCreator(
     } catch (err) {
       dispatch(onFailure(err));
     }
+  }; 
+}
+export function updateUser(changedUser) {
+  function onSuccess(user) {
+      return { type: "UPDATEUSER_SUCCESS", user: user };
+  }
+
+  function onFailure(error) {
+      console.log("change user failure", error);
+  }
+
+  return async (dispatch) => {
+      try {
+          const user = await UserService.updateUser(changedUser);
+          dispatch(onSuccess(user));
+      } catch (e) {
+          onFailure(e);
+      }
+  };
+}
+
+export function deleteUser(id) {
+  function onFailure(error) {
+      console.log("delete user failure", error);
+  }
+
+  return async (dispatch) => {
+      try {
+          await UserService.deleteUser(id);
+          dispatch({type: "LOGOUT"})
+      } catch (e) {
+          onFailure(e);
+      }
   };
 }

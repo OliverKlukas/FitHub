@@ -8,15 +8,17 @@ import { Stack, TextField } from "@mui/material";
 import Box from "@mui/material/Box";
 import Rating from "@mui/material/Rating";
 import Review from "../components/profilecomponents/reviewlist/review";
-import { loremIpsum, Avatar } from "react-lorem-ipsum";
+import { loremIpsum } from "react-lorem-ipsum";
 import StarIcon from "@mui/icons-material/Star";
 import RatingDialog from "../components/profilecomponents/popups/rating_dialog"
 import ReportDialog from "../components/profilecomponents/popups/report_dialog";
-// eslint-disable-next-line no-unused-vars
 import UserService from "../services/userService";
 import { useParams } from "react-router-dom";
-import { useSelector } from "react-redux";
-
+import { connect, useSelector } from "react-redux";
+import UploadButton from "../components/buttons/upload_button";
+import { HighlightButton } from "../components/buttons/highlight_button";
+import { deleteUser, updateUser } from "../redux/actions";
+import { useNavigate } from "react-router-dom";
 /**
  * Provile View, gets rendered empty, then fetches data from backend and fills itself up with it
  * @param {*} props for user management
@@ -25,23 +27,49 @@ import { useSelector } from "react-redux";
 function Profile(props) {
   const params = useParams()
   const user = useSelector((state) => state.user);
+
+  const navigate = useNavigate();
   // state for backenddata, since we do not want to store all profiles in a global redux state
   const [data, setdata] = React.useState({
     name: "",
     description: "",
     isOwnProfile: false,
     isContentCreator: false,
+    profilePicture: "",
   });
+  // own state for uploaded picture, in case of update
+  const [uploadedPicture, setUploadedPicture] = React.useState("");
+  // own state for description, in case of update
+  const [description, setDescription] = React.useState("");
+
+  const onChangeDescription = (e) => {
+    setDescription(e.target.value);
+  };
+  const handleSubmit = async() => {
+    const temp = {
+        name: data.name,
+        description: description,
+        profilePicture: uploadedPicture[0],
+        _id: user.user._id
+    }
+    await props.dispatch(updateUser(temp))
+    window.location.reload(false);
+  }
+  const handleDelete = async () => {
+    await props.dispatch(deleteUser(user.user._id))
+    navigate("/discovery") 
+  }
 
   useEffect(() => {
     async function fetchData() {
       if (user.user) {
-        const res = await UserService.userdataloggedin(params.firstName, params.lastName, user.email);
+        const res = await UserService.userdataloggedin(params.firstName, params.lastName, user.user.email);
         const temp = {
           name: `${res.firstname} ${res.lastname}`,
           description: res.description,
           isOwnProfile: res.isOwnProfile,
           isContentCreator: res.role === "contentCreator",
+          profilePicture: res.profilePicture
         }
         setdata(temp)
       } else {
@@ -50,6 +78,7 @@ function Profile(props) {
           description: res.description,
           isOwnProfile: res.isOwnProfile,
           isContentCreator: res.role === "contentCreator",
+          profilePicture: res.profilePicture
         }
         setdata(temp)
       }
@@ -94,8 +123,37 @@ function Profile(props) {
       }}
     >
       <Stack direction="column" spacing={2}>
-        <Stack direction="row" spacing={10}>
-          <Avatar variant="circular"></Avatar>
+        <Stack direction="row" spacing={14}>
+          {(data.isContentCreator) ?
+            <Box
+              key="ContentCreatorImage"
+              component="img"
+              sx={{
+                height: 350,
+                width: 525,
+                maxHeight: { xs: 350, md: 251 },
+                maxWidth: { xs: 525, md: 375 },
+              }}
+              src={data.profilePicture}
+            />
+            : <Box
+              key="ContentCreatorImage"
+              sx={{
+                height: 350,
+                width: 525,
+                maxHeight: { xs: 350, md: 251 },
+                maxWidth: { xs: 525, md: 375 },
+              }} Box>
+              <Typography variant="h4">Upload a Profile Picture</Typography>
+              <UploadButton
+                id="profilePictureUpload"
+                uploadFormat="image/*"
+                givenId="profilePicture-Upload"
+                multiUpload={false}
+                setUpload={setUploadedPicture}
+              />
+            </Box>
+          }
           <Stack direction="column" spacing={2}>
             <h1>{data.name}</h1>
             {data.isOwnProfile ? [
@@ -108,6 +166,7 @@ function Profile(props) {
                 minRows={5}
                 maxRows={5}
                 defaultValue={data.description}
+                onChange={onChangeDescription}
                 sx={{
                   width: "150%",
                 }}
@@ -124,29 +183,72 @@ function Profile(props) {
                 {data.description}
               </Typography>
             ]}
-            { data.isContentCreator ? 
-            <Stack direction="row" spacing={3}>
-              <Rating
-                name="read-only"
-                value={
-                  ratings.reduce((p, c) => {
-                    return p + c;
-                  }) / reviews.length
-                }
-                readOnly
-                icon={<StarIcon color="warning"></StarIcon>}
-              />
-              <Typography variant="caption">
-                {reviews.length} reviews
-              </Typography>
-            </Stack> : [] }
+            {data.isContentCreator ?
+              <Stack direction="row" spacing={3}>
+                <Rating
+                  name="read-only"
+                  value={
+                    ratings.reduce((p, c) => {
+                      return p + c;
+                    }) / reviews.length
+                  }
+                  readOnly
+                  icon={<StarIcon color="warning"></StarIcon>}
+                />
+                <Typography variant="caption">
+                  {reviews.length} reviews
+                </Typography>
+              </Stack> : []}
           </Stack>
-          {data.isContentCreator ?
-          <Stack direction="column" spacing={4}>
-            <RatingDialog></RatingDialog>
-            <ReportDialog></ReportDialog>
-          </Stack> : [] }
+          {data.isOwnProfile ? [
+            <Box
+              key="UpdateProfileContainer"
+              sx={{
+                width: "60%",
+                height: "20%"
+              }}
+            >
+              <Stack direction="column" spacing={3}>
+              <HighlightButton
+                key="UpadteProfileButton"
+                variant="contained"
+                onClick={handleSubmit}
+                disabled={uploadedPicture === "" &&
+                  description === ""
+                }
+              >
+                Save Changes
+              </HighlightButton>
+              <HighlightButton
+                key="DeleteAccountButton"
+                variant="contained"
+                onClick={handleDelete}>
+                  Delete Account
+              </HighlightButton>
+              </Stack>
+            </Box>
+          ] :
+            [data.isContentCreator ? <Stack direction="column" spacing={4}>
+              <RatingDialog></RatingDialog>
+              <ReportDialog></ReportDialog>
+            </Stack> : [
+
+            ]
+
+            ]}
         </Stack>
+        {(data.isContentCreator && data.isOwnProfile) ?
+          <UploadButton
+            id="profilePictureUpload"
+            uploadFormat="image/*"
+            givenId="profilePicture-Upload"
+            multiUpload={false}
+            setUpload={setUploadedPicture}
+          />
+          : [
+
+          ]
+        }
         <Divider variant="fullWidth"></Divider>
         <Box
           sx={{
@@ -160,8 +262,8 @@ function Profile(props) {
             spacing={2}
           >
 
-            { data.isContentCreator ?
-            // maps over the reviews array and returns a review for each review
+            {data.isContentCreator ?
+              // maps over the reviews array and returns a review for each review
               reviews.map((review) => {
                 // eslint-disable-next-line new-cap
                 return Review(
@@ -171,7 +273,7 @@ function Profile(props) {
                   review.title,
                   review.star
                 );
-              }) : [] }
+              }) : []}
           </Stack>
         </Box>
       </Stack>
@@ -179,4 +281,4 @@ function Profile(props) {
   );
 }
 
-export default Profile;
+export default connect()(Profile);

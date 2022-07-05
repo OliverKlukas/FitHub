@@ -1,3 +1,4 @@
+/* eslint-disable prefer-promise-reject-errors */
 /* eslint-disable prettier/prettier */
 /* eslint-disable require-jsdoc */
 /**
@@ -106,4 +107,37 @@ export default class UserService {
       );
     });
   }
+
+  static deleteUser(id) {
+    return new Promise((resolve, reject) => {
+        HttpService.remove(
+            `${this.baseURL()}/${id}`,
+            function (data) {
+                if (data.message !== undefined) {
+                    resolve(data.message);
+                } else {
+                    reject("Error while deleting Account");
+                }
+            },
+            function (textStatus) {
+                reject(textStatus);
+            }
+        );
+    });
+}
+static updateUser(user) {
+  return new Promise((resolve, reject) => {
+    HttpService.put(
+        `${this.baseURL()}/${user._id}`,
+        user,
+        function (data) {
+          resolve(data);
+        },
+        function (textStatus) {
+          reject(textStatus);
+        }
+    );
+  });
+}
+
 }

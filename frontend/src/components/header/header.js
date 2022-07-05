@@ -2,7 +2,7 @@
 /* eslint-disable react/jsx-key */
 /* eslint-disable react/prop-types */
 /* eslint-disable valid-jsdoc */
-import * as React from "react";
+import React, { useEffect } from "react";
 import { Link, Stack } from "@mui/material";
 // import { ReactComponent as AvatarFemale } from "../../resources/avatar_female.svg";
 import { ReactComponent as AvatarMale } from "../../resources/avatar_male.svg";
@@ -30,6 +30,16 @@ import { logout } from "../../redux/actions";
 function Header(props) {
   // Needed for user state management
   const user = useSelector((state) => state.user);
+  // Names needed for Link to Own Profile, get set with useeffect()
+  const [fName, setfName] = React.useState("")
+  const [lName, setlName] = React.useState("")
+
+  useEffect(() => {
+    if (user.user) {
+      setfName(user.user.fname);
+      setlName(user.user.lname)
+    }
+  }, [fName, lName]);
   // Header Center for a Content Creator
   const pagesContentCreator = {
     discovery: "Discovery",
@@ -217,7 +227,7 @@ function Header(props) {
                 aria-labelledby="composition-button"
               >
                 <MenuItem key="profile" onClick={handleCloseSetMenu}>
-                  <Link href="/profile/:id" underline="none" color="inherit">
+                  <Link href={`/profile/${fName}/${lName}`} underline="none" color="inherit">
                     Profile
                   </Link>
                 </MenuItem>

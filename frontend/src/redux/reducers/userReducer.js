@@ -17,6 +17,8 @@ const getUser = () => {
         _id: userJson._id,
         email: userJson.email,
         role: userJson.role,
+        fname: userJson.fname,
+        lname: userJson.lname,
       },
     };
   }

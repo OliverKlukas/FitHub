@@ -1,9 +1,12 @@
-import * as React from "react";
+/* eslint-disable require-jsdoc */
+/* eslint-disable valid-jsdoc */
+import React, { useEffect } from "react";
 import ImageList from "@mui/material/ImageList";
 import HeaderCard from "../components/cards/header_image";
 import SectionCard from "../components/cards/section_image";
 import { Stack, useMediaQuery } from "@mui/material";
 import theme from "../utils/theme";
+import { useSelector } from "react-redux";
 
 const content = [
   {
@@ -20,13 +23,33 @@ const content = [
   },
 ];
 
-const header = {
-  img: "https://images.unsplash.com/photo-1593079831268-3381b0db4a77",
-  title: "Welcome to FitHub, Emlyn Shaina!",
-  subtitle: "Lets get started, offer your content right away",
-};
+/**
+ *
+ * @param {props} props for user state management
+ * @returns
+ */
+function LandingPage(props) {
+  const user = useSelector((state) => state.user);
 
-function LandingPage() {
+  const [header, setHeader] = React.useState({
+    img: "https://images.unsplash.com/photo-1593079831268-3381b0db4a77",
+    title: "Welcome to FitHub,",
+    subtitle: "Lets get started, offer your content right away",
+  });
+  /**
+   * Loads after the rendering has finished and fills the state with the name to replace the empty name
+   */
+  useEffect(() => {
+    if (user.user) {
+      const temp = {
+        img: "https://images.unsplash.com/photo-1593079831268-3381b0db4a77",
+        title: "Welcome to FitHub, " + `${user.user.fname} ${user.user.lname}`,
+        subtitle: "Lets get started, offer your content right away",
+      };
+      setHeader(temp);
+    }
+  }, [user]);
+
   const smallScreenSize = useMediaQuery(theme.breakpoints.down("sm"));
   return (
     <Stack sx={{ marginX: 6 }}>

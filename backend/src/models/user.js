@@ -47,7 +47,7 @@ const UserSchema = new mongoose.Schema({
   description: {
     type: String,
   },
-  profilePicturep: {
+  profilePicture: {
     type: String,
   },
   reviews: [ReviewSchema],

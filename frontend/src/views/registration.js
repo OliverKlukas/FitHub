@@ -53,7 +53,7 @@ function Registration(props) {
 
     const handleSubmit = () => {
         if (isContentCreator) {
-            props.dispatch(registerContentCreator(email,password,firstname,lastname,description,uploadedPicture))
+            props.dispatch(registerContentCreator(email,password,firstname,lastname,description,uploadedPicture[0]))
         } else {
             props.dispatch(registerCustomer(email,password,firstname,lastname))
         }
@@ -84,9 +84,6 @@ function Registration(props) {
     };
     const onChangeEmail = (e) => {
         setEmail(e.target.value);
-    };
-    const onChangePictureUpload = () => {
-        setUploadedPicture(true);
     };
 
     /* Compares the Passwords and sends a error_Message when they are not equal, called on blur (so if left either of the pw texfields)*/
@@ -198,7 +195,7 @@ function Registration(props) {
                     {isContentCreator && (
                         <Grid>
                             <TextField
-                                alignItems="left"
+                                alignitems="center"
                                 multiline
                                 minRows={5}
                                 maxRows={5}
@@ -207,11 +204,11 @@ function Registration(props) {
                             ></TextField>
                             <Typography variant="h4">Upload a Profile Picture</Typography>
                             <UploadButton
-                                id="markting-upload"
+                                id="profilePictureUpload"
                                 uploadFormat="image/*"
-                                givenId="marketing-upload"
+                                givenId="profilePicture-Upload"
                                 multiUpload={false}
-                                onClick={onChangePictureUpload}
+                                setUpload={setUploadedPicture}
                             />
                         </Grid>
                     )}

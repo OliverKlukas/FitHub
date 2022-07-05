@@ -44,10 +44,15 @@ const register = async (req, res) => {
     const isContentCreator = req.body.role === "contentCreator"
     if (isContentCreator) {
         if (!Object.prototype.hasOwnProperty.call(req.body, "description"))
-        return res.status(400).json({
-            error: "Bad Request",
-            message: "The request body must contain a description property",
-        });
+            return res.status(400).json({
+                error: "Bad Request",
+                message: "The request body must contain a description property",
+            });
+        if (!Object.prototype.hasOwnProperty.call(req.body, "profilePicture"))
+            return res.status(400).json({
+                error: "Bad Request",
+                message: "The request body must contain a profilePicture property",
+            });
         try {
             const hashedPassword = bcrypt.hashSync(req.body.password, 8); // so we do not store plaintext passwords
             const user = {
@@ -56,7 +61,8 @@ const register = async (req, res) => {
                 firstName: req.body.firstName,
                 lastName: req.body.lastName, // check seba backend, potentially different
                 role: req.body.role,
-                description: req.body.description
+                description: req.body.description,
+                profilePicture: req.body.profilePicture,
             };
 
             const retUser = await UserModel.create(user);
@@ -65,6 +71,8 @@ const register = async (req, res) => {
                     _id: retUser._id,
                     email: retUser.email,
                     role: retUser.role,
+                    fname: retUser.firstName,
+                    lname: retUser.lastName,
                 },
                 config.JwtSecret,
                 {
@@ -99,6 +107,8 @@ const register = async (req, res) => {
                     _id: retUser._id,
                     email: retUser.email,
                     role: retUser.role,
+                    fname: retUser.firstName,
+                    lname: retUser.lastName,
                 },
                 config.JwtSecret,
                 {
@@ -156,7 +166,7 @@ const login = async (req, res) => {
         // if user is found and password is valid
         // create a token
         const token = jwt.sign(
-            { _id: user._id, email: user.email, role: user.role },
+            { _id: user._id, email: user.email, role: user.role, fname: user.firstName, lname: user.lastName },
             config.JwtSecret,
             {
                 expiresIn: 86400, // expires in 24 hours
@@ -173,6 +183,31 @@ const login = async (req, res) => {
         });
     }
 };
+/**
+ * 
+ * @param {*} req middleware adds the _id
+ * @param {*} res 
+ */
+const updateuser = async (req, res) => {
+    try {
+        const resUser = await UserModel.findByIdAndUpdate(
+            req.params.id,
+            req.body,
+            {
+                new: true,
+                runValidators: true,
+            }
+        ).exec();
+
+        // return updated movie
+        return res.status(200).json(resUser);
+    } catch (error) {
+        return res.status(500).json({
+            error: "Internal Server error",
+            message: error.message,
+        });
+    }
+}
 
 /**
  * Request Userdata of firstname+lastName, optional email of requester to check if it is his own profile data
@@ -215,6 +250,7 @@ const userdata = async (req, res) => {
                 description: requesteduser.description,
                 role: requesteduser.role,
                 isOwnProfile: isownprofile,
+                profilePicture: requesteduser.profilePicture,
             });
         } catch (error) {
             return res.status(500).json({
@@ -234,6 +270,7 @@ const userdata = async (req, res) => {
                 description: user.description,
                 role: user.role,
                 isOwnProfile: false,
+                profilePicture: user.profilePicture,
             });
         } catch (error) {
             return res.status(500).json({
@@ -335,7 +372,7 @@ const deletereview = (req, res) => {
             creatorId: req.body.creatorId,
         });
         return res.status(200).json({
-            message: "Succesfully deleted Account",
+            message: "Succesfully deleted Review",
         });
     } catch (error) {
         return res.status(500).json({
@@ -345,20 +382,20 @@ const deletereview = (req, res) => {
     }
 };
 
-// TODO needs to check middleware and then deletes the account
-const deleteuser = (req, res) => {
-    if (!Object.prototype.hasOwnProperty.call(req.body, "email"))
-        return res.status(400).json({
-            error: "Bad Request",
-            message: "The request body must contain a email property",
-        });
+/**
+ * 
+ * @param {*} req id, comes from middleware
+ * @param {*} res 
+ * @returns 
+ */
+const deleteuser = async (req, res) => {
     try {
-        UserModel.findOneAndDelete({
-            email: req.body.email,
-        });
-        return res.status(200).json({
-            message: "Succesfully deleted Account",
-        });
+        await UserModel.findByIdAndRemove(req.params.id).exec();
+
+        // return message that movie was deleted
+        return res
+            .status(200)
+            .json({ message: `User with id${req.params.id} was deleted` });
     } catch (error) {
         return res.status(500).json({
             error: "Internal Server error",
@@ -372,6 +409,7 @@ module.exports = {
     login,
     userdata,
     logout,
+    updateuser,
     deleteuser,
     addreview,
     updatereview,
