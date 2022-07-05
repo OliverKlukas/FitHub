@@ -3,7 +3,6 @@ import { Alert, CircularProgress, Box, FormControlLabel, Checkbox, Divider, Stac
 import { Link as RouterLink, useParams } from "react-router-dom";
 import { HighlightButton } from "../components/buttons/highlight_button";
 import { PaypalCheckoutButton } from "../components/buttons/paypal_button";
-import { content } from "../utils/content";
 import { PayPalScriptProvider } from "@paypal/react-paypal-js";
 import { useState, useEffect } from "react";
 import { connect, useSelector } from "react-redux";
@@ -32,7 +31,7 @@ function Payment(props) {
     // On open load the movie.
     useEffect(() => {
         props.getContent(id);
-    }, [singleContent.content]);
+    }, [singleContent.content, props, id]);
 
     // if show is false, the standard payment view with payment method selection and terms and conditions accepting is displayed. If show true, only the paypal buttons will be displayed
     const [show, setShow] = useState(false);
@@ -96,7 +95,7 @@ function Payment(props) {
                     <Stack direction="row" spacing={3}>
                         <Box sx={{ display: { xs: "none", md: "block" } }}>
                             {singleContent.content.media.map((data, index) => (
-                                <img width="100%" height="100%" key={index} src={data} style={{ objectFit: "cover" }} />
+                                <img style={{ borderRadius: "8px", objectFit: "cover"}} width="300" height="220" key={index} src={data} alt={singleContent.content.title} />
                             ))}
                         </Box>
                         <Box sx={{ width: "100%" }}>
@@ -113,7 +112,7 @@ function Payment(props) {
                                 <Divider sx={{ my: 2, bgcolor: "#222831" }} />
                                 <Stack direction="row" alignItems="flex-start" justifyContent="space-between" spacing={4}>
                                     <Typography variant="h3">Duration</Typography>
-                                    <Typography variant="h4">{singleContent.content.duration}</Typography>
+                                    <Typography variant="h4">{singleContent.content.duration} weeks with {singleContent.content.intensity} trainings per week</Typography>
                                 </Stack>
                                 <Divider sx={{ my: 2, bgcolor: "#222831" }} />
                                 <Stack direction="row" alignItems="flex-start" justifyContent="space-between" spacing={4}>
