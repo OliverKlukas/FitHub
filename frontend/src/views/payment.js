@@ -1,46 +1,38 @@
 import * as React from "react";
-import { Box, FormControlLabel, Checkbox, Divider, Stack, Typography, Radio, RadioGroup, Snackbar } from "@mui/material";
+import { Alert, CircularProgress, Box, FormControlLabel, Checkbox, Divider, Stack, Typography, Radio, RadioGroup, Snackbar } from "@mui/material";
 import { Link as RouterLink, useParams } from "react-router-dom";
 import { HighlightButton } from "../components/buttons/highlight_button";
 import { PaypalCheckoutButton } from "../components/buttons/paypal_button";
 import { content } from "../utils/content";
 import { PayPalScriptProvider } from "@paypal/react-paypal-js";
-import { useState } from "react";
-
-/**
- * get image src path.
- *
- * Adapted from: https://mui.com/material-ui/react-image-list/#CustomImageList.js
- *
- * @param image - String path to image resource.
- * @param width - Number desired width of image.
- * @param height - Number desired height of image.
- * @returns {{src: string}} - Returns src variable for img.
- */
-function srcset(image, width, height) {
-    return {
-        src: `${image}?w=${width}&h=${height}&fit=crop&auto=format`,
-    };
-}
+import { useState, useEffect } from "react";
+import { connect, useSelector } from "react-redux";
+import { getContent } from "../redux/actions";
 
 /**
  * Payment page with the most important information about the content item, a link to our Terms and Conditions the customer has to accept and the payment method selection.
  *
  * @returns {JSX.Element} Returns payment page.
  */
-export default function Payment() {
-    // Match url id to content item.
-    let { id } = useParams();
-
-    // get the content item from the database
-    // eslint-disable-next-line
-    const item = content.find((item) => item.id == id);
-
-    // get the description from the item and store it in product that will be passed to the paypal checkout button
-    const product = {
-        description: item.title,
-        price: item.price,
+function Payment(props) {
+    // TODO: once user is connected I need the info from there
+    const author = {
+        name: "Simon Plashek",
+        title: "professional bodybuilder & fitness coach",
+        img: "https://images.unsplash.com/photo-1584466977773-e625c37cdd50",
+        rating: 3,
     };
+
+    // Match url id to content item.
+    const { id } = useParams();
+    const singleContent = useSelector((state) => {
+        return state.singleContent;
+    });
+
+    // On open load the movie.
+    useEffect(() => {
+        props.getContent(id);
+    }, [singleContent.content]);
 
     // if show is false, the standard payment view with payment method selection and terms and conditions accepting is displayed. If show true, only the paypal buttons will be displayed
     const [show, setShow] = useState(false);
@@ -79,7 +71,14 @@ export default function Payment() {
         }
     };
 
-    return (
+    return !singleContent.content && !singleContent.error ? (
+        // Loading content.
+        <Box display="flex" justifyContent="center" alignItems="center" minHeight="80vh">
+            <CircularProgress />
+        </Box>
+    ) : singleContent.error ? (
+        <Alert severity="error">Loading content went wrong, sorry!</Alert>
+    ) : (
         <PayPalScriptProvider options={{ "client-id": "AfSE031dbgxgbMRlT8Ec3OBL00O8o0dShOB_NIHd4vHg5tFVfLRGeERRMV9MZfcxG9_AhXwXZiG7vKRS", currency: "EUR" }}>
             <Stack spacing={3} marginBottom={10} marginTop={5} alignItems="center">
                 <Stack
@@ -91,33 +90,35 @@ export default function Payment() {
                         boxShadow: 5,
                     }}
                 >
-                    <Typography variant="h1">{item.title}</Typography>
+                    <Typography variant="h1">{singleContent.content.title}</Typography>
                     <Divider sx={{ mt: 3, bgcolor: "#222831" }} />
                     <Divider sx={{ mt: 1, mb: 3, bgcolor: "#222831" }} />
                     <Stack direction="row" spacing={3}>
                         <Box sx={{ display: { xs: "none", md: "block" } }}>
-                            <img style={{ borderRadius: "8px" }} {...srcset(item.img, 300, 220)} alt={item.title} />
+                            {singleContent.content.media.map((data, index) => (
+                                <img width="100%" height="100%" key={index} src={data} style={{ objectFit: "cover" }} />
+                            ))}
                         </Box>
                         <Box sx={{ width: "100%" }}>
                             <Stack>
                                 <Stack direction="row" alignItems="flex-start" justifyContent="space-between" spacing={4}>
                                     <Typography variant="h3">Title</Typography>
-                                    <Typography variant="h4">{item.title}</Typography>
+                                    <Typography variant="h4">{singleContent.content.title}</Typography>
                                 </Stack>
                                 <Divider sx={{ my: 2, bgcolor: "#222831" }} />
                                 <Stack direction="row" alignItems="flex-start" justifyContent="space-between" spacing={4}>
                                     <Typography variant="h3">Content Creator</Typography>
-                                    <Typography variant="h4">{item.author.name}</Typography>
+                                    <Typography variant="h4">{author.name}</Typography>
                                 </Stack>
                                 <Divider sx={{ my: 2, bgcolor: "#222831" }} />
                                 <Stack direction="row" alignItems="flex-start" justifyContent="space-between" spacing={4}>
                                     <Typography variant="h3">Duration</Typography>
-                                    <Typography variant="h4">{item.duration}</Typography>
+                                    <Typography variant="h4">{singleContent.content.duration}</Typography>
                                 </Stack>
                                 <Divider sx={{ my: 2, bgcolor: "#222831" }} />
                                 <Stack direction="row" alignItems="flex-start" justifyContent="space-between" spacing={4}>
                                     <Typography variant="h3">Price</Typography>
-                                    <Typography variant="h4">{item.price}€</Typography>
+                                    <Typography variant="h4">{singleContent.content.price}€</Typography>
                                 </Stack>
                                 <Divider sx={{ mt: 2, mb: 0, bgcolor: "#222831" }} />
                             </Stack>
@@ -125,7 +126,7 @@ export default function Payment() {
                     </Stack>
                     <Stack direction="row" alignItems="flex-start" justifyContent="space-between" spacing={4} sx={{ mt: 2, ml: { xs: 3, md: 0 } }}>
                         <Typography variant="h3">Description</Typography>
-                        <Typography variant="h4">{item.description}</Typography>
+                        <Typography variant="h4">{singleContent.content.description}</Typography>
                     </Stack>
                     <Divider sx={{ mt: 3, ml: { xs: 3, md: 0 }, bgcolor: "#222831" }} />
                 </Stack>
@@ -184,9 +185,16 @@ export default function Payment() {
                         Buy Now
                     </HighlightButton>
                 )}
-                {show ? <PaypalCheckoutButton product={product} /> : null}
-                <Snackbar open={snackopen} autoHideDuration={6000} onClose={handleSnackClose} message={"You have to accept FitHub's Terms and Conditions before continuing."} />
+                {show ? <PaypalCheckoutButton product={singleContent.content} /> : null}
+                <Snackbar open={snackopen} autoHideDuration={6000} onClose={handleSnackClose}>
+                    <Alert onClose={handleSnackClose} severity="success" sx={{ width: "100%" }}>
+                        You have to accept FitHub's Terms and Conditions before continuing.
+                    </Alert>
+                </Snackbar>
             </Stack>
         </PayPalScriptProvider>
     );
 }
+
+// Connect() establishes the connection to the redux functionalities.
+export default connect(null, { getContent })(Payment);
