@@ -187,7 +187,7 @@ function Payment(props) {
                 )}
                 {show ? <PaypalCheckoutButton product={singleContent.content} /> : null}
                 <Snackbar open={snackopen} autoHideDuration={6000} onClose={handleSnackClose}>
-                    <Alert onClose={handleSnackClose} severity="success" sx={{ width: "100%" }}>
+                    <Alert onClose={handleSnackClose} severity="error" sx={{ width: "100%" }}>
                         You have to accept FitHub's Terms and Conditions before continuing.
                     </Alert>
                 </Snackbar>
