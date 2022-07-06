@@ -44,6 +44,7 @@ export default function InsightsDrawer({currTab}) {
           variant="subtitle1"
           underline="hover"
           fontWeight= {CustomerFontWeight}
+          href="/mycustomers/3000"
         >
           Customers
         </Link>
