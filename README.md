@@ -1,23 +1,38 @@
 # FitHub
 
-
 ## Description
 Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
 
-# Installation (on Unixlike)
+## Team
+@Maximilian Schumergruber
+@Simon Vogl
+@Oliver Klukas
+@Johannes Loebbecke
 
-## Frontend
-cd frontend, npm install, npm start
-
-## Backend
-cd backend, npm install, (install mongodb), mongod --dbpath "path/to/database" , node index.js, localhost:4000 - /auth/crud,/content/crud
-
-# Installation (on Windows)
-Figure it out
-
-## Authors 
-Maximilian Schumergruber, Simon Vogl, Oliver Klukas, Johannes Loebbecke
-
-
-## Project status
+## Disclaimer
 This project is officially finished as of 28th of July 2022 and will not be updated or maintained.
+
+# Technical Documentation
+Please install all prerequisites and always run frontend and backend simultaneously.
+
+## Project Structure
+
+## Prerequisites 
+- Node: v16.x
+- React: v18.x
+- MongoDB: v4.x
+
+## Run commands frontend
+```bash
+    cd frontend
+    npm install 
+    npm start
+ ```
+
+## Run commands backend
+```bash
+    cd backend
+    npm install
+    mongod --dbpath "path/to/database"
+    node index.js
+```
