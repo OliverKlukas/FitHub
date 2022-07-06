@@ -12,9 +12,6 @@ import { Divider, Rating, Snackbar, Stack, TextField } from "@mui/material";
 import StarIcon from "@mui/icons-material/Star";
 import { HighlightButton } from "../../buttons/highlight_button";
 import { StandardButton } from "../../buttons/standard_button";
-import { ReactComponent as LogoSmall } from "../../../resources/logo_small.svg";
-import { ReactComponent as LogoText } from "../../../resources/logo_text.svg";
-import loremIpsum from "react-lorem-ipsum";
 
 const RatingDial = styled(Dialog)(({ theme }) => ({
   "& .MuiDialogContent-root": {
@@ -54,25 +51,21 @@ RatingDialTitle.propTypes = {
   onClose: PropTypes.func.isRequired,
 };
 
-export default function RatingDialog(submitReview) {
+/**
+ * popup to submit a review, includes TODO backend logic
+ * @returns 
+ */
+export default function RatingDialog() {
   const [value, setValue] = React.useState(2); // States for Rating
 
   const [open, setOpen] = React.useState(false); // States for popup
 
   const [snackopen, setsnackOpen] = React.useState(false); // States for Snackbar
 
-  const today = new Date();
-  const dd = String(today.getDate()).padStart(2, "0");
-  const mm = String(today.getMonth() + 1).padStart(2, "0");
-  const yyyy = today.getFullYear();
-
-  const review = {
-    author: "Another User",
-    text: loremIpsum(),
-    title: "I like it",
-    date: dd + mm + yyyy,
-    star: 1,
-  };
+  // const today = new Date();
+  // const dd = String(today.getDate()).padStart(2, "0");
+  // const mm = String(today.getMonth() + 1).padStart(2, "0");
+  // const yyyy = today.getFullYear();
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -88,7 +81,6 @@ export default function RatingDialog(submitReview) {
   const handleSubmit = () => {
     setOpen(false);
     setsnackOpen(true);
-    submitReview(review);
   };
 
   return (

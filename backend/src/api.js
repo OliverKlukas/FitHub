@@ -6,6 +6,7 @@ const helmet = require("helmet");
 
 const auth = require("./routes/auth");
 const content = require("./routes/content");
+const boughtPlans = require("./routes/boughtPlans");
 const middlewares = require("./middlewares");
 
 const api = express();
@@ -30,5 +31,6 @@ api.get("/", (req, res) => {
 // API routes from api.js.
 api.use("/auth", auth);
 api.use("/content", content);
+api.use("/boughtPlans", boughtPlans);
 
 module.exports = api;

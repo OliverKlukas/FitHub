@@ -5,7 +5,16 @@ import Rating from "@mui/material/Rating";
 import { Typography } from "@mui/material";
 import StarIcon from "@mui/icons-material/Star";
 
-export default function Review(reviewer, text, date, title, star_value) {
+/**
+ * renders one review
+ * @param {*} reviewer author of the review
+ * @param {*} text text of the review
+ * @param {*} date date the review was submitted
+ * @param {*} title title of the review
+ * @param {*} starValue stars that the reviewer gave
+ * @returns 
+ */
+export default function Review(reviewer, text, date, title, starValue) {
   return (
     <Box
       sx={{
@@ -18,7 +27,7 @@ export default function Review(reviewer, text, date, title, star_value) {
       <Stack direction="row" spacing={4}>
         <Rating
           name="read-only"
-          value={star_value}
+          value={starValue}
           readOnly
           icon={<StarIcon color="warning"></StarIcon>}
         />
