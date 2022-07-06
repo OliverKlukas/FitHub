@@ -46,7 +46,8 @@ function App() {
             <Box minHeight="75vh">
               <Routes>
                 <Route path="*" element={<PageNotFound />} />
-                <Route path="/landing" element={<LandingPage />} />
+                <Route path="/" element={<Navigate to="/discovery" replace/>}/>
+                <Route path="/landing" element={<LandingPage />} />^
                 <Route path="/discovery" element={<Discovery />} />
                 <Route path="/upload" element={<ContentUpload />} />
                 <Route path="/plans" element={<AboutUs />} />
