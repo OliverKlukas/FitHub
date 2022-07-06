@@ -1,5 +1,3 @@
-/* eslint-disable prettier/prettier */
-/* eslint-disable require-jsdoc */
 /**
  *
  */

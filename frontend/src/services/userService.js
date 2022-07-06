@@ -1,6 +1,3 @@
-/* eslint-disable prefer-promise-reject-errors */
-/* eslint-disable prettier/prettier */
-/* eslint-disable require-jsdoc */
 /**
  *
  */

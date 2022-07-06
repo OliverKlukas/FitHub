@@ -1,5 +1,3 @@
-/* eslint-disable prettier/prettier */
-/* eslint-disable require-jsdoc */
 import UserService from "../../services/userService";
 
 export function login(mail, pass) {

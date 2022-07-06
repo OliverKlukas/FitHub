@@ -1,5 +1,3 @@
-/* eslint-disable prettier/prettier */
-/* eslint-disable require-jsdoc */
 const getUser = () => {
   if (window.localStorage["jwtToken"]) {
     const token = window.localStorage["jwtToken"];

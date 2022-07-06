@@ -1,7 +1,3 @@
-/* eslint-disable prettier/prettier */
-/* eslint-disable react/jsx-key */
-/* eslint-disable react/prop-types */
-/* eslint-disable valid-jsdoc */
 import React, { useEffect } from "react";
 import { Link, Stack } from "@mui/material";
 // import { ReactComponent as AvatarFemale } from "../../resources/avatar_female.svg";
@@ -17,7 +13,6 @@ import { Link as RouterLink } from "react-router-dom";
 import MenuIcon from "@mui/icons-material/Menu";
 import MenuList from '@mui/material/MenuList';
 import { LinkButton } from "../buttons/link_button";
-// import { logout } from "../redux/actions";
 import { useSelector, connect } from "react-redux";
 import { logout } from "../../redux/actions";
 

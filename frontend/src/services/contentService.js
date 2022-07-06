@@ -1,6 +1,3 @@
-/* eslint-disable prettier/prettier */
-/* eslint-disable require-jsdoc */
-
 import HttpService from "./httpService";
 
 export default class ContentService {
@@ -22,6 +19,12 @@ export default class ContentService {
     });
   }
 
+  /**
+   * Create a new content object in db.
+   *
+   * @param content
+   * @returns {Promise<unknown>}
+   */
   static createContent(content) {
     content.id = Math.floor(Math.random() * 100000000 + 1).toString();
     return new Promise((resolve, reject) => {
@@ -37,5 +40,72 @@ export default class ContentService {
       );
     });
   }
-// eslint-disable-next-line prettier/prettier
+
+  /**
+   * Retrieve a single content object.
+   *
+   * @param id
+   * @returns {Promise<unknown>}
+   */
+  static getContent(id) {
+    return new Promise(async (resolve, reject) => {
+      HttpService.get(
+          `${this.baseURL()}/${id}`,
+          function (data) {
+            if (data !== undefined || Object.keys(data).length !== 0) {
+              resolve(data);
+            } else {
+              reject("Error while retrieving content");
+            }
+          },
+          function (textStatus) {
+            reject(textStatus);
+          }
+      );
+    });
+  }
+
+  /**
+   * Delete single content by id.
+   *
+   * @param id
+   * @returns {Promise<unknown>}
+   */
+  static deleteContent(id) {
+    return new Promise((resolve, reject) => {
+      HttpService.remove(
+          `${this.baseURL()}/${id}`,
+          function (data) {
+            if (data.message !== undefined) {
+              resolve(data.message);
+            } else {
+              reject("Error while deleting content");
+            }
+          },
+          function (textStatus) {
+            reject(textStatus);
+          }
+      );
+    });
+  }
+
+  /**
+   * Update single content with new version.
+   * @param content
+   * @returns {Promise<unknown>}
+   */
+  static updateContent(content) {
+    return new Promise((resolve, reject) => {
+      HttpService.put(
+          `${this.baseURL()}/${content._id}`,
+          content,
+          function (data) {
+            resolve(data);
+          },
+          function (textStatus) {
+            reject(textStatus);
+          }
+      );
+    });
+  }
 }

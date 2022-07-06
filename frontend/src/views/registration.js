@@ -1,6 +1,3 @@
-/* eslint-disable prettier/prettier */
-/* eslint-disable react/prop-types */
-/* eslint-disable valid-jsdoc */
 import {
     TextField,
     Stack,
@@ -49,7 +46,7 @@ function Registration(props) {
         if (user.user) {
             navigate("/landing");
         }
-    }, [user, props.history]);
+    }, [user, props.history,navigate]);
 
     const handleSubmit = () => {
         if (isContentCreator) {

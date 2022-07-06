@@ -1,5 +1,3 @@
-/* eslint-disable prettier/prettier */
-/* eslint-disable no-unused-vars */
 import * as React from "react";
 import Discovery from "./views/discovery";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
@@ -19,7 +17,6 @@ import MyPlans from "./views/myplans";
 import LandingPage from "./views/landing_page";
 import ContentUpload from "./views/content_upload";
 import SignIn from "./views/sign_in";
-import ContentListViewTest from "./views/contentTest";
 import { Provider } from "react-redux";
 import { applyMiddleware, createStore } from "redux";
 import reducers from "./redux/reducers";
@@ -48,7 +45,6 @@ function App() {
             <Box minHeight="75vh">
               <Routes>
                 <Route path="*" element={<PageNotFound />} />
-                <Route path="/" element={<ContentListViewTest />} />
                 <Route path="/landing" element={<LandingPage />} />
                 <Route path="/discovery" element={<Discovery />} />
                 <Route path="/upload" element={<ContentUpload />} />

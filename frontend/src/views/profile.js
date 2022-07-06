@@ -1,7 +1,3 @@
-/* eslint-disable prettier/prettier */
-/* eslint-disable react/prop-types */
-/* eslint-disable require-jsdoc */
-/* eslint-disable valid-jsdoc */
 import { Divider, Typography } from "@mui/material";
 import React, { useEffect } from "react";
 import { Stack, TextField } from "@mui/material";
@@ -73,6 +69,7 @@ function Profile(props) {
         }
         setdata(temp)
       } else {
+        const res = await UserService.userdataloggedin(params.firstName, params.lastName, user.user.email);
         const temp = {
           name: `${res.firstname} ${res.lastname}`,
           description: res.description,
@@ -84,7 +81,7 @@ function Profile(props) {
       }
     }
     fetchData()
-  }, [setdata]);
+  }, [setdata,params.firstName,params.lastName,user.user]);
 
   const reviews = [
     {

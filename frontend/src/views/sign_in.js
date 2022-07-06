@@ -1,7 +1,3 @@
-/* eslint-disable prettier/prettier */
-/* eslint-disable react/prop-types */
-/* eslint-disable valid-jsdoc */
-/* eslint-disable require-jsdoc */
 import React, { useEffect } from "react";
 import { TextField, Stack, Typography, Grid, Divider } from "@mui/material";
 import { HighlightButton } from "../components/buttons/highlight_button";
@@ -28,7 +24,7 @@ function SignIn(props) {
     if (user.user) {
         navigate("/discovery");
     }
-  }, [user, props.history]);
+  }, [user, props.history, navigate]);
 
   const onChangeEmail = (e) => {
     setEmail(e.target.value);
@@ -45,7 +41,6 @@ function SignIn(props) {
         ) === null
     ) {
       setEmailError(true);
-      setErrorMessage("Not a email");
     } else {
       setEmailError(false);
     }
