@@ -50,9 +50,17 @@ function LandingPage(props) {
     }
   }, [user]);
 
+  //building own profile link -> /profile/prename/lastname
+  const profilelink = `/profile/${user.user.fname}/${user.user.lname}`;
+
   return (
     <Stack sx={{ marginX: 6 }} spacing={1}>
-      <LandingImage ilink="/profile" iwidth={950} iheight={200} item={header} />
+      <LandingImage
+        ilink={profilelink}
+        iwidth={950}
+        iheight={200}
+        item={header}
+      />
       <Stack direction="row" spacing={1}>
         <LandingImage
           ilink="/upload"
