@@ -49,7 +49,7 @@ function App() {
               <Routes>
                 <Route path="*" element={<PageNotFound />} />
                 <Route path="/" element={<Navigate to="/discovery" replace/>}/>
-                <Route path="/landing" element={<LandingPage />} />
+                <Route path="/landing" element={<LandingPage />} />^
                 <Route path="/discovery" element={<Discovery />} />
                 <Route path="/upload/:selectedCategory" element={<ContentUpload/>} />
                 <Route path="/plans" element={<AboutUs />} />

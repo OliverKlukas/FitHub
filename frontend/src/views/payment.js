@@ -1,12 +1,13 @@
 import * as React from "react";
 import { Alert, CircularProgress, Box, FormControlLabel, Checkbox, Divider, Stack, Typography, Radio, RadioGroup, Snackbar } from "@mui/material";
-import { Link as RouterLink, useParams } from "react-router-dom";
+import { Link as RouterLink, useParams, useNavigate } from "react-router-dom";
 import { HighlightButton } from "../components/buttons/highlight_button";
-import { PaypalCheckoutButton } from "../components/buttons/paypal_button";
+import { PayPalButtons } from "@paypal/react-paypal-js";
 import { PayPalScriptProvider } from "@paypal/react-paypal-js";
 import { useState, useEffect } from "react";
 import { connect, useSelector } from "react-redux";
 import { getContent } from "../redux/actions";
+import { addboughtPlan } from "../redux/actions/boughtPlans";
 
 /**
  * Payment page with the most important information about the content item, a link to our Terms and Conditions the customer has to accept and the payment method selection.
@@ -15,15 +16,20 @@ import { getContent } from "../redux/actions";
  */
 function Payment(props) {
     // TODO: once user is connected I need the info from there
-    const author = {
+    const creator = {
         name: "Simon Plashek",
         title: "professional bodybuilder & fitness coach",
         img: "https://images.unsplash.com/photo-1584466977773-e625c37cdd50",
         rating: 3,
     };
 
+    const user = {
+        email: "max.maier@gmail.com",
+    };
+
     // Match url id to content item.
     const { id } = useParams();
+
     const singleContent = useSelector((state) => {
         return state.singleContent;
     });
@@ -64,11 +70,38 @@ function Payment(props) {
     const handleSubmit = () => {
         if (termsChecked) {
             setShow(true);
-            //navigate(`/myplans/2000`);
         } else {
             setsnackOpen(true);
         }
     };
+
+    // Handle navigation with react router.
+    const navigate = useNavigate();
+
+    // error handling during the payment process
+    const [error, setError] = React.useState(null);
+
+    // Merge all hooks together and publish it to mongodb. After completing the database entry, the user is redirect to myplans
+    async function publishboughtPlan() {
+        try {
+            await props.addboughtPlan({
+                userEMail: user.email,
+                contentId: id,
+            });
+            navigate("/myplans/2000");
+            window.location.reload();
+        } catch (error) {
+            setError("buying Plan failed!");
+        }
+    }    
+
+    const handleApprove = (orderId) => {
+        publishboughtPlan();
+    };
+
+    if (error) {
+        alert(error);
+    }
 
     return !singleContent.content && !singleContent.error ? (
         // Loading content.
@@ -95,7 +128,7 @@ function Payment(props) {
                     <Stack direction="row" spacing={3}>
                         <Box sx={{ display: { xs: "none", md: "block" } }}>
                             {singleContent.content.media.map((data, index) => (
-                                <img style={{ borderRadius: "8px", objectFit: "cover"}} width="300" height="220" key={index} src={data} alt={singleContent.content.title} />
+                                <img style={{ borderRadius: "8px", objectFit: "cover" }} width="300" height="220" key={index} src={data} alt={singleContent.content.title} />
                             ))}
                         </Box>
                         <Box sx={{ width: "100%" }}>
@@ -107,12 +140,14 @@ function Payment(props) {
                                 <Divider sx={{ my: 2, bgcolor: "#222831" }} />
                                 <Stack direction="row" alignItems="flex-start" justifyContent="space-between" spacing={4}>
                                     <Typography variant="h3">Content Creator</Typography>
-                                    <Typography variant="h4">{author.name}</Typography>
+                                    <Typography variant="h4">{creator.name}</Typography>
                                 </Stack>
                                 <Divider sx={{ my: 2, bgcolor: "#222831" }} />
                                 <Stack direction="row" alignItems="flex-start" justifyContent="space-between" spacing={4}>
                                     <Typography variant="h3">Duration</Typography>
-                                    <Typography variant="h4">{singleContent.content.duration} weeks with {singleContent.content.intensity} trainings per week</Typography>
+                                    <Typography variant="h4">
+                                        {singleContent.content.duration} weeks with {singleContent.content.intensity} trainings per week
+                                    </Typography>
                                 </Stack>
                                 <Divider sx={{ my: 2, bgcolor: "#222831" }} />
                                 <Stack direction="row" alignItems="flex-start" justifyContent="space-between" spacing={4}>
@@ -184,7 +219,47 @@ function Payment(props) {
                         Buy Now
                     </HighlightButton>
                 )}
-                {show ? <PaypalCheckoutButton product={singleContent.content} /> : null}
+                {show ? (
+                    <PayPalButtons
+                        style={{
+                            layout: "vertical",
+                        }}
+                        onClick={(data, actions) => {
+                            // validate on button click, client or server side
+                            const hasAlreadyBoughtPlan = false;
+
+                            if (hasAlreadyBoughtPlan) {
+                                setError("You already bought this plan. Go to MyPlans to download it.");
+                                return actions.reject();
+                            } else {
+                                return actions.resolve();
+                            }
+                        }}
+                        createOrder={(data, actions) => {
+                            return actions.order.create({
+                                purchase_units: [
+                                    {
+                                        description: singleContent.content.description,
+                                        amount: {
+                                            value: singleContent.content.price,
+                                        },
+                                    },
+                                ],
+                            });
+                        }}
+                        onApprove={async (data, actions) => {
+                            await actions.order.capture();
+                            handleApprove(data.orderID);
+                        }}
+                        onCancel={() => {
+                            setError("your order has been canceled")
+                        }}
+                        onError={(err) => {
+                            setError(err);
+                            console.error("PayPal Checkout onError", err);
+                        }}
+                    />
+                ) : null}
                 <Snackbar open={snackopen} autoHideDuration={6000} onClose={handleSnackClose}>
                     <Alert onClose={handleSnackClose} severity="error" sx={{ width: "100%" }}>
                         You have to accept FitHub's Terms and Conditions before continuing.
@@ -196,4 +271,4 @@ function Payment(props) {
 }
 
 // Connect() establishes the connection to the redux functionalities.
-export default connect(null, { getContent })(Payment);
+export default connect(null, { addboughtPlan, getContent })(Payment);
