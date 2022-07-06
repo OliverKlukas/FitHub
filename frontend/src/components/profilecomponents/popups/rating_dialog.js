@@ -1,3 +1,5 @@
+/* eslint-disable prettier/prettier */
+/* eslint-disable valid-jsdoc */
 import * as React from "react";
 import PropTypes from "prop-types";
 import { styled } from "@mui/material/styles";
@@ -12,8 +14,6 @@ import { Divider, Rating, Snackbar, Stack, TextField } from "@mui/material";
 import StarIcon from "@mui/icons-material/Star";
 import { HighlightButton } from "../../buttons/highlight_button";
 import { StandardButton } from "../../buttons/standard_button";
-import { ReactComponent as LogoSmall } from "../../../resources/logo_small.svg";
-import { ReactComponent as LogoText } from "../../../resources/logo_text.svg";
 import loremIpsum from "react-lorem-ipsum";
 
 const RatingDial = styled(Dialog)(({ theme }) => ({
@@ -54,7 +54,11 @@ RatingDialTitle.propTypes = {
   onClose: PropTypes.func.isRequired,
 };
 
-export default function RatingDialog(submitReview) {
+/**
+ * popup to submit a review, includes TODO backend logic
+ * @returns 
+ */
+export default function RatingDialog() {
   const [value, setValue] = React.useState(2); // States for Rating
 
   const [open, setOpen] = React.useState(false); // States for popup

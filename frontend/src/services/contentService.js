@@ -1,3 +1,6 @@
+/* eslint-disable prettier/prettier */
+/* eslint-disable require-jsdoc */
+
 import HttpService from "./httpService";
 
 /**
@@ -27,12 +30,15 @@ export default class ContentService {
     });
   }
 
+<<<<<<< HEAD
   /**
    * Create a new content object in db.
    *
    * @param content
    * @returns {Promise<unknown>}
    */
+=======
+>>>>>>> feature-authentication
   static createContent(content) {
       content.id = Math.floor(Math.random() * 100000000 + 1).toString();
       return new Promise((resolve, reject) => {
@@ -48,6 +54,7 @@ export default class ContentService {
       );
     });
   }
+<<<<<<< HEAD
 
   /**
    * Retrieve a single content object.
@@ -116,6 +123,9 @@ export default class ContentService {
       );
     });
   }
+=======
+// eslint-disable-next-line prettier/prettier
+>>>>>>> feature-authentication
 }
 
 

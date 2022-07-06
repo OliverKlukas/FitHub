@@ -1,3 +1,5 @@
+/* eslint-disable prettier/prettier */
+/* eslint-disable require-jsdoc */
 import ContentService from "../../services/contentService";
 
 /**

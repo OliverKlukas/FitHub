@@ -1,17 +1,34 @@
-import * as React from "react";
+/* eslint-disable prettier/prettier */
+/* eslint-disable react/prop-types */
+/* eslint-disable valid-jsdoc */
+/* eslint-disable require-jsdoc */
+import React, { useEffect } from "react";
 import { TextField, Stack, Typography, Grid, Divider } from "@mui/material";
 import { HighlightButton } from "../components/buttons/highlight_button";
 import { StandardButton } from "../components/buttons/standard_button";
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
+import { connect, useSelector } from "react-redux";
+import { login} from "../redux/actions"
 
-function SignIn() {
+/**
+ * Login View
+ * @param {props} props for user state management
+ */
+function SignIn(props) {
+
+  const user = useSelector((state) => state.user);
+    
+  const navigate = useNavigate();
+
   const [email, setEmail] = React.useState("");
   const [emailerror, setEmailError] = React.useState(false);
   const [password, setPassword] = React.useState("");
-  const [errormessage, setErrorMessage] =
-    React.useState(
-      ""
-    ); /* PLaceholder if we want to extend with further error Message */
+
+  useEffect(() => {
+    if (user.user) {
+        navigate("/discovery");
+    }
+  }, [user, props.history]);
 
   const onChangeEmail = (e) => {
     setEmail(e.target.value);
@@ -34,7 +51,8 @@ function SignIn() {
     }
   };
   const handleSubmit = () => {
-    /* TODO BackendLogic  */
+    props.dispatch(login(email,password))
+    navigate("/discovery");
   };
   const handleButtonToRegistration = () => {
     /* Placeholder in case we still want something to be done with this button and not just link */
@@ -67,8 +85,6 @@ function SignIn() {
           <HighlightButton
             variant="contained"
             onClick={handleSubmit}
-            component={RouterLink}
-            to={`/plans`}
             disabled={email === "" || password === "" || emailerror}
           >
             Sign-In
@@ -88,4 +104,4 @@ function SignIn() {
   );
 }
 
-export default SignIn;
+export default connect()(SignIn);
