@@ -48,7 +48,7 @@ export default function SectionCard({ item }) {
           },
         }}
       >
-        <CardActionArea href="#" sx={{ height: "100%" }}>
+        <CardActionArea href={`/upload/${item.option}`} sx={{ height: "100%" }}>
           <img
             style={{
               objectFit: "cover",

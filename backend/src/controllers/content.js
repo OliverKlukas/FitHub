@@ -7,12 +7,81 @@ const ContentModel = require("../models/content");
  *
  * @param req
  * @param res
- * @returns {Promise<*>}
+ * @return {Promise<*>}
  */
 const list = async (req, res) => {
   try {
-    let contents = await ContentModel.find({}).exec();
+    const contents = await ContentModel.find({}).exec();
     return res.status(200).json(contents);
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({
+      error: "Internal server error: " + err.message,
+    });
+  }
+};
+
+/**
+ * Creates a new content item in database.
+ *
+ * @param req
+ * @param res
+ * @return {Promise<*>}
+ */
+const create = async (req, res) => {
+  // Check if the body of the request is not empty.
+  if (Object.keys(req.body).length === 0) {
+    return res.status(400).json({
+      error: "Bad Request",
+      message: "The request body is empty",
+    });
+  }
+
+  // Handle the given content creation request.
+  try {
+    // Create content in database with supplied request body.
+    const content = await ContentModel.create(req.body);
+
+    // Return success status with created content as json.
+    return res.status(201).json(content);
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({
+      error: "Internal server error:" + err.message,
+    });
+  }
+};
+
+/**
+ * Updates content item in database.
+ *
+ * @param req
+ * @param res
+ * @returns {Promise<*>}
+ */
+const update = async (req, res) => {
+  // Check if the body of the request is not empty.
+  if (Object.keys(req.body).length === 0) {
+    return res.status(400).json({
+      error: "Bad Request",
+      message: "The request body is empty",
+    });
+  }
+
+  // handle the request
+  try {
+    // find and update content with id
+    let content = await ContentModel.findByIdAndUpdate(
+        req.params.id,
+        req.body,
+        {
+          new: true,
+          runValidators: true,
+        }
+    ).exec();
+
+    // return updated content
+    return res.status(200).json(content);
   } catch (err) {
     console.log(err);
     return res.status(500).json({
@@ -23,32 +92,21 @@ const list = async (req, res) => {
 };
 
 /**
- * Creates a new content item in database.
+ * Removes item in database.
  *
  * @param req
  * @param res
  * @returns {Promise<*>}
  */
-const create = async (req, res) => {
-
-  // Checks if the body of the request contains all necessary content properties.
-  const requiredProps = ["contentID", "userID", "category", "title", "price", "img", "duration", "intensity", "fullSupport", "tags", "plans"];
-  for(let prop in requiredProps){
-    if(!Object.prototype.hasOwnProperty.call(req.body, prop)){
-      return res.status(400).json({
-        error: "Bad Request",
-        message: `The request body must contain a ${prop} property`,
-      });
-    }
-  }
-
-  // Handle the given content creation request.
+const remove = async (req, res) => {
   try {
-    // Create content in database with supplied request body.
-    let content = await ContentModel.create(req.body);
+    // find and remove content
+    await ContentModel.findByIdAndRemove(req.params.id).exec();
 
-    // Return success status with created content as json.
-    return res.status(201).json(content);
+    // return message that content was deleted
+    return res
+        .status(200)
+        .json({ message: `Content with id${req.params.id} was deleted` });
   } catch (err) {
     console.log(err);
     return res.status(500).json({
@@ -58,7 +116,40 @@ const create = async (req, res) => {
   }
 };
 
+/**
+ * Retrieves item in database.
+ *
+ * @param req
+ * @param res
+ * @returns {Promise<*>}
+ */
+const get = async (req, res) => {
+  try {
+    // get content with id from database
+    let content = await ContentModel.findById(req.params.id).exec();
+
+    // if no content with id is found, return 404
+    if (!content)
+      return res.status(404).json({
+        error: "Not Found",
+        message: `Content not found`,
+      });
+
+    // return gotten content
+    return res.status(200).json(content);
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({
+      error: "Internal Server Error",
+      message: err.message,
+    });
+  }
+};
+
 module.exports = {
   create,
   list,
+  get,
+  update,
+  remove
 };

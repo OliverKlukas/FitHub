@@ -1,6 +1,6 @@
 import * as React from "react";
 import Discovery from "./views/discovery";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import {BrowserRouter, Navigate, Route, Routes} from "react-router-dom";
 import AboutUs from "./views/about_us";
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import FitHubTheme from "./utils/theme";
@@ -21,6 +21,7 @@ import { Provider } from "react-redux";
 import { applyMiddleware, createStore } from "redux";
 import reducers from "./redux/reducers";
 import thunkMiddleware from "redux-thunk";
+import MyContent from "./views/mycontent";
 
 /**
  * Consists of a header at top, the different routed views in the middle and a footer at the bottom.

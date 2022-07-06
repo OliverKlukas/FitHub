@@ -1,10 +1,11 @@
+import ImageList from '@mui/material/ImageList';
 import React, { useEffect } from "react";
-import ImageList from "@mui/material/ImageList";
 import HeaderCard from "../components/cards/header_image";
 import SectionCard from "../components/cards/section_image";
-import { Stack, useMediaQuery } from "@mui/material";
+import {Stack, useMediaQuery} from "@mui/material";
 import theme from "../utils/theme";
 import { useSelector } from "react-redux";
+
 const content = [{
   option: "training",
   img: 'https://images.unsplash.com/photo-1517836357463-d25dfeac3438',

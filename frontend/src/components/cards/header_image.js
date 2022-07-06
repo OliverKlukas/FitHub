@@ -48,7 +48,7 @@ export default function HeaderCard({ item }) {
           },
         }}
       >
-        <CardActionArea href="#" sx={{ height: "100%" }}>
+        <CardActionArea href="/profile" sx={{ height: "100%" }}>
           <img
             style={{
               objectFit: "cover",

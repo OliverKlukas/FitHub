@@ -1,22 +1,47 @@
-import { Avatar, Box, Link, Rating, Stack, Typography } from "@mui/material";
+import {Alert, Avatar, Box, CircularProgress, Link, Rating, Stack, Typography} from "@mui/material";
 import Carousel from "react-material-ui-carousel";
 import { Link as RouterLink, useParams } from "react-router-dom";
-import { content } from "../utils/content";
 import { HighlightButton } from "../components/buttons/highlight_button";
 import { StandardButton } from "../components/buttons/standard_button";
 import { Star } from "@mui/icons-material";
+import * as React from "react";
+import {getContent} from "../redux/actions";
+import {connect, useSelector} from "react-redux";
+import {useEffect} from "react";
+
+// TODO: once user is connected I need the info from there
+const author =  {
+  name: "Simon Plashek",
+  title: "professional bodybuilder & fitness coach",
+  img: "https://images.unsplash.com/photo-1584466977773-e625c37cdd50",
+  rating: 3,
+}
 
 /**
  * Detailed view that conveys the most important information of a content item.
  *
  * @return {JSX.Element}
  */
-export default function Details() {
+function Details(props) {
   // Match url id to content item.
   const { id } = useParams();
-  const item = content.find((item) => item.id == id);
+  const singleContent = useSelector((state) => {
+    return state.singleContent;
+  });
 
-  return (
+  // On open load the movie.
+  useEffect(() => {
+    props.getContent(id);
+  }, [singleContent.content]);
+
+  return !singleContent.content && !singleContent.error ? (
+      // Loading content.
+      <Box display="flex" justifyContent="center" alignItems="center" minHeight="80vh">
+        <CircularProgress/>
+      </Box>
+    ) : singleContent.error ? (
+      <Alert severity="error">Loading content went wrong, sorry!</Alert>
+  ) : (
     <Stack spacing={3} marginBottom={10} marginTop={5}>
       <Stack direction="row" justifyContent="space-between">
         <Carousel
@@ -32,12 +57,12 @@ export default function Details() {
             boxShadow: 5,
           }}
         >
-          {item.media.map((url, index) => (
+          {singleContent.content.media.map((data, index) => (
             <img
               width="100%"
               height="100%"
               key={index}
-              src={url}
+              src={data}
               style={{ objectFit: "cover" }}
             />
           ))}
@@ -47,7 +72,7 @@ export default function Details() {
           sx={{ display: { xs: "none", md: "none", lg: "flex" }, width: "35%" }}
         >
           <Stack alignItems="center" justifyContent="center">
-            <Link underline="none" href={`/profile/${item.author.name}`}>
+            <Link underline="none" href={`/profile/${author.name}`}>
               <Avatar
                 sx={{
                   width: "15vw",
@@ -60,7 +85,7 @@ export default function Details() {
                   },
                 }}
                 alt="content creator"
-                src={item.author.img}
+                src={author.img}
               />
             </Link>
             <Stack>
@@ -79,20 +104,20 @@ export default function Details() {
                     "& .MuiRating-iconFilled": { color: "warning.main" },
                   }}
                   name="read-only"
-                  value={item.author.rating}
+                  value={author.rating}
                   readOnly
                   emptyIcon={<Star fontSize="inherit" />}
                 />
                 <Link
                   color="inherit"
                   underline="hover"
-                  href={`/profile/${item.author.name}`}
+                  href={`/profile/${author.name}`}
                 >
                   512 reviews
                 </Link>
               </Stack>
-              <Typography variant="h1">{item.author.name}</Typography>
-              <Typography lineHeight={1.3}>{item.author.title}</Typography>
+              <Typography variant="h1">{author.name}</Typography>
+              <Typography lineHeight={1.3}>{author.title}</Typography>
             </Stack>
           </Stack>
         </Box>
@@ -103,8 +128,8 @@ export default function Details() {
       >
         <Stack>
           <Stack direction="row" justifyContent="space-between" spacing={4}>
-            <Typography variant="h1">{item.title}</Typography>
-            <Typography variant="h1">{item.price}€</Typography>
+            <Typography variant="h1">{singleContent.content.title}</Typography>
+            <Typography variant="h1">{singleContent.content.price}€</Typography>
           </Stack>
           <Stack
             marginBottom={2}
@@ -117,9 +142,9 @@ export default function Details() {
               <Link
                 color="inherit"
                 underline="hover"
-                href={`/profile/${item.author.name}`}
+                href={`/profile/${author.name}`}
               >
-                {item.author.name}
+                {author.name}
               </Link>
             </Typography>
             <Typography>total price</Typography>
@@ -134,20 +159,18 @@ export default function Details() {
         </Stack>
         <Stack spacing={1}>
           <Typography variant="h3">Description</Typography>
-          <Typography>{item.description}</Typography>
+          <Typography>{singleContent.content.description}</Typography>
         </Stack>
         <Stack spacing={1}>
           <Typography variant="h3">Duration</Typography>
-          <Typography>{item.duration}</Typography>
+          <Typography>{singleContent.content.duration} weeks with an intensity of {singleContent.content.intensity} sessions/week</Typography>
         </Stack>
         <Stack spacing={2}>
           <Typography variant="h3">Sample Workout</Typography>
           <StandardButton
-            variant="contained"
-            component={RouterLink}
-            target="_blank"
-            to={"/sample.pdf"}
-            download
+              variant="contained"
+              href={singleContent.content.sample}
+              download={singleContent.content.title}
           >
             Download
           </StandardButton>
@@ -156,3 +179,6 @@ export default function Details() {
     </Stack>
   );
 }
+
+// Connect() establishes the connection to the redux functionalities.
+export default connect(null, { getContent})(Details);

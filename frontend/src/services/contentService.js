@@ -1,11 +1,19 @@
 import HttpService from "./httpService";
 
+/**
+ * Offers content specific http services for CRUD db operations.
+ */
 export default class ContentService {
   static baseURL() {
     return "http://localhost:4000/content";
   }
 
-  static getContents() {
+  /**
+   * Retrieve list of all contents in db.
+   *
+   * @returns {Promise<unknown>}
+   */
+  static getContentList() {
     return new Promise(async (resolve, reject) => {
       HttpService.get(
         this.baseURL(),
@@ -18,7 +26,6 @@ export default class ContentService {
       );
     });
   }
-
   /**
    * Create a new content object in db.
    *
@@ -29,7 +36,7 @@ export default class ContentService {
     content.id = Math.floor(Math.random() * 100000000 + 1).toString();
     return new Promise((resolve, reject) => {
       HttpService.post(
-        ContentService.baseURL(),
+        this.baseURL(),
         content,
         function (data) {
           resolve(data);
@@ -40,7 +47,6 @@ export default class ContentService {
       );
     });
   }
-
   /**
    * Retrieve a single content object.
    *
@@ -50,17 +56,17 @@ export default class ContentService {
   static getContent(id) {
     return new Promise(async (resolve, reject) => {
       HttpService.get(
-          `${this.baseURL()}/${id}`,
-          function (data) {
-            if (data !== undefined || Object.keys(data).length !== 0) {
-              resolve(data);
-            } else {
-              reject("Error while retrieving content");
-            }
-          },
-          function (textStatus) {
-            reject(textStatus);
+        `${this.baseURL()}/${id}`,
+        function (data) {
+          if (data !== undefined || Object.keys(data).length !== 0) {
+            resolve(data);
+          } else {
+            reject("Error while retrieving content");
           }
+        },
+        function (textStatus) {
+          reject(textStatus);
+        }
       );
     });
   }
@@ -74,17 +80,17 @@ export default class ContentService {
   static deleteContent(id) {
     return new Promise((resolve, reject) => {
       HttpService.remove(
-          `${this.baseURL()}/${id}`,
-          function (data) {
-            if (data.message !== undefined) {
-              resolve(data.message);
-            } else {
-              reject("Error while deleting content");
-            }
-          },
-          function (textStatus) {
-            reject(textStatus);
+        `${this.baseURL()}/${id}`,
+        function (data) {
+          if (data.message !== undefined) {
+            resolve(data.message);
+          } else {
+            reject("Error while deleting content");
           }
+        },
+        function (textStatus) {
+          reject(textStatus);
+        }
       );
     });
   }
@@ -97,14 +103,14 @@ export default class ContentService {
   static updateContent(content) {
     return new Promise((resolve, reject) => {
       HttpService.put(
-          `${this.baseURL()}/${content._id}`,
-          content,
-          function (data) {
-            resolve(data);
-          },
-          function (textStatus) {
-            reject(textStatus);
-          }
+        `${this.baseURL()}/${content._id}`,
+        content,
+        function (data) {
+          resolve(data);
+        },
+        function (textStatus) {
+          reject(textStatus);
+        }
       );
     });
   }
