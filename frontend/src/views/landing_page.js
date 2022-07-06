@@ -51,9 +51,9 @@ function LandingPage(props) {
   }, [user]);
 
   return (
-    <Stack item sx={{ marginX: 6 }} spacing={1}>
+    <Stack sx={{ marginX: 6 }} spacing={1}>
       <LandingImage ilink="/profile" iwidth={950} iheight={200} item={header} />
-      <Stack item direction="row" spacing={1}>
+      <Stack direction="row" spacing={1}>
         <LandingImage
           ilink="/upload"
           iwidth={350}
