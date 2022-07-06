@@ -1,74 +1,75 @@
 import {StandardButton} from "../buttons/standard_button";
 import React, {useState} from 'react';
-import { styled } from '@mui/material/styles';
-import { Grid , Snackbar} from "@mui/material";
+import {Alert, Input, Snackbar} from "@mui/material";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
-import MuiAlert from '@mui/material/Alert';
-
 
 /**
- * 
- * @param {*} uploadFormat allowed format for upload (e.g. here pdf or images)
- * @param {*} givenId  html id for the input
- * @param {*} multiUpload boolean if input allows multiple files 
- * @returns 
+ * Enables upload of one or multiple files in a specific format and converts them to base64 strings.
+ *
+ * @param uploadFormat - string that specifies format of desired files, i.e. ".pdf"
+ * @param givenId - string id of component
+ * @param multiUpload - boolean indicating if multiple files should be uploadable
+ * @param upload - value
+ * @param setUpload
+ * @returns {JSX.Element}
+ * @constructor
  */
-export default function UploadButton({uploadFormat,givenId,multiUpload}) {
-    const Input = styled('input')({
-        display: 'none',
-      });
-
-    //necessary for alert function, copied from https://mui.com/material-ui/react-snackbar/
-    const Alert = React.forwardRef(function Alert(props, ref) {
-        return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
-      });  
-
-    const [selectedFile, setSelectedFile] = useState();
+export default function UploadButton({uploadFormat, givenId, multiUpload, setUpload}) {
     const [isFilePicked, setIsFilePicked] = useState(false);
+    const [snackbar, setSnackbar] = React.useState(false);
+    const [fileNames, setFileNames] = React.useState("");
 
-    const [snackopen, setsnackOpen] = React.useState(false);
+    // Copied from: https://medium.com/nerd-for-tech/how-to-store-an-image-to-a-database-with-react-using-base-64-9d53147f6c4f
+    const convertToBase64 = (file) => {
+        return new Promise((resolve, reject) => {
+            const fileReader = new FileReader();
+            fileReader.readAsDataURL(file);
+            fileReader.onload = () => {
+                resolve(fileReader.result);
+            };
+            fileReader.onerror = (error) => {
+                reject(error);
+                throw new Error(error.toString());
+            };
+        });
+    };
 
-    const changeHandler = (event) => {
-        setSelectedFile(event.target.files);
+    // Sets selected file and activates snackbar.
+    async function handleUpload(event) {
+        let newFileNames = "";
+        const newUpload = [];
+
+        // Convert files into base64 string representation and save file names separately.
+        for (const file of event.target.files) {
+            const base64file = await convertToBase64(file);
+            newUpload.push(base64file);
+            newFileNames = newFileNames.concat(file.name, " ");
+        }
+
+        setUpload(newUpload);
+        setFileNames(newFileNames);
         setIsFilePicked(true);
-        setsnackOpen(true);
-      };
+        setSnackbar(true);
+    }
 
-    //deactivates snack bar again
-    const handleSnackClose= () => {
-        setsnackOpen(false);
-      }
-
-
-  return (
-    <Grid item xs={2}>
-      <Stack direction ="row" spacing={2} alignItems="center">
-      <label htmlFor={givenId}>
-          <Input accept={uploadFormat} id={givenId} multiple={multiUpload} type="file" onChange={changeHandler}/>
-          <StandardButton variant="contained" component="span" upload>
-              Upload
-          </StandardButton>
-      </label>
-      <Grid item minWidth={300}>
-      {isFilePicked ? (
-        <div>
-        <Typography variant="body2" fontSize="small">Filename: </Typography>
-        {Array.from(selectedFile).map((item) => (
-            <Typography variant="body2" fontSize="small">{item.name} </Typography>
-          ))}
-        </div>
-     ) : (
-      <Typography variant="body2" fontSize="small">Select a file</Typography>
-      )}
-      </Grid>
-      </Stack>
-    <Snackbar open={snackopen} autoHideDuration={6000} onClose={handleSnackClose}>
-      <Alert onClose={handleSnackClose} severity="success" sx={{ width: '100%' }}>
-        Successful upload 
-      </Alert>
-    </Snackbar>
-    </Grid>
-
-  );
+    return (<Stack direction="row" spacing={2} alignItems="center">
+            <label htmlFor={givenId}>
+                <input style={{display: "none"}} accept={uploadFormat} id={givenId} type="file"
+                       onChange={handleUpload} multiple={multiUpload}/>
+                <StandardButton variant="contained" component="span" upload="true">
+                    Upload
+                </StandardButton>
+            </label>
+            {isFilePicked ? (
+                <Typography minWidth={100} variant="body2" fontSize="small">{fileNames}</Typography>) : (
+                <Typography minWidth={100} variant="body2" fontSize="small">Select a file</Typography>)
+            }
+            <Snackbar open={snackbar} autoHideDuration={6000} onClose={() => setSnackbar(false)}>
+                <Alert onClose={() => setSnackbar(false)} severity="success" sx={{width: '100%'}}>
+                    Successful upload
+                </Alert>
+            </Snackbar>
+        </Stack>
+    );
 };

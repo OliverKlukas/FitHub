@@ -1,5 +1,5 @@
 import ImageListItem from "@mui/material/ImageListItem";
-import {Card, CardActionArea} from "@mui/material";
+import { Card, CardActionArea } from "@mui/material";
 import ImageListItemBar from "@mui/material/ImageListItemBar";
 import * as React from "react";
 
@@ -13,13 +13,15 @@ import * as React from "react";
  * @param height - Number desired height of image.
  * @param rows - Number of rows the image should stretch.
  * @param cols - Number of columns the image should stretch.
- * @returns {{src: string, srcSet: string}} - Returns dictionary with src and srcSet variables for img.
+ * @return {{src: string, srcSet: string}} - Returns dictionary with src and srcSet variables for img.
  */
 function srcset(image, width, height, rows = 1, cols = 1) {
-    return {
-        src: `${image}?w=${width * cols}&h=${height * rows}&fit=crop&auto=format`,
-        srcSet: `${image}?w=${width * cols}&h=${height * rows}&fit=crop&auto=format&dpr=2 2x`,
-    };
+  return {
+    src: `${image}?w=${width * cols}&h=${height * rows}&fit=crop&auto=format`,
+    srcSet: `${image}?w=${width * cols}&h=${
+      height * rows
+    }&fit=crop&auto=format&dpr=2 2x`,
+  };
 }
 
 let reflink = "";

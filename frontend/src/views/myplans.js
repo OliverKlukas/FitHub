@@ -9,23 +9,23 @@ import Plan from "../components/plans/plan";
  * contact our customer support (forward to the content creators profile)
  * and write a review (forward to the content creators profile)
  *
- * @returns {JSX.Element} returns My Plans page.
+ * @return {JSX.Element} returns My Plans page.
  */
 export default function MyPlans() {
-    // Match url id to consumer item.
-    let { id } = useParams();
-    // eslint-disable-next-line
+  // Match url id to consumer item.
+  const { id } = useParams();
+  // eslint-disable-next-line
     const item = consumer.find((item) => item.id == id);
 
-    return (
-        <Stack spacing={4} marginTop={5}>
-            <Typography variant="h1">My Plans</Typography>
-            {/* eslint-disable-next-line */}
+  return (
+    <Stack spacing={4} marginTop={5}>
+      <Typography variant="h1">My Plans</Typography>
+      {/* eslint-disable-next-line */}
             {content.map((con) => {
-                if (item.boughtContent.includes(con.id)) {
-                    return <Plan item={con} key={con.img} />;
-                }
-            })}
-        </Stack>
-    );
+        if (item.boughtContent.includes(con.id)) {
+          return <Plan item={con} key={con.img} />;
+        }
+      })}
+    </Stack>
+  );
 }
