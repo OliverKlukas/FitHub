@@ -196,7 +196,7 @@ function Header(props) {
       </Box>
       {user.user
         ? [
-            <Box>
+            <Box key={"UserLoggedIn"}>
               <IconButton onClick={handleOpenSetMenu}>
                 <AvatarMale />
               </IconButton>
@@ -237,7 +237,7 @@ function Header(props) {
             </Box>,
           ]
         : [
-            <Box>
+            <Box key={"UserLoggedOut"}>
               <IconButton onClick={handleOpenSetMenu}>
                 <AvatarMale />
               </IconButton>
@@ -259,7 +259,7 @@ function Header(props) {
               >
                 {Object.keys(settings).map((url) => (
                   <MenuItem key={url} onClick={handleCloseSetMenu}>
-                    <Link href={url} underline="none" color="inherit">
+                    <Link key={url} href={url} underline="none" color="inherit">
                       {settings[url]}
                     </Link>
                   </MenuItem>
