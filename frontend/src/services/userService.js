@@ -27,7 +27,7 @@ export default class UserService {
       );
     });
   }
-  static registerContentCreator(mail, pass, fName, lName, descr, picture) {
+  static registerContentCreator(mail, pass, fName, lName, title, picture) {
     return new Promise((resolve, reject) => {
       HttpService.post(
         `${UserService.baseURL()}/register`,
@@ -37,7 +37,7 @@ export default class UserService {
           firstName: fName,
           lastName: lName,
           role: "contentCreator",
-          description: descr,
+          title: title,
           profilePicture: picture,
         },
         function (data) {
@@ -105,10 +105,10 @@ export default class UserService {
     });
   }
 
-  static deleteUser(id) {
+  static deleteUser() {
     return new Promise((resolve, reject) => {
         HttpService.remove(
-            `${this.baseURL()}/${id}`,
+            `${this.baseURL()}/delete`,
             function (data) {
                 if (data.message !== undefined) {
                     resolve(data.message);
@@ -125,7 +125,7 @@ export default class UserService {
 static updateUser(user) {
   return new Promise((resolve, reject) => {
     HttpService.put(
-        `${this.baseURL()}/${user._id}`,
+        `${this.baseURL()}/update`,
         user,
         function (data) {
           resolve(data);

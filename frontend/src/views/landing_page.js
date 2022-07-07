@@ -1,7 +1,5 @@
-import ImageList from "@mui/material/ImageList";
 import React, { useEffect } from "react";
-import { Stack, useMediaQuery } from "@mui/material";
-import theme from "../utils/theme";
+import { Stack } from "@mui/material";
 import { useSelector } from "react-redux";
 import LandingImage from "../components/cards/image_landingpage";
 
@@ -48,7 +46,7 @@ function LandingPage(props) {
       };
       setHeader(temp, header);
     }
-  }, [user]);
+  }, [header, user]);
 
   return (
     <Stack sx={{ marginX: 6 }} spacing={1}>
