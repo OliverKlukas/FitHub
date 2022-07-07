@@ -24,7 +24,6 @@ import thunkMiddleware from "redux-thunk";
 import MyContent from "./views/mycontent";
 import Dashboard from './views/dashboard';
 import CustomerOverview from './views/customer_overview';
-import Sign_up from "./views/sign_up";
 
 /**
  * Consists of a header at top, the different routed views in the middle and a footer at the bottom.

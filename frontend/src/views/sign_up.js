@@ -17,6 +17,7 @@ import { Link as RouterLink, useNavigate } from "react-router-dom";
 import UploadButton from "../components/buttons/upload_button";
 import { registerContentCreator, registerCustomer } from "../redux/actions";
 import { connect, useSelector } from "react-redux";
+import UserService from "../services/userService";
 
 /**
  * SignUp View
@@ -57,11 +58,10 @@ function SignUp(props) {
 
     const handleSubmit = () => {
         if (isContentCreator) {
-            props.dispatch(registerContentCreator(email, password, firstname, lastname, title, uploadedPicture[0]))
+            props.dispatch(registerContentCreator(email, password, firstname, lastname, title, uploadedPicture[0])).catch(err => console.log(err));
         } else {
-            props.dispatch(registerCustomer(email, password, firstname, lastname))
+            props.dispatch(registerCustomer(email, password, firstname, lastname)).catch(err => console.log(err));
         }
-
     }
     const onChangeFirstName = (e) => {
         setFirstName(e.target.value);
@@ -116,8 +116,19 @@ function SignUp(props) {
             setSnackOpen(true);
         } else {
             setEmailError(false);
+            checkEmail()
         }
     };
+    //gets a boolean of whether a email is already registered or from the backend
+    const checkEmail = async () => {
+        const res = await UserService.checkEmail(email);
+        if (res.alreadyHasAccount) {
+            setEmailError(true);
+            setErrorMessage("Email is already in use");
+            setSnackOpen(true);
+        };
+    };
+    
     // validates FirstName, checks if input is too long and any numbers or signs in the first name, unicodes allow umlaute, greek phylix, french acents, also allows emtpy spaces
     const validateFirstName = () => {
         if (
@@ -150,13 +161,13 @@ function SignUp(props) {
             setLastNameError(false);
         }
     }
-    // validates Title, checks nothing really right now TOTO ?
+    // validates Title, check if the input is too long or too short (TODO)
     const validateTitle = () => {
         if (
             title
                 .toLowerCase()
                 .match(
-                    /^[A-Za-zÀ-ž\u0370-\u03FF\u0400-\u04F0-9_ ]+$/
+                    /^[A-Za-z-9À-ž\u0370-\u03FF\u0400-\u04F0_ ]+$/
                 ) === null
         ) {
             setTitleError(true);
