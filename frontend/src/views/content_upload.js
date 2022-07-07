@@ -24,6 +24,8 @@ import { addContent } from "../redux/actions";
 import Checkbox from "@mui/material/Checkbox";
 import { CancelButton } from "../components/buttons/cancel_button";
 import { StandardButton } from "../components/buttons/standard_button";
+import { pink } from "@mui/material/colors";
+import { useSelector } from "react-redux";
 
 const preInputValue = "Type here...";
 const fitnessGoal = ["weight-loss", "weight-gain", "muscle-growth", "cardio"];
@@ -37,13 +39,14 @@ const lifestyle = ["vegan", "vegetarian", "pescatarian", "meat-based"];
  *
  */
 function ContentUpload(props) {
-  const { selectedCategory } = useParams();
-
   // Handle navigation with react router.
   const navigate = useNavigate();
 
+  //get the logged in user
+  const user = useSelector((state) => state.user);
+
   // Hooks to save filled out upload form, all need pre-defined value.
-  const [category, setCategory] = useState(selectedCategory);
+  const [category, setCategory] = useState(props["choice"]);
   const [title, setTitle] = useState("");
   const [price, setPrice] = useState("");
   const [description, setDescription] = useState("");
@@ -56,10 +59,19 @@ function ContentUpload(props) {
   const [media, setMedia] = useState([]);
   const [plan, setPlan] = useState([]);
   const [sample, setSample] = useState([]);
+  const [feature, setFeatured] = useState(false);
+  const [marketing, setMarketing] = useState(false);
 
   // Handle publishing failure and success.
   const [pubFailure, setPubFailure] = useState(false);
   const [pubSuccess, setPubSuccess] = useState(false);
+
+  //handle missing mandatory checkboxes
+  const [checkFailure, setCheckFailure] = useState(false);
+  // close the snackbar of mandatory checkboxes
+  const handleCheckFailure = () => {
+    setCheckFailure(false);
+  };
 
   // Switch to discovery view after successful publication and reload in order to show item.
   function handlePublicationSuccess() {
@@ -75,13 +87,30 @@ function ContentUpload(props) {
   // User input verification and hand-off to backend database publication.
   function handlePublishContent() {
     // TODO: verify that the above defined hooks match our criteria, i.e. with regex that we could put i.e. into utils folder and use project wide
-    publishContent();
+    if (termsChecked && qualityChecked) {
+      publishContent();
+    } else {
+      //feedback mandatory checkboxes
+      if (!termsChecked && !qualityChecked) {
+        setMissedTermsCheck(true);
+        setMissedQualityCheck(true);
+      } else if (!termsChecked) {
+        setMissedTermsCheck(true);
+        setMissedQualityCheck(false);
+      } else {
+        setMissedQualityCheck(true);
+        setMissedTermsCheck(false);
+      }
+      //Snackbar activation failure
+      setCheckFailure(true);
+    }
   }
 
   // Merge all hooks together and publish it to mongodb.
   async function publishContent() {
     try {
       await props.addContent({
+        ownerId: user.user._id,
         category: category,
         title: title,
         description: description,
@@ -90,7 +119,7 @@ function ContentUpload(props) {
         intensity: parseInt(intensity),
         support: support,
         tags: goalTags.concat(levelTags, lifestyleTags),
-        featured: false,
+        featured: feature,
         media: media,
         plan: plan[0],
         sample: sample[0],
@@ -102,6 +131,24 @@ function ContentUpload(props) {
     }
   }
 
+  // state for Terms and Conditions Checkbox
+  const [termsChecked, setTermsChecked] = React.useState(false);
+  // state for Terms and Conditions Checkbox
+  const [qualityChecked, setQualityChecked] = React.useState(false);
+
+  // will be true as mandatory checks arent fullfilled
+  const [missedTermsCheck, setMissedTermsCheck] = React.useState(false);
+  const [missedQualityCheck, setMissedQualityCheck] = React.useState(false);
+
+  // change acceptance state of the terms and conditions if the checkbox is clicked
+  const handleTermsChange = (event) => {
+    setTermsChecked(event.target.checked);
+  };
+  // change acceptance state of the terms and conditions if the checkbox is clicked
+  const handleQualityChange = (event) => {
+    setQualityChecked(event.target.checked);
+  };
+
   return (
     <Stack
       padding={3}
@@ -111,9 +158,9 @@ function ContentUpload(props) {
       width="90%"
     >
       <Typography variant="h1" fontWeight="bold">
-        Offer your Content
+        Offer your content
       </Typography>
-      <Typography variant="h3">General Information</Typography>
+      <Typography variant="h3">General information</Typography>
       <Stack spacing={3} direction="row" alignItems="center">
         <Typography
           sx={{ minWidth: 100 }}
@@ -133,12 +180,12 @@ function ContentUpload(props) {
             <FormControlLabel
               value="training"
               control={<Radio />}
-              label="Training Plan"
+              label="Training plan"
             />
             <FormControlLabel
               value="nutrition"
               control={<Radio />}
-              label="Nutrition Plan"
+              label="Nutrition plan"
             />
             <FormControlLabel
               value="coaching"
@@ -242,7 +289,7 @@ function ContentUpload(props) {
             variant="filled"
             placeholder={preInputValue}
             helperText={
-              category === "nutrition" ? "meals per week" : "trainings per week"
+              category === "nutrition" ? "Meals per week" : "Trainings per week"
             }
             size="small"
           />
@@ -272,7 +319,7 @@ function ContentUpload(props) {
                 value={goalTags}
                 onChange={(event, value) => setGoalTags(value)}
                 renderInput={(params) => (
-                  <TextField {...params} label="Fitness Goal" />
+                  <TextField {...params} label="Fitness goal" />
                 )}
               />
             </Grid>
@@ -296,7 +343,7 @@ function ContentUpload(props) {
                 value={levelTags}
                 onChange={(event, value) => setLevelTags(value)}
                 renderInput={(params) => (
-                  <TextField {...params} label="Fitness Level" />
+                  <TextField {...params} label="Fitness level" />
                 )}
               />
             </Grid>
@@ -313,7 +360,7 @@ function ContentUpload(props) {
       <Typography variant="h3">Uploads</Typography>
       <Stack spacing={2} direction="row">
         <Typography sx={{ minWidth: 200 }} variant="subtitle1">
-          Marketing Material:
+          Marketing material:
         </Typography>
         <Stack spacing={1}>
           <UploadButton
@@ -330,6 +377,7 @@ function ContentUpload(props) {
               fontSize={14}
               fontWeight={300}
               underline="always"
+              target="_blank"
               href="/terms-and-conditions"
             >
               Terms & Conditions
@@ -340,7 +388,7 @@ function ContentUpload(props) {
       </Stack>
       <Stack spacing={2} direction="row">
         <Typography sx={{ minWidth: 200 }} variant="subtitle1">
-          Full Plan:
+          Full plan:
         </Typography>
         <Stack spacing={1}>
           <UploadButton
@@ -372,10 +420,13 @@ function ContentUpload(props) {
           </Typography>
         </Stack>
       </Stack>
-      <Typography variant="h3">Legal Notices</Typography>
+      <Typography variant="h3">Additional options</Typography>
       <Stack spacing={0.5}>
         <Stack direction="row" alignItems="center">
-          <Checkbox />
+          <Checkbox
+            value={marketing}
+            onChange={(event) => setMarketing(event.target.checked)}
+          />
           <Typography variant="body1">
             Yes, email me for marketing events like vouchers & sales weekends
           </Typography>
@@ -390,21 +441,73 @@ function ContentUpload(props) {
           </Typography>
         </Stack>
         <Stack direction="row" alignItems="center">
-          <Checkbox />
+          <Checkbox
+            value={feature}
+            onChange={(event) => setFeatured(event.target.checked)}
+          />
           <Typography variant="body1">
+            Feature me in discovery for a increasing fee of 15% instead of 10%
+            per transaction
+          </Typography>
+        </Stack>
+      </Stack>
+      <Typography variant="h3">Legal notices</Typography>
+      <Stack spacing={0.5}>
+        <Stack direction="row" alignItems="center">
+          <Checkbox
+            checked={qualityChecked}
+            onChange={handleQualityChange}
+            sx={
+              missedQualityCheck
+                ? {
+                    color: pink[800],
+                  }
+                : { color: "default" }
+            }
+          />
+          <Typography
+            variant="body1"
+            sx={
+              missedQualityCheck
+                ? {
+                    color: pink[800],
+                  }
+                : { color: "default" }
+            }
+          >
             Yes, I ensure delivery of the expected quality and know intentional
             fooling attempts will result in penalties like an account ban
           </Typography>
         </Stack>
         <Stack direction="row" alignItems="center">
-          <Checkbox />
-          <Typography variant="body1">
+          <Checkbox
+            checked={termsChecked}
+            onChange={handleTermsChange}
+            sx={
+              missedTermsCheck
+                ? {
+                    color: pink[800],
+                  }
+                : { color: "default" }
+            }
+          />
+          <Typography
+            variant="body1"
+            sx={
+              missedTermsCheck
+                ? {
+                    color: pink[800],
+                  }
+                : { color: "default" }
+            }
+          >
             Yes, I hereby accept the{" "}
             <Link
               color="#393E46"
               fontSize={14}
               fontWeight={300}
               underline="always"
+              target="_blank"
               href="/terms-and-conditions"
             >
               Terms & Conditions
@@ -445,6 +548,19 @@ function ContentUpload(props) {
           sx={{ width: "100%" }}
         >
           Successfully published your content!
+        </Alert>
+      </Snackbar>
+      <Snackbar
+        open={checkFailure}
+        autoHideDuration={1800}
+        onClose={handleCheckFailure}
+      >
+        <Alert
+          onClose={handleCheckFailure}
+          severity="error"
+          sx={{ width: "100%" }}
+        >
+          Mandatory checks missing!
         </Alert>
       </Snackbar>
     </Stack>
