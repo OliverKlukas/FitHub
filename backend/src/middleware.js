@@ -5,7 +5,6 @@ const jwt = require("jsonwebtoken");
 const config = require("./config");
 
 const UserModel = require("./models/user");
-
 const allowCrossDomain = (req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE,OPTIONS");
@@ -46,16 +45,16 @@ const checkAuthentication = (req, res, next) => {
   });
 };
 
-const checkIsAdmin = async (req, res, next) => {
+const checkIsContentCreator = async (req, res, next) => {
   // checkAuthentication must be executed before this method
   // if not req.userId is not defined
   const user = await UserModel.findById(req.userId);
 
-  if (user.role === "admin") {
-    // if the user is an admin continue with the execution
+  if (user.role === "contentCreator") {
+    // if the user is a Content Creator continue with the execution
     next();
   } else {
-    // if the user is no admin return that the user has not the rights for this action
+    // if the user is no Content return that the user has not the rights for this action
     return res.status(403).send({
       error: "Forbidden",
       message: "You have not the rights for this action.",
@@ -74,6 +73,6 @@ const errorHandler = (err, req, res, next) => {
 module.exports = {
   allowCrossDomain,
   checkAuthentication,
-  checkIsAdmin,
+  checkIsContentCreator,
   errorHandler,
 };

@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 "use strict";
 
 const mongoose = require("mongoose");
@@ -30,11 +31,11 @@ const UserSchema = new mongoose.Schema({
     required: true,
   },
   password: {
-    type: String /* TODO make into a pw hash instead of plaintext pw */,
+    type: String,
     required: true,
     unique: true,
   },
-  // role of the user, used for rights management
+  // role of the user
   role: {
     // potentially add a admin role for "Employees"
     type: String,
@@ -43,11 +44,13 @@ const UserSchema = new mongoose.Schema({
     // if not specified the role "customer" is chosen
     default: "customer",
   },
+  title: {
+    type: String,
+  },
   description: {
     type: String,
-    required: false,
   },
-  profilePicturep: {
+  profilePicture: {
     type: String,
   },
   reviews: [ReviewSchema],
