@@ -43,10 +43,10 @@ const register = async (req, res) => {
         });
     const isContentCreator = req.body.role === "contentCreator"
     if (isContentCreator) {
-        if (!Object.prototype.hasOwnProperty.call(req.body, "description"))
+        if (!Object.prototype.hasOwnProperty.call(req.body, "title"))
             return res.status(400).json({
                 error: "Bad Request",
-                message: "The request body must contain a description property",
+                message: "The request body must contain a title property",
             });
         if (!Object.prototype.hasOwnProperty.call(req.body, "profilePicture"))
             return res.status(400).json({
@@ -59,9 +59,9 @@ const register = async (req, res) => {
                 email: req.body.email,
                 password: hashedPassword,
                 firstName: req.body.firstName,
-                lastName: req.body.lastName, // check seba backend, potentially different
+                lastName: req.body.lastName, 
                 role: req.body.role,
-                description: req.body.description,
+                title: req.body.title,
                 profilePicture: req.body.profilePicture,
             };
 
@@ -191,7 +191,7 @@ const login = async (req, res) => {
 const updateuser = async (req, res) => {
     try {
         const resUser = await UserModel.findByIdAndUpdate(
-            req.params.id,
+            req.userId,
             req.body,
             {
                 new: true,
@@ -390,12 +390,12 @@ const deletereview = (req, res) => {
  */
 const deleteuser = async (req, res) => {
     try {
-        await UserModel.findByIdAndRemove(req.params.id).exec();
+        await UserModel.findByIdAndRemove(req.userId).exec();
 
         // return message that movie was deleted
         return res
             .status(200)
-            .json({ message: `User with id${req.params.id} was deleted` });
+            .json({ message: `User with id${req.userId} was deleted` });
     } catch (error) {
         return res.status(500).json({
             error: "Internal Server error",
