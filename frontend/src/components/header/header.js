@@ -34,7 +34,7 @@ function Header(props) {
       setfName(user.user.fname);
       setlName(user.user.lname);
     }
-  }, [fName, lName]);
+  }, [fName, lName, user.user]);
   // Header Center for a Content Creator
   const pagesContentCreator = {
     discovery: "Discovery",
@@ -51,7 +51,7 @@ function Header(props) {
   // Header Center if the user is not logged in
   const pagesLoggedOut = {
     discovery: "Discovery",
-    signin: "Log In",
+    signin: "Sign In",
     about: "About us",
   };
 
@@ -67,8 +67,8 @@ function Header(props) {
   // Sub-urls and link names for available user menu options when the user is not logged in
   const settings = {
     contact: "Contact",
-    signin: "Login",
-    registration: "Registration",
+    signin: "Sign in",
+    signup: "Sign up",
   };
 
   // Anchor hook to open/close the user settings menu when option selected or clicked off.

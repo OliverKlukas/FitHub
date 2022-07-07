@@ -7,7 +7,7 @@ const helmet = require("helmet");
 const auth = require("./routes/auth");
 const content = require("./routes/content");
 const boughtPlans = require("./routes/boughtPlans");
-const middlewares = require("./middlewares");
+const middleware = require("./middleware");
 
 const api = express();
 
@@ -19,7 +19,7 @@ api.use(express.urlencoded({limit: '100mb'}));
 api.use(helmet());
 api.use(bodyParser.json());
 api.use(bodyParser.urlencoded({ extended: false }));
-api.use(middlewares.allowCrossDomain);
+api.use(middleware.allowCrossDomain);
 
 // Basic route
 api.get("/", (req, res) => {
