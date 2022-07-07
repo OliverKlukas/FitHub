@@ -1,10 +1,10 @@
 import React, { useEffect } from "react";
-import { TextField, Stack, Typography, Grid, Divider } from "@mui/material";
+import { TextField, Stack, Typography, Grid, Divider, Snackbar, Alert } from "@mui/material";
 import { HighlightButton } from "../components/buttons/highlight_button";
 import { StandardButton } from "../components/buttons/standard_button";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { connect, useSelector } from "react-redux";
-import { login} from "../redux/actions"
+import { login } from "../redux/actions"
 
 /**
  * Login View
@@ -13,25 +13,38 @@ import { login} from "../redux/actions"
 function SignIn(props) {
 
   const user = useSelector((state) => state.user);
-    
+
   const navigate = useNavigate();
 
+  // States for the email and password to send to the backend and check
   const [email, setEmail] = React.useState("");
-  const [emailerror, setEmailError] = React.useState(false);
   const [password, setPassword] = React.useState("");
 
+  // States for displaying Error Messages and ensuring the login data is changed after incorrect login
+  const [emailerror, setEmailError] = React.useState(false);
+  const [passworderror, setPassworderror] = React.useState(false);
+  const [loginerror, setLoginError] = React.useState(false);
+
+  // navigates to discovery once a user is logged in and reloads the page to ensure all data from the redux store is loaded
   useEffect(() => {
     if (user.user) {
-        navigate("/discovery");
+      navigate("/discovery");
+      window.location.reload();
     }
   }, [user, props.history, navigate]);
 
   const onChangeEmail = (e) => {
     setEmail(e.target.value);
+    setPassworderror(false);
   };
   const onChangePassword = (e) => {
     setPassword(e.target.value);
+    setPassworderror(false);
   };
+
+  /**
+   * Validates the entered Email adress to be a valid email Adress
+   */
   const validateEmail = () => {
     if (
       email
@@ -45,12 +58,19 @@ function SignIn(props) {
       setEmailError(false);
     }
   };
-  const handleSubmit = () => {
-    props.dispatch(login(email,password))
-    navigate("/discovery");
-  };
-  const handleButtonToRegistration = () => {
-    /* Placeholder in case we still want something to be done with this button and not just link */
+
+  /**
+   * Submits the data to the backend, if a user was not able to login, sets the error states, so that a user can not login again until either of the textfields is modified,
+   * and displays a error message to the user
+   */
+  const handleSubmit = async () => {
+      await props.dispatch(login(email, password));
+    if (!user.user) {
+      setLoginError(true);
+      setEmailError(true);
+      setPassworderror(true);
+    }
+
   };
   return (
     <Grid
@@ -74,8 +94,9 @@ function SignIn(props) {
             label="Password"
             id="standard-password-input"
             type="password"
-            variant="standard"
+            variant="outlined"
             onChange={onChangePassword}
+            error={passworderror}
           ></TextField>
           <HighlightButton
             variant="contained"
@@ -87,7 +108,6 @@ function SignIn(props) {
           <Divider>New to FitHub?</Divider>
           <StandardButton
             variant="contained"
-            onClick={handleButtonToRegistration}
             component={RouterLink}
             to={`/registration`}
           >
@@ -95,6 +115,9 @@ function SignIn(props) {
           </StandardButton>
         </Stack>
       </Grid>
+      <Snackbar open={loginerror} autoHideDuration={6000} onClose={() => setLoginError(false)}>
+        <Alert onClose={() => setLoginError(false)} severity="error" sx={{ width: '100%' }}>Either Email or password is Incorrect!</Alert>
+      </Snackbar>;
     </Grid>
   );
 }
