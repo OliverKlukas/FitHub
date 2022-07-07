@@ -7,12 +7,12 @@ const content = [
   {
     option: "training",
     img: "https://images.unsplash.com/photo-1517836357463-d25dfeac3438",
-    title: "Training Plan",
+    title: "Training plan",
   },
   {
     option: "nutrition",
     img: "https://images.unsplash.com/photo-1490645935967-10de6ba17061",
-    title: "Nutrition Plan",
+    title: "Nutrition plan",
   },
   {
     option: "coaching",
@@ -28,10 +28,6 @@ const content = [
  */
 function LandingPage(props) {
   const user = useSelector((state) => state.user);
-
-  useEffect(() => {
-    props.data.setChoice("coaching");
-  }, [props.data.choice]);
 
   const [header, setHeader] = React.useState({
     img: "https://images.unsplash.com/photo-1593079831268-3381b0db4a77",
@@ -70,6 +66,7 @@ function LandingPage(props) {
           iheight={400}
           item={content[0]}
           isHeader={false}
+          setChoice={props.data}
         />
         <LandingImage
           ilink="/upload"
@@ -77,6 +74,7 @@ function LandingPage(props) {
           iheight={400}
           item={content[1]}
           isHeader={false}
+          setChoice={props.data}
         />
         <LandingImage
           ilink="/upload"
@@ -84,6 +82,7 @@ function LandingPage(props) {
           iheight={400}
           item={content[2]}
           isHeader={false}
+          setChoice={props.data}
         />
       </Stack>
     </Stack>

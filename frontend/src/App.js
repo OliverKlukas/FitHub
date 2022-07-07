@@ -37,8 +37,6 @@ function App() {
 
   const [choice, setChoice] = useState("");
 
-  console.log(choice);
-
   return (
     <ThemeProvider theme={FitHubTheme}>
       <Provider store={store}>
@@ -60,7 +58,7 @@ function App() {
                 <Route path="/discovery" element={<Discovery />} />
                 <Route
                   path="/upload"
-                  element={<ContentUpload data={{ choice }} />}
+                  element={<ContentUpload data={{ choice, setChoice }} />}
                 />
                 <Route path="/plans" element={<AboutUs />} />
                 <Route path="/about" element={<AboutUs />} />

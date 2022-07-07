@@ -42,13 +42,11 @@ function ContentUpload(props) {
   // Handle navigation with react router.
   const navigate = useNavigate();
 
-  console.log(props.data.choice);
-
   //get the logged in user
   const user = useSelector((state) => state.user);
 
   // Hooks to save filled out upload form, all need pre-defined value.
-  const [category, setCategory] = useState(props["choice"]);
+  const [category, setCategory] = useState(props.data.choice);
   const [title, setTitle] = useState("");
   const [price, setPrice] = useState("");
   const [description, setDescription] = useState("");
@@ -177,7 +175,7 @@ function ContentUpload(props) {
             row
             aria-labelledby="category-radio-buttons-group-label"
             name="row-radio-buttons-group"
-            defaultValue={props["choice"]}
+            defaultValue={props.data.choice}
             onChange={(event) => setCategory(event.target.value)}
           >
             <FormControlLabel

@@ -1,6 +1,7 @@
 import { Card, CardActionArea } from "@mui/material";
 import ImageListItemBar from "@mui/material/ImageListItemBar";
 import * as React from "react";
+import { useNavigate } from "react-router-dom";
 
 /**
  * Computes image size for optimal display in ImageList grid.
@@ -30,6 +31,7 @@ function srcset(image, width, height, rows = 1, cols = 1) {
  * @param {*} iwidth - width for img -> difference Header Image & Tiles
  * @param {*} ilink - href link
  * @param {*} isHeader - header has other fonts sizes for text (default true)
+ * @param {*} setChoice - setter for category (origin App.js -> landing_page.js -> here)
  * @returns - image with included text
  */
 export default function LandingImage({
@@ -38,9 +40,19 @@ export default function LandingImage({
   iwidth,
   ilink,
   isHeader = true,
+  setChoice,
 }) {
+  const navigate = useNavigate();
+
+  async function handleForward() {
+    if (!isHeader) {
+      await setChoice.setChoice(item.option);
+    }
+    navigate(ilink);
+  }
+
   return (
-    <CardActionArea href={ilink} sx={{ height: "100%" }}>
+    <CardActionArea sx={{ height: "100%" }} onClick={handleForward}>
       <img
         style={{
           objectFit: "cover",
