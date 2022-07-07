@@ -1,7 +1,5 @@
-import ImageList from "@mui/material/ImageList";
 import React, { useEffect } from "react";
-import { Stack, useMediaQuery } from "@mui/material";
-import theme from "../utils/theme";
+import { Stack } from "@mui/material";
 import { useSelector } from "react-redux";
 import LandingImage from "../components/cards/image_landingpage";
 
@@ -30,6 +28,10 @@ const content = [
  */
 function LandingPage(props) {
   const user = useSelector((state) => state.user);
+
+  useEffect(() => {
+    props.data.setChoice("coaching");
+  }, [props.data.choice]);
 
   const [header, setHeader] = React.useState({
     img: "https://images.unsplash.com/photo-1593079831268-3381b0db4a77",

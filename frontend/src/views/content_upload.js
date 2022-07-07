@@ -42,6 +42,8 @@ function ContentUpload(props) {
   // Handle navigation with react router.
   const navigate = useNavigate();
 
+  console.log(props.data.choice);
+
   //get the logged in user
   const user = useSelector((state) => state.user);
 
@@ -108,6 +110,7 @@ function ContentUpload(props) {
 
   // Merge all hooks together and publish it to mongodb.
   async function publishContent() {
+    console.log(feature);
     try {
       await props.addContent({
         ownerId: user.user._id,

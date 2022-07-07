@@ -24,6 +24,7 @@ import thunkMiddleware from "redux-thunk";
 import MyContent from "./views/mycontent";
 import Dashboard from "./views/dashboard";
 import CustomerOverview from "./views/customer_overview";
+import { useState } from "react";
 
 /**
  * Consists of a header at top, the different routed views in the middle and a footer at the bottom.
@@ -33,6 +34,10 @@ import CustomerOverview from "./views/customer_overview";
 function App() {
   // create store for redux
   const store = createStore(reducers, applyMiddleware(thunkMiddleware));
+
+  const [choice, setChoice] = useState("");
+
+  console.log(choice);
 
   return (
     <ThemeProvider theme={FitHubTheme}>
@@ -48,11 +53,14 @@ function App() {
                   path="/"
                   element={<Navigate to="/discovery" replace />}
                 />
-                <Route path="/landing" element={<LandingPage />} />^
+                <Route
+                  path="/landing"
+                  element={<LandingPage data={{ setChoice }} />}
+                />
                 <Route path="/discovery" element={<Discovery />} />
                 <Route
                   path="/upload"
-                  element={<ContentUpload choice="training" />}
+                  element={<ContentUpload data={{ choice }} />}
                 />
                 <Route path="/plans" element={<AboutUs />} />
                 <Route path="/about" element={<AboutUs />} />

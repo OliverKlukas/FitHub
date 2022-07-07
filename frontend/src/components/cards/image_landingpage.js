@@ -40,11 +40,7 @@ export default function LandingImage({
   isHeader = true,
 }) {
   return (
-    <CardActionArea
-      href={ilink}
-      sx={{ height: "100%" }}
-      state={{ choice: item.option }}
-    >
+    <CardActionArea href={ilink} sx={{ height: "100%" }}>
       <img
         style={{
           objectFit: "cover",
