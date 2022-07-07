@@ -109,7 +109,7 @@ function SignIn(props) {
           <StandardButton
             variant="contained"
             component={RouterLink}
-            to={`/registration`}
+            to={`/signup`}
           >
             Create your FitHub Account
           </StandardButton>

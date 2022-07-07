@@ -44,6 +44,9 @@ const UserSchema = new mongoose.Schema({
     // if not specified the role "customer" is chosen
     default: "customer",
   },
+  title: {
+    type: String,
+  },
   description: {
     type: String,
   },

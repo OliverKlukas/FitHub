@@ -9,6 +9,7 @@ import {
     FormControlLabel,
     FormControl,
     FormLabel,
+    Alert,
 } from "@mui/material";
 import React, { useEffect } from "react";
 import { HighlightButton } from "../components/buttons/highlight_button";
@@ -18,27 +19,32 @@ import { registerContentCreator, registerCustomer } from "../redux/actions";
 import { connect, useSelector } from "react-redux";
 
 /**
- * Registration View
+ * SignUp View
  * @param {props} props for user state management
  */
-function Registration(props) {
+function SignUp(props) {
 
     const user = useSelector((state) => state.user);
-    
+
     const navigate = useNavigate();
 
+    // Error States for Input Validation
     const [passworderror, setPasswordError] = React.useState(false);
     const [emailerror, setEmailError] = React.useState(false);
     const [errormessage, setErrorMessage] = React.useState("");
+    const [titleerror, setTitleError] = React.useState(false);
+    const [firstnameerror, setFirstNameError] = React.useState(false);
+    const [lastnameerror, setLastNameError] = React.useState(false);
+    // States for Snackbar
+    const [snackopen, setSnackOpen] = React.useState(false);
 
-    const [snackopen, setsnackOpen] = React.useState(false); // States for Snackbar
-
+    // states for input to pass to the backend
     const [firstname, setFirstName] = React.useState("");
     const [lastname, setLastName] = React.useState("");
     const [password, setPassword] = React.useState("");
     const [password2, setPassword2] = React.useState("");
     const [isContentCreator, setIsContentCreator] = React.useState(false);
-    const [description, setDescription] = React.useState("");
+    const [title, setTitle] = React.useState("");
     const [email, setEmail] = React.useState("");
     const [uploadedPicture, setUploadedPicture] = React.useState("");
 
@@ -47,13 +53,13 @@ function Registration(props) {
             navigate("/landing");
             window.location.reload();
         }
-    }, [user, props.history,navigate]);
+    }, [user, props.history, navigate]);
 
     const handleSubmit = () => {
         if (isContentCreator) {
-            props.dispatch(registerContentCreator(email,password,firstname,lastname,description,uploadedPicture[0]))
+            props.dispatch(registerContentCreator(email, password, firstname, lastname, title, uploadedPicture[0]))
         } else {
-            props.dispatch(registerCustomer(email,password,firstname,lastname))
+            props.dispatch(registerCustomer(email, password, firstname, lastname))
         }
 
     }
@@ -77,8 +83,8 @@ function Registration(props) {
     const onChangeisNotContentCreator = () => {
         setIsContentCreator(false);
     };
-    const onChangeDescription = (e) => {
-        setDescription(e.target.value);
+    const onChangeTitle = (e) => {
+        setTitle(e.target.value);
     };
     const onChangeEmail = (e) => {
         setEmail(e.target.value);
@@ -90,13 +96,13 @@ function Registration(props) {
             if (password !== password2) {
                 setPasswordError(true);
                 setErrorMessage("Passwords do not match");
-                setsnackOpen(true);
+                setSnackOpen(true);
             } else {
                 setPasswordError(false);
             }
         }
     };
-
+    // validates email adress, checks for valid types of emails
     const validateEmail = () => {
         if (
             email
@@ -107,15 +113,59 @@ function Registration(props) {
         ) {
             setEmailError(true);
             setErrorMessage("Not a email");
-            setsnackOpen(true);
+            setSnackOpen(true);
         } else {
             setEmailError(false);
         }
     };
-
-    const handleSnackClose = () => {
-        setsnackOpen(false);
-    };
+    // validates FirstName, checks if input is too long and any numbers or signs in the first name, unicodes allow umlaute, greek phylix, french acents, also allows emtpy spaces
+    const validateFirstName = () => {
+        if (
+            firstname
+                .toLowerCase()
+                .match(
+                    /^[A-Za-zÀ-ž\u0370-\u03FF\u0400-\u04FF_ ]+$/
+                ) === null
+        ) {
+            setFirstNameError(true);
+            setErrorMessage("First name is too long or contains signs and/or numbers");
+            setSnackOpen(true);
+        } else {
+            setFirstNameError(false);
+        }
+    }
+    // validates LastName, checks if input is too long and any numbers or signs in the last name, unicodes allow umlaute, greek phylix, french acents, also allows emtpy spaces
+    const validateLastName = () => {
+        if (
+            lastname
+                .toLowerCase()
+                .match(
+                    /^[A-Za-zÀ-ž\u0370-\u03FF\u0400-\u04FF_ ]+$/
+                ) === null
+        ) {
+            setLastNameError(true);
+            setErrorMessage("Last name is too long or contains signs and/or numbers");
+            setSnackOpen(true);
+        } else {
+            setLastNameError(false);
+        }
+    }
+    // validates Title, checks nothing really right now TOTO ?
+    const validateTitle = () => {
+        if (
+            title
+                .toLowerCase()
+                .match(
+                    /^[A-Za-zÀ-ž\u0370-\u03FF\u0400-\u04F0-9_ ]+$/
+                ) === null
+        ) {
+            setTitleError(true);
+            setErrorMessage("Title is too long");
+            setSnackOpen(true);
+        } else {
+            setTitleError(false);
+        }
+    }
 
     return (
         <Grid
@@ -126,6 +176,9 @@ function Registration(props) {
             justifyContent="center"
             style={{ minHeight: "50vh" }}
         >
+            <Snackbar open={snackopen} autoHideDuration={6000} onClose={() => setSnackOpen(false)}>
+                <Alert onClose={() => setSnackOpen(false)} severity="error" sx={{ width: '100%' }}> {errormessage} </Alert>
+            </Snackbar>
             <Grid item xs={1}>
                 <Stack direction="column" spacing={3} alignItems="flexstart">
                     <Typography variant="h1">Create account</Typography>
@@ -134,10 +187,14 @@ function Registration(props) {
                         <TextField
                             label="First Name"
                             onChange={onChangeFirstName}
+                            error={firstnameerror}
+                            onBlur={validateFirstName}
                         ></TextField>
                         <TextField
                             label="Last Name"
                             onChange={onChangeLastName}
+                            error={lastnameerror}
+                            onBlur={validateLastName}
                         ></TextField>
                     </Stack>
                     <FormControl>
@@ -149,13 +206,13 @@ function Registration(props) {
                             <FormControlLabel
                                 value="Content Creator"
                                 control={<Radio />}
-                                label="I want to upload and sell Fitness Content"
+                                label="I want to upload and sell fitness content"
                                 onChange={onChangeisContentCreator}
                             />
                             <FormControlLabel
                                 value="Customer"
                                 control={<Radio />}
-                                label="I want to buy Fitness Content"
+                                label="I want to buy fitness content"
                                 onChange={onChangeisNotContentCreator}
                             />
                         </RadioGroup>
@@ -191,14 +248,14 @@ function Registration(props) {
                         ></TextField>
                     </Stack>
                     {isContentCreator && (
-                        <Grid>
+                        <Stack direction="column" spacing={3}>
+                            <Typography variant="h4">Title</Typography>
                             <TextField
                                 alignitems="center"
-                                multiline
-                                minRows={5}
-                                maxRows={5}
-                                defaultValue="You can enter a short a description of yourself and the content you create, this description can always be edited through your profile page"
-                                onChange={onChangeDescription}
+                                label="Enter a short title that best describes your content"
+                                onChange={onChangeTitle}
+                                error={titleerror}
+                                onBlur={validateTitle}
                             ></TextField>
                             <Typography variant="h4">Upload a Profile Picture</Typography>
                             <UploadButton
@@ -208,7 +265,7 @@ function Registration(props) {
                                 multiUpload={false}
                                 setUpload={setUploadedPicture}
                             />
-                        </Grid>
+                        </Stack>
                     )}
                     <HighlightButton
                         variant="contained"
@@ -223,11 +280,11 @@ function Registration(props) {
                             email === "" ||
                             password !== password2 ||
                             emailerror ||
-                            (isContentCreator && description === "") ||
+                            (isContentCreator && title === "") ||
                             (isContentCreator && uploadedPicture === "")
                         }
                     >
-                        Save and Submit
+                        Sign up
                     </HighlightButton>
                     <Stack direction="row" alignItems="center">
                         <Typography variant="caption">
@@ -244,16 +301,11 @@ function Registration(props) {
                             Terms & Conditions
                         </Typography>
                     </Stack>
-                    <Snackbar
-                        open={snackopen}
-                        autoHideDuration={6000}
-                        onClose={handleSnackClose}
-                        message={errormessage}
-                    />
+
                 </Stack>
             </Grid>
         </Grid>
     );
 }
 
-export default connect()(Registration);
+export default connect()(SignUp);

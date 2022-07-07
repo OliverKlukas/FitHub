@@ -52,8 +52,8 @@ function Profile(props) {
     window.location.reload(false);
   }
   const handleDelete = async () => {
-    await props.dispatch(deleteUser(user.user._id))
-    navigate("/discovery") 
+    await props.dispatch(deleteUser());
+    navigate("/discovery"); 
   }
 
   useEffect(() => {
