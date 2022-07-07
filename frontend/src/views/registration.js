@@ -45,6 +45,7 @@ function Registration(props) {
     useEffect(() => {
         if (user.user) {
             navigate("/landing");
+            window.location.reload();
         }
     }, [user, props.history,navigate]);
 
