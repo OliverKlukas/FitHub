@@ -18,10 +18,10 @@ import { registerContentCreator, registerCustomer } from "../redux/actions";
 import { connect, useSelector } from "react-redux";
 
 /**
- * Registration View
+ * SignUp View
  * @param {props} props for user state management
  */
-function Registration(props) {
+function SignUp(props) {
 
     const user = useSelector((state) => state.user);
     
@@ -256,4 +256,4 @@ function Registration(props) {
     );
 }
 
-export default connect()(Registration);
+export default connect()(SignUp);
