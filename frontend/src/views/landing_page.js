@@ -46,7 +46,7 @@ function LandingPage(props) {
       };
       setHeader(temp, header);
     }
-  }, [header, user]);
+  }, [user]);
 
   //building own profile link -> /profile/prename/lastname
   const profilelink = `/profile/${user.user.fname}/${user.user.lname}`;
