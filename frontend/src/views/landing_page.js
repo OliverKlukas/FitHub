@@ -44,9 +44,9 @@ function LandingPage(props) {
         title: "Welcome to FitHub, " + `${user.user.fname} ${user.user.lname}`,
         subtitle: "Lets get started, offer your content right away",
       };
-      setHeader(temp, header);
+      setHeader(temp);
     }
-  }, [header, user]);
+  }, [user]);
 
   return (
     <Stack sx={{ marginX: 6 }} spacing={1}>
