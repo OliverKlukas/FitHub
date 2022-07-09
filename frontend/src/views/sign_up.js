@@ -32,12 +32,10 @@ function SignUp(props) {
     // Error States for Input Validation
     const [passworderror, setPasswordError] = React.useState(false);
     const [emailerror, setEmailError] = React.useState(false);
-    const [errormessage, setErrorMessage] = React.useState("");
     const [titleerror, setTitleError] = React.useState(false);
     const [firstnameerror, setFirstNameError] = React.useState(false);
     const [lastnameerror, setLastNameError] = React.useState(false);
-    // States for Snackbar
-    const [snackopen, setSnackOpen] = React.useState(false);
+    const [neitherselectererror, setNeitherSelectedError] = React.useState(true);
 
     // states for input to pass to the backend
     const [firstname, setFirstName] = React.useState("");
@@ -48,6 +46,10 @@ function SignUp(props) {
     const [title, setTitle] = React.useState("");
     const [email, setEmail] = React.useState("");
     const [uploadedPicture, setUploadedPicture] = React.useState("");
+
+    // States for Error Messages
+    const [emailerrormessage, setEmailErrorMessage] = React.useState("");
+    const [passworderrormessage, setPasswordErrorMessage] = React.useState("")
 
     useEffect(() => {
         if (user.user) {
@@ -79,9 +81,11 @@ function SignUp(props) {
     };
     const onChangeisContentCreator = () => {
         setIsContentCreator(true);
+        setNeitherSelectedError(false);
     };
     const onChangeisNotContentCreator = () => {
         setIsContentCreator(false);
+        setNeitherSelectedError(false);
     };
     const onChangeTitle = (e) => {
         setTitle(e.target.value);
@@ -104,16 +108,14 @@ function SignUp(props) {
             if (password !== "" && password2 !== "") {
                 if (password !== password2) {
                     setPasswordError(true);
-                    setErrorMessage("Passwords do not match");
-                    setSnackOpen(true);
+                    setPasswordErrorMessage("Passwords do not match");
                 } else {
                     setPasswordError(false);
                 }
             }
         } else {
             setPasswordError(true);
-            setErrorMessage("Password is not strong enough: Needs uppercase letters, signs and at least 8 letters");
-            setSnackOpen(true);
+            setPasswordErrorMessage("Password is not strong enough: Needs uppercase letters, signs and at least 8 letters");
         }
     };
     // validates email adress, checks for valid types of emails
@@ -125,8 +127,7 @@ function SignUp(props) {
                 ) === null
         ) {
             setEmailError(true);
-            setErrorMessage("Not a email");
-            setSnackOpen(true);
+            setEmailErrorMessage("Not a email");
         } else {
             setEmailError(false);
             checkEmail()
@@ -137,8 +138,7 @@ function SignUp(props) {
         const res = await UserService.checkEmail(email);
         if (res.alreadyHasAccount) {
             setEmailError(true);
-            setErrorMessage("Email is already in use");
-            setSnackOpen(true);
+            setEmailErrorMessage("Email is already in use");
         };
     };
 
@@ -151,8 +151,7 @@ function SignUp(props) {
                 ) === null
         ) {
             setFirstNameError(true);
-            setErrorMessage("First name is too long or contains signs and/or numbers");
-            setSnackOpen(true);
+            ;
         } else {
             setFirstNameError(false);
         }
@@ -166,8 +165,6 @@ function SignUp(props) {
                 ) === null
         ) {
             setLastNameError(true);
-            setErrorMessage("Last name is too long or contains signs and/or numbers");
-            setSnackOpen(true);
         } else {
             setLastNameError(false);
         }
@@ -181,8 +178,6 @@ function SignUp(props) {
             setTitleError(false);
         } else {
             setTitleError(true);
-            setErrorMessage("Title needs to be at least 5 and at most 80 characters");
-            setSnackOpen(true);
         }
     }
 
@@ -195,25 +190,34 @@ function SignUp(props) {
             justifyContent="center"
             style={{ minHeight: "50vh" }}
         >
-            <Snackbar open={snackopen} autoHideDuration={6000} onClose={() => setSnackOpen(false)}>
-                <Alert onClose={() => setSnackOpen(false)} severity="error" sx={{ width: '100%' }}> {errormessage} </Alert>
-            </Snackbar>
             <Grid item xs={1}>
                 <Stack direction="column" spacing={3} alignItems="flexstart">
                     <Typography variant="h1">Create account</Typography>
                     <Typography variant="h4">Your name</Typography>
                     <Stack direction="row" spacing={5}>
                         <TextField
+                            sx={{ maxWidth: 180 }}
                             label="First Name"
                             onChange={onChangeFirstName}
                             error={firstnameerror}
                             onBlur={validateFirstName}
+                            helperText={
+                                firstnameerror
+                                  ? "First name is too long or contains signs and/or numbers"
+                                  : ""
+                              }
                         ></TextField>
                         <TextField
+                            sx={{ maxWidth: 180 }}
                             label="Last Name"
                             onChange={onChangeLastName}
                             error={lastnameerror}
                             onBlur={validateLastName}
+                            helperText={
+                                lastnameerror
+                                  ? "Last name is too long or contains signs and/or numbers"
+                                  : ""
+                              }
                         ></TextField>
                     </Stack>
                     <FormControl>
@@ -240,14 +244,21 @@ function SignUp(props) {
                         Email
                     </Typography>
                     <TextField
+                        sx={{ maxWidth: 500 }}
                         label="Email"
                         onChange={onChangeEmail}
                         onBlur={validateEmail}
                         error={emailerror}
+                        helperText={
+                            emailerror
+                              ? emailerrormessage
+                              : ""
+                          }
                     ></TextField>
                     <Typography variant="h4">Choose a Password</Typography>
-                    <Stack direction="row" spacing={10}>
+                    <Stack direction="row" spacing={5}>
                         <TextField
+                            sx={{ maxWidth: 180 }}
                             label="Password"
                             id="passwordInputOne"
                             type="password"
@@ -255,8 +266,14 @@ function SignUp(props) {
                             onChange={onChangePassword}
                             error={passworderror}
                             onBlur={validatePasswords}
+                            helperText={
+                                passworderror
+                                  ? passworderrormessage
+                                  : ""
+                              }
                         ></TextField>
                         <TextField
+                            sx={{ maxWidth: 180 }}
                             label="Repeat Password"
                             id="passwordInputTwo"
                             type="password"
@@ -264,6 +281,11 @@ function SignUp(props) {
                             onChange={onChangePassword2}
                             error={passworderror}
                             onBlur={validatePasswords}
+                            helperText={
+                                passworderror
+                                  ? passworderrormessage
+                                  : ""
+                              }
                         ></TextField>
                     </Stack>
                     {isContentCreator && (
@@ -275,6 +297,11 @@ function SignUp(props) {
                                 onChange={onChangeTitle}
                                 error={titleerror}
                                 onBlur={validateTitle}
+                                helperText={
+                                    titleerror
+                                      ? "Title needs to be at least 5 and at most 80 characters"
+                                      : ""
+                                  }
                             ></TextField>
                             <Typography variant="h4">Upload a Profile Picture</Typography>
                             <UploadButton
@@ -297,6 +324,7 @@ function SignUp(props) {
                             password2 === "" ||
                             passworderror ||
                             email === "" ||
+                            neitherselectererror ||
                             password !== password2 ||
                             emailerror ||
                             (isContentCreator && title === "") ||
