@@ -38,7 +38,7 @@ function Header(props) {
   // Header Center for a Content Creator
   const pagesContentCreator = {
     discovery: "Discovery",
-    upload: "Offer Content",
+    upload: "Offer content",
     about: "About us",
   };
   const icondirection = "/discovery";
