@@ -7,7 +7,6 @@ const bcrypt = require("bcryptjs");
 
 const config = require("../config");
 const UserModel = require("../models/user");
-const ContentModel = require("../models/content");
 
 /**
  * registers a new user
@@ -42,6 +41,15 @@ const register = async (req, res) => {
             error: "Bad Request",
             message: "The request body must contain a role property",
         });
+    const testUser = await UserModel.findOne({
+        email: req.body.email,
+    }).exec()
+    if (testUser) {
+        return res.status(409).json({
+            error: "Bad Request",
+            message: "The email is already in use"
+        })
+    }
     const isContentCreator = req.body.role === "contentCreator"
     if (isContentCreator) {
         if (!Object.prototype.hasOwnProperty.call(req.body, "title"))
@@ -60,7 +68,7 @@ const register = async (req, res) => {
                 email: req.body.email,
                 password: hashedPassword,
                 firstName: req.body.firstName,
-                lastName: req.body.lastName, 
+                lastName: req.body.lastName,
                 role: req.body.role,
                 title: req.body.title,
                 profilePicture: req.body.profilePicture,
@@ -429,6 +437,36 @@ const getContentCreatorNames = async (req, res) => {
     }
 }
 
+
+/**
+ * Checks if an email is already in use, Just for visuals in frontend, register function still has a separate check for security
+ *
+ * @param {*} req email as param
+ * @param {*} res Boolean AlreadyHasAccount 
+ * @returns 
+ */
+const checkEmail = async (req, res) => {
+    try {
+        let user = await UserModel.findOne({
+            email: req.params.email
+        })
+        if (user) {
+            return res.status(200).json({
+                alreadyHasAccount: true,
+            })
+        } else {
+            return res.status(200).json({
+                alreadyHasAccount: false,
+            })
+        }
+    } catch (error) {
+        return res.status(500).json({
+            error: "Internal Server error",
+            message: error.message,
+        });
+    }
+}
+
 /**
  * Retrieves only the name of a user by its id.
  *
@@ -462,5 +500,6 @@ module.exports = {
     updatereview,
     deletereview,
     getContentCreatorNames,
-    getUsername
+    getUsername,
+    checkEmail,
 };

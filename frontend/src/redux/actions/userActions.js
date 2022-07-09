@@ -48,7 +48,7 @@ export function registerContentCreator(
   pass,
   fname,
   lname,
-  descr,
+  title,
   picture
 ) {
   function onSuccess(user) {
@@ -64,7 +64,7 @@ export function registerContentCreator(
         pass,
         fname,
         lname,
-        descr,
+        title,
         picture
       );
       dispatch(onSuccess(resp.user));

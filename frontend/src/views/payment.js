@@ -27,6 +27,8 @@ function Payment(props) {
         email: "max.maier@gmail.com",
     };
 
+    //const cookies = new Cookies();cookies.set(key1, value1, {secure: true, sameSite: 'none'});cookies.set(key2, value2, {secure: true, sameSite: 'none'});
+
     // Match url id to content item.
     const { id } = useParams();
 
@@ -93,7 +95,7 @@ function Payment(props) {
         } catch (error) {
             setError("buying Plan failed!");
         }
-    }    
+    }
 
     const handleApprove = (orderId) => {
         publishboughtPlan();
@@ -127,9 +129,13 @@ function Payment(props) {
                     <Divider sx={{ mt: 1, mb: 3, bgcolor: "#222831" }} />
                     <Stack direction="row" spacing={3}>
                         <Box sx={{ display: { xs: "none", md: "block" } }}>
-                            {singleContent.content.media.map((data, index) => (
-                                <img style={{ borderRadius: "8px", objectFit: "cover" }} width="300" height="220" key={index} src={data} alt={singleContent.content.title} />
-                            ))}
+                            <img
+                                style={{ borderRadius: "8px", objectFit: "cover" }}
+                                width="300"
+                                height="220"
+                                src={singleContent.content.media[0]}
+                                alt={singleContent.content.title}
+                            />
                         </Box>
                         <Box sx={{ width: "100%" }}>
                             <Stack>
@@ -230,6 +236,7 @@ function Payment(props) {
 
                             if (hasAlreadyBoughtPlan) {
                                 setError("You already bought this plan. Go to MyPlans to download it.");
+                                navigate(-1);
                                 return actions.reject();
                             } else {
                                 return actions.resolve();
@@ -252,11 +259,11 @@ function Payment(props) {
                             handleApprove(data.orderID);
                         }}
                         onCancel={() => {
-                            setError("your order has been canceled")
+                            navigate(0);
                         }}
                         onError={(err) => {
                             setError(err);
-                            console.error("PayPal Checkout onError", err);
+                            navigate(0);
                         }}
                     />
                 ) : null}

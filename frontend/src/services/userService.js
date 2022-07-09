@@ -92,16 +92,6 @@ export default class UserService {
         });
     }
 
-    static updateUser(user) {
-        return new Promise((resolve, reject) => {
-            HttpService.put(`${this.baseURL()}/update`, user, function (data) {
-                resolve(data);
-            }, function (textStatus) {
-                reject(textStatus);
-            });
-        });
-    }
-
     /**
      * Retrieves complete list of all content creators offering content.
      *
@@ -123,9 +113,29 @@ export default class UserService {
      * @param ownerId
      * @return {Promise<unknown>}
      */
-    static getUsername(ownerId){
+    static getUsername(ownerId) {
         return new Promise(async (resolve, reject) => {
             HttpService.get(`${this.baseURL()}/getUsername/${ownerId}`, function (data) {
+                resolve(data);
+            }, function (textStatus) {
+                reject(textStatus);
+            });
+        });
+    }
+
+    static updateUser(user) {
+        return new Promise((resolve, reject) => {
+            HttpService.put(`${this.baseURL()}/update`, user, function (data) {
+                resolve(data);
+            }, function (textStatus) {
+                reject(textStatus);
+            });
+        });
+    }
+
+    static checkEmail(email) {
+        return new Promise((resolve, reject) => {
+            HttpService.get(`${this.baseURL()}/${email}`, function (data) {
                 resolve(data);
             }, function (textStatus) {
                 reject(textStatus);
