@@ -63,10 +63,7 @@ function App() {
                 <Route path="/plans" element={<AboutUs />} />
                 <Route path="/about" element={<AboutUs />} />
                 <Route path="/contact" element={<AboutUs />} />
-                <Route
-                  path="/profile/:id"
-                  element={<Profile />}
-                />
+                <Route path="/profile/:id" element={<Profile />} />
                 <Route path="/signup" element={<SignUp />} />
                 <Route path="/details/:id" element={<Details />} />
                 <Route path="/payment/:id" element={<Payment />} />
@@ -76,9 +73,9 @@ function App() {
                 />
                 <Route path="/myplans/:id" element={<MyPlans />} />
                 <Route path="/signin" element={<SignIn />} />
-                <Route path="/mycontent/:id" element={<MyContent />} />
-                <Route path="/dashboard/:id" element={<Dashboard />} />
-                <Route path="/mycustomers/:id" element={<CustomerOverview />} />
+                <Route path="/mycontent" element={<MyContent />} />
+                <Route path="/dashboard" element={<Dashboard />} />
+                <Route path="/mycustomers" element={<CustomerOverview />} />
               </Routes>
             </Box>
             <Footer />
