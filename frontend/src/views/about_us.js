@@ -68,10 +68,10 @@ export default function AboutUs() {
             <Grid container direction="row" alignItems="stretch" spacing={8} padding={8}>
                 <Grid item xs={6} md={3}>
                     <Paper elevation={12} sx={{ bgcolor: "#EEEEEE", backgroundSize: "cover", borderRadius: 3, p: 2, height: 1 }}>
-                        <Typography variant="h1" align="center" padding={2}>
+                        <Typography variant="h1" align="center" padding={2} margin={4}>
                             Our Mission
                         </Typography>
-                        <Typography variant="h4" align="center">
+                        <Typography variant="h4" align="center" margin={4}>
                             We want to help Fitness Content Creators reaching a larger audience than on Social Media, while also providing a trustworthy and simple-to-use solution
                             for fitness enthusiasts to find training plans, fitness plans or coachings suited for their preferences.
                         </Typography>
@@ -80,10 +80,10 @@ export default function AboutUs() {
 
                 <Grid item xs={6} md={3}>
                     <Paper elevation={12} height="100%" sx={{ bgcolor: "#EEEEEE", backgroundSize: "cover", borderRadius: 3, p: 2, height: 1 }}>
-                        <Typography variant="h1" align="center" padding={2}>
+                        <Typography variant="h1" align="center" padding={2} margin={4}>
                             Business Idea
                         </Typography>
-                        <Typography variant="h4" align="center">
+                        <Typography variant="h4" align="center" margin={4}>
                             FitHub is the platform where fitness content creators sell their training and nutrition plans to fitness enthusiasts and health-conscious consumers.
                         </Typography>
                     </Paper>
@@ -106,10 +106,10 @@ export default function AboutUs() {
                 </Grid>
                 <Grid item xs={6} md={3}>
                     <Paper elevation={12} height="100%" sx={{ bgcolor: "#EEEEEE", backgroundSize: "cover", borderRadius: 3, p: 2, height: 1 }}>
-                        <Typography variant="h1" align="center" padding={2}>
+                        <Typography variant="h1" align="center" padding={2} margin={4}>
                             Who are we?
                         </Typography>
-                        <Typography variant="h4" align="center">
+                        <Typography variant="h4" align="center" margin={4}>
                             We are a team of four Information Systems Students from the Technical University of Munich. This Application was created as part of the SEBA Master Web
                             Application Engineering Course.
                         </Typography>
@@ -117,10 +117,10 @@ export default function AboutUs() {
                 </Grid>
                 <Grid item xs={6} md={3}>
                     <Paper elevation={12} height="100%" sx={{ bgcolor: "#EEEEEE", backgroundSize: "cover", borderRadius: 3, p: 2, height: 1 }}>
-                        <Typography variant="h1" align="center" padding={2}>
+                        <Typography variant="h1" align="center" padding={2} margin={4}>
                             What do we do?
                         </Typography>
-                        <Typography variant="h4" align="center">
+                        <Typography variant="h4" align="center" margin={4}>
                             We provide Fitness Content Creators and Fitness interested Customers with a Platform, where they can directly sell/buy content. By providing a
                             trustworthy payment scheme, transparent review system and intuitive filtering both content creators and customers are encouraged to use our Platform
                         </Typography>
