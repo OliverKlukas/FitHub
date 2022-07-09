@@ -1,8 +1,14 @@
-import { Stack, Typography } from "@mui/material";
+import {
+  Stack,
+  Typography,
+  CircularProgress,
+  Button,
+  Box,
+} from "@mui/material";
 import * as React from "react";
 import { connect, useSelector } from "react-redux";
 import Plan from "../components/plans/plan";
-import { getBoughtPlan } from "../redux/actions/boughtPlans";
+import { getBoughtPlan } from "../redux/actions";
 import { useEffect } from "react";
 
 /**
@@ -15,25 +21,30 @@ import { useEffect } from "react";
 function MyPlans(props) {
   const user = useSelector((state) => state.user);
 
-  const boughtPlans = useSelector((state) => {
-    return state.boughtPlans;
-  });
+  // State from the redux store for plans.
+  const planList = useSelector((state) => state.boughtPlan.boughtPlan);
 
   // On open load the movie.
   useEffect(() => {
     props.getBoughtPlan(user.user._id);
-  }, [boughtPlans, user.user._id]);
+  }, [planList, user.user._id]);
 
-  const [a, seta] = React.useState(true)
-  if (a && boughtPlans) {
-    seta(false)
-    console.log(a)
-    console.log(boughtPlans)
-  }
-
-  return (
+  return !planList ? (
+    // Loading content.
+    <Box
+      display="flex"
+      justifyContent="center"
+      alignItems="center"
+      minHeight="80vh"
+    >
+      <CircularProgress />
+    </Box>
+  ) : (
     <Stack spacing={4} marginTop={5}>
-      <Typography variant="h1">My Plans</Typography>    
+      <Typography variant="h1">My Plans</Typography>
+      {planList.map((item) => {
+        return <Box key={item._id}>{item._id}</Box>;
+      })}
     </Stack>
   );
 }

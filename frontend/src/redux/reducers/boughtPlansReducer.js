@@ -1,9 +1,7 @@
-export default function boughtPlans(state = {}, action) {
+export default function boughtPlan(state = {}, action) {
   switch (action.type) {
     case "GETBOUGHTPLANS_SUCCESS":
-      return { boughtPlans: action.boughtPlans };
-    case "ADDBOUGHTPLANS_SUCCESS":
-      return { ...state };
+      return { boughtPlan: action.boughtPlan };
     default:
       return state;
   }

@@ -34,8 +34,8 @@ export default class boughtPlanService {
    * @returns {Promise<unknown>}
    */
   static createboughtPlan(boughtPlan) {
-      boughtPlan.id = Math.floor(Math.random() * 100000000 + 1).toString();
-      return new Promise((resolve, reject) => {
+    boughtPlan.id = Math.floor(Math.random() * 100000000 + 1).toString();
+    return new Promise((resolve, reject) => {
       HttpService.post(
         this.baseURL(),
         boughtPlan,
@@ -50,7 +50,7 @@ export default class boughtPlanService {
   }
 
   /**
-   * Retrieve a single boughtPlan object.
+   * Retrieve the boughtPlan of a customer with id: id.
    *
    * @param id
    * @returns {Promise<unknown>}
@@ -58,20 +58,14 @@ export default class boughtPlanService {
   static getboughtPlan(id) {
     return new Promise(async (resolve, reject) => {
       HttpService.get(
-          `${this.baseURL()}/${id}`,
-          function (data) {
-            if (data !== undefined || Object.keys(data).length !== 0) {
-              resolve(data);
-            } else {
-              reject("Error while retrieving boughtPlan");
-            }
-          },
-          function (textStatus) {
-            reject(textStatus);
-          }
+        `${this.baseURL()}/${id}`,
+        function (data) {
+          resolve(data);
+        },
+        function (textStatus) {
+          reject(textStatus);
+        }
       );
     });
   }
 }
-
-

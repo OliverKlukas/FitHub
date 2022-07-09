@@ -109,12 +109,11 @@ function Payment(props) {
   // Merge all hooks together and publish it to mongodb. After completing the database entry, the user is redirect to myplans
   async function publishboughtPlan() {
     try {
-      console.log(user.user._id);
       await props.addboughtPlan({
         userId: user.user._id,
         contentId: id,
       });
-      navigate("/myplans/2000");
+      navigate("/plans");
       window.location.reload();
     } catch (error) {
       setError("buying Plan failed!");
@@ -137,7 +136,6 @@ function Payment(props) {
   };
 
   if (!user.user && !dialogOpen) {
-    console.log("hello");
     setDialogOpen(true);
   }
 

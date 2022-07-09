@@ -32,6 +32,7 @@ function Details(props) {
   // On open load the movie.
   useEffect(() => {
     props.getContent(id);
+    console.log(singleContent.content)
   }, [singleContent.content]);
 
   return !singleContent.content && !singleContent.error ? (

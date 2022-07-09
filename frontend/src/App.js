@@ -72,7 +72,6 @@ function App() {
                   path="/terms-and-conditions"
                   element={<TermsAndConditions />}
                 />
-                <Route path="/myplans/:id" element={<MyPlans />} />
                 <Route path="/signin" element={<SignIn />} />
                 <Route path="/mycontent/:id" element={<MyContent />} />
                 <Route path="/dashboard/:id" element={<Dashboard />} />
