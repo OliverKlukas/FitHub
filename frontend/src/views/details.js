@@ -29,7 +29,7 @@ function Details(props) {
     return state.singleContent;
   });
 
-  // On open load the movie.
+  // On open load the content details.
   useEffect(() => {
     props.getContent(id);
   }, [singleContent.content]);
@@ -181,4 +181,4 @@ function Details(props) {
 }
 
 // Connect() establishes the connection to the redux functionalities.
-export default connect(null, { getContent})(Details);
+export default connect(null, {getContent})(Details);

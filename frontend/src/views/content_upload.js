@@ -86,7 +86,6 @@ function ContentUpload(props) {
 
   // User input verification and hand-off to backend database publication.
   function handlePublishContent() {
-    // TODO: verify that the above defined hooks match our criteria, i.e. with regex that we could put i.e. into utils folder and use project wide
     if (termsChecked && qualityChecked) {
       publishContent();
     } else {
@@ -108,7 +107,6 @@ function ContentUpload(props) {
 
   // Merge all hooks together and publish it to mongodb.
   async function publishContent() {
-    console.log(feature);
     try {
       await props.addContent({
         ownerId: user.user._id,
@@ -119,7 +117,7 @@ function ContentUpload(props) {
         duration: parseInt(duration),
         intensity: parseInt(intensity),
         support: support,
-        tags: goalTags.concat(levelTags, lifestyleTags),
+        tags: goalTags.concat(levelTags, lifestyleTags, [user.user.fname + " " + user.user.lname]),
         featured: feature,
         media: media,
         plan: plan[0],

@@ -7,9 +7,6 @@ import InsightsDrawer from "../components/drawer/insights_drawer";
 import * as React from 'react';
 import Divider from '@mui/material/Divider';
 
-
-
-
 export default function MyContent() {
   // Match url id to consumer item.
 

@@ -414,7 +414,33 @@ const deleteuser = async (req, res) => {
 };
 
 /**
- * Checks if a email is already in use, Just for visuals in frontend, register function still has a separate check for security
+ * Retrieves all content creator names and returns them.
+ *
+ * @param req
+ * @param res
+ * @return {Promise<*>} Returns list of {firstName: {String}, lastName: {String}} items.
+ */
+const getContentCreatorNames = async (req, res) => {
+    try {
+        // Get all content  creators.
+        const users = await UserModel.find({"role": "contentCreator"}).exec();
+
+        // Strip list of all information except first and last names.
+        users.forEach((user, index, array) => array[index] = user.firstName + " " + user.lastName);
+
+        return res.status(200).json(users);
+    } catch (err) {
+        console.log(err);
+        return res.status(500).json({
+            error: "Internal server error: " + err.message,
+        });
+    }
+}
+
+
+/**
+ * Checks if an email is already in use, Just for visuals in frontend, register function still has a separate check for security
+ *
  * @param {*} req email as param
  * @param {*} res Boolean AlreadyHasAccount 
  * @returns 
@@ -441,6 +467,27 @@ const checkEmail = async (req, res) => {
     }
 }
 
+/**
+ * Retrieves only the name of a user by its id.
+ *
+ * @param req - expects an userId to be supplied.
+ * @param res
+ * @return {Promise<void>}
+ */
+const getUsername = async (req, res) => {
+    try {
+        // Get username based on the supplied id.
+        const user = await UserModel.findById(req.params.ownerId).exec();
+        const username = user.firstName + " " + user.lastName;
+        return res.status(200).json(username);
+    } catch (err) {
+        console.log(err);
+        return res.status(500).json({
+            error: "Internal server error: " + err.message,
+        });
+    }
+}
+
 module.exports = {
     register,
     login,
@@ -451,5 +498,7 @@ module.exports = {
     addreview,
     updatereview,
     deletereview,
+    getContentCreatorNames,
+    getUsername,
     checkEmail,
 };
