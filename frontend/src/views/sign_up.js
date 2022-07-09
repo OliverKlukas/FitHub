@@ -17,6 +17,7 @@ import { Link as RouterLink, useNavigate } from "react-router-dom";
 import UploadButton from "../components/buttons/upload_button";
 import { registerContentCreator, registerCustomer } from "../redux/actions";
 import { connect, useSelector } from "react-redux";
+import UserService from "../services/userService";
 
 /**
  * SignUp View
@@ -61,7 +62,6 @@ function SignUp(props) {
         } else {
             props.dispatch(registerCustomer(email, password, firstname, lastname))
         }
-
     }
     const onChangeFirstName = (e) => {
         setFirstName(e.target.value);
@@ -90,23 +90,36 @@ function SignUp(props) {
         setEmail(e.target.value);
     };
 
-    /* Compares the Passwords and sends a error_Message when they are not equal, called on blur (so if left either of the pw texfields)*/
-    const comparePasswords = () => {
-        if (password !== "" && password2 !== "") {
-            if (password !== password2) {
-                setPasswordError(true);
-                setErrorMessage("Passwords do not match");
-                setSnackOpen(true);
-            } else {
-                setPasswordError(false);
+    /**
+     * First Checks if the Password is secure enough, it needs at least 8 letters, at least 2 lower case, at least 1 Uppercase, at least 0 sign and at least 1 numbers to be secure enough;
+     * If it is secure enough, it checks if the two passwords match
+     */
+    const validatePasswords = () => {
+        if (
+            password.match(
+                /^(?=(.*[a-z]){2,})(?=(.*[A-Z]){1,})(?=(.*[0-9]){0,})(?=(.*[!@#$%^&*()\-__+.]){1,}).{8,}$/
+            ) === null
+        ) {
+            setPasswordError(false)
+            if (password !== "" && password2 !== "") {
+                if (password !== password2) {
+                    setPasswordError(true);
+                    setErrorMessage("Passwords do not match");
+                    setSnackOpen(true);
+                } else {
+                    setPasswordError(false);
+                }
             }
+        } else {
+            setPasswordError(true);
+            setErrorMessage("Password is not strong enough: Needs uppercase letters, signs and at least 8 letters");
+            setSnackOpen(true);
         }
     };
     // validates email adress, checks for valid types of emails
     const validateEmail = () => {
         if (
             email
-                .toLowerCase()
                 .match(
                     /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
                 ) === null
@@ -116,13 +129,23 @@ function SignUp(props) {
             setSnackOpen(true);
         } else {
             setEmailError(false);
+            checkEmail()
         }
     };
+    //gets a boolean of whether a email is already registered or from the backend
+    const checkEmail = async () => {
+        const res = await UserService.checkEmail(email);
+        if (res.alreadyHasAccount) {
+            setEmailError(true);
+            setErrorMessage("Email is already in use");
+            setSnackOpen(true);
+        };
+    };
+
     // validates FirstName, checks if input is too long and any numbers or signs in the first name, unicodes allow umlaute, greek phylix, french acents, also allows emtpy spaces
     const validateFirstName = () => {
         if (
             firstname
-                .toLowerCase()
                 .match(
                     /^[A-Za-zÀ-ž\u0370-\u03FF\u0400-\u04FF_ ]+$/
                 ) === null
@@ -138,7 +161,6 @@ function SignUp(props) {
     const validateLastName = () => {
         if (
             lastname
-                .toLowerCase()
                 .match(
                     /^[A-Za-zÀ-ž\u0370-\u03FF\u0400-\u04FF_ ]+$/
                 ) === null
@@ -150,20 +172,17 @@ function SignUp(props) {
             setLastNameError(false);
         }
     }
-    // validates Title, checks nothing really right now TOTO ?
+    // validates Title, check if the input is too long or too short, 5-80 characters
     const validateTitle = () => {
+        const titleregex = new RegExp("^(?=(.*[a-z]){2,})(?=(.*[A-Z]){1,})(?=(.*[0-9]){0,})(?=(.*[!@#$%^&*()\-__+. ]){0,}).{5,80}$")
         if (
-            title
-                .toLowerCase()
-                .match(
-                    /^[A-Za-zÀ-ž\u0370-\u03FF\u0400-\u04F0-9_ ]+$/
-                ) === null
+            titleregex.test(title)
         ) {
-            setTitleError(true);
-            setErrorMessage("Title is too long");
-            setSnackOpen(true);
-        } else {
             setTitleError(false);
+        } else {
+            setTitleError(true);
+            setErrorMessage("Title needs to be at least 5 and at most 80 characters");
+            setSnackOpen(true);
         }
     }
 
@@ -230,21 +249,21 @@ function SignUp(props) {
                     <Stack direction="row" spacing={10}>
                         <TextField
                             label="Password"
-                            id="standard-password-input"
+                            id="passwordInputOne"
                             type="password"
                             variant="standard"
                             onChange={onChangePassword}
                             error={passworderror}
-                            onBlur={comparePasswords}
+                            onBlur={validatePasswords}
                         ></TextField>
                         <TextField
                             label="Repeat Password"
-                            id="standard-password-input"
+                            id="passwordInputTwo"
                             type="password"
                             variant="standard"
                             onChange={onChangePassword2}
                             error={passworderror}
-                            onBlur={comparePasswords}
+                            onBlur={validatePasswords}
                         ></TextField>
                     </Stack>
                     {isContentCreator && (
