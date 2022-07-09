@@ -486,7 +486,6 @@ const getUsername = async (req, res) => {
             error: "Internal server error: " + err.message,
         });
     }
-
 }
 
 module.exports = {
