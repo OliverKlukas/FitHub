@@ -48,7 +48,7 @@ export function registerContentCreator(
   pass,
   fname,
   lname,
-  descr,
+  title,
   picture
 ) {
   function onSuccess(user) {
@@ -64,7 +64,7 @@ export function registerContentCreator(
         pass,
         fname,
         lname,
-        descr,
+        title,
         picture
       );
       dispatch(onSuccess(resp.user));
@@ -105,4 +105,32 @@ export function deleteUser(id) {
           onFailure(e);
       }
   };
+}
+
+/**
+ * Redux action to retrieve complete list of content creator names.
+ *
+ * @return {(function(*): Promise<void>)|*}
+ */
+export function getContentCreatorNames() {
+    // Successful backend call.
+    function onSuccess(creatorsNames) {
+        return { type: "GETCREATORS_LIST", creatorsNames: creatorsNames };
+    }
+    // Backend call failed.
+    function onFailure(error) {
+        // error handling
+        console.log("Get all content creator names failed with", error);
+    }
+
+    return async (dispatch) => {
+        try {
+            // ask for all content in the backend
+            const creatorsNames = await UserService.getContentCreatorNames();
+            // call onSuccess in context of redux
+            dispatch(onSuccess(creatorsNames));
+        } catch (e) {
+            onFailure(e);
+        }
+    };
 }

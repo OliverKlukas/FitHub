@@ -3,6 +3,9 @@
 
 const mongoose = require("mongoose");
 
+// this is that the later created virtuals are included in the json send to the user
+const opts = { toJSON: { virtuals: true } };
+
 const ReviewSchema = new mongoose.Schema({
   creatorId: { type: mongoose.Schema.Types.ObjectId, ref: "Creator" },
   userId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
@@ -54,10 +57,30 @@ const UserSchema = new mongoose.Schema({
     type: String,
   },
   reviews: [ReviewSchema],
-  // opts // needed for calculated fields like the amount of stars if we want to backend calculate thes
-});
+
+  },
+  opts
+);
 
 UserSchema.set("versionKey", false);
+ReviewSchema.set("versionKey", false);
+
+UserSchema.virtual("avgReviewRating").get(function () {
+  let avgRating = 0;
+  let ratings = 0;
+  // if there are no ratings return 0
+  if (this.reviews.length === 0) {
+    return 0;
+  }
+  this.reviews.map((rating) => {
+    if (typeof rating.rating === "number") {
+      avgRating += rating.rating;
+    }
+    ratings++;
+  });
+  avgRating = avgRating / ratings;
+  return avgRating;
+});
 
 // Export the User model
 module.exports = mongoose.model("User", UserSchema);

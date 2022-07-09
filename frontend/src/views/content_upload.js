@@ -185,7 +185,9 @@ function ContentUpload(props) {
         duration: parseInt(duration),
         intensity: parseInt(intensity),
         support: support,
-        tags: goalTags.concat(levelTags, lifestyleTags),
+        tags: goalTags.concat(levelTags, lifestyleTags, [
+          user.user.fname + " " + user.user.lname,
+        ]),
         featured: feature,
         media: media,
         plan: plan[0],
