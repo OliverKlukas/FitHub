@@ -10,13 +10,6 @@ import {getContent} from "../redux/actions";
 import {connect, useSelector} from "react-redux";
 import UserService from "../services/userService";
 
-// TODO: once user is connected I need the info from there
-const staticAuthor = {
-    name: "Simon Plashek",
-    title: "professional bodybuilder & fitness coach",
-    img: "https://images.unsplash.com/photo-1584466977773-e625c37cdd50",
-    rating: 3,
-}
 
 /**
  * Detailed view that conveys the most important information of a content item.
