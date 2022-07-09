@@ -320,21 +320,11 @@ function ContentUpload(props) {
           Offer your content
         </Typography>
         <Typography variant="h3">General information</Typography>
-      <Stack spacing={3} direction="row" alignItems="center">
-        <Typography
-          sx={{ minWidth: 100 }}
-          variant="subtitle1"
-          fontWeight="bold"
-        >
-          Category:
-        </Typography>
-        <FormControl>
-          <RadioGroup
-            row
-            aria-labelledby="category-radio-buttons-group-label"
-            name="row-radio-buttons-group"
-            defaultValue={defaultCategory}
-            onChange={(event) => setCategory(event.target.value)}
+        <Stack spacing={3} direction="row" alignItems="center">
+          <Typography
+            sx={{ minWidth: 100 }}
+            variant="subtitle1"
+            fontWeight="bold"
           >
             Category:
           </Typography>
@@ -376,8 +366,14 @@ function ContentUpload(props) {
             id="title-input"
             placeholder={preInputValue}
             value={title}
+            onBlur={validateTitle}
             onChange={(event) => setTitle(event.target.value)}
-            helperText="Please enter a short and catchy title that best describes your fitness offering"
+            error={titleError}
+            helperText={
+              titleError
+                ? 'Enter min 3 letters and maximum 10 words, allowed symbols: <>!?();:.,-~+*#"%'
+                : "Please enter a short and catchy title that best describes your fitness offering"
+            }
             variant="filled"
             size="small"
           />
@@ -392,11 +388,17 @@ function ContentUpload(props) {
           </Typography>
           <TextField
             sx={{ maxWidth: 200 }}
+            error={priceError}
             id="price-input"
             placeholder={preInputValue}
             value={price}
             onChange={(event) => setPrice(event.target.value)}
-            helperText="Prices must include VAT and represent the total costs you expect buyers to pay"
+            onBlur={validatePrice}
+            helperText={
+              priceError
+                ? "Unaccepted price format! Shape to format like 50,00 (example)"
+                : "Prices must include VAT and represent the total costs you expect buyers to pay"
+            }
             variant="filled"
             size="small"
             InputProps={{
@@ -421,11 +423,17 @@ function ContentUpload(props) {
             multiline
             value={description}
             onChange={(event) => setDescription(event.target.value)}
+            onBlur={validateDescription}
+            error={descriptionError}
             rows={4}
             variant="filled"
             placeholder={preInputValue}
             size="small"
-            helperText="Please enter a description that conveys what buyers can expect from this offering"
+            helperText={
+              descriptionError
+                ? 'Please enter min 5 letters, max 30 words, allowed symbols: <>!?();:.,-~+*#"%'
+                : "Please enter a description that conveys what buyers can expect from this offering"
+            }
           />
         </Stack>
         <Stack spacing={2} direction="row" alignItems="center">
@@ -438,27 +446,41 @@ function ContentUpload(props) {
           </Typography>
           <Stack spacing={2} direction="row">
             <TextField
+              sx={{ maxWidth: 200 }}
               id="duration-input"
               label="Duration"
+              onBlur={validateDuration}
               multiline
               value={duration}
               onChange={(event) => setDuration(event.target.value)}
               type="number"
               variant="filled"
               placeholder={preInputValue}
-              helperText="Amount of weeks"
+              helperText={
+                durationError
+                  ? "display the amount of weeks by entering a number between 1-99"
+                  : "Amount of weeks"
+              }
               size="small"
+              error={durationError}
             />
             <TextField
+              sx={{ maxWidth: 200 }}
               id="intensity-input"
               label="Intensity"
+              onBlur={validateIntensity}
+              error={intensityError}
               multiline
               value={intensity}
               onChange={(event) => setIntensity(event.target.value)}
               variant="filled"
               placeholder={preInputValue}
               helperText={
-                category === "nutrition"
+                intensityError
+                  ? category === "nutrition"
+                    ? "enter a number between 1-99 meals per week"
+                    : "enter a number between 1-99 trainings per week"
+                  : category === "nutrition"
                   ? "Meals per week"
                   : "Trainings per week"
               }
@@ -471,229 +493,6 @@ function ContentUpload(props) {
             sx={{ minWidth: 100 }}
             variant="subtitle1"
             fontWeight="bold"
-        >
-          Tags:
-        </Typography>
-        <Box>
-          <Grid
-            container
-            justifyContent="flex-start"
-            maxWidth={600}
-            spacing={3}
-            columns={{ xs: 1, sm: 2 }}
-          >
-            <Grid item xs={1} sm={1}>
-              <Autocomplete
-                multiple
-                id="goal-tags"
-                onBlur={validateTags}
-                options={fitnessGoal}
-                value={goalTags}
-                onChange={(event, value) => setGoalTags(value)}
-                renderInput={(params) => (
-                  <TextField {...params} label="Fitness goal" />
-                )}
-              />
-            </Grid>
-            <Grid item xs={1} sm={1}>
-              <Autocomplete
-                multiple
-                id="goal-tags"
-                options={lifestyle}
-                onBlur={validateTags}
-                value={lifestyleTags}
-                onChange={(event, value) => setLifestyleTags(value)}
-                renderInput={(params) => (
-                  <TextField {...params} label="Lifestyle" />
-                )}
-              />
-            </Grid>
-            <Grid item xs={1} sm={1}>
-              <Autocomplete
-                multiple
-                id="level-tags"
-                options={fitnessLevel}
-                onBlur={validateTags}
-                value={levelTags}
-                onChange={(event, value) => setLevelTags(value)}
-                renderInput={(params) => (
-                  <TextField {...params} label="Fitness level" />
-                )}
-              />
-            </Grid>
-            <Grid item xs={1} sm={1}>
-              <Typography
-                variant="body2"
-                fontSize="small"
-                sx={
-                  tagsError
-                    ? {
-                        color: red["A700"],
-                      }
-                    : { color: "default" }
-                }
-              >
-                Please type and select fitting tags (at least one) for your
-                content offering. These will be used to better reach your target
-                user group on FitHub.
-              </Typography>
-            </Grid>
-          </Grid>
-        </Box>
-      </Stack>
-      <Typography variant="h3">Uploads</Typography>
-      <Stack spacing={2} direction="row">
-        <Typography sx={{ minWidth: 200 }} variant="subtitle1">
-          Marketing material:
-        </Typography>
-        <Stack spacing={1}>
-          <UploadButton
-            uploadFormat="image/*"
-            givenId="marketing-upload"
-            multiUpload={true}
-            setUpload={setMedia}
-            setSuccess={setMediaError}
-          />
-          <Typography
-            variant="body2"
-            fontSize="small"
-            maxWidth={300}
-            sx={
-              mediaError
-                ? {
-                    color: red["A700"],
-                  }
-                : { color: "default" }
-            }
-          >
-            Please upload pictures that represents your offer (example dishes,
-            workouts etc). Be aware of the max size of 16MB and respect our{" "}
-            <Link
-              color="#393E46"
-              fontSize={14}
-              fontWeight={300}
-              underline="always"
-              target="_blank"
-              href="/terms-and-conditions"
-            >
-              Terms & Conditions
-            </Link>{" "}
-            including image rights
-          </Typography>
-        </Stack>
-      </Stack>
-      <Stack spacing={2} direction="row">
-        <Typography sx={{ minWidth: 200 }} variant="subtitle1">
-          Full plan:
-        </Typography>
-        <Stack spacing={1}>
-          <UploadButton
-            uploadFormat=".pdf"
-            givenId="plan-upload"
-            multiUpload={false}
-            setUpload={setPlan}
-            setSuccess={setPlanError}
-          />
-          <Typography
-            variant="body2"
-            fontSize="small"
-            maxWidth={300}
-            sx={
-              planError
-                ? {
-                    color: red["A700"],
-                  }
-                : { color: "default" }
-            }
-          >
-            Please upload the pdf file of max 16MB that contains the complete
-            training plan that buyers are going to receive
-          </Typography>
-        </Stack>
-      </Stack>
-      <Stack spacing={2} direction="row">
-        <Typography sx={{ minWidth: 200 }} variant="subtitle1">
-          Sample:
-        </Typography>
-        <Stack spacing={1}>
-          <UploadButton
-            uploadFormat=".pdf"
-            givenId="sample-upload"
-            multiUpload={false}
-            setUpload={setSample}
-            setSuccess={setSampleError}
-          />
-          <Typography
-            variant="body2"
-            fontSize="small"
-            maxWidth={300}
-            sx={
-              sampleError
-                ? {
-                    color: red["A700"],
-                  }
-                : { color: "default" }
-            }
-          >
-            Please upload a sample pdf file of max 16MB which gives buyers an
-            impression of the full plan
-          </Typography>
-        </Stack>
-      </Stack>
-      <Typography variant="h3">Additional options</Typography>
-      <Stack spacing={0.5}>
-        <Stack direction="row" alignItems="center">
-          <Checkbox
-            value={marketing}
-            onChange={(event) => setMarketing(event.target.checked)}
-          />
-          <Typography variant="body1">
-            Yes, email me for marketing events like vouchers & sales weekends
-          </Typography>
-        </Stack>
-        <Stack direction="row" alignItems="center">
-          <Checkbox
-            value={support}
-            onChange={(event) => setSupport(event.target.checked)}
-          />
-          <Typography variant="body1">
-            Yes, I am offering full-time support for the buyers
-          </Typography>
-        </Stack>
-        <Stack direction="row" alignItems="center">
-          <Checkbox
-            value={feature}
-            onChange={(event) => setFeatured(event.target.checked)}
-          />
-          <Typography variant="body1">
-            Feature me in discovery for a increasing fee of 15% instead of 10%
-            per transaction
-          </Typography>
-        </Stack>
-      </Stack>
-      <Typography variant="h3">Legal notices</Typography>
-      <Stack spacing={0.5}>
-        <Stack direction="row" alignItems="center">
-          <Checkbox
-            checked={qualityChecked}
-            onChange={handleQualityChange}
-            sx={
-              missedQualityCheck
-                ? {
-                    color: red["A700"],
-                  }
-                : { color: "default" }
-            }
-          />
-          <Typography
-            variant="body1"
-            sx={
-              missedQualityCheck
-                ? {
-                    color: red["A700"],
-                  }
-                : { color: "default" }
-            }
           >
             Tags:
           </Typography>
@@ -709,6 +508,7 @@ function ContentUpload(props) {
                 <Autocomplete
                   multiple
                   id="goal-tags"
+                  onBlur={validateTags}
                   options={fitnessGoal}
                   value={goalTags}
                   onChange={(event, value) => setGoalTags(value)}
@@ -722,6 +522,7 @@ function ContentUpload(props) {
                   multiple
                   id="goal-tags"
                   options={lifestyle}
+                  onBlur={validateTags}
                   value={lifestyleTags}
                   onChange={(event, value) => setLifestyleTags(value)}
                   renderInput={(params) => (
@@ -734,6 +535,7 @@ function ContentUpload(props) {
                   multiple
                   id="level-tags"
                   options={fitnessLevel}
+                  onBlur={validateTags}
                   value={levelTags}
                   onChange={(event, value) => setLevelTags(value)}
                   renderInput={(params) => (
@@ -742,10 +544,20 @@ function ContentUpload(props) {
                 />
               </Grid>
               <Grid item xs={1} sm={1}>
-                <Typography variant="body2" fontSize="small">
-                  Please type and select fitting tags for your content offering.
-                  These will be used to better reach your target user group on
-                  FitHub.
+                <Typography
+                  variant="body2"
+                  fontSize="small"
+                  sx={
+                    tagsError
+                      ? {
+                          color: red["A700"],
+                        }
+                      : { color: "default" }
+                  }
+                >
+                  Please type and select fitting tags (at least one) for your
+                  content offering. These will be used to better reach your
+                  target user group on FitHub.
                 </Typography>
               </Grid>
             </Grid>
@@ -762,10 +574,22 @@ function ContentUpload(props) {
               givenId="marketing-upload"
               multiUpload={true}
               setUpload={setMedia}
+              setSuccess={setMediaError}
             />
-            <Typography variant="body2" fontSize="small" maxWidth={300}>
+            <Typography
+              variant="body2"
+              fontSize="small"
+              maxWidth={300}
+              sx={
+                mediaError
+                  ? {
+                      color: red["A700"],
+                    }
+                  : { color: "default" }
+              }
+            >
               Please upload pictures that represents your offer (example dishes,
-              workouts etc). Be aware and respect our{" "}
+              workouts etc). Be aware of the max size of 16MB and respect our{" "}
               <Link
                 color="#393E46"
                 fontSize={14}
@@ -790,10 +614,22 @@ function ContentUpload(props) {
               givenId="plan-upload"
               multiUpload={false}
               setUpload={setPlan}
+              setSuccess={setPlanError}
             />
-            <Typography variant="body2" fontSize="small" maxWidth={300}>
-              Please upload the pdf file that contains the complete training
-              plan that buyers are going to receive
+            <Typography
+              variant="body2"
+              fontSize="small"
+              maxWidth={300}
+              sx={
+                planError
+                  ? {
+                      color: red["A700"],
+                    }
+                  : { color: "default" }
+              }
+            >
+              Please upload the pdf file of max 16MB that contains the complete
+              training plan that buyers are going to receive
             </Typography>
           </Stack>
         </Stack>
@@ -807,10 +643,22 @@ function ContentUpload(props) {
               givenId="sample-upload"
               multiUpload={false}
               setUpload={setSample}
+              setSuccess={setSampleError}
             />
-            <Typography variant="body2" fontSize="small" maxWidth={300}>
-              Please upload a sample pdf file which gives buyers an impression
-              of the full plan
+            <Typography
+              variant="body2"
+              fontSize="small"
+              maxWidth={300}
+              sx={
+                sampleError
+                  ? {
+                      color: red["A700"],
+                    }
+                  : { color: "default" }
+              }
+            >
+              Please upload a sample pdf file of max 16MB which gives buyers an
+              impression of the full plan
             </Typography>
           </Stack>
         </Stack>
@@ -854,7 +702,7 @@ function ContentUpload(props) {
               sx={
                 missedQualityCheck
                   ? {
-                      color: pink[800],
+                      color: red["A700"],
                     }
                   : { color: "default" }
               }
@@ -864,7 +712,7 @@ function ContentUpload(props) {
               sx={
                 missedQualityCheck
                   ? {
-                      color: pink[800],
+                      color: red["A700"],
                     }
                   : { color: "default" }
               }
@@ -881,7 +729,7 @@ function ContentUpload(props) {
               sx={
                 missedTermsCheck
                   ? {
-                      color: pink[800],
+                      color: red["A700"],
                     }
                   : { color: "default" }
               }
@@ -891,7 +739,7 @@ function ContentUpload(props) {
               sx={
                 missedTermsCheck
                   ? {
-                      color: pink[800],
+                      color: red["A700"],
                     }
                   : { color: "default" }
               }
@@ -946,6 +794,19 @@ function ContentUpload(props) {
           </Alert>
         </Snackbar>
         <Snackbar
+          open={uploadSnack}
+          autoHideDuration={3600}
+          onClose={handleUploadSnack}
+        >
+          <Alert
+            onClose={handleUploadSnack}
+            severity="error"
+            sx={{ width: "100%" }}
+          >
+            Upload your content before publishing!
+          </Alert>
+        </Snackbar>
+        <Snackbar
           open={checkFailure}
           autoHideDuration={1800}
           onClose={handleCheckFailure}
@@ -956,6 +817,19 @@ function ContentUpload(props) {
             sx={{ width: "100%" }}
           >
             Mandatory checks missing!
+          </Alert>
+        </Snackbar>
+        <Snackbar
+          open={tagsSnack}
+          autoHideDuration={1800}
+          onClose={handleTagsSnack}
+        >
+          <Alert
+            onClose={handleTagsSnack}
+            severity="error"
+            sx={{ width: "100%" }}
+          >
+            Provide at least one tag for each category!
           </Alert>
         </Snackbar>
       </Stack>
