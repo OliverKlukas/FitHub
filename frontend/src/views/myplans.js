@@ -23,6 +23,7 @@ function MyPlans(props) {
 
   // State from the redux store for plans.
   const planList = useSelector((state) => state.boughtPlan.boughtPlan);
+  const contentList = useSelector((state) => state.entities.contentList);
 
   // On open load the movie.
   useEffect(() => {
