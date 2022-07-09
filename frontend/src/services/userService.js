@@ -69,14 +69,13 @@ export default class UserService {
   static logout() {
     window.localStorage.removeItem("jwtToken");
   }
-  static userdataloggedin(fName,lName,mail) {
+  static userdataloggedin(id, mail) {
     return new Promise((resolve,reject) => {
       HttpService.post(
         `${UserService.baseURL()}/userdata`,
         {
           email : mail,
-          firstName : fName,
-          lastName : lName,
+          userId : id,
         },
         function(data) {
           resolve(data)
@@ -87,13 +86,12 @@ export default class UserService {
       );
     });
   }
-  static userdata(fName,lName) {
+  static userdata(id) {
     return new Promise((resolve,reject) => {
       HttpService.post(
         `${UserService.baseURL()}/userdata`,
         {
-          firstName : fName,
-          lastName : lName,
+          userId : id,
         },
         function(data) {
           resolve(data)

@@ -225,15 +225,10 @@ const updateuser = async (req, res) => {
  * @returns
  */
 const userdata = async (req, res) => {
-    if (!Object.prototype.hasOwnProperty.call(req.body, "firstName"))
+    if (!Object.prototype.hasOwnProperty.call(req.body, "userId"))
         return res.status(400).json({
             error: "Bad Request",
-            message: "The request body must contain a firstName property",
-        });
-    if (!Object.prototype.hasOwnProperty.call(req.body, "lastName"))
-        return res.status(400).json({
-            error: "Bad Request",
-            message: "The request body must contain a lastName property",
+            message: "The request body must contain a userId property",
         });
     // this insecure logged in check is sufficient, since the data is publicly available anyway, and the check is just needed for display logic in the frontend
     let isloggedIn = false;
@@ -243,10 +238,7 @@ const userdata = async (req, res) => {
     if (isloggedIn) {
         try {
             let isownprofile = false;
-            const requesteduser = await UserModel.findOne({
-                firstName: req.body.firstName,
-                lastName: req.body.lastName,
-            }).exec(); // get requested user from database
+            const requesteduser = await UserModel.findById(req.body.userId).exec(); // get requested user from database
             const requester = await UserModel.findOne({
                 email: req.body.email,
             });
@@ -260,6 +252,8 @@ const userdata = async (req, res) => {
                 role: requesteduser.role,
                 isOwnProfile: isownprofile,
                 profilePicture: requesteduser.profilePicture,
+                reviews: requesteduser.reviews,
+                avgReviewRating: requesteduser.avgReviewRating,
             });
         } catch (error) {
             return res.status(500).json({

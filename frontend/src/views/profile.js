@@ -59,7 +59,7 @@ function Profile(props) {
   useEffect(() => {
     async function fetchData() {
       if (user.user) {
-        const res = await UserService.userdataloggedin(params.firstName, params.lastName, user.user.email);
+        const res = await UserService.userdataloggedin(params.id, user.user.email);
         const temp = {
           name: `${res.firstname} ${res.lastname}`,
           description: res.description,
@@ -69,7 +69,7 @@ function Profile(props) {
         }
         setdata(temp)
       } else {
-        const res = await UserService.userdataloggedin(params.firstName, params.lastName, user.user.email);
+        const res = await UserService.userdataloggedin(params.id, user.user.email);
         const temp = {
           name: `${res.firstname} ${res.lastname}`,
           description: res.description,
@@ -81,7 +81,7 @@ function Profile(props) {
       }
     }
     fetchData()
-  }, [setdata,params.firstName,params.lastName,user.user]);
+  }, [setdata,params.id,user.user]);
 
   const reviews = [
     {
