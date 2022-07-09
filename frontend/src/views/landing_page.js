@@ -7,12 +7,12 @@ const content = [
   {
     option: "training",
     img: "https://images.unsplash.com/photo-1517836357463-d25dfeac3438",
-    title: "Training Plan",
+    title: "Training plan",
   },
   {
     option: "nutrition",
     img: "https://images.unsplash.com/photo-1490645935967-10de6ba17061",
-    title: "Nutrition Plan",
+    title: "Nutrition plan",
   },
   {
     option: "coaching",
@@ -46,11 +46,19 @@ function LandingPage(props) {
       };
       setHeader(temp, header);
     }
-  }, [header, user]);
+  }, [user]);
+
+  //building own profile link -> /profile/prename/lastname
+  const profilelink = `/profile/${user.user.fname}/${user.user.lname}`;
 
   return (
     <Stack sx={{ marginX: 6 }} spacing={1}>
-      <LandingImage ilink="/profile" iwidth={950} iheight={200} item={header} />
+      <LandingImage
+        ilink={profilelink}
+        iwidth={950}
+        iheight={200}
+        item={header}
+      />
       <Stack direction="row" spacing={1}>
         <LandingImage
           ilink="/upload"
@@ -58,6 +66,7 @@ function LandingPage(props) {
           iheight={400}
           item={content[0]}
           isHeader={false}
+          setChoice={props.data}
         />
         <LandingImage
           ilink="/upload"
@@ -65,6 +74,7 @@ function LandingPage(props) {
           iheight={400}
           item={content[1]}
           isHeader={false}
+          setChoice={props.data}
         />
         <LandingImage
           ilink="/upload"
@@ -72,6 +82,7 @@ function LandingPage(props) {
           iheight={400}
           item={content[2]}
           isHeader={false}
+          setChoice={props.data}
         />
       </Stack>
     </Stack>
