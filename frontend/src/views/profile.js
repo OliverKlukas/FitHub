@@ -33,7 +33,7 @@ function Profile(props) {
     profilePicture: "",
   });
   // state for review data
-  const [reviews, setReviews] = React.useState([{}]);
+  const [reviews, setReviews] = React.useState([]);
   // own state for uploaded picture, in case of update
   const [uploadedPicture, setUploadedPicture] = React.useState("");
   // own state for description, in case of update
@@ -42,19 +42,19 @@ function Profile(props) {
   const onChangeDescription = (e) => {
     setDescription(e.target.value);
   };
-  const handleSubmit = async() => {
+  const handleSubmit = async () => {
     const temp = {
-        name: data.name,
-        description: description,
-        profilePicture: uploadedPicture[0],
-        _id: user.user._id
+      name: data.name,
+      description: description,
+      profilePicture: uploadedPicture[0],
+      _id: user.user._id
     }
     await props.dispatch(updateUser(temp))
     window.location.reload(false);
   }
   const handleDelete = async () => {
     await props.dispatch(deleteUser());
-    navigate("/discovery"); 
+    navigate("/discovery");
   }
 
   useEffect(() => {
@@ -84,7 +84,7 @@ function Profile(props) {
       }
     }
     fetchData()
-  }, [setdata,params.id,user.user]);
+  }, [setdata, params.id, user.user]);
 
   const ratings =
     []; /* Needed to use reduce over the array to calculate Rating */
@@ -163,11 +163,7 @@ function Profile(props) {
               <Stack direction="row" spacing={3}>
                 <Rating
                   name="read-only"
-                  value={
-                    ratings.reduce((p, c) => {
-                      return p + c;
-                    }) / reviews.length
-                  }
+                  value={3} // TODO backed data
                   readOnly
                   icon={<StarIcon color="warning"></StarIcon>}
                 />
@@ -185,22 +181,22 @@ function Profile(props) {
               }}
             >
               <Stack direction="column" spacing={3}>
-              <HighlightButton
-                key="UpadteProfileButton"
-                variant="contained"
-                onClick={handleSubmit}
-                disabled={uploadedPicture === "" &&
-                  description === ""
-                }
-              >
-                Save Changes
-              </HighlightButton>
-              <HighlightButton
-                key="DeleteAccountButton"
-                variant="contained"
-                onClick={handleDelete}>
+                <HighlightButton
+                  key="UpadteProfileButton"
+                  variant="contained"
+                  onClick={handleSubmit}
+                  disabled={uploadedPicture === "" &&
+                    description === ""
+                  }
+                >
+                  Save Changes
+                </HighlightButton>
+                <HighlightButton
+                  key="DeleteAccountButton"
+                  variant="contained"
+                  onClick={handleDelete}>
                   Delete Account
-              </HighlightButton>
+                </HighlightButton>
               </Stack>
             </Box>
           ] :
@@ -238,17 +234,19 @@ function Profile(props) {
             spacing={2}
           >
 
-            {data.isContentCreator ?
-              // maps over the reviews array and returns a review for each review
-              reviews.map((review) => {
-                return Review(
-                  review.creatorId,
-                  review.text,
-                  review.date,
-                  review.title,
-                  review.star
-                );
-              }) : []}
+            {data.isContentCreator ? [
+              (reviews.length < 1) ? [] : [
+                reviews.map((review) => {
+                  return Review(
+                    review.creatorId,
+                    review.text,
+                    review.date,
+                    review.title,
+                    review.star
+                  );
+                })]
+            ] : []
+            }
           </Stack>
         </Box>
       </Stack>

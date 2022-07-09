@@ -271,8 +271,8 @@ const userdata = async (req, res) => {
                 role: user.role,
                 isOwnProfile: false,
                 profilePicture: user.profilePicture,
-                reviews: requesteduser.reviews,
-                avgReviewstar: requesteduser.avgReviewstar,
+                reviews: user.reviews,
+                avgReviewstar: user.avgReviewstar,
             });
         } catch (error) {
             return res.status(500).json({
