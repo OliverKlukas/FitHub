@@ -83,29 +83,7 @@ function Profile(props) {
     fetchData()
   }, [setdata,params.id,user.user]);
 
-  const reviews = [
-    {
-      author: "Terry Pratched",
-      text: loremIpsum(),
-      title: "Creates great training plans",
-      date: "18.03.2021",
-      star: 5,
-    },
-    {
-      author: "Brandon Sanderson",
-      text: loremIpsum(),
-      title: "Does not have the best Workout Systems",
-      date: "13.01.2022",
-      star: 3,
-    },
-    {
-      author: "Karen Kardashian",
-      text: loremIpsum(),
-      title: "If I could give 0 stars I would",
-      date: "10.05.2021",
-      star: 1,
-    },
-  ];
+  const reviews = [{}];
 
   const ratings =
     []; /* Needed to use reduce over the array to calculate Rating */
@@ -262,7 +240,6 @@ function Profile(props) {
             {data.isContentCreator ?
               // maps over the reviews array and returns a review for each review
               reviews.map((review) => {
-                // eslint-disable-next-line new-cap
                 return Review(
                   review.author,
                   review.text,
