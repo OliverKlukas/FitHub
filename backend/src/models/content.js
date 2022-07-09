@@ -7,6 +7,7 @@ const mongoose = require("mongoose");
  *
  * Expected to be a JSON of: {
  *     _id: unique identifier of content,
+ *     ownerId: owner of the content item,
  *     title: title of content,
  *     description: text outlining content,
  *     price: string as cents workaround,
@@ -22,7 +23,7 @@ const mongoose = require("mongoose");
  *
  */
 const ContentSchema = new mongoose.Schema({
-    //TODO add when connecting user backend: ownerId: {type: mongoose.Schema.Types.ObjectId, ref: "User"},
+    ownerId: {type: mongoose.Schema.Types.ObjectId, ref: "User"},
     category: {
         type: String, enum: ["training", "nutrition", "coaching"], required: true
     }, title: {
