@@ -24,7 +24,7 @@ import { addContent } from "../redux/actions";
 import Checkbox from "@mui/material/Checkbox";
 import { CancelButton } from "../components/buttons/cancel_button";
 import { StandardButton } from "../components/buttons/standard_button";
-import { pink } from "@mui/material/colors";
+import { red } from "@mui/material/colors";
 import { useSelector } from "react-redux";
 import InsightsDrawer from "../components/drawer/insights_drawer";
 import Divider from "@mui/material/Divider";
@@ -78,11 +78,25 @@ function ContentUpload(props) {
   const [pubFailure, setPubFailure] = useState(false);
   const [pubSuccess, setPubSuccess] = useState(false);
 
-  //handle missing mandatory checkboxes
+  //snackbar missing mandatory checkboxes
   const [checkFailure, setCheckFailure] = useState(false);
   // close the snackbar of mandatory checkboxes
   const handleCheckFailure = () => {
     setCheckFailure(false);
+  };
+
+  //snackbar missing tags
+  const [tagsSnack, setTagsSnack] = useState(false);
+  // close the snackbar of tags
+  const handleTagsSnack = () => {
+    setTagsSnack(false);
+  };
+
+  //snackbar for 16MB upload boundry
+  const [uploadSnack, setUploadSnack] = useState(false);
+  // close the snackbar of upload boundry
+  const handleUploadSnack = () => {
+    setUploadSnack(false);
   };
 
   // Switch to discovery view after successful publication and reload in order to show item.
@@ -98,22 +112,66 @@ function ContentUpload(props) {
 
   // User input verification and hand-off to backend database publication.
   function handlePublishContent() {
-    if (termsChecked && qualityChecked) {
+    // TODO: verify that the above defined hooks match our criteria, i.e. with regex that we could put i.e. into utils folder and use project wide
+    validatePrice();
+    validateTitle();
+    validateDescription();
+    validateTags();
+    validateDuration();
+    validateIntensity();
+    if (
+      !titleError &&
+      !priceError &&
+      !descriptionError &&
+      !durationError &&
+      !intensityError &&
+      !tagsError &&
+      media.length !== 0 &&
+      plan.length !== 0 &&
+      sample.length !== 0 &&
+      termsChecked &&
+      qualityChecked
+    ) {
       publishContent();
     } else {
+      if (
+        titleError ||
+        priceError ||
+        descriptionError ||
+        durationError ||
+        intensityError ||
+        media.length === 0 ||
+        plan.length === 0 ||
+        sample.length === 0
+      ) {
+        setUploadSnack(true);
+        if (media.length === 0) {
+          setMediaError(true);
+        }
+        if (plan.length === 0) {
+          setPlanError(true);
+        }
+        if (sample.length === 0) {
+          setSampleError(true);
+        }
+      } else if (!termsChecked || !qualityChecked) {
+        setCheckFailure(true);
+      } else if (tagsError) {
+        setTagsSnack(true);
+      }
+
       //feedback mandatory checkboxes
-      if (!termsChecked && !qualityChecked) {
+      if (!termsChecked) {
         setMissedTermsCheck(true);
-        setMissedQualityCheck(true);
-      } else if (!termsChecked) {
-        setMissedTermsCheck(true);
-        setMissedQualityCheck(false);
       } else {
-        setMissedQualityCheck(true);
         setMissedTermsCheck(false);
       }
-      //Snackbar activation failure
-      setCheckFailure(true);
+
+      if (!qualityChecked) {
+        setMissedQualityCheck(true);
+      } else {
+        setMissedQualityCheck(false);
+      }
     }
   }
 
@@ -143,6 +201,91 @@ function ContentUpload(props) {
       console.log("Publishing content failed!");
     }
   }
+
+  const validatePrice = () => {
+    // [0-9]+ -> x times the numbers 0-9
+    // ([.,][0-9]{1,2})? -> ? means optionl (inside bracket)
+    // [.,] -> comma or point
+    // [0-9]{1,2} -> 1 or 2 times a number
+    // \s? -> optional space
+    // (€)? -> optional euro sign
+    if (price.match(/^([0-9]+([.,][0-9]{1,2})?\s?(€)?)$/) === null) {
+      setPriceError(true); //error input field
+    } else {
+      setPriceError(false);
+    }
+  };
+
+  const validateTitle = () => {
+    //[a-zA-Z\-0-9<>!?();:.,-~+*#"%ß\u00c4\u00e4\u00d6\u00f6\u00dc\u00fc]+ -> x times all these chars (äöüÄÖÜ unicode)
+    //(\s+)? -> optional space(s)
+    //{3,10} -> min 3 chars, max 10 words
+    if (
+      title.match(
+        /^((([a-zA-Z\-0-9<>!?();:.,-~+*#"%ß\u00c4\u00e4\u00d6\u00f6\u00dc\u00fc]+)(\s+)?)){3,10}$/
+      ) === null
+    ) {
+      setTitleError(true); //error input field
+    } else {
+      setTitleError(false);
+    }
+  };
+
+  const validateDescription = () => {
+    //[a-zA-Z\-0-9<>!?();:.,-~+*#"%ß\u00c4\u00e4\u00d6\u00f6\u00dc\u00fc]+ -> x times all these chars (äöüÄÖÜ unicode)
+    //(\s+)? -> optional space(s)
+    //{5,30} -> min 5 chars, max 30 words
+    if (
+      description.match(
+        /^((([a-zA-Z\-0-9<>!?();:.,-~+*#"%ß\u00c4\u00e4\u00d6\u00f6\u00dc\u00fc]+)(\s+)?)){5,30}$/
+      ) === null
+    ) {
+      setDescriptionError(true); //error input field
+    } else {
+      setDescriptionError(false);
+    }
+  };
+
+  const validateDuration = () => {
+    //([0-9]){1,3} -> numbers with length min 1, max 3
+    if (duration.match(/^([1-9][0-9]?){1,1}$/) === null) {
+      setDurationError(true); //error input field
+    } else {
+      setDurationError(false);
+    }
+  };
+
+  const validateIntensity = () => {
+    //([0-9]){1,3} -> numbers with length min 1, max 3
+    if (intensity.match(/^([1-9][0-9]?){1,1}$/) === null) {
+      setIntensityError(true); //error input field
+    } else {
+      setIntensityError(false);
+    }
+  };
+
+  const validateTags = () => {
+    if (
+      goalTags.length === 0 ||
+      levelTags.length === 0 ||
+      lifestyleTags.length === 0
+    ) {
+      setTagsError(true);
+    } else {
+      setTagsError(false);
+    }
+  };
+
+  //error handling
+  const [priceError, setPriceError] = React.useState(false);
+  const [titleError, setTitleError] = React.useState(false);
+  const [descriptionError, setDescriptionError] = React.useState(false);
+  const [durationError, setDurationError] = React.useState(false);
+  const [intensityError, setIntensityError] = React.useState(false);
+  const [tagsError, setTagsError] = React.useState(false);
+  const [mediaError, setMediaError] = React.useState(false);
+  const [planError, setPlanError] = React.useState(false);
+  const [sampleError, setSampleError] = React.useState(false);
 
   // state for Terms and Conditions Checkbox
   const [termsChecked, setTermsChecked] = React.useState(false);
@@ -177,11 +320,21 @@ function ContentUpload(props) {
           Offer your content
         </Typography>
         <Typography variant="h3">General information</Typography>
-        <Stack spacing={3} direction="row" alignItems="center">
-          <Typography
-            sx={{ minWidth: 100 }}
-            variant="subtitle1"
-            fontWeight="bold"
+      <Stack spacing={3} direction="row" alignItems="center">
+        <Typography
+          sx={{ minWidth: 100 }}
+          variant="subtitle1"
+          fontWeight="bold"
+        >
+          Category:
+        </Typography>
+        <FormControl>
+          <RadioGroup
+            row
+            aria-labelledby="category-radio-buttons-group-label"
+            name="row-radio-buttons-group"
+            defaultValue={defaultCategory}
+            onChange={(event) => setCategory(event.target.value)}
           >
             Category:
           </Typography>
@@ -318,6 +471,229 @@ function ContentUpload(props) {
             sx={{ minWidth: 100 }}
             variant="subtitle1"
             fontWeight="bold"
+        >
+          Tags:
+        </Typography>
+        <Box>
+          <Grid
+            container
+            justifyContent="flex-start"
+            maxWidth={600}
+            spacing={3}
+            columns={{ xs: 1, sm: 2 }}
+          >
+            <Grid item xs={1} sm={1}>
+              <Autocomplete
+                multiple
+                id="goal-tags"
+                onBlur={validateTags}
+                options={fitnessGoal}
+                value={goalTags}
+                onChange={(event, value) => setGoalTags(value)}
+                renderInput={(params) => (
+                  <TextField {...params} label="Fitness goal" />
+                )}
+              />
+            </Grid>
+            <Grid item xs={1} sm={1}>
+              <Autocomplete
+                multiple
+                id="goal-tags"
+                options={lifestyle}
+                onBlur={validateTags}
+                value={lifestyleTags}
+                onChange={(event, value) => setLifestyleTags(value)}
+                renderInput={(params) => (
+                  <TextField {...params} label="Lifestyle" />
+                )}
+              />
+            </Grid>
+            <Grid item xs={1} sm={1}>
+              <Autocomplete
+                multiple
+                id="level-tags"
+                options={fitnessLevel}
+                onBlur={validateTags}
+                value={levelTags}
+                onChange={(event, value) => setLevelTags(value)}
+                renderInput={(params) => (
+                  <TextField {...params} label="Fitness level" />
+                )}
+              />
+            </Grid>
+            <Grid item xs={1} sm={1}>
+              <Typography
+                variant="body2"
+                fontSize="small"
+                sx={
+                  tagsError
+                    ? {
+                        color: red["A700"],
+                      }
+                    : { color: "default" }
+                }
+              >
+                Please type and select fitting tags (at least one) for your
+                content offering. These will be used to better reach your target
+                user group on FitHub.
+              </Typography>
+            </Grid>
+          </Grid>
+        </Box>
+      </Stack>
+      <Typography variant="h3">Uploads</Typography>
+      <Stack spacing={2} direction="row">
+        <Typography sx={{ minWidth: 200 }} variant="subtitle1">
+          Marketing material:
+        </Typography>
+        <Stack spacing={1}>
+          <UploadButton
+            uploadFormat="image/*"
+            givenId="marketing-upload"
+            multiUpload={true}
+            setUpload={setMedia}
+            setSuccess={setMediaError}
+          />
+          <Typography
+            variant="body2"
+            fontSize="small"
+            maxWidth={300}
+            sx={
+              mediaError
+                ? {
+                    color: red["A700"],
+                  }
+                : { color: "default" }
+            }
+          >
+            Please upload pictures that represents your offer (example dishes,
+            workouts etc). Be aware of the max size of 16MB and respect our{" "}
+            <Link
+              color="#393E46"
+              fontSize={14}
+              fontWeight={300}
+              underline="always"
+              target="_blank"
+              href="/terms-and-conditions"
+            >
+              Terms & Conditions
+            </Link>{" "}
+            including image rights
+          </Typography>
+        </Stack>
+      </Stack>
+      <Stack spacing={2} direction="row">
+        <Typography sx={{ minWidth: 200 }} variant="subtitle1">
+          Full plan:
+        </Typography>
+        <Stack spacing={1}>
+          <UploadButton
+            uploadFormat=".pdf"
+            givenId="plan-upload"
+            multiUpload={false}
+            setUpload={setPlan}
+            setSuccess={setPlanError}
+          />
+          <Typography
+            variant="body2"
+            fontSize="small"
+            maxWidth={300}
+            sx={
+              planError
+                ? {
+                    color: red["A700"],
+                  }
+                : { color: "default" }
+            }
+          >
+            Please upload the pdf file of max 16MB that contains the complete
+            training plan that buyers are going to receive
+          </Typography>
+        </Stack>
+      </Stack>
+      <Stack spacing={2} direction="row">
+        <Typography sx={{ minWidth: 200 }} variant="subtitle1">
+          Sample:
+        </Typography>
+        <Stack spacing={1}>
+          <UploadButton
+            uploadFormat=".pdf"
+            givenId="sample-upload"
+            multiUpload={false}
+            setUpload={setSample}
+            setSuccess={setSampleError}
+          />
+          <Typography
+            variant="body2"
+            fontSize="small"
+            maxWidth={300}
+            sx={
+              sampleError
+                ? {
+                    color: red["A700"],
+                  }
+                : { color: "default" }
+            }
+          >
+            Please upload a sample pdf file of max 16MB which gives buyers an
+            impression of the full plan
+          </Typography>
+        </Stack>
+      </Stack>
+      <Typography variant="h3">Additional options</Typography>
+      <Stack spacing={0.5}>
+        <Stack direction="row" alignItems="center">
+          <Checkbox
+            value={marketing}
+            onChange={(event) => setMarketing(event.target.checked)}
+          />
+          <Typography variant="body1">
+            Yes, email me for marketing events like vouchers & sales weekends
+          </Typography>
+        </Stack>
+        <Stack direction="row" alignItems="center">
+          <Checkbox
+            value={support}
+            onChange={(event) => setSupport(event.target.checked)}
+          />
+          <Typography variant="body1">
+            Yes, I am offering full-time support for the buyers
+          </Typography>
+        </Stack>
+        <Stack direction="row" alignItems="center">
+          <Checkbox
+            value={feature}
+            onChange={(event) => setFeatured(event.target.checked)}
+          />
+          <Typography variant="body1">
+            Feature me in discovery for a increasing fee of 15% instead of 10%
+            per transaction
+          </Typography>
+        </Stack>
+      </Stack>
+      <Typography variant="h3">Legal notices</Typography>
+      <Stack spacing={0.5}>
+        <Stack direction="row" alignItems="center">
+          <Checkbox
+            checked={qualityChecked}
+            onChange={handleQualityChange}
+            sx={
+              missedQualityCheck
+                ? {
+                    color: red["A700"],
+                  }
+                : { color: "default" }
+            }
+          />
+          <Typography
+            variant="body1"
+            sx={
+              missedQualityCheck
+                ? {
+                    color: red["A700"],
+                  }
+                : { color: "default" }
+            }
           >
             Tags:
           </Typography>
