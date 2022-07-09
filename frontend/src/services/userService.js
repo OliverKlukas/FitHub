@@ -136,5 +136,18 @@ static updateUser(user) {
     );
   });
 }
+static checkEmail(email) {
+  return new Promise((resolve, reject)=>{
+    HttpService.get(
+      `${this.baseURL()}/${email}`,
+      function(data) {
+        resolve(data);
+      },
+      function(textStatus) {
+        reject(textStatus);
+      }
+    );
+  });
+}
 
 }

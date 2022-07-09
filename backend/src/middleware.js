@@ -5,6 +5,7 @@ const jwt = require("jsonwebtoken");
 const config = require("./config");
 
 const UserModel = require("./models/user");
+
 const allowCrossDomain = (req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE,OPTIONS");

@@ -19,5 +19,6 @@ router.post("/logout", middleware.checkAuthentication, AuthController.logout); /
 // router.delete("/deletereview", middleware.checkAuthentication, AuthController.deletereview) // delete a review
 router.delete("/delete", middleware.checkAuthentication, AuthController.deleteuser) // checks user, then deletes user
 router.put("/update", middleware.checkAuthentication, AuthController.updateuser) // checks user, then updates user
+router.get("/:email", AuthController.checkEmail) 
 
 module.exports = router;
