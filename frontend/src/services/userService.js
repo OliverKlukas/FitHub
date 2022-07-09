@@ -54,30 +54,39 @@ export default class UserService {
         window.localStorage.removeItem("jwtToken");
     }
 
-    static userdataloggedin(fName, lName, mail) {
-        return new Promise((resolve, reject) => {
-            HttpService.post(`${UserService.baseURL()}/userdata`, {
-                email: mail, firstName: fName, lastName: lName,
-            }, function (data) {
-                resolve(data)
-            }, function (textStatus) {
-                reject(textStatus)
-            });
-        });
+    static userdataloggedin(id, mail) {
+      return new Promise((resolve,reject) => {
+        HttpService.post(
+          `${UserService.baseURL()}/userdata`,
+          {
+            email : mail,
+            userId : id,
+          },
+          function(data) {
+            resolve(data)
+          },
+          function(textStatus) {
+            reject(textStatus)
+          }
+        );
+      });
     }
-
-    static userdata(fName, lName) {
-        return new Promise((resolve, reject) => {
-            HttpService.post(`${UserService.baseURL()}/userdata`, {
-                firstName: fName, lastName: lName,
-            }, function (data) {
-                resolve(data)
-            }, function (textStatus) {
-                reject(textStatus)
-            });
-        });
+    static userdata(id) {
+      return new Promise((resolve,reject) => {
+        HttpService.post(
+          `${UserService.baseURL()}/userdata`,
+          {
+            userId : id,
+          },
+          function(data) {
+            resolve(data)
+          },
+          function(textStatus) {
+            reject(textStatus)
+          }
+        );
+      });
     }
-
     static deleteUser() {
         return new Promise((resolve, reject) => {
             HttpService.remove(`${this.baseURL()}/delete`, function (data) {
