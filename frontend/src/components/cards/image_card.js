@@ -2,14 +2,8 @@ import ImageListItem from "@mui/material/ImageListItem";
 import {Card, CardActionArea} from "@mui/material";
 import ImageListItemBar from "@mui/material/ImageListItemBar";
 import * as React from "react";
-
-// TODO: once user is connected I need the info from there
-const author = {
-    name: "Simon Plashek",
-    title: "professional bodybuilder & fitness coach",
-    img: "https://images.unsplash.com/photo-1584466977773-e625c37cdd50",
-    rating: 3,
-}
+import {useEffect, useState} from "react";
+import UserService from "../../services/userService";
 
 /**
  * Single content card component including an interactive action area.
@@ -19,6 +13,16 @@ const author = {
  */
 export default function ImageCard({item}) {
     const dim = item.featured ? [1, 2] : [1, 1];
+    const [author, setAuthor] = useState("");
+
+    useEffect( () => {
+        async function fetchUsername() {
+            return await UserService.getUsername(item.ownerId);
+        }
+        fetchUsername().then(function (res) {
+            setAuthor(res);
+        })
+    }, [item.ownerId])
 
     return (
         <ImageListItem cols={dim[0]} rows={dim[1]}>
@@ -63,7 +67,7 @@ export default function ImageCard({item}) {
                             },
                         }}
                         title={item.title}
-                        subtitle={"by " + author.name}
+                        subtitle={"by " + author}
                         position="bottom"
                     />
                 </CardActionArea>

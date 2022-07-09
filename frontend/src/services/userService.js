@@ -117,4 +117,20 @@ export default class UserService {
         });
     }
 
+    /**
+     * Retrieves name of the owner of a content item.
+     *
+     * @param ownerId
+     * @return {Promise<unknown>}
+     */
+    static getUsername(ownerId){
+        return new Promise(async (resolve, reject) => {
+            HttpService.get(`${this.baseURL()}/getUsername/${ownerId}`, function (data) {
+                resolve(data);
+            }, function (textStatus) {
+                reject(textStatus);
+            });
+        });
+    }
+
 }
