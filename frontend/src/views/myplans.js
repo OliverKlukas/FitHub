@@ -8,7 +8,7 @@ import {
 import * as React from "react";
 import { connect, useSelector } from "react-redux";
 import Plan from "../components/plans/plan";
-import { getBoughtPlan } from "../redux/actions";
+import { getBoughtPlan, getContent } from "../redux/actions";
 import { useEffect } from "react";
 
 /**
@@ -43,11 +43,11 @@ function MyPlans(props) {
     <Stack spacing={4} marginTop={5}>
       <Typography variant="h1">My Plans</Typography>
       {planList.map((item) => {
-        return <Box key={item._id}>{item._id}</Box>;
+        return <Box key={item._id}>{item._id}</Box>;S      
       })}
     </Stack>
   );
 }
 
 // Connect() establishes the connection to the redux functionalities.
-export default connect(null, { getBoughtPlan })(MyPlans);
+export default connect(null, { getBoughtPlan, getContent })(MyPlans);
