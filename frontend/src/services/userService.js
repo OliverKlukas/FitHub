@@ -1,6 +1,3 @@
-/**
- *
- */
 import HttpService from "./httpService";
 
 export default class UserService {
@@ -19,6 +16,21 @@ export default class UserService {
       });
     });
   }
+  static addreview(star, text, userId) {
+    return new Promise((resolve, reject) => {
+      HttpService.put(`${this.baseURL()}/addreview/${userId}`,
+        {
+          star: star,
+          text: text,
+        }, function (data) {
+          resolve(data);
+        }, function (textStatus) {
+          reject(textStatus)
+        });
+    });
+  }
+
+
 
   static registerContentCreator(mail, pass, fName, lName, title, picture) {
     return new Promise((resolve, reject) => {
@@ -151,18 +163,4 @@ export default class UserService {
       });
     });
   }
-  static addreview(star, text, userId) {
-    return new Promise((resolve, reject) => {
-      HttpService.put(`${this.baseURL()}/addreview/${userId}`,
-        {
-          star: star,
-          text: text,
-        }, function (data) {
-          resolve(data);
-        }, function (textStatus) {
-          reject(textStatus)
-        });
-    });
-  }
-
 }

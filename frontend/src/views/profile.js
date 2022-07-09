@@ -86,11 +86,6 @@ function Profile(props) {
     fetchData()
   }, [setdata, params.id, user.user]);
 
-  const ratings =
-    []; /* Needed to use reduce over the array to calculate Rating */
-  for (const item of reviews) {
-    ratings.push(item.star);
-  }
   return (
     <Box
       sx={{
