@@ -4,7 +4,6 @@ import { Stack, TextField } from "@mui/material";
 import Box from "@mui/material/Box";
 import Rating from "@mui/material/Rating";
 import Review from "../components/profilecomponents/reviewlist/review";
-import { loremIpsum } from "react-lorem-ipsum";
 import StarIcon from "@mui/icons-material/Star";
 import RatingDialog from "../components/profilecomponents/popups/rating_dialog"
 import ReportDialog from "../components/profilecomponents/popups/report_dialog";
@@ -33,6 +32,8 @@ function Profile(props) {
     isContentCreator: false,
     profilePicture: "",
   });
+  // state for review data
+  const [reviews, setReviews] = React.useState([{}]);
   // own state for uploaded picture, in case of update
   const [uploadedPicture, setUploadedPicture] = React.useState("");
   // own state for description, in case of update
@@ -67,9 +68,10 @@ function Profile(props) {
           isContentCreator: res.role === "contentCreator",
           profilePicture: res.profilePicture
         }
-        setdata(temp)
+        setReviews(res.reviews);
+        setdata(temp);
       } else {
-        const res = await UserService.userdataloggedin(params.id, user.user.email);
+        const res = await UserService.userdata(params.id);
         const temp = {
           name: `${res.firstname} ${res.lastname}`,
           description: res.description,
@@ -77,13 +79,12 @@ function Profile(props) {
           isContentCreator: res.role === "contentCreator",
           profilePicture: res.profilePicture
         }
-        setdata(temp)
+        setReviews(res.reviews);
+        setdata(temp);
       }
     }
     fetchData()
   }, [setdata,params.id,user.user]);
-
-  const reviews = [{}];
 
   const ratings =
     []; /* Needed to use reduce over the array to calculate Rating */
@@ -98,7 +99,7 @@ function Profile(props) {
       }}
     >
       <Stack direction="column" spacing={2}>
-        <Stack direction="row" spacing={14}>
+        <Stack direction="row" spacing={14} justifyContent="space-between">
           {(data.isContentCreator) ?
             <Box
               key="ContentCreatorImage"
@@ -241,7 +242,7 @@ function Profile(props) {
               // maps over the reviews array and returns a review for each review
               reviews.map((review) => {
                 return Review(
-                  review.author,
+                  review.creatorId,
                   review.text,
                   review.date,
                   review.title,

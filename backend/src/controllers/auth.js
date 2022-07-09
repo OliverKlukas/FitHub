@@ -208,7 +208,7 @@ const updateuser = async (req, res) => {
             }
         ).exec();
 
-        // return updated movie
+        // return updated Content Creator
         return res.status(200).json(resUser);
     } catch (error) {
         return res.status(500).json({
@@ -253,7 +253,7 @@ const userdata = async (req, res) => {
                 isOwnProfile: isownprofile,
                 profilePicture: requesteduser.profilePicture,
                 reviews: requesteduser.reviews,
-                avgReviewRating: requesteduser.avgReviewRating,
+                avgReviewstar: requesteduser.avgReviewstar,
             });
         } catch (error) {
             return res.status(500).json({
@@ -263,10 +263,7 @@ const userdata = async (req, res) => {
         }
     } else {
         try {
-            const user = await UserModel.findOne({
-                firstName: req.body.firstName,
-                lastName: req.body.lastName,
-            }).exec(); // get user from database
+            const user = await UserModel.findById(req.body.userId).exec(); // get requested user from database
             return res.status(200).json({
                 firstname: user.firstName,
                 lastname: user.lastName,
@@ -274,6 +271,8 @@ const userdata = async (req, res) => {
                 role: user.role,
                 isOwnProfile: false,
                 profilePicture: user.profilePicture,
+                reviews: requesteduser.reviews,
+                avgReviewstar: requesteduser.avgReviewstar,
             });
         } catch (error) {
             return res.status(500).json({
@@ -293,86 +292,64 @@ const logout = (req, res) => {
     res.status(200).send({ token: null });
 };
 
-// adds a review, somewhat untested
+/**
+ * 
+ * @param {*} req Int 1-5 Star, String text, ContentCreatorID in params, userId/creatorId added by middleware
+ * @param {*} res 
+ * @returns 
+ */
 const addreview = async (req, res) => {
-    if (!Object.prototype.hasOwnProperty.call(req.body, "userId"))
-        return res.status(400).json({
-            error: "Bad Request",
-            message: "The request body must contain a userId property",
-        });
-    if (!Object.prototype.hasOwnProperty.call(req.body, "creatorId"))
-        return res.status(400).json({
-            error: "Bad Request",
-            message: "The request body must contain a creatorId property",
-        });
-    if (!Object.prototype.hasOwnProperty.call(req.body, "star"))
-        return res.status(400).json({
-            error: "Bad Request",
-            message: "The request body must contain a star property",
-        });
-    if (!Object.prototype.hasOwnProperty.call(req.body, "text"))
-        return res.status(400).json({
-            error: "Bad Request",
-            message: "The request body must contain a text property",
-        });
     try {
-        const review = {
-            creatorId: req.body.creatorId,
-            userId: req.body.userId,
-            star: req.body.star,
-            text: req.body.text,
-        };
+        let ratedUserId = req.params.id;
 
-        const retreview = await Usermodel.create(review);
-
-        return res.status(200).json({
-            retreview,
+        // find a Content Creator that has the id and is reviewed by the user
+        // returns null if the user has not reviewed this Content Creator
+        let alreadyratedUser = await UserModel.findOne({
+            _id: ratedUserId,
+            "reviews.userId": req.userId,
         });
-    } catch (error) {
+
+        // check if user has already reviewed this Content Creator
+        if (alreadyratedUser !== null) {
+            // if the user has already reviewed update his voting entry
+            await UserModel.updateOne(
+                {
+                    _id: ratedUserId,
+                    "reviews.userId": req.userId,
+                },
+                {
+                    $set: {
+                        "reviews.$.star": req.body.star,
+                    },
+                }
+            );
+        } else {
+            // if the user has not reviewed create a new star entry
+            let review = {
+                CreatorId: req.userId,
+                star: req.body.star,
+                text: req.body.text,
+            };
+            await UserModel.findByIdAndUpdate(ratedUserId, {
+                $push: { reviews: review },
+            });
+        }
+
+        return res.status(200).json({});
+    } catch (err) {
+        console.log(err);
         return res.status(500).json({
-            error: "Internal Server error",
-            message: error.message,
-        });
-    }
-};
-
-// updates review, somewhat untested, needs the reviewID and the creatorId, only if the creatorId is equal does the request resolve, should also TODO check middleware
-const updatereview = (req, res) => {
-    if (!Object.prototype.hasOwnProperty.call(req.body, "reviewId"))
-        return res.status(400).json({
-            error: "Bad Request",
-            message: "The request body must contain a reviewId property",
-        });
-    if (!Object.prototype.hasOwnProperty.call(req.body, "creatorId"))
-        return res.status(400).json({
-            error: "Bad Request",
-            message: "The request body must contain a creatorId property",
-        });
-    try {
-        // TODO unsure how this should be implemented
-    } catch (error) {
-        return res.status(500).json({
-            error: "Internal Server error",
-            message: error.message,
+            error: "Internal server error",
+            message: err.message,
         });
     }
 };
 
 // deletes review, somewhat untested, needs the reviewId and the CreatorId, only if the creatorid is equal does the request resolve, should also TODO check middleware
 const deletereview = (req, res) => {
-    if (!Object.prototype.hasOwnProperty.call(req.body, "reviewId"))
-        return res.status(400).json({
-            error: "Bad Request",
-            message: "The request body must contain a reviewId property",
-        });
-    if (!Object.prototype.hasOwnProperty.call(req.body, "creatorId"))
-        return res.status(400).json({
-            error: "Bad Request",
-            message: "The request body must contain a creatorId property",
-        });
     try {
         UserModel.findOneAndDelete({
-            creatorId: req.body.creatorId,
+            creatorId: req.userId,
         });
         return res.status(200).json({
             message: "Succesfully deleted Review",
@@ -395,7 +372,7 @@ const deleteuser = async (req, res) => {
     try {
         await UserModel.findByIdAndRemove(req.userId).exec();
 
-        // return message that movie was deleted
+        // return message that Content Creator was deleted
         return res
             .status(200)
             .json({ message: `User with id${req.userId} was deleted` });
@@ -490,7 +467,6 @@ module.exports = {
     updateuser,
     deleteuser,
     addreview,
-    updatereview,
     deletereview,
     getContentCreatorNames,
     getUsername,
