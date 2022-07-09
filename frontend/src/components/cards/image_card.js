@@ -38,7 +38,7 @@ export default function ImageCard({item}) {
                         style={{
                             objectFit: "cover",
                             width: "100%",
-                            height: 400 * dim[1],
+                            height: dim[1] === 1 ? "35vh" : "70vh",
                             borderRadius: "10px",
                         }}
                         src={item.media[0]}
