@@ -62,8 +62,7 @@ const create = async (req, res) => {
 const get = async (req, res) => {
     try {
         // get boughtPlan with id from database
-        let boughtPlan = await boughtPlansModel.findById(req.params.id).exec();
-
+        let boughtPlan = await boughtPlansModel.find({userId: req.params.id}).exec();
         // if no boughtPlan with id is found, return 404
         if (!boughtPlan)
             return res.status(404).json({

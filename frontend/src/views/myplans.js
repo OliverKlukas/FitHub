@@ -1,9 +1,9 @@
 import { Stack, Typography } from "@mui/material";
-import { useParams } from "react-router-dom";
-import { consumer } from "../utils/consumer";
-import { content } from "../utils/content";
-import {connect, useSelector} from "react-redux";
+import * as React from "react";
+import { connect, useSelector } from "react-redux";
 import Plan from "../components/plans/plan";
+import { getBoughtPlan } from "../redux/actions/boughtPlans";
+import { useEffect } from "react";
 
 /**
  * Purchase history that displays every bought content item for a specific consumer with an option to download the item,
@@ -12,23 +12,31 @@ import Plan from "../components/plans/plan";
  *
  * @return {JSX.Element} returns My Plans page.
  */
-export default function MyPlans() {
-
+function MyPlans(props) {
   const user = useSelector((state) => state.user);
-  // Match url id to consumer item.
-  const { id } = useParams();
-  // eslint-disable-next-line
-    const item = consumer.find((item) => item.id == id);
+
+  const boughtPlans = useSelector((state) => {
+    return state.boughtPlans;
+  });
+
+  // On open load the movie.
+  useEffect(() => {
+    props.getBoughtPlan(user.user._id);
+  }, [boughtPlans, user.user._id]);
+
+  const [a, seta] = React.useState(true)
+  if (a && boughtPlans) {
+    seta(false)
+    console.log(a)
+    console.log(boughtPlans)
+  }
 
   return (
     <Stack spacing={4} marginTop={5}>
-      <Typography variant="h1">My Plans</Typography>
-      {/* eslint-disable-next-line */}
-            {content.map((con) => {
-        if (item.boughtContent.includes(con.id)) {
-          return <Plan item={con} key={con.img} />;
-        }
-      })}
+      <Typography variant="h1">My Plans</Typography>    
     </Stack>
   );
 }
+
+// Connect() establishes the connection to the redux functionalities.
+export default connect(null, { getBoughtPlan })(MyPlans);
