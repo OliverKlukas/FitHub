@@ -37,10 +37,8 @@ export default function ImageCard({item}) {
                     <img
                         style={{
                             objectFit: "cover",
-                            height: "100%",
                             width: "100%",
-                            maxWidth: 450,
-                            maxHeight: 400,
+                            height: 400 * dim[1],
                             borderRadius: "10px",
                         }}
                         src={item.media[0]}
