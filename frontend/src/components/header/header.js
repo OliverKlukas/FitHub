@@ -26,15 +26,13 @@ function Header(props) {
   // Needed for user state management
   const user = useSelector((state) => state.user);
   // Names needed for Link to Own Profile, get set with useeffect()
-  const [fName, setfName] = React.useState("");
-  const [lName, setlName] = React.useState("");
+  const [id, setid] = React.useState("");
 
   useEffect(() => {
     if (user.user) {
-      setfName(user.user.fname);
-      setlName(user.user.lname);
+      setid(user.user._id);
     }
-  }, [fName, lName, user.user]);
+  }, [id, user.user]);
   // Header Center for a Content Creator
   const pagesContentCreator = {
     discovery: "Discovery",
@@ -222,7 +220,7 @@ function Header(props) {
                 >
                   <MenuItem key="profile" onClick={handleCloseSetMenu}>
                     <Link
-                      href={`/profile/${fName}/${lName}`}
+                      href={`/profile/${id}`}
                       underline="none"
                       color="inherit"
                     >
