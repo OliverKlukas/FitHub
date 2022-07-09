@@ -9,6 +9,7 @@ const middleware = require("../middleware");
 
 const AuthController = require("../controllers/auth");
 
+router.get("/getCreators", AuthController.getContentCreatorNames);
 router.post("/register", AuthController.register); // register a new user
 router.post("/login", AuthController.login); // login
 router.post("/userdata", AuthController.userdata); // display publicly available user data, checks if its for the callers own profile

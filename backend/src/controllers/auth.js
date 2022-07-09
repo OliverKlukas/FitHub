@@ -7,6 +7,7 @@ const bcrypt = require("bcryptjs");
 
 const config = require("../config");
 const UserModel = require("../models/user");
+const ContentModel = require("../models/content");
 
 /**
  * registers a new user
@@ -404,6 +405,30 @@ const deleteuser = async (req, res) => {
     }
 };
 
+/**
+ * Retrieves all content creator names and returns them.
+ *
+ * @param req
+ * @param res
+ * @return {Promise<*>} Returns list of {firstName: {String}, lastName: {String}} items.
+ */
+const getContentCreatorNames = async (req, res) => {
+    try {
+        // Get all content  creators.
+        const users = await UserModel.find({"role": "contentCreator"}).exec();
+
+        // Strip list of all information except first and last names.
+        users.forEach((user, index, array) => array[index] = user.firstName + " " + user.lastName);
+
+        return res.status(200).json(users);
+    } catch (err) {
+        console.log(err);
+        return res.status(500).json({
+            error: "Internal server error: " + err.message,
+        });
+    }
+}
+
 module.exports = {
     register,
     login,
@@ -414,4 +439,5 @@ module.exports = {
     addreview,
     updatereview,
     deletereview,
+    getContentCreatorNames
 };
