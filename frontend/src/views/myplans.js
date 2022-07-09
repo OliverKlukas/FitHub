@@ -2,6 +2,7 @@ import { Stack, Typography } from "@mui/material";
 import { useParams } from "react-router-dom";
 import { consumer } from "../utils/consumer";
 import { content } from "../utils/content";
+import {connect, useSelector} from "react-redux";
 import Plan from "../components/plans/plan";
 
 /**
@@ -12,6 +13,8 @@ import Plan from "../components/plans/plan";
  * @return {JSX.Element} returns My Plans page.
  */
 export default function MyPlans() {
+
+  const user = useSelector((state) => state.user);
   // Match url id to consumer item.
   const { id } = useParams();
   // eslint-disable-next-line

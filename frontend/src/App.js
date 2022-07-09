@@ -53,7 +53,7 @@ function App() {
                 <Route path="/landing" element={<LandingPage />} />^
                 <Route path="/discovery" element={<Discovery />} />
                 <Route path="/upload" element={<ContentUpload />} />
-                <Route path="/plans" element={<AboutUs />} />
+                <Route path="/plans" element={<MyPlans />} />
                 <Route path="/about" element={<AboutUs />} />
                 <Route path="/contact" element={<AboutUs />} />
                 <Route path="/profile/:firstName/:lastName" element={<Profile />} />
