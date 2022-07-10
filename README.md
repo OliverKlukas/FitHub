@@ -1,7 +1,7 @@
 # SEBA Master 2022 - Team FitHub
 ![FitHub Logo](./frontend/src/resources/logo_standard.svg)
 
-# Description
+# Our mission
 FitHub is the platform where fitness content creators sell their training and nutrition plans to fitness enthusiasts and health-conscious consumers. We want to help fitness content creators reaching a larger audience than on social media, while also providing a trustworthy and simple-to-use solution for fitness enthusiasts to find training plans, fitness plans or coachings suited for their preferences.
 
 # Technical Documentation
