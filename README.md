@@ -1,4 +1,4 @@
-# SEBA Master 2022 - Team FitHub
+# SEBA Master 2022 - Team 48 - FitHub
 ![FitHub Logo](./frontend/src/resources/logo_standard.svg)
 
 # Our mission
