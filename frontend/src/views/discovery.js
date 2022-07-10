@@ -21,20 +21,15 @@ function Discovery(props) {
     // Load content when the page is loaded or the contents have changed.
     useEffect(() => {
         if (!contentList) {
-            loadContentList();
+            props.dispatch(props.getContentList());
         }
     }, [contentList]);
-
-    // Triggers the redux action getContentList().
-    const loadContentList = async () => {
-        props.dispatch(props.getContentList());
-    };
 
     // String[] of tags that the content list should currently be filtered for.
     const [filter, setFilter] = useState([]);
 
     // Number[] of price range that the content list should currently be filtered for.
-    const [priceRange, setPriceRange] = React.useState([0.0, 100.0]);
+    const [priceRange, setPriceRange] = React.useState([0.0, 1000.0]);
 
     // Screen size hooks to responsively control the number of content columns.
     const sm = useMediaQuery(theme.breakpoints.down("sm"));

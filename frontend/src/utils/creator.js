@@ -4,12 +4,11 @@
 export const creator = [
   {
     id: 3000,
-    name: "Mike Tyson",
-    eMailAdress: "mikeymike@web.de",
-    offeredContent: [1000, 1001, 1002],
-    rating: 2,
-  },
-  {
+    name: 'Mike Tyson',
+    eMailAdress: 'mikeymike@web.de',
+    offeredContent:  [1000, 1001, 1002, 1003, 1004, 1005],
+    rating: 2
+}, {
     id: 3001,
     name: "Sascha Huber",
     eMailAdress: "dahubsi@austria-email.at",
