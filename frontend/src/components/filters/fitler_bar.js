@@ -59,7 +59,7 @@ function FilterBar(props) {
   // Resets the price filter and displayed chip.
   function resetPriceFilter() {
     setPriceFiltered(false);
-    props.setPriceRange([0.0, 250.0]);
+    props.setPriceRange([0.0, 1000.0]);
   }
 
   return !creatorsNames ? (<div></div>) : (
