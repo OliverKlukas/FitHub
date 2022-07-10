@@ -17,14 +17,14 @@ import EuroSymbol from "@mui/icons-material/Euro";
 import InputAdornment from "@mui/material/InputAdornment";
 import Autocomplete from "@mui/material/Autocomplete";
 import UploadButton from "../components/buttons/upload_button";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { connect } from "react-redux";
 import { addContent } from "../redux/actions";
 import Checkbox from "@mui/material/Checkbox";
 import { CancelButton } from "../components/buttons/cancel_button";
 import { StandardButton } from "../components/buttons/standard_button";
-import { pink } from "@mui/material/colors";
+import { red } from "@mui/material/colors";
 import { useSelector } from "react-redux";
 
 const preInputValue = "Type here...";
@@ -45,8 +45,18 @@ function ContentUpload(props) {
   //get the logged in user
   const user = useSelector((state) => state.user);
 
+  let defaultCategory = "training";
+
+  if (
+    props.data.choice === "training" ||
+    props.data.choice === "nutrition" ||
+    props.data.choice === "coaching"
+  ) {
+    defaultCategory = props.data.choice;
+  }
+
   // Hooks to save filled out upload form, all need pre-defined value.
-  const [category, setCategory] = useState(props.data.choice);
+  const [category, setCategory] = useState(defaultCategory);
   const [title, setTitle] = useState("");
   const [price, setPrice] = useState("");
   const [description, setDescription] = useState("");
@@ -66,11 +76,25 @@ function ContentUpload(props) {
   const [pubFailure, setPubFailure] = useState(false);
   const [pubSuccess, setPubSuccess] = useState(false);
 
-  //handle missing mandatory checkboxes
+  //snackbar missing mandatory checkboxes
   const [checkFailure, setCheckFailure] = useState(false);
   // close the snackbar of mandatory checkboxes
   const handleCheckFailure = () => {
     setCheckFailure(false);
+  };
+
+  //snackbar missing tags
+  const [tagsSnack, setTagsSnack] = useState(false);
+  // close the snackbar of tags
+  const handleTagsSnack = () => {
+    setTagsSnack(false);
+  };
+
+  //snackbar for 16MB upload boundry
+  const [uploadSnack, setUploadSnack] = useState(false);
+  // close the snackbar of upload boundry
+  const handleUploadSnack = () => {
+    setUploadSnack(false);
   };
 
   // Switch to discovery view after successful publication and reload in order to show item.
@@ -86,22 +110,66 @@ function ContentUpload(props) {
 
   // User input verification and hand-off to backend database publication.
   function handlePublishContent() {
-    if (termsChecked && qualityChecked) {
+    // TODO: verify that the above defined hooks match our criteria, i.e. with regex that we could put i.e. into utils folder and use project wide
+    validatePrice();
+    validateTitle();
+    validateDescription();
+    validateTags();
+    validateDuration();
+    validateIntensity();
+    if (
+      !titleError &&
+      !priceError &&
+      !descriptionError &&
+      !durationError &&
+      !intensityError &&
+      !tagsError &&
+      media.length !== 0 &&
+      plan.length !== 0 &&
+      sample.length !== 0 &&
+      termsChecked &&
+      qualityChecked
+    ) {
       publishContent();
     } else {
+      if (
+        titleError ||
+        priceError ||
+        descriptionError ||
+        durationError ||
+        intensityError ||
+        media.length === 0 ||
+        plan.length === 0 ||
+        sample.length === 0
+      ) {
+        setUploadSnack(true);
+        if (media.length === 0) {
+          setMediaError(true);
+        }
+        if (plan.length === 0) {
+          setPlanError(true);
+        }
+        if (sample.length === 0) {
+          setSampleError(true);
+        }
+      } else if (!termsChecked || !qualityChecked) {
+        setCheckFailure(true);
+      } else if (tagsError) {
+        setTagsSnack(true);
+      }
+
       //feedback mandatory checkboxes
-      if (!termsChecked && !qualityChecked) {
+      if (!termsChecked) {
         setMissedTermsCheck(true);
-        setMissedQualityCheck(true);
-      } else if (!termsChecked) {
-        setMissedTermsCheck(true);
-        setMissedQualityCheck(false);
       } else {
-        setMissedQualityCheck(true);
         setMissedTermsCheck(false);
       }
-      //Snackbar activation failure
-      setCheckFailure(true);
+
+      if (!qualityChecked) {
+        setMissedQualityCheck(true);
+      } else {
+        setMissedQualityCheck(false);
+      }
     }
   }
 
@@ -117,7 +185,9 @@ function ContentUpload(props) {
         duration: parseInt(duration),
         intensity: parseInt(intensity),
         support: support,
-        tags: goalTags.concat(levelTags, lifestyleTags, [user.user.fname + " " + user.user.lname]),
+        tags: goalTags.concat(levelTags, lifestyleTags, [
+          user.user.fname + " " + user.user.lname,
+        ]),
         featured: feature,
         media: media,
         plan: plan[0],
@@ -129,6 +199,91 @@ function ContentUpload(props) {
       console.log("Publishing content failed!");
     }
   }
+
+  const validatePrice = () => {
+    // [0-9]+ -> x times the numbers 0-9
+    // ([.,][0-9]{1,2})? -> ? means optionl (inside bracket)
+    // [.,] -> comma or point
+    // [0-9]{1,2} -> 1 or 2 times a number
+    // \s? -> optional space
+    // (€)? -> optional euro sign
+    if (price.match(/^([0-9]+([.,][0-9]{1,2})?\s?(€)?)$/) === null) {
+      setPriceError(true); //error input field
+    } else {
+      setPriceError(false);
+    }
+  };
+
+  const validateTitle = () => {
+    //[a-zA-Z\-0-9<>!?();:.,-~+*#"%ß\u00c4\u00e4\u00d6\u00f6\u00dc\u00fc]+ -> x times all these chars (äöüÄÖÜ unicode)
+    //(\s+)? -> optional space(s)
+    //{3,10} -> min 3 chars, max 10 words
+    if (
+      title.match(
+        /^((([a-zA-Z\-0-9<>!?();:.,-~+*#"%ß\u00c4\u00e4\u00d6\u00f6\u00dc\u00fc]+)(\s+)?)){3,10}$/
+      ) === null
+    ) {
+      setTitleError(true); //error input field
+    } else {
+      setTitleError(false);
+    }
+  };
+
+  const validateDescription = () => {
+    //[a-zA-Z\-0-9<>!?();:.,-~+*#"%ß\u00c4\u00e4\u00d6\u00f6\u00dc\u00fc]+ -> x times all these chars (äöüÄÖÜ unicode)
+    //(\s+)? -> optional space(s)
+    //{5,30} -> min 5 chars, max 30 words
+    if (
+      description.match(
+        /^((([a-zA-Z\-0-9<>!?();:.,-~+*#"%ß\u00c4\u00e4\u00d6\u00f6\u00dc\u00fc]+)(\s+)?)){5,30}$/
+      ) === null
+    ) {
+      setDescriptionError(true); //error input field
+    } else {
+      setDescriptionError(false);
+    }
+  };
+
+  const validateDuration = () => {
+    //([0-9]){1,3} -> numbers with length min 1, max 3
+    if (duration.match(/^([1-9][0-9]?){1,1}$/) === null) {
+      setDurationError(true); //error input field
+    } else {
+      setDurationError(false);
+    }
+  };
+
+  const validateIntensity = () => {
+    //([0-9]){1,3} -> numbers with length min 1, max 3
+    if (intensity.match(/^([1-9][0-9]?){1,1}$/) === null) {
+      setIntensityError(true); //error input field
+    } else {
+      setIntensityError(false);
+    }
+  };
+
+  const validateTags = () => {
+    if (
+      goalTags.length === 0 ||
+      levelTags.length === 0 ||
+      lifestyleTags.length === 0
+    ) {
+      setTagsError(true);
+    } else {
+      setTagsError(false);
+    }
+  };
+
+  //error handling
+  const [priceError, setPriceError] = React.useState(false);
+  const [titleError, setTitleError] = React.useState(false);
+  const [descriptionError, setDescriptionError] = React.useState(false);
+  const [durationError, setDurationError] = React.useState(false);
+  const [intensityError, setIntensityError] = React.useState(false);
+  const [tagsError, setTagsError] = React.useState(false);
+  const [mediaError, setMediaError] = React.useState(false);
+  const [planError, setPlanError] = React.useState(false);
+  const [sampleError, setSampleError] = React.useState(false);
 
   // state for Terms and Conditions Checkbox
   const [termsChecked, setTermsChecked] = React.useState(false);
@@ -173,7 +328,7 @@ function ContentUpload(props) {
             row
             aria-labelledby="category-radio-buttons-group-label"
             name="row-radio-buttons-group"
-            defaultValue={props.data.choice}
+            defaultValue={defaultCategory}
             onChange={(event) => setCategory(event.target.value)}
           >
             <FormControlLabel
@@ -206,8 +361,14 @@ function ContentUpload(props) {
           id="title-input"
           placeholder={preInputValue}
           value={title}
+          onBlur={validateTitle}
           onChange={(event) => setTitle(event.target.value)}
-          helperText="Please enter a short and catchy title that best describes your fitness offering"
+          error={titleError}
+          helperText={
+            titleError
+              ? 'Enter min 3 letters and maximum 10 words, allowed symbols: <>!?();:.,-~+*#"%'
+              : "Please enter a short and catchy title that best describes your fitness offering"
+          }
           variant="filled"
           size="small"
         />
@@ -222,11 +383,17 @@ function ContentUpload(props) {
         </Typography>
         <TextField
           sx={{ maxWidth: 200 }}
+          error={priceError}
           id="price-input"
           placeholder={preInputValue}
           value={price}
           onChange={(event) => setPrice(event.target.value)}
-          helperText="Prices must include VAT and represent the total costs you expect buyers to pay"
+          onBlur={validatePrice}
+          helperText={
+            priceError
+              ? "Unaccepted price format! Shape to format like 50,00 (example)"
+              : "Prices must include VAT and represent the total costs you expect buyers to pay"
+          }
           variant="filled"
           size="small"
           InputProps={{
@@ -251,11 +418,17 @@ function ContentUpload(props) {
           multiline
           value={description}
           onChange={(event) => setDescription(event.target.value)}
+          onBlur={validateDescription}
+          error={descriptionError}
           rows={4}
           variant="filled"
           placeholder={preInputValue}
           size="small"
-          helperText="Please enter a description that conveys what buyers can expect from this offering"
+          helperText={
+            descriptionError
+              ? 'Please enter min 5 letters, max 30 words, allowed symbols: <>!?();:.,-~+*#"%'
+              : "Please enter a description that conveys what buyers can expect from this offering"
+          }
         />
       </Stack>
       <Stack spacing={2} direction="row" alignItems="center">
@@ -268,27 +441,43 @@ function ContentUpload(props) {
         </Typography>
         <Stack spacing={2} direction="row">
           <TextField
+            sx={{ maxWidth: 200 }}
             id="duration-input"
             label="Duration"
+            onBlur={validateDuration}
             multiline
             value={duration}
             onChange={(event) => setDuration(event.target.value)}
             type="number"
             variant="filled"
             placeholder={preInputValue}
-            helperText="Amount of weeks"
+            helperText={
+              durationError
+                ? "display the amount of weeks by entering a number between 1-99"
+                : "Amount of weeks"
+            }
             size="small"
+            error={durationError}
           />
           <TextField
+            sx={{ maxWidth: 200 }}
             id="intensity-input"
             label="Intensity"
+            onBlur={validateIntensity}
+            error={intensityError}
             multiline
             value={intensity}
             onChange={(event) => setIntensity(event.target.value)}
             variant="filled"
             placeholder={preInputValue}
             helperText={
-              category === "nutrition" ? "Meals per week" : "Trainings per week"
+              intensityError
+                ? category === "nutrition"
+                  ? "enter a number between 1-99 meals per week"
+                  : "enter a number between 1-99 trainings per week"
+                : category === "nutrition"
+                ? "Meals per week"
+                : "Trainings per week"
             }
             size="small"
           />
@@ -314,6 +503,7 @@ function ContentUpload(props) {
               <Autocomplete
                 multiple
                 id="goal-tags"
+                onBlur={validateTags}
                 options={fitnessGoal}
                 value={goalTags}
                 onChange={(event, value) => setGoalTags(value)}
@@ -327,6 +517,7 @@ function ContentUpload(props) {
                 multiple
                 id="goal-tags"
                 options={lifestyle}
+                onBlur={validateTags}
                 value={lifestyleTags}
                 onChange={(event, value) => setLifestyleTags(value)}
                 renderInput={(params) => (
@@ -339,6 +530,7 @@ function ContentUpload(props) {
                 multiple
                 id="level-tags"
                 options={fitnessLevel}
+                onBlur={validateTags}
                 value={levelTags}
                 onChange={(event, value) => setLevelTags(value)}
                 renderInput={(params) => (
@@ -347,10 +539,20 @@ function ContentUpload(props) {
               />
             </Grid>
             <Grid item xs={1} sm={1}>
-              <Typography variant="body2" fontSize="small">
-                Please type and select fitting tags for your content offering.
-                These will be used to better reach your target user group on
-                FitHub.
+              <Typography
+                variant="body2"
+                fontSize="small"
+                sx={
+                  tagsError
+                    ? {
+                        color: red["A700"],
+                      }
+                    : { color: "default" }
+                }
+              >
+                Please type and select fitting tags (at least one) for your
+                content offering. These will be used to better reach your target
+                user group on FitHub.
               </Typography>
             </Grid>
           </Grid>
@@ -367,10 +569,22 @@ function ContentUpload(props) {
             givenId="marketing-upload"
             multiUpload={true}
             setUpload={setMedia}
+            setSuccess={setMediaError}
           />
-          <Typography variant="body2" fontSize="small" maxWidth={300}>
+          <Typography
+            variant="body2"
+            fontSize="small"
+            maxWidth={300}
+            sx={
+              mediaError
+                ? {
+                    color: red["A700"],
+                  }
+                : { color: "default" }
+            }
+          >
             Please upload pictures that represents your offer (example dishes,
-            workouts etc). Be aware and respect our{" "}
+            workouts etc). Be aware of the max size of 16MB and respect our{" "}
             <Link
               color="#393E46"
               fontSize={14}
@@ -395,10 +609,22 @@ function ContentUpload(props) {
             givenId="plan-upload"
             multiUpload={false}
             setUpload={setPlan}
+            setSuccess={setPlanError}
           />
-          <Typography variant="body2" fontSize="small" maxWidth={300}>
-            Please upload the pdf file that contains the complete training plan
-            that buyers are going to receive
+          <Typography
+            variant="body2"
+            fontSize="small"
+            maxWidth={300}
+            sx={
+              planError
+                ? {
+                    color: red["A700"],
+                  }
+                : { color: "default" }
+            }
+          >
+            Please upload the pdf file of max 16MB that contains the complete
+            training plan that buyers are going to receive
           </Typography>
         </Stack>
       </Stack>
@@ -412,10 +638,22 @@ function ContentUpload(props) {
             givenId="sample-upload"
             multiUpload={false}
             setUpload={setSample}
+            setSuccess={setSampleError}
           />
-          <Typography variant="body2" fontSize="small" maxWidth={300}>
-            Please upload a sample pdf file which gives buyers an impression of
-            the full plan
+          <Typography
+            variant="body2"
+            fontSize="small"
+            maxWidth={300}
+            sx={
+              sampleError
+                ? {
+                    color: red["A700"],
+                  }
+                : { color: "default" }
+            }
+          >
+            Please upload a sample pdf file of max 16MB which gives buyers an
+            impression of the full plan
           </Typography>
         </Stack>
       </Stack>
@@ -459,7 +697,7 @@ function ContentUpload(props) {
             sx={
               missedQualityCheck
                 ? {
-                    color: pink[800],
+                    color: red["A700"],
                   }
                 : { color: "default" }
             }
@@ -469,7 +707,7 @@ function ContentUpload(props) {
             sx={
               missedQualityCheck
                 ? {
-                    color: pink[800],
+                    color: red["A700"],
                   }
                 : { color: "default" }
             }
@@ -485,7 +723,7 @@ function ContentUpload(props) {
             sx={
               missedTermsCheck
                 ? {
-                    color: pink[800],
+                    color: red["A700"],
                   }
                 : { color: "default" }
             }
@@ -495,7 +733,7 @@ function ContentUpload(props) {
             sx={
               missedTermsCheck
                 ? {
-                    color: pink[800],
+                    color: red["A700"],
                   }
                 : { color: "default" }
             }
@@ -550,6 +788,19 @@ function ContentUpload(props) {
         </Alert>
       </Snackbar>
       <Snackbar
+        open={uploadSnack}
+        autoHideDuration={3600}
+        onClose={handleUploadSnack}
+      >
+        <Alert
+          onClose={handleUploadSnack}
+          severity="error"
+          sx={{ width: "100%" }}
+        >
+          Upload your content before publishing!
+        </Alert>
+      </Snackbar>
+      <Snackbar
         open={checkFailure}
         autoHideDuration={1800}
         onClose={handleCheckFailure}
@@ -560,6 +811,19 @@ function ContentUpload(props) {
           sx={{ width: "100%" }}
         >
           Mandatory checks missing!
+        </Alert>
+      </Snackbar>
+      <Snackbar
+        open={tagsSnack}
+        autoHideDuration={1800}
+        onClose={handleTagsSnack}
+      >
+        <Alert
+          onClose={handleTagsSnack}
+          severity="error"
+          sx={{ width: "100%" }}
+        >
+          Provide at least one tag for each category!
         </Alert>
       </Snackbar>
     </Stack>
