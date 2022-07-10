@@ -1,4 +1,4 @@
-import {Alert, Avatar, Box, CircularProgress, Link, Rating, Stack, Typography} from "@mui/material";
+import {Alert, Avatar, Box, CircularProgress, Link, Rating, Stack, Tooltip, Typography} from "@mui/material";
 import Carousel from "react-material-ui-carousel";
 import {Link as RouterLink, useParams} from "react-router-dom";
 import {HighlightButton} from "../components/buttons/highlight_button";
@@ -23,12 +23,21 @@ function Details(props) {
         return state.singleContent;
     });
 
+    // Retrieve current signed-in user from redux state.
+    const user = useSelector((state) => {
+        return state.user;});
+
     // Retrieve author of content item.
     const [author, setAuthor] = useState(null);
 
     // Function to fetch username from service.
     async function fetchUser() {
         return await UserService.userdata(singleContent.content.ownerId);
+    }
+
+    // Retrieve if buying should be enabled.
+    function enablePurchase(){
+        return user.hasOwnProperty("user") && user.user.hasOwnProperty("role") && user.user.role === "customer";
     }
 
     // Trigger retrieval of states and backend data.
@@ -157,13 +166,18 @@ function Details(props) {
                         </Typography>
                         <Typography>total price</Typography>
                     </Stack>
-                    <HighlightButton
-                        variant="contained"
-                        component={RouterLink}
-                        to={`/payment/${id}`}
-                    >
-                        Buy now
-                    </HighlightButton>
+                    <Tooltip title={enablePurchase() ? "" : "Please sign-in as a customer to buy content!"} placement="right">
+                        <div style={{width: "110px"}}>
+                        <HighlightButton
+                            disabled={!enablePurchase()}
+                            variant="contained"
+                            component={RouterLink}
+                            to={`/payment/${id}`}
+                        >
+                            Buy now
+                        </HighlightButton>
+                        </div>
+                    </Tooltip>
                 </Stack>
                 <Stack spacing={1}>
                     <Typography variant="h3">Description</Typography>
