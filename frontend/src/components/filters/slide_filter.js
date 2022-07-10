@@ -37,7 +37,6 @@ export default function SlideFilter({
         setPriceRange([clamped - minPriceRange, clamped]);
       }
     } else {
-      console.log(priceRange);
       setPriceRange(newPriceRange);
     }
     // Set chip for price filter.
