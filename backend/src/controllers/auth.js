@@ -225,15 +225,10 @@ const updateuser = async (req, res) => {
  * @returns
  */
 const userdata = async (req, res) => {
-    if (!Object.prototype.hasOwnProperty.call(req.body, "firstName"))
+    if (!Object.prototype.hasOwnProperty.call(req.body, "userId"))
         return res.status(400).json({
             error: "Bad Request",
-            message: "The request body must contain a firstName property",
-        });
-    if (!Object.prototype.hasOwnProperty.call(req.body, "lastName"))
-        return res.status(400).json({
-            error: "Bad Request",
-            message: "The request body must contain a lastName property",
+            message: "The request body must contain a userId property",
         });
     // this insecure logged in check is sufficient, since the data is publicly available anyway, and the check is just needed for display logic in the frontend
     let isloggedIn = false;
@@ -243,10 +238,7 @@ const userdata = async (req, res) => {
     if (isloggedIn) {
         try {
             let isownprofile = false;
-            const requesteduser = await UserModel.findOne({
-                firstName: req.body.firstName,
-                lastName: req.body.lastName,
-            }).exec(); // get requested user from database
+            const requesteduser = await UserModel.findById(req.body.userId).exec(); // get requested user from database
             const requester = await UserModel.findOne({
                 email: req.body.email,
             });
@@ -260,6 +252,8 @@ const userdata = async (req, res) => {
                 role: requesteduser.role,
                 isOwnProfile: isownprofile,
                 profilePicture: requesteduser.profilePicture,
+                reviews: requesteduser.reviews,
+                avgReviewRating: requesteduser.avgReviewRating,
             });
         } catch (error) {
             return res.status(500).json({
@@ -414,7 +408,33 @@ const deleteuser = async (req, res) => {
 };
 
 /**
- * Checks if a email is already in use, Just for visuals in frontend, register function still has a separate check for security
+ * Retrieves all content creator names and returns them.
+ *
+ * @param req
+ * @param res
+ * @return {Promise<*>} Returns list of {firstName: {String}, lastName: {String}} items.
+ */
+const getContentCreatorNames = async (req, res) => {
+    try {
+        // Get all content  creators.
+        const users = await UserModel.find({"role": "contentCreator"}).exec();
+
+        // Strip list of all information except first and last names.
+        users.forEach((user, index, array) => array[index] = user.firstName + " " + user.lastName);
+
+        return res.status(200).json(users);
+    } catch (err) {
+        console.log(err);
+        return res.status(500).json({
+            error: "Internal server error: " + err.message,
+        });
+    }
+}
+
+
+/**
+ * Checks if an email is already in use, Just for visuals in frontend, register function still has a separate check for security
+ *
  * @param {*} req email as param
  * @param {*} res Boolean AlreadyHasAccount 
  * @returns 
@@ -441,6 +461,27 @@ const checkEmail = async (req, res) => {
     }
 }
 
+/**
+ * Retrieves only the name of a user by its id.
+ *
+ * @param req - expects an userId to be supplied.
+ * @param res
+ * @return {Promise<void>}
+ */
+const getUsername = async (req, res) => {
+    try {
+        // Get username based on the supplied id.
+        const user = await UserModel.findById(req.params.ownerId).exec();
+        const username = user.firstName + " " + user.lastName;
+        return res.status(200).json(username);
+    } catch (err) {
+        console.log(err);
+        return res.status(500).json({
+            error: "Internal server error: " + err.message,
+        });
+    }
+}
+
 module.exports = {
     register,
     login,
@@ -451,5 +492,7 @@ module.exports = {
     addreview,
     updatereview,
     deletereview,
+    getContentCreatorNames,
+    getUsername,
     checkEmail,
 };
