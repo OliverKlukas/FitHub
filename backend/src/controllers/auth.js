@@ -263,10 +263,7 @@ const userdata = async (req, res) => {
         }
     } else {
         try {
-            const user = await UserModel.findOne({
-                firstName: req.body.firstName,
-                lastName: req.body.lastName,
-            }).exec(); // get user from database
+            const user = await UserModel.findById(req.body.userId).exec(); // get requested user from database
             return res.status(200).json({
                 firstname: user.firstName,
                 lastname: user.lastName,
@@ -274,6 +271,8 @@ const userdata = async (req, res) => {
                 role: user.role,
                 isOwnProfile: false,
                 profilePicture: user.profilePicture,
+                reviews: user.reviews,
+                avgReviewRating: user.avgReviewRating,
             });
         } catch (error) {
             return res.status(500).json({

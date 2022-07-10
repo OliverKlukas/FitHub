@@ -29,7 +29,7 @@ function Discovery(props) {
     const [filter, setFilter] = useState([]);
 
     // Number[] of price range that the content list should currently be filtered for.
-    const [priceRange, setPriceRange] = React.useState([0.0, 1000.0]);
+    const [priceRange, setPriceRange] = React.useState([0.0, 250.0]);
 
     // Screen size hooks to responsively control the number of content columns.
     const sm = useMediaQuery(theme.breakpoints.down("sm"));
