@@ -1,10 +1,16 @@
 import ListItem from "@mui/material/ListItem";
-import {ListItemButton} from "@mui/material";
+import {ListItemButton, Typography} from "@mui/material";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import Avatar from "@mui/material/Avatar";
-import ListItemText from "@mui/material/ListItemText";
 import * as React from "react";
 
+/**
+ * Implements single item of the chat partners list that includes name and picture.
+ *
+ * @param props
+ * @return {JSX.Element}
+ * @constructor
+ */
 function ChatListItem(props) {
     return (<ListItem alignItems="flex-start">
         <ListItemButton>
@@ -13,9 +19,7 @@ function ChatListItem(props) {
                     bgcolor: "secondary.main",
                 }} alt={props.name} src={props.img}/>
             </ListItemAvatar>
-            <ListItemText
-                primary={props.name}
-            />
+            <Typography variant={"h4"}>{props.name}</Typography>
         </ListItemButton>
     </ListItem>);
 }

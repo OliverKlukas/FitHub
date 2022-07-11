@@ -1,13 +1,22 @@
 import * as React from "react";
-import {Stack} from "@mui/material";
+import {Divider, Stack} from "@mui/material";
 import ChatsList from "../components/chat/chatsList";
 import ChatWindow from "../components/chat/chatWindow";
 
-function ChatView(){
+/**
+ * Implements chat and video calling functionality.
+ *
+ * TODO: add chat with MongoDB and integrate video calls similarly to zoom with a call room like here: https://www.daily.co/blog/building-a-custom-video-chat-app-with-react/
+ *
+ * @return {JSX.Element}
+ * @constructor
+ */
+function ChatView() {
     return (
-        <Stack direction={"row"}>
+        <Stack spacing={1} direction={"row"}>
             <ChatsList/>
-            <ChatWindow/>
+            <Divider orientation={"vertical"} flexItem/>
+            <ChatWindow name={"Simon Vogl"}/>
         </Stack>
     );
 }

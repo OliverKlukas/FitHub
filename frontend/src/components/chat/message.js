@@ -1,26 +1,33 @@
 import * as React from "react";
 import ListItem from "@mui/material/ListItem";
-import ListItemText from "@mui/material/ListItemText";
-import {Box} from "@mui/material";
+import {Box, Typography} from "@mui/material";
 
+/**
+ * Implements message in chat with differentiation between sender and receiver.
+ *
+ * @param props
+ * @return {JSX.Element}
+ * @constructor
+ */
 function Message(props) {
     return (<ListItem
         sx={{
-            marginY: 0.5,
-            textAlign: props.sender ? "right" : "left",
-    }}
+            display: "flex", "&.MuiListItem-root": {
+                justifyContent: props.sender ? "flex-end" : "flex-start",
+            }
+        }}
     >
-            <ListItemText
-                sx={{
-                    "&.MuiListItemText-root":{
-                        color: "#FFFFFF"
-                    },
-                    width: "10px",
-                    backgroundColor: props.sender ? "primary.main" : "warning.main",
-                    borderRadius: 5,
-                }}
-                primary={props.text}
-            />
+        <Box sx={{
+            backgroundColor: props.sender ? "secondary.main" : "warning.main",
+            borderRadius: 5,
+            borderTopRightRadius: props.sender && 0,
+            borderTopLeftRadius: !props.sender && 0,
+            paddingX: 2,
+            paddingY: 1,
+        }}>
+            <Typography color={"#ffffff"}>{props.text}</Typography>
+        </Box>
+
     </ListItem>);
 
 }

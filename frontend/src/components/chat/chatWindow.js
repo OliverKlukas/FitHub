@@ -1,38 +1,65 @@
 import * as React from "react";
-import {Stack, TextField} from "@mui/material";
+import {Box, Divider, Stack, TextField, Typography} from "@mui/material";
 import List from "@mui/material/List";
 import Message from "./message";
 import SendIcon from '@mui/icons-material/Send';
+import Avatar from "@mui/material/Avatar";
+import VideoCallIcon from '@mui/icons-material/VideoCall';
+import IconButton from "@mui/material/IconButton";
 
-// TODO get from backend
-const messages = [
-    {message: "Hi", sender: true},
-    {message: "Hi", sender: false},
-    {message: "Wie geht's?", sender: true},
-    {message: "Gut und dir?", sender: false},
-    {message: "Mir auch!", sender: true},
-];
+// TODO get from backend, might even put this into chat.js
+const messages = [{message: "Hi", sender: true}, {message: "Hi", sender: false}, {
+    message: "Wie geht's?",
+    sender: true
+}, {message: "Gut und dir?", sender: false}, {message: "Mir auch!", sender: true},];
 
-function ChatWindow(){
+/**
+ * Implements the chat window with all messages between two partners, the message input and video call feature.
+ *
+ * @param props
+ * @return {JSX.Element}
+ * @constructor
+ */
+function ChatWindow(props) {
     return (
-        <Stack spacing={2} sx={{marginLeft: 2}} width={"100%"} justifyContent={"flex-end"}>
-            <List sx={{
-                width: '100%',
-                bgcolor: 'background.paper',
-                overflow: 'auto',
-                maxHeight: '75vh',
-            }}
-            >
-                {messages.map((item, index) => (
-                            <Message key={index} text={item.message} sender={item.sender} />
-                    )
-                )}
-            </List>
-            <Stack alignItems={"center"} width={"100%"} direction={"row"}>
-                <TextField fullWidth id="standard-basic" placeholder="type message here..." variant="standard" />
-                <SendIcon sx={{marginX: 2}}/>
+        <Stack justifyContent={"space-between"} sx={{height: "75vh", width: "100%"}}>
+            <Box>
+                <Stack direction={"row"} justifyContent={"space-between"}>
+                    <Box alignItems={"center"} display={"flex"} flexDirection={"row"}>
+                        <Avatar sx={{
+                            bgcolor: "secondary.main",
+                            marginLeft: 1.5,
+                            marginRight: 2,
+                            marginY: 1,
+                        }} alt={props.name} src={props.img}/>
+                        <Typography variant={"h3"}>
+                            {props.name}
+                        </Typography>
+                    </Box>
+                    <IconButton color={"secondary"}>
+                        <VideoCallIcon fontSize={"large"}/>
+                    </IconButton>
+                </Stack>
+                <Divider flexItem/>
+            </Box>
+            <Stack sx={{
+                marginLeft: 2,
+            }} width={"100%"} justifyContent={"flex-end"}>
+                <List sx={{
+                    width: "100%", bgcolor: "background.paper", overflow: "auto",
+                }}
+                >
+                    {messages.map((item, index) => (<Message key={index} text={item.message} sender={item.sender}/>))}
+                </List>
+                <Stack alignItems={"center"} width={"100%"} direction={"row"}>
+                    <TextField fullWidth id="standard-basic" placeholder="type message here..." variant="standard"/>
+                    <IconButton color={"secondary"} sx={{marginX: 2}}>
+                        <SendIcon/>
+                    </IconButton>
+                </Stack>
             </Stack>
         </Stack>
+
     );
 }
 
