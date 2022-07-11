@@ -30,7 +30,7 @@ export default function SlideFilter({
     // Correct thumb positions if new positions of them surpasses the minDistance.
     if (newPriceRange[1] - newPriceRange[0] < minPriceRange) {
       if (activeThumb === 0) {
-        const clamped = Math.min(newPriceRange[0], 100 - minPriceRange);
+        const clamped = Math.min(newPriceRange[0], 250 - minPriceRange);
         setPriceRange([clamped, clamped + minPriceRange]);
       } else {
         const clamped = Math.max(newPriceRange[1], minPriceRange);
@@ -94,6 +94,7 @@ export default function SlideFilter({
             getAriaLabel={() => "Minimum distance shift"}
             value={priceRange}
             onChange={handleSlide}
+            max={250}
             valueLabelDisplay="auto"
             disableSwap
           />
