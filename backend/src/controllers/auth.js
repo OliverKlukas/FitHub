@@ -273,7 +273,7 @@ const userdata = async (req, res) => {
                 isOwnProfile: false,
                 profilePicture: user.profilePicture,
                 reviews: user.reviews,
-                avgReviewstar: user.avgReviewstar,
+                avgReviewRating: user.avgReviewRating,
             });
         } catch (error) {
             return res.status(500).json({
