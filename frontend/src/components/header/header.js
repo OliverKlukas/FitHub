@@ -40,6 +40,7 @@ function Header(props) {
     about: "About us",
   };
   const icondirection = "/discovery";
+  const icondirectioncreator = "/landing";
   // Header Center for a Customer
   const pagesCustomer = {
     discovery: "Discovery",
@@ -92,7 +93,17 @@ function Header(props) {
     >
       <Box>
         <Box sx={{ display: { xs: "none", md: "flex" } }}>
-          <Link href={icondirection}>
+          <Link
+            href={
+              user.user
+                ? [
+                    user.user.role === "contentCreator"
+                      ? icondirectioncreator
+                      : icondirection,
+                  ]
+                : icondirection
+            }
+          >
             <Logo />
           </Link>
         </Box>
