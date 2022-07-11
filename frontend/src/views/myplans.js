@@ -8,7 +8,7 @@ import {
 import * as React from "react";
 import { connect, useSelector } from "react-redux";
 import Plan from "../components/plans/plan";
-import { getBoughtPlan, getContent } from "../redux/actions";
+import { getBoughtPlan, getContentList } from "../redux/actions";
 import { useEffect } from "react";
 
 /**
@@ -30,7 +30,14 @@ function MyPlans(props) {
     props.getBoughtPlan(user.user._id);
   }, [planList, user.user._id]);
 
-  return !planList ? (
+  // Load content when the page is loaded or the contents have changed.
+  useEffect(() => {
+    if (!contentList) {
+        props.getContentList();
+    }
+}, [contentList]);
+
+  return !contentList && !planList? (
     // Loading content.
     <Box
       display="flex"
@@ -43,12 +50,15 @@ function MyPlans(props) {
   ) : (
     <Stack spacing={4} marginTop={5}>
       <Typography variant="h1">My Plans</Typography>
+      {contentList.map((item) => {
+        return <Box key={item._id}>{item._id}</Box>;     
+      })}
       {planList.map((item) => {
-        return <Box key={item._id}>{item._id}</Box>;S      
+        return <Box key={item._id}>{item._id}</Box>;     
       })}
     </Stack>
   );
 }
 
 // Connect() establishes the connection to the redux functionalities.
-export default connect(null, { getBoughtPlan, getContent })(MyPlans);
+export default connect(null, { getBoughtPlan, getContentList })(MyPlans);
