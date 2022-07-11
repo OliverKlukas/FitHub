@@ -7,15 +7,17 @@ import * as React from "react";
 
 function ChatListItem(props) {
     return (<ListItem alignItems="flex-start">
-            <ListItemButton>
-                <ListItemAvatar>
-                    <Avatar alt={props.name} src={props.img}/>
-                </ListItemAvatar>
-                <ListItemText
-                    primary={props.name}
-                />
-            </ListItemButton>
-        </ListItem>);
+        <ListItemButton>
+            <ListItemAvatar>
+                <Avatar sx={{
+                    bgcolor: "secondary.main",
+                }} alt={props.name} src={props.img}/>
+            </ListItemAvatar>
+            <ListItemText
+                primary={props.name}
+            />
+        </ListItemButton>
+    </ListItem>);
 }
 
 export default ChatListItem;

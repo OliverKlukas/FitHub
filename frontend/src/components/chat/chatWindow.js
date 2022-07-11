@@ -5,11 +5,17 @@ import Message from "./message";
 import SendIcon from '@mui/icons-material/Send';
 
 // TODO get from backend
-const messages = ["Hi", "hi", "wie gehts", "lass mal training machen"];
+const messages = [
+    {message: "Hi", sender: true},
+    {message: "Hi", sender: false},
+    {message: "Wie geht's?", sender: true},
+    {message: "Gut und dir?", sender: false},
+    {message: "Mir auch!", sender: true},
+];
 
 function ChatWindow(){
     return (
-        <Stack width={"100%"} justifyContent={"flex-end"} alignItems={"flex-end"}>
+        <Stack spacing={2} sx={{marginLeft: 2}} width={"100%"} justifyContent={"flex-end"}>
             <List sx={{
                 width: '100%',
                 bgcolor: 'background.paper',
@@ -18,13 +24,13 @@ function ChatWindow(){
             }}
             >
                 {messages.map((item, index) => (
-                            <Message key={index} text={item} />
+                            <Message key={index} text={item.message} sender={item.sender} />
                     )
                 )}
             </List>
-            <Stack direction={"row"}>
-                <TextField id="standard-basic" label="type message here..." variant="standard" />
-                <SendIcon/>
+            <Stack alignItems={"center"} width={"100%"} direction={"row"}>
+                <TextField fullWidth id="standard-basic" placeholder="type message here..." variant="standard" />
+                <SendIcon sx={{marginX: 2}}/>
             </Stack>
         </Stack>
     );
