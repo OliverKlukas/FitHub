@@ -8,7 +8,7 @@ import {
 import * as React from "react";
 import { connect, useSelector } from "react-redux";
 import Plan from "../components/plans/plan";
-import { getBoughtPlan, getContentList } from "../redux/actions";
+import { getBoughtPlan } from "../redux/actions";
 import { useEffect } from "react";
 
 /**
@@ -23,21 +23,13 @@ function MyPlans(props) {
 
   // State from the redux store for plans.
   const planList = useSelector((state) => state.boughtPlan.boughtPlan);
-  const contentList = useSelector((state) => state.entities.contentList);
 
   // On open load the movie.
   useEffect(() => {
     props.getBoughtPlan(user.user._id);
   }, [planList, user.user._id]);
 
-  // Load content when the page is loaded or the contents have changed.
-  useEffect(() => {
-    if (!contentList) {
-        props.getContentList();
-    }
-}, [contentList]);
-
-  return !contentList && !planList? (
+  return !planList ? (
     // Loading content.
     <Box
       display="flex"
@@ -50,11 +42,8 @@ function MyPlans(props) {
   ) : (
     <Stack spacing={4} marginTop={5}>
       <Typography variant="h1">My Plans</Typography>
-      {contentList.map((item) => {
-        return <Box key={item._id}>{item._id}</Box>;     
-      })}
       {planList.map((item) => {
-        return <Box key={item._id}>{item._id}</Box>;     
+        return <Box key={item._id}>{item._id}</Box>;
       })}
     </Stack>
   );
