@@ -60,9 +60,7 @@ function App() {
                   path="/upload"
                   element={<ContentUpload data={{ choice, setChoice }} />}
                 />
-                <Route path="/plans" element={<AboutUs />} />
                 <Route path="/about" element={<AboutUs />} />
-                <Route path="/contact" element={<AboutUs />} />
                 <Route path="/profile/:id" element={<Profile />} />
                 <Route path="/signup" element={<SignUp />} />
                 <Route path="/details/:id" element={<Details />} />
