@@ -51,7 +51,12 @@ function SignUp(props) {
 
     useEffect(() => {
         if (user.user) {
-            navigate("/landing");
+            if(isContentCreator) {
+                navigate("/landing");
+            } else {
+                navigate("/discovery")
+            }
+
             window.location.reload();
         }
     }, [user, props.history, navigate]);
