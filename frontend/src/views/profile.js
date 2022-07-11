@@ -31,6 +31,7 @@ function Profile(props) {
     isOwnProfile: false,
     isContentCreator: false,
     profilePicture: "",
+    avgReviewRating: 0,
   });
   // state for review data
   const [reviews, setReviews] = React.useState([]);
@@ -66,7 +67,8 @@ function Profile(props) {
           description: res.description,
           isOwnProfile: res.isOwnProfile,
           isContentCreator: res.role === "contentCreator",
-          profilePicture: res.profilePicture
+          profilePicture: res.profilePicture,
+          avgReviewRating: res.avgReviewRating
         }
         setReviews(res.reviews);
         setdata(temp);
@@ -77,7 +79,8 @@ function Profile(props) {
           description: res.description,
           isOwnProfile: res.isOwnProfile,
           isContentCreator: res.role === "contentCreator",
-          profilePicture: res.profilePicture
+          profilePicture: res.profilePicture,
+          avgReviewRating: res.avgReviewRating
         }
         setReviews(res.reviews);
         setdata(temp);
@@ -158,7 +161,7 @@ function Profile(props) {
               <Stack direction="row" spacing={3}>
                 <Rating
                   name="read-only"
-                  value={3} // TODO backed data
+                  value={data.avgReviewRating}
                   readOnly
                   icon={<StarIcon color="warning"></StarIcon>}
                 />
@@ -196,7 +199,7 @@ function Profile(props) {
             </Box>
           ] :
             [data.isContentCreator ? <Stack direction="column" spacing={4}>
-              <RatingDialog></RatingDialog>
+              <RatingDialog id={params.id}></RatingDialog>
               <ReportDialog></ReportDialog>
             </Stack> : [
 

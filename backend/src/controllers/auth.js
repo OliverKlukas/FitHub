@@ -7,6 +7,7 @@ const bcrypt = require("bcryptjs");
 
 const config = require("../config");
 const UserModel = require("../models/user");
+const { json } = require("body-parser");
 
 /**
  * registers a new user
@@ -306,7 +307,7 @@ const addreview = async (req, res) => {
         // returns null if the user has not reviewed this Content Creator
         let alreadyratedUser = await UserModel.findOne({
             _id: ratedUserId,
-            "reviews.userId": req.userId,
+            "reviews.creatorId": req.userId,
         });
 
         // check if user has already reviewed this Content Creator
@@ -315,27 +316,33 @@ const addreview = async (req, res) => {
             await UserModel.updateOne(
                 {
                     _id: ratedUserId,
-                    "reviews.userId": req.userId,
+                    "reviews.creatorId": req.userId,
                 },
                 {
                     $set: {
+                        "reviews.$.creatorId" : req.userId,
                         "reviews.$.star": req.body.star,
+                        "reviews.$.text": req.body.text,
                     },
                 }
             );
+            res.status(200).json({
+                message: "Updated Review"
+            })
         } else {
             // if the user has not reviewed create a new star entry
             let review = {
-                CreatorId: req.userId,
+                creatorId: req.userId,
                 star: req.body.star,
                 text: req.body.text,
             };
             await UserModel.findByIdAndUpdate(ratedUserId, {
                 $push: { reviews: review },
             });
+            return res.status(200).json({
+                review
+            })
         }
-
-        return res.status(200).json({});
     } catch (err) {
         console.log(err);
         return res.status(500).json({

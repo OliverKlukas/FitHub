@@ -13,7 +13,6 @@ import StarIcon from "@mui/icons-material/Star";
 import { HighlightButton } from "../../buttons/highlight_button";
 import { StandardButton } from "../../buttons/standard_button";
 import UserService from "../../../services/userService";
-import { useSelector } from "react-redux";
 
 const RatingDial = styled(Dialog)(({ theme }) => ({
   "& .MuiDialogContent-root": {
@@ -55,12 +54,10 @@ RatingDialTitle.propTypes = {
 
 /**
  * Dialog for Submitting a Review
- * @param {*} props for user management
  * @returns 
  */
-export default function RatingDialog() {
+export default function RatingDialog({id}) {
   // State for user management
-  const user = useSelector((state) => state.user);
   // States for Review
   const [value, setValue] = React.useState(3);
   const [text, setText] = React.useState("");
@@ -101,7 +98,7 @@ export default function RatingDialog() {
   };
 
   const putReview = async () => {
-    await UserService.addreview(value,text,user.user._id).exec();
+    await UserService.addreview(value,text,id);
   }
 
   return (
@@ -117,7 +114,7 @@ export default function RatingDialog() {
       >
         <RatingDialTitle id="customized-dialog-title" onClose={handleClose}>
           <Stack direction="row">
-            <Typography maxRows={1} variant="h3">
+            <Typography variant="h3">
               Create Review
             </Typography>
           </Stack>
