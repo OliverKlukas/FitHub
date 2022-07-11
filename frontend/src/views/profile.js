@@ -4,7 +4,6 @@ import { Stack, TextField } from "@mui/material";
 import Box from "@mui/material/Box";
 import Rating from "@mui/material/Rating";
 import Review from "../components/profilecomponents/reviewlist/review";
-import { loremIpsum } from "react-lorem-ipsum";
 import StarIcon from "@mui/icons-material/Star";
 import RatingDialog from "../components/profilecomponents/popups/rating_dialog"
 import ReportDialog from "../components/profilecomponents/popups/report_dialog";
@@ -32,7 +31,10 @@ function Profile(props) {
     isOwnProfile: false,
     isContentCreator: false,
     profilePicture: "",
+    avgReviewRating: 0,
   });
+  // state for review data
+  const [reviews, setReviews] = React.useState([]);
   // own state for uploaded picture, in case of update
   const [uploadedPicture, setUploadedPicture] = React.useState("");
   // own state for description, in case of update
@@ -41,19 +43,19 @@ function Profile(props) {
   const onChangeDescription = (e) => {
     setDescription(e.target.value);
   };
-  const handleSubmit = async() => {
+  const handleSubmit = async () => {
     const temp = {
-        name: data.name,
-        description: description,
-        profilePicture: uploadedPicture[0],
-        _id: user.user._id
+      name: data.name,
+      description: description,
+      profilePicture: uploadedPicture[0],
+      _id: user.user._id
     }
     await props.dispatch(updateUser(temp))
     window.location.reload(false);
   }
   const handleDelete = async () => {
     await props.dispatch(deleteUser());
-    navigate("/discovery"); 
+    navigate("/discovery");
   }
 
   useEffect(() => {
@@ -65,31 +67,28 @@ function Profile(props) {
           description: res.description,
           isOwnProfile: res.isOwnProfile,
           isContentCreator: res.role === "contentCreator",
-          profilePicture: res.profilePicture
+          profilePicture: res.profilePicture,
+          avgReviewRating: res.avgReviewRating
         }
-        setdata(temp)
+        setReviews(res.reviews);
+        setdata(temp);
       } else {
-        const res = await UserService.userdataloggedin(params.id, user.user.email);
+        const res = await UserService.userdata(params.id);
         const temp = {
           name: `${res.firstname} ${res.lastname}`,
           description: res.description,
           isOwnProfile: res.isOwnProfile,
           isContentCreator: res.role === "contentCreator",
-          profilePicture: res.profilePicture
+          profilePicture: res.profilePicture,
+          avgReviewRating: res.avgReviewRating
         }
-        setdata(temp)
+        setReviews(res.reviews);
+        setdata(temp);
       }
     }
     fetchData()
-  }, [setdata,params.id,user.user]);
+  }, [setdata, params.id, user.user]);
 
-  const reviews = [{}];
-
-  const ratings =
-    []; /* Needed to use reduce over the array to calculate Rating */
-  for (const item of reviews) {
-    ratings.push(item.star);
-  }
   return (
     <Box
       sx={{
@@ -98,7 +97,7 @@ function Profile(props) {
       }}
     >
       <Stack direction="column" spacing={2}>
-        <Stack direction="row" spacing={14}>
+        <Stack direction="row" spacing={14} justifyContent="space-between">
           {(data.isContentCreator) ?
             <Box
               key="ContentCreatorImage"
@@ -162,11 +161,7 @@ function Profile(props) {
               <Stack direction="row" spacing={3}>
                 <Rating
                   name="read-only"
-                  value={
-                    ratings.reduce((p, c) => {
-                      return p + c;
-                    }) / reviews.length
-                  }
+                  value={data.avgReviewRating}
                   readOnly
                   icon={<StarIcon color="warning"></StarIcon>}
                 />
@@ -184,27 +179,27 @@ function Profile(props) {
               }}
             >
               <Stack direction="column" spacing={3}>
-              <HighlightButton
-                key="UpadteProfileButton"
-                variant="contained"
-                onClick={handleSubmit}
-                disabled={uploadedPicture === "" &&
-                  description === ""
-                }
-              >
-                Save Changes
-              </HighlightButton>
-              <HighlightButton
-                key="DeleteAccountButton"
-                variant="contained"
-                onClick={handleDelete}>
+                <HighlightButton
+                  key="UpadteProfileButton"
+                  variant="contained"
+                  onClick={handleSubmit}
+                  disabled={uploadedPicture === "" &&
+                    description === ""
+                  }
+                >
+                  Save Changes
+                </HighlightButton>
+                <HighlightButton
+                  key="DeleteAccountButton"
+                  variant="contained"
+                  onClick={handleDelete}>
                   Delete Account
-              </HighlightButton>
+                </HighlightButton>
               </Stack>
             </Box>
           ] :
             [data.isContentCreator ? <Stack direction="column" spacing={4}>
-              <RatingDialog></RatingDialog>
+              <RatingDialog id={params.id}></RatingDialog>
               <ReportDialog></ReportDialog>
             </Stack> : [
 
@@ -237,17 +232,19 @@ function Profile(props) {
             spacing={2}
           >
 
-            {data.isContentCreator ?
-              // maps over the reviews array and returns a review for each review
-              reviews.map((review) => {
-                return Review(
-                  review.author,
-                  review.text,
-                  review.date,
-                  review.title,
-                  review.star
-                );
-              }) : []}
+            {data.isContentCreator ? [
+              (reviews.length < 1) ? [] : [
+                reviews.map((review) => {
+                  return Review(
+                    review.creatorId,
+                    review.text,
+                    review.date,
+                    review.title,
+                    review.star
+                  );
+                })]
+            ] : []
+            }
           </Stack>
         </Box>
       </Stack>

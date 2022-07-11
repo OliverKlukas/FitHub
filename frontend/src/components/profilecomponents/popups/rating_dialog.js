@@ -12,6 +12,7 @@ import { Divider, Rating, Snackbar, Stack, TextField } from "@mui/material";
 import StarIcon from "@mui/icons-material/Star";
 import { HighlightButton } from "../../buttons/highlight_button";
 import { StandardButton } from "../../buttons/standard_button";
+import UserService from "../../../services/userService";
 
 const RatingDial = styled(Dialog)(({ theme }) => ({
   "& .MuiDialogContent-root": {
@@ -52,20 +53,32 @@ RatingDialTitle.propTypes = {
 };
 
 /**
- * popup to submit a review, includes TODO backend logic
+ * Dialog for Submitting a Review
  * @returns 
  */
-export default function RatingDialog() {
-  const [value, setValue] = React.useState(2); // States for Rating
+export default function RatingDialog({id}) {
+  // State for user management
+  // States for Review
+  const [value, setValue] = React.useState(3);
+  const [text, setText] = React.useState("");
+  
+  // State for text error
+  const [texterror, setTextError] = React.useState(true)
 
-  const [open, setOpen] = React.useState(false); // States for popup
+  // State for popup
+  const [open, setOpen] = React.useState(false); 
 
-  const [snackopen, setsnackOpen] = React.useState(false); // States for Snackbar
+  // State for Snackbar
+  const [snackopen, setsnackOpen] = React.useState(false); 
 
   // const today = new Date();
   // const dd = String(today.getDate()).padStart(2, "0");
   // const mm = String(today.getMonth() + 1).padStart(2, "0");
   // const yyyy = today.getFullYear();
+  const onChangeText = (e) => {
+    setText(e.target.value);
+    setTextError(false);
+  };
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -79,9 +92,14 @@ export default function RatingDialog() {
   };
 
   const handleSubmit = () => {
+    putReview();
     setOpen(false);
     setsnackOpen(true);
   };
+
+  const putReview = async () => {
+    await UserService.addreview(value,text,id);
+  }
 
   return (
     <div>
@@ -96,7 +114,7 @@ export default function RatingDialog() {
       >
         <RatingDialTitle id="customized-dialog-title" onClose={handleClose}>
           <Stack direction="row">
-            <Typography maxRows={1} variant="h3">
+            <Typography variant="h3">
               Create Review
             </Typography>
           </Stack>
@@ -125,6 +143,7 @@ export default function RatingDialog() {
               multiline
               minRows={5}
               maxRows={5}
+              onChange={onChangeText}
             ></TextField>
           </Stack>
         </DialogContent>
@@ -132,7 +151,7 @@ export default function RatingDialog() {
           <StandardButton autoFocus onClick={handleClose} variant="contained">
             cancel
           </StandardButton>
-          <HighlightButton autoFocus onClick={handleSubmit} variant="contained">
+          <HighlightButton autoFocus onClick={handleSubmit} variant="contained" disabled={texterror}>
             submit
           </HighlightButton>
         </DialogActions>
