@@ -50,4 +50,4 @@ function MyPlans(props) {
 }
 
 // Connect() establishes the connection to the redux functionalities.
-export default connect(null, { getBoughtPlan, getContentList })(MyPlans);
+export default connect(null, { getBoughtPlan })(MyPlans);
