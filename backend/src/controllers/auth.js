@@ -145,7 +145,7 @@ const register = async (req, res) => {
  * @param {*} res jwt token
  * @returns 
  */
-const login = async (req, res) => {
+const signin = async (req, res) => {
     // check if the body of the request contains all necessary properties
     if (!Object.prototype.hasOwnProperty.call(req.body, "password"))
         return res.status(400).json({
@@ -468,7 +468,7 @@ const getUsername = async (req, res) => {
 
 module.exports = {
     register,
-    login,
+    signin,
     userdata,
     logout,
     updateuser,

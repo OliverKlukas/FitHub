@@ -1,15 +1,15 @@
 import UserService from "../../services/userService";
 
-export function login(mail, pass) {
+export function signin(mail, pass) {
   function onSuccess(user) {
-    return { type: "LOGIN_SUCCESS", user: user };
+    return { type: "SIGNIN_SUCCESS", user: user };
   }
   function onFailure(error) {
-    return { type: "LOGIN_FAILURE", error: error };
+    return { type: "SIGNIN_FAILURE", error: error };
   }
   return async (dispatch) => {
     try {
-      const resp = await UserService.login(mail, pass);
+      const resp = await UserService.signin(mail, pass);
       dispatch(onSuccess(resp.user));
     } catch (err) {
       dispatch(onFailure(err));
@@ -22,16 +22,16 @@ export function logout() {
   return { type: "LOGOUT" };
 }
 
-export function loginReset() {
-  return { type: "LOGIN_RESET" };
+export function signinReset() {
+  return { type: "SIGNIN_RESET" };
 }
 
 export function registerCustomer(mail, pass, fname, lname) {
   function onSuccess(user) {
-    return { type: "LOGIN_SUCCESS", user: user };
+    return { type: "SIGNIN_SUCCESS", user: user };
   }
   function onFailure(error) {
-    return { type: "LOGIN_FAILURE", error: error };
+    return { type: "SIGNIN_FAILURE", error: error };
   }
   return async (dispatch) => {
     try {
@@ -52,10 +52,10 @@ export function registerContentCreator(
   picture
 ) {
   function onSuccess(user) {
-    return { type: "LOGIN_SUCCESS", user: user };
+    return { type: "SIGNIN_SUCCESS", user: user };
   }
   function onFailure(error) {
-    return { type: "LOGIN_FAILURE", error: error };
+    return { type: "SIGNIN_FAILURE", error: error };
   }
   return async (dispatch) => {
     try {
