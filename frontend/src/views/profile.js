@@ -14,7 +14,7 @@ import UploadButton from "../components/buttons/upload_button";
 import { HighlightButton } from "../components/buttons/highlight_button";
 import { deleteUser, updateUser } from "../redux/actions";
 import { useNavigate } from "react-router-dom";
-import { set } from "mongoose";
+
 /**
  * Provile View, gets rendered empty, then fetches data from backend and fills itself up with it
  * @param {*} props for user management
@@ -216,24 +216,12 @@ function Profile(props) {
             [data.isContentCreator ? <Stack direction="column" spacing={4}>
               <RatingDialog id={params.id}></RatingDialog>
               <ReportDialog></ReportDialog>
-              {(data.profilePicture === "") ? []
-
-                : [
-                  <UploadButton
-                    id="profilePictureUpload"
-                    uploadFormat="image/*"
-                    givenId="profilePicture-Upload"
-                    multiUpload={false}
-                    setUpload={setUploadedPicture}
-                  />
-                ]
-              }
             </Stack> : [
 
             ]
 
             ]
-          }
+            }
         </Stack>
         <Divider variant="fullWidth"></Divider>
         <Box

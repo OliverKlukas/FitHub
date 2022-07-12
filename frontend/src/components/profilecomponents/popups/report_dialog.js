@@ -13,6 +13,7 @@ import { StandardButton } from "../../buttons/standard_button";
 import { Stack, Snackbar, TextField } from "@mui/material";
 import emailjs from 'emailjs-com';
 import { useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
 
 const ReportDial = styled(Dialog)(({ theme }) => ({
   "& .MuiDialogContent-root": {
@@ -59,6 +60,7 @@ ReportDialTitle.propTypes = {
  * @returns 
  */
 export default function ReportDialog(props) {
+  const params = useParams()
   // for state Management
   const user = useSelector((state) => state.user);
   // State for Popup
@@ -67,6 +69,7 @@ export default function ReportDialog(props) {
   const [form, setForm] = React.useState({
     from_name : "",
     message : "",
+    content_creator: "",
   })
   // States for Snackbar
   const [snackopen, setsnackOpen] = React.useState(false); 
@@ -80,7 +83,11 @@ export default function ReportDialog(props) {
 
   // This should be executed in the Backend after a authorized API call, but for a mvp this is sufficient
   const handleSubmit = () => {
-    emailjs.send('service_dxcny4u', 'template_6ql26rb',{form}, 'gTSwj-_BxWpg0P2Ff')
+    emailjs.send('service_dxcny4u', 'template_6ql26rb',{
+      from_name : form.from_name,
+      message : form.message,
+      content_creator: form.content_creator,
+    }, 'gTSwj-_BxWpg0P2Ff')
     .then((result) => {
         console.log(result);   
     }, (error) => {
@@ -96,8 +103,11 @@ export default function ReportDialog(props) {
       e.preventDefault();
       setForm({
         from_name: user.user.email,
-        message: e.target.value}
+        message: e.target.value,
+        content_creator: params.id,
+      }
         );
+        console.log(form);
   };
 
   return (
