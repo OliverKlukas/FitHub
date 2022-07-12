@@ -5,32 +5,12 @@ import { StandardButton } from "../../components/buttons/standard_button";
 import { Link as RouterLink } from "react-router-dom";
 
 /**
- * get image src path.
- *
- * Adapted from: https://mui.com/material-ui/react-image-list/#CustomImageList.js
- *
- * @param image - String path to image resource.
- * @param width - Number desired width of image.
- * @param height - Number desired height of image.
- * @return {{src: string}} - Returns src variable for img.
- */
-function srcset(image, width, height) {
-  return {
-    src: `${image}?w=${width}&h=${height}&fit=crop&auto=format`,
-  };
-}
-
-/**
  * my plans view content component including an overview of price, content creator, a download button, a review button that links to the content creators profile and a customer support button.
  *
  * @param item - To be displayed content item, expected to adhere to the database scheme of content.
  * @return {JSX.Element} - Returns content item that will be displayed in the myplans view.
  */
 export default function Plan({ item }) {
-  // fixed image width and height for the my plans view
-  const imgWidth = 200;
-  const imgHeight = 200;
-
   return (
     <Stack
       direction={{ xs: "column", md: "row" }}
@@ -46,8 +26,13 @@ export default function Plan({ item }) {
     >
       <Stack direction="row" spacing={2}>
         <img
-          style={{ borderRadius: "10px" }}
-          {...srcset(item.img, imgWidth, imgHeight)}
+          style={{
+            width: "200px",
+            height: "200px",
+            borderRadius: "10px",
+            objectFit: "cover",
+          }}
+          src={item.media[0]}
           alt={item.title}
         />
         <Stack justifyContent="space-between">
@@ -56,7 +41,7 @@ export default function Plan({ item }) {
             <Typography variant="h3">Price: {item.price} €</Typography>
           </Stack>
           <Stack spacing={2}>
-            <Typography variant="h4">by {item.author.name}</Typography>
+            <Typography variant="h4">by {}</Typography>
             <Typography variant="h4">{item.duration}</Typography>
           </Stack>
         </Stack>

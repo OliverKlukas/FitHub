@@ -8,8 +8,9 @@ import {
 import * as React from "react";
 import { connect, useSelector } from "react-redux";
 import Plan from "../components/plans/plan";
-import { getBoughtPlan } from "../redux/actions";
+import { getBoughtPlan, getContents } from "../redux/actions";
 import { useEffect } from "react";
+import ContentService from "../services/contentService";
 
 /**
  * Purchase history that displays every bought content item for a specific consumer with an option to download the item,
@@ -24,12 +25,31 @@ function MyPlans(props) {
   // State from the redux store for plans.
   const planList = useSelector((state) => state.boughtPlan.boughtPlan);
 
+  // State from the redux store for contents.
+  const contentList = useSelector((state) => state.entities.contents);
+
   // On open load the movie.
   useEffect(() => {
     props.getBoughtPlan(user.user._id);
-  }, [planList, user.user._id]);
+    props.getContents();
+  }, [planList, user.user._id, contentList]);
 
-  return !planList ? (
+  return planList && contentList ? (
+    <Stack spacing={4} marginTop={5}>
+      <Typography variant="h1">My Plans</Typography>
+      {planList.map((item) => {
+        { 
+          let cont
+          contentList.map((content) => {         
+              cont = content          
+          });
+          return (
+            <Plan item={cont} key={item._id}></Plan>
+          );
+        }
+      })}
+    </Stack>
+  ) : (
     // Loading content.
     <Box
       display="flex"
@@ -39,15 +59,8 @@ function MyPlans(props) {
     >
       <CircularProgress />
     </Box>
-  ) : (
-    <Stack spacing={4} marginTop={5}>
-      <Typography variant="h1">My Plans</Typography>
-      {planList.map((item) => {
-        return <Box key={item._id}>{item._id}</Box>;
-      })}
-    </Stack>
   );
 }
 
 // Connect() establishes the connection to the redux functionalities.
-export default connect(null, { getBoughtPlan })(MyPlans);
+export default connect(null, { getBoughtPlan, getContents })(MyPlans);
