@@ -30,22 +30,24 @@ function MyPlans(props) {
 
   // On open load the movie.
   useEffect(() => {
-    props.getBoughtPlan(user.user._id);
-    props.getContents();
+    if (!planList) {
+      props.getBoughtPlan(user.user._id);
+    }
+    if (!contentList) {
+      props.getContents();
+    }
   }, [planList, user.user._id, contentList]);
 
   return planList && contentList ? (
     <Stack spacing={4} marginTop={5}>
       <Typography variant="h1">My Plans</Typography>
       {planList.map((item) => {
-        { 
-          let cont
-          contentList.map((content) => {         
-              cont = content          
+        {
+          let cont;
+          contentList.map((content) => {
+            cont = content;
           });
-          return (
-            <Plan item={cont} key={item._id}></Plan>
-          );
+          return <Plan item={cont} transaction={item} key={item._id}></Plan>;
         }
       })}
     </Stack>

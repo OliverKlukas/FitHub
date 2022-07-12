@@ -1,8 +1,10 @@
-import { Stack, Typography } from "@mui/material";
+import { CircularProgress, Stack, Typography } from "@mui/material";
 import * as React from "react";
 import { HighlightButton } from "../../components/buttons/highlight_button";
 import { StandardButton } from "../../components/buttons/standard_button";
 import { Link as RouterLink } from "react-router-dom";
+import {useEffect, useState} from "react";
+import UserService from "../../services/userService";
 
 /**
  * my plans view content component including an overview of price, content creator, a download button, a review button that links to the content creators profile and a customer support button.
@@ -10,8 +12,23 @@ import { Link as RouterLink } from "react-router-dom";
  * @param item - To be displayed content item, expected to adhere to the database scheme of content.
  * @return {JSX.Element} - Returns content item that will be displayed in the myplans view.
  */
-export default function Plan({ item }) {
-  return (
+export default function Plan({ item, transaction }) {
+  // Retrieve author of content item.
+  const [author, setAuthor] = useState(null);
+
+  // Function to fetch username from service.
+  async function fetchUser() {
+    return await UserService.userdata(item.ownerId);
+  }
+
+  // Trigger retrieval of states and backend data.
+  useEffect(() => {
+    fetchUser().then((res) => {
+      setAuthor(res);
+    });
+  }, [author]);
+
+  return author ? (
     <Stack
       direction={{ xs: "column", md: "row" }}
       padding={2}
@@ -41,8 +58,15 @@ export default function Plan({ item }) {
             <Typography variant="h3">Price: {item.price} €</Typography>
           </Stack>
           <Stack spacing={2}>
-            <Typography variant="h4">by {}</Typography>
-            <Typography variant="h4">{item.duration}</Typography>
+            
+            <Typography variant="h4">by {author.firstname + " " + author.lastname}</Typography>
+            <Typography variant="h4">
+              order placed:{" "}
+              {transaction.boughtAt.substring(
+                0,
+                transaction.boughtAt.indexOf("T")
+              )}
+            </Typography>
           </Stack>
         </Stack>
       </Stack>
@@ -75,5 +99,5 @@ export default function Plan({ item }) {
         </StandardButton>
       </Stack>
     </Stack>
-  );
+  ) : (<CircularProgress/>);
 }
