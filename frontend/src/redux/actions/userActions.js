@@ -12,7 +12,7 @@ export function signin(mail, pass) {
       const resp = await UserService.signin(mail, pass);
       dispatch(onSuccess(resp.user));
     } catch (err) {
-      dispatch(onFailure(err));
+      dispatch(onFailure("signin"));
     }
   };
 }

@@ -99,8 +99,9 @@ export default function RatingDialog({id}) {
 
   const putReview = async () => {
     await UserService.addreview(value,text,id);
+    window.location.reload();
   }
-
+  
   return (
     <div>
       <HighlightButton variant="contained" onClick={handleClickOpen}>

@@ -97,7 +97,7 @@ function Profile(props) {
       }}
     >
       <Stack direction="column" spacing={2}>
-        <Stack direction="row" spacing={14} justifyContent="space-between">
+        <Stack direction="row" spacing={14} >
           {(data.isContentCreator) ?
             <Box
               key="ContentCreatorImage"

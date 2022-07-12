@@ -5,6 +5,7 @@ import { StandardButton } from "../components/buttons/standard_button";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { connect, useSelector } from "react-redux";
 import { signin } from "../redux/actions"
+import UserService from "../services/userService";
 
 /**
  * Signin View
@@ -24,6 +25,7 @@ function SignIn(props) {
   const [emailerror, setEmailError] = React.useState(false);
   const [passworderror, setPassworderror] = React.useState(false);
   const [signinerror, setSigninError] = React.useState(false);
+  const [emailerrormessage, setEmailErrorMessage] =React.useState("");
 
   // navigates to discovery once a user is logged in and reloads the page to ensure all data from the redux store is loaded
   useEffect(() => {
@@ -40,7 +42,6 @@ function SignIn(props) {
   const onChangePassword = (e) => {
     setPassword(e.target.value);
     setPassworderror(false);
-    setSigninError(false);
   };
 
   /**
@@ -55,9 +56,10 @@ function SignIn(props) {
         ) === null
     ) {
       setEmailError(true);
+      setEmailErrorMessage("Not a valid Email");
     } else {
       setEmailError(false);
-      setSigninError(false);
+      checkEmail();
     }
   };
 
@@ -67,12 +69,15 @@ function SignIn(props) {
    */
   const handleSubmit = async () => {
     await props.dispatch(signin(email, password));
-    if (user.user === undefined) {
-      setSigninError(true);
-    }
-    console.log(user.user)
   };
-  
+  const checkEmail = async () => {
+    const res = await UserService.checkEmail(email);
+    if (res.alreadyHasAccount === false) {
+        setEmailError(true);
+        setEmailErrorMessage("No Account with this Email");
+    };
+};
+
   return (
     <Grid
       container
@@ -89,6 +94,11 @@ function SignIn(props) {
             label="Email-Adress"
             onChange={onChangeEmail}
             onBlur={validateEmail}
+            helperText={
+              emailerror
+                ? emailerrormessage
+                : ""
+            }
             error={emailerror || signinerror}
           ></TextField>
           <TextField
@@ -106,6 +116,11 @@ function SignIn(props) {
           >
             Sign-In
           </HighlightButton>
+          {signinerror ? [
+              <Typography key="signinerror" variant="caption">Either Email or password is Incorrect</Typography>
+          ] : [
+
+          ]}
           <Divider>New to FitHub?</Divider>
           <StandardButton
             variant="contained"
@@ -116,9 +131,6 @@ function SignIn(props) {
           </StandardButton>
         </Stack>
       </Grid>
-      <Snackbar open={signinerror} autoHideDuration={6000} onClose={() => setSigninError(false)}>
-        <Alert onClose={() => setSigninError(false)} severity="error" sx={{ width: '100%' }}>Either Email or password is Incorrect!</Alert>
-      </Snackbar>;
     </Grid>
   );
 }
