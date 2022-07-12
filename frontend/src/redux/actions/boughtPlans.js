@@ -55,14 +55,14 @@ export function addboughtPlan(boughtPlan) {
 
 
 /**
- * Retrieves a single boughtPlan item.
+ * Retrieves the boughtPlans item for a customer.
  *
  * @param id
  * @returns {(function(*, *): Promise<void>)|*}
  */
-export const getboughtPlan = (id) => {
+export const getBoughtPlan = (id) => {
   function onSuccess(boughtPlan) {
-    return { type: "GETboughtPlan_SUCCESS", boughtPlan: boughtPlan };
+    return { type: "GETBOUGHTPLANS_SUCCESS", boughtPlan: boughtPlan };
   }
   function onFailure(error) {
     console.log("failed to load a boughtPlan", error);
