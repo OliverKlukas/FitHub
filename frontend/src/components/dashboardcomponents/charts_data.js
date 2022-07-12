@@ -3,6 +3,7 @@ import React, { useEffect } from "react";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import UserService from "../../services/userService";
+import boughtPlanService from "../../services/boughtPlanService";
 import { connect, useSelector } from "react-redux";
 import {
   BarChart,
@@ -30,6 +31,11 @@ export default function ChartsData() {
     avgReviewRating: 0,
   });
 
+  const [salesDist, setSalesDist] = React.useState({
+    salesDistribution: [],
+    overallSales: 0,
+  });
+
   useEffect(() => {
     async function fetchData() {
       if (user.user) {
@@ -39,21 +45,19 @@ export default function ChartsData() {
           avgReviewRating: res.avgReviewRating,
         };
         setData(temp);
+
+        const resSales = await boughtPlanService.getSalesDistribution(
+          user.user._id
+        );
+        const tempSales = {
+          salesDistribution: resSales.salesDistribution,
+          overallSales: resSales.overallSales,
+        };
+        setSalesDist(tempSales);
       }
     }
     fetchData();
-  }, [setData]);
-
-  console.log(data);
-
-  const data01 = [
-    { name: "Plan A", value: 187 },
-    { name: "Plan B", value: 187 },
-    { name: "Plan C", value: 187 },
-    { name: "Plan D", value: 187 },
-    { name: "Plan E", value: 278 },
-    { name: "Plan F", value: 189 },
-  ];
+  }, [setData, setSalesDist]);
 
   return (
     <Stack direction="row" spacing={3}>
@@ -62,11 +66,14 @@ export default function ChartsData() {
           <Typography variant="h5" component="div">
             Sales Distribution
           </Typography>
-          <PieChart width={440} height={400}>
+          <Typography sx={{ mb: 2 }} variant="body1" component="div">
+            overall
+          </Typography>
+          <PieChart width={440} height={330}>
             <Pie
-              dataKey="value"
+              dataKey="amount"
               isAnimationActive={true}
-              data={data01}
+              data={salesDist.salesDistribution}
               innerRadius={50}
               outerRadius={120}
               fill="green"
@@ -74,6 +81,17 @@ export default function ChartsData() {
             />
             <Tooltip />
           </PieChart>
+          <Typography
+            sx={{ mb: 2 }}
+            variant="body1"
+            component="div"
+            textAlign="center"
+          >
+            Overall Sales:{" "}
+            {salesDist.overallSales === 0
+              ? "no reviews yet"
+              : salesDist.overallSales}
+          </Typography>
         </CardContent>
       </Card>
       <Card sx={{ minWidth: 475, height: 450, backgroundColor: "#F2F2F2" }}>
