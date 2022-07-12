@@ -6,7 +6,7 @@ const mongoose = require("mongoose");
  * Defines schema for bought content.
  *
  * Expected to be a JSON of: {
- *     userEMail: email address of user,
+ *     userId: unique identifier of user,
  *     contentId: unique identifier of content,
  *     boughtAt: timestamp of buying time,
  * }

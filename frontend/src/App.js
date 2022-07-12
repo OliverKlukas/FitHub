@@ -56,6 +56,7 @@ function App() {
                   element={<LandingPage data={{ setChoice }} />}
                 />
                 <Route path="/discovery" element={<Discovery />} />
+                <Route path="/plans" element={<MyPlans />} />
                 <Route
                   path="/upload"
                   element={<ContentUpload data={{ choice, setChoice }} />}
@@ -69,7 +70,6 @@ function App() {
                   path="/terms-and-conditions"
                   element={<TermsAndConditions />}
                 />
-                <Route path="/myplans/:id" element={<MyPlans />} />
                 <Route path="/signin" element={<SignIn />} />
                 <Route path="/mycontent" element={<MyContent />} />
                 <Route path="/dashboard" element={<Dashboard />} />

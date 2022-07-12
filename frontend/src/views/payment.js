@@ -11,6 +11,10 @@ import {
   Radio,
   RadioGroup,
   Snackbar,
+  Dialog,
+  DialogTitle,
+  DialogActions,
+  Button,
 } from "@mui/material";
 import { Link as RouterLink, useParams, useNavigate } from "react-router-dom";
 import { HighlightButton } from "../components/buttons/highlight_button";
@@ -35,18 +39,16 @@ function Payment(props) {
     rating: 3,
   };
 
-  const user = {
-    email: "max.maier@gmail.com",
-  };
+  // get the user from redux
+  const user = useSelector((state) => state.user);
 
   //const cookies = new Cookies();cookies.set(key1, value1, {secure: true, sameSite: 'none'});cookies.set(key2, value2, {secure: true, sameSite: 'none'});
 
   // Match url id to content item.
   const { id } = useParams();
 
-  const singleContent = useSelector((state) => {
-    return state.singleContent;
-  });
+  // get the content
+  const singleContent = useSelector((state) => state.singleContent);
 
   // On open load the movie.
   useEffect(() => {
@@ -95,6 +97,15 @@ function Payment(props) {
   // error handling during the payment process
   const [error, setError] = React.useState(null);
 
+  // Snackbar states for terms and condition checkbox validation
+  const [erroropen, setErrorOpen] = React.useState(false);
+
+  // close the snackbar
+  const handleErrorClose = () => {
+    setError(null);
+    setErrorOpen(false);
+  };
+
   // Merge all hooks together and publish it to mongodb. After completing the database entry, the user is redirect to myplans
   async function publishboughtPlan() {
     try {
@@ -105,7 +116,7 @@ function Payment(props) {
         ownerId: singleContent.content.ownerId,
         title: singleContent.content.title,
       });
-      navigate("/myplans/2000");
+      navigate("/plans");
       window.location.reload();
     } catch (error) {
       setError("buying Plan failed!");
@@ -116,11 +127,20 @@ function Payment(props) {
     publishboughtPlan();
   };
 
-  if (error) {
-    alert(error);
+  if (error && !erroropen) {
+    setErrorOpen(true);
   }
 
-  //console.log(singleContent.content);
+  const [dialogOpen, setDialogOpen] = React.useState(false);
+
+  const handleDialogClose = () => {
+    setDialogOpen(false);
+    navigate("/signin");
+  };
+
+  if (!user.user && !dialogOpen) {
+    setDialogOpen(true);
+  }
 
   return !singleContent.content && !singleContent.error ? (
     // Loading content.
@@ -313,18 +333,7 @@ function Payment(props) {
               layout: "vertical",
             }}
             onClick={(data, actions) => {
-              // validate on button click, client or server side
-              const hasAlreadyBoughtPlan = false;
-
-              if (hasAlreadyBoughtPlan) {
-                setError(
-                  "You already bought this plan. Go to MyPlans to download it."
-                );
-                navigate(-1);
-                return actions.reject();
-              } else {
-                return actions.resolve();
-              }
+              return actions.resolve();
             }}
             createOrder={(data, actions) => {
               return actions.order.create({
@@ -332,7 +341,9 @@ function Payment(props) {
                   {
                     description: singleContent.content.description,
                     amount: {
-                      value: singleContent.content.price,
+                      value: parseFloat(
+                        singleContent.content.price.replace(",", ".")
+                      ),
                     },
                   },
                 ],
@@ -343,11 +354,10 @@ function Payment(props) {
               handleApprove(data.orderID);
             }}
             onCancel={() => {
-              navigate(0);
+              setError("transaction canceled.");
             }}
             onError={(err) => {
-              setError(err);
-              navigate(0);
+              setError("transaction failed.");
             }}
           />
         ) : null}
@@ -364,6 +374,28 @@ function Payment(props) {
             You have to accept FitHub's Terms and Conditions before continuing.
           </Alert>
         </Snackbar>
+        <Snackbar
+          open={erroropen}
+          autoHideDuration={6000}
+          onClose={handleErrorClose}
+        >
+          <Alert
+            onClose={handleErrorClose}
+            severity="error"
+            sx={{ width: "100%" }}
+          >
+            An error occured during the payment process, please try again!
+            Error: {error}
+          </Alert>
+        </Snackbar>
+        <Dialog open={dialogOpen} onClose={handleDialogClose}>
+          <DialogTitle>
+            You have to sign in before you can purchase a plan
+          </DialogTitle>
+          <DialogActions>
+            <Button onClick={handleDialogClose}>Sign in</Button>
+          </DialogActions>
+        </Dialog>
       </Stack>
     </PayPalScriptProvider>
   );

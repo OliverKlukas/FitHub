@@ -50,7 +50,7 @@ export default class boughtPlanService {
   }
 
   /**
-   * Retrieve a single boughtPlan object.
+   * Retrieve the boughtPlan of a customer with id: id.
    *
    * @param id
    * @returns {Promise<unknown>}
