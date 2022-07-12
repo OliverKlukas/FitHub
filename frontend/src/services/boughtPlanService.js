@@ -89,4 +89,21 @@ export default class boughtPlanService {
       );
     });
   }
+
+  static getFinancials(id) {
+    return new Promise((resolve, reject) => {
+      HttpService.post(
+        `${this.baseURL()}/getFinancials`,
+        {
+          userId: id,
+        },
+        function (data) {
+          resolve(data);
+        },
+        function (textStatus) {
+          reject(textStatus);
+        }
+      );
+    });
+  }
 }

@@ -114,9 +114,60 @@ const getSalesDistribution = async (req, res) => {
   }
 };
 
+const getFinancials = async (req, res) => {
+  try {
+    const boughtPlans = await boughtPlansModel.find({}).exec();
+    let customers = [];
+    let ownSales = [];
+    let overallRev = 0;
+    let ovRevString = "";
+
+    boughtPlans.map((item) => {
+      //check if content is from requested user
+      if (item.ownerId == req.body.userId) {
+        ownSales.push(item);
+
+        //eliminate duplicates
+        if (!customers.includes(item.userId)) {
+          customers.push(item.userId);
+        }
+      }
+    });
+
+    ownSales.map((item) => {
+      let tempprice = item.price;
+      let tempint = 0;
+
+      tempprice = tempprice.replace(",", "");
+      tempint = parseInt(tempprice);
+      overallRev += tempint;
+    });
+
+    ovRevString = overallRev.toString();
+    ovRevString =
+      ovRevString.substring(0, ovRevString.length - 2) +
+      "," +
+      ovRevString.substring(ovRevString.length - 2, ovRevString.length);
+
+    return res.status(200).json({
+      overallRevenue: ovRevString,
+      expectedPayout: 0,
+      payoutChange: 0,
+      overallCustomers: customers.length,
+    });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({
+      error: "Internal Server Error",
+      message: err.message,
+    });
+  }
+};
+
 module.exports = {
   create,
   list,
   get,
   getSalesDistribution,
+  getFinancials,
 };

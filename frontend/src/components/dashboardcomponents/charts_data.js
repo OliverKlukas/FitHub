@@ -5,17 +5,7 @@ import CardContent from "@mui/material/CardContent";
 import UserService from "../../services/userService";
 import boughtPlanService from "../../services/boughtPlanService";
 import { connect, useSelector } from "react-redux";
-import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  Tooltip,
-  Legend,
-  Line,
-  PieChart,
-  Pie,
-} from "recharts";
+import { BarChart, Bar, XAxis, Tooltip, PieChart, Pie } from "recharts";
 
 export default function ChartsData() {
   const user = useSelector((state) => state.user);

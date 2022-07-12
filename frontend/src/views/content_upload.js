@@ -61,6 +61,7 @@ function ContentUpload(props) {
   const [category, setCategory] = useState(defaultCategory);
   const [title, setTitle] = useState("");
   const [price, setPrice] = useState("");
+  let priceModf = "";
   const [description, setDescription] = useState("");
   const [duration, setDuration] = useState("");
   const [intensity, setIntensity] = useState("");
@@ -112,13 +113,29 @@ function ContentUpload(props) {
 
   // User input verification and hand-off to backend database publication.
   function handlePublishContent() {
-    // TODO: verify that the above defined hooks match our criteria, i.e. with regex that we could put i.e. into utils folder and use project wide
+    if (price.length !== 0) {
+      if (price.includes(".")) {
+        priceModf = price.replace(".", ",");
+      } else {
+        priceModf = price;
+      }
+
+      if (!priceModf.includes(",")) {
+        priceModf = priceModf + ",00";
+      } else if (priceModf.substring(priceModf.indexOf(",")).length === 0) {
+        priceModf = priceModf + "00";
+      } else if (priceModf.substring(priceModf.indexOf(",")).length === 1) {
+        priceModf = priceModf + "0";
+      }
+    }
+
     validatePrice();
     validateTitle();
     validateDescription();
     validateTags();
     validateDuration();
     validateIntensity();
+
     if (
       !titleError &&
       !priceError &&
@@ -183,7 +200,7 @@ function ContentUpload(props) {
         category: category,
         title: title,
         description: description,
-        price: price,
+        price: priceModf,
         duration: parseInt(duration),
         intensity: parseInt(intensity),
         support: support,
@@ -207,9 +224,7 @@ function ContentUpload(props) {
     // ([.,][0-9]{1,2})? -> ? means optionl (inside bracket)
     // [.,] -> comma or point
     // [0-9]{1,2} -> 1 or 2 times a number
-    // \s? -> optional space
-    // (€)? -> optional euro sign
-    if (price.match(/^([0-9]+([.,][0-9]{1,2})?\s?(€)?)$/) === null) {
+    if (price.match(/^([0-9]+([.,][0-9]{1,2})?)$/) === null) {
       setPriceError(true); //error input field
     } else {
       setPriceError(false);

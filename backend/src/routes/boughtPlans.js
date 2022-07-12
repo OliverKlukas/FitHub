@@ -21,4 +21,10 @@ router.post(
   boughtPlansController.getSalesDistribution
 );
 
+router.post(
+  "/getFinancials",
+  middleware.checkAuthentication,
+  boughtPlansController.getFinancials
+);
+
 module.exports = router;
