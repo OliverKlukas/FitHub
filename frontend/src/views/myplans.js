@@ -1,8 +1,15 @@
-import { Stack, Typography } from "@mui/material";
-import { useParams } from "react-router-dom";
-import { consumer } from "../utils/consumer";
-import { content } from "../utils/content";
+import {
+  Stack,
+  Typography,
+  CircularProgress,
+  Button,
+  Box,
+} from "@mui/material";
+import * as React from "react";
+import { connect, useSelector } from "react-redux";
 import Plan from "../components/plans/plan";
+import { getBoughtPlan } from "../redux/actions";
+import { useEffect } from "react";
 
 /**
  * Purchase history that displays every bought content item for a specific consumer with an option to download the item,
@@ -11,21 +18,36 @@ import Plan from "../components/plans/plan";
  *
  * @return {JSX.Element} returns My Plans page.
  */
-export default function MyPlans() {
-  // Match url id to consumer item.
-  const { id } = useParams();
-  // eslint-disable-next-line
-    const item = consumer.find((item) => item.id == id);
+function MyPlans(props) {
+  const user = useSelector((state) => state.user);
 
-  return (
+  // State from the redux store for plans.
+  const planList = useSelector((state) => state.boughtPlan.boughtPlan);
+
+  // On open load the movie.
+  useEffect(() => {
+    props.getBoughtPlan(user.user._id);
+  }, [planList, user.user._id]);
+
+  return !planList ? (
+    // Loading content.
+    <Box
+      display="flex"
+      justifyContent="center"
+      alignItems="center"
+      minHeight="80vh"
+    >
+      <CircularProgress />
+    </Box>
+  ) : (
     <Stack spacing={4} marginTop={5}>
       <Typography variant="h1">My Plans</Typography>
-      {/* eslint-disable-next-line */}
-            {content.map((con) => {
-        if (item.boughtContent.includes(con.id)) {
-          return <Plan item={con} key={con.img} />;
-        }
+      {planList.map((item) => {
+        return <Box key={item._id}>{item._id}</Box>;
       })}
     </Stack>
   );
 }
+
+// Connect() establishes the connection to the redux functionalities.
+export default connect(null, { getBoughtPlan })(MyPlans);
