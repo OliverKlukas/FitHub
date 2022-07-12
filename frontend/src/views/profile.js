@@ -14,6 +14,7 @@ import UploadButton from "../components/buttons/upload_button";
 import { HighlightButton } from "../components/buttons/highlight_button";
 import { deleteUser, updateUser } from "../redux/actions";
 import { useNavigate } from "react-router-dom";
+import ConfirmDialog from "../components/profilecomponents/popups/confirm_dialog";
 
 /**
  * Provile View, gets rendered empty, then fetches data from backend and fills itself up with it
@@ -34,6 +35,8 @@ function Profile(props) {
     profilePicture: "",
     avgReviewRating: 0,
   });
+  // state for confirmation Dialog
+  const [confirmOpen, setConfirmOpen] = React.useState(false)
   // state for review data
   const [reviews, setReviews] = React.useState([]);
   // own state for uploaded picture, in case of update
@@ -89,7 +92,7 @@ function Profile(props) {
     }
     fetchData();
     setTitle(data.title);
-  }, [setdata, params.id, user.user]);
+  }, [setdata, params.id, user.user, data.title]);
 
   return (
     <Box
@@ -195,9 +198,17 @@ function Profile(props) {
                 <HighlightButton
                   key="DeleteAccountButton"
                   variant="contained"
-                  onClick={handleDelete}>
+                  onClick={() =>  setConfirmOpen(true)}>
                   Delete Account
                 </HighlightButton>
+                <ConfirmDialog
+                  title="Delete Account?"
+                  open={confirmOpen}
+                  setOpen={setConfirmOpen}
+                  onConfirm={handleDelete}
+                >
+                  Are you sure you want to delete your Account?
+                </ConfirmDialog>
                 {(data.profilePicture === "") ? []
 
                   : [
@@ -221,7 +232,7 @@ function Profile(props) {
             ]
 
             ]
-            }
+          }
         </Stack>
         <Divider variant="fullWidth"></Divider>
         <Box
