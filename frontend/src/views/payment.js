@@ -110,7 +110,7 @@ function Payment(props) {
   async function publishboughtPlan() {
     try {
       await props.addboughtPlan({
-        userEMail: user.email,
+        userId: user.user._id,
         contentId: id,
         price: singleContent.content.price,
         ownerId: singleContent.content.ownerId,

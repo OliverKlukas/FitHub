@@ -62,23 +62,14 @@ const create = async (req, res) => {
  */
 const get = async (req, res) => {
   try {
-    // get boughtPlan with id from database
-    let boughtPlan = await boughtPlansModel.findById(req.params.id).exec();
-
-    // if no boughtPlan with id is found, return 404
-    if (!boughtPlan)
-      return res.status(404).json({
-        error: "Not Found",
-        message: `boughtPlan not found`,
-      });
-
-    // return gotten boughtPlan
-    return res.status(200).json(boughtPlan);
+    const boughtPlans = await boughtPlansModel
+      .find({ userId: req.params.id })
+      .exec();
+    return res.status(200).json(boughtPlans);
   } catch (err) {
     console.log(err);
     return res.status(500).json({
-      error: "Internal Server Error",
-      message: err.message,
+      error: "Internal server error: " + err.message,
     });
   }
 };

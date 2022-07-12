@@ -13,7 +13,7 @@ const mongoose = require("mongoose");
  *
  */
 const BoughtPlansSchema = new mongoose.Schema({
-  userEMail: { type: String, required: true },
+  userId: { type: String, required: true },
   contentId: { type: String, required: true },
   // is set automatically to the current timestamp when payment is completed (default: Date.now)
   boughtAt: { type: Date, default: Date.now },
