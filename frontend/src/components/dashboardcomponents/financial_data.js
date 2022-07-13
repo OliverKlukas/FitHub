@@ -1,11 +1,8 @@
 import FinancialCard from "./financial_card";
-import { Stack, Typography } from "@mui/material";
+import { Stack } from "@mui/material";
 import React, { useEffect } from "react";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
-import UserService from "../../services/userService";
 import boughtPlanService from "../../services/boughtPlanService";
-import { connect, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 export default function FinancialData() {
   const user = useSelector((state) => state.user);
@@ -37,13 +34,16 @@ export default function FinancialData() {
     <Stack direction="row" spacing={3}>
       <FinancialCard
         cardHeader="Overall Revenue"
-        cardData={data.overallRevenue}
+        cardData={data.overallRevenue + " €"}
       />
       <FinancialCard
         cardHeader="Expected Payout"
-        cardData={data.expectedPayout}
+        cardData={data.expectedPayout + " €"}
       />
-      <FinancialCard cardHeader="Payout Change" cardData={data.payoutChange} />
+      <FinancialCard
+        cardHeader="Payout Change"
+        cardData={data.payoutChange + " %"}
+      />
       <FinancialCard
         cardHeader="Overall Customers"
         cardData={data.overallCustomers}

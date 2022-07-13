@@ -117,16 +117,45 @@ const getSalesDistribution = async (req, res) => {
 const getFinancials = async (req, res) => {
   try {
     const boughtPlans = await boughtPlansModel.find({}).exec();
+    //customers
     let customers = [];
+
+    //overall revenue
     let ownSales = [];
     let overallRev = 0;
     let ovRevString = "";
+
+    //payout
+    let salesCurrPeriod = [];
+    let payoutCurrPeriod = 0;
+    let payoutCurrPeriodString = "";
+
+    //growth rate
+    let salesLastPeriod = [];
+    let payoutLastPeriod = 0;
+    let changeRate = 0;
+    const offset = 24 * 60 * 60 * 1000;
+
+    //setting dates for current period (calculate payout)
+    const currDate = new Date();
+    const firstCurrDay = new Date(
+      currDate.getFullYear(),
+      currDate.getMonth(),
+      1
+    );
+
+    //setting dates for last period (calculate chage)
+    const periodStart = new Date(currDate - 31 * offset);
+    const firstLastDay = new Date(
+      periodStart.getFullYear(),
+      periodStart.getMonth(),
+      1
+    );
 
     boughtPlans.map((item) => {
       //check if content is from requested user
       if (item.ownerId == req.body.userId) {
         ownSales.push(item);
-
         //eliminate duplicates
         if (!customers.includes(item.userId)) {
           customers.push(item.userId);
@@ -134,6 +163,60 @@ const getFinancials = async (req, res) => {
       }
     });
 
+    // check sales by timeframes
+    ownSales.map((item) => {
+      // get sales in current period
+      if (firstCurrDay < item.boughtAt && currDate >= item.boughtAt) {
+        salesCurrPeriod.push(item);
+      }
+      // get sales in last period
+      if (firstLastDay < item.boughtAt && firstCurrDay >= item.boughtAt) {
+        salesLastPeriod.push(item);
+      }
+    });
+
+    // summarize payments in current period
+    salesCurrPeriod.map((item) => {
+      let tempprice = item.price;
+      let tempint = 0;
+
+      tempprice = tempprice.replace(",", "");
+      tempint = parseInt(tempprice);
+      payoutCurrPeriod += tempint;
+    });
+
+    // current payout to string
+    payoutCurrPeriodString = payoutCurrPeriod.toString();
+    payoutCurrPeriodString =
+      payoutCurrPeriodString.substring(0, payoutCurrPeriodString.length - 2) +
+      "," +
+      payoutCurrPeriodString.substring(
+        payoutCurrPeriodString.length - 2,
+        payoutCurrPeriodString.length
+      );
+    if (payoutCurrPeriodString === ",0") {
+      payoutCurrPeriodString = "0";
+    }
+
+    // summarize payments in current period
+    salesLastPeriod.map((item) => {
+      let tempprice = item.price;
+      let tempint = 0;
+
+      tempprice = tempprice.replace(",", "");
+      tempint = parseInt(tempprice);
+      payoutLastPeriod += tempint;
+    });
+
+    if (payoutCurrPeriod !== 0) {
+      changeRate = Math.round(
+        ((payoutCurrPeriod - payoutLastPeriod) / payoutCurrPeriod) * 100
+      );
+    }
+
+    const changeRateString = changeRate.toString().replace("-", "- ");
+
+    // summarize overall payments
     ownSales.map((item) => {
       let tempprice = item.price;
       let tempint = 0;
@@ -143,16 +226,20 @@ const getFinancials = async (req, res) => {
       overallRev += tempint;
     });
 
+    // overall payments back to string
     ovRevString = overallRev.toString();
     ovRevString =
       ovRevString.substring(0, ovRevString.length - 2) +
       "," +
       ovRevString.substring(ovRevString.length - 2, ovRevString.length);
+    if (ovRevString === ",0") {
+      ovRevString = "0";
+    }
 
     return res.status(200).json({
       overallRevenue: ovRevString,
-      expectedPayout: 0,
-      payoutChange: 0,
+      expectedPayout: payoutCurrPeriodString,
+      payoutChange: changeRateString,
       overallCustomers: customers.length,
     });
   } catch (err) {

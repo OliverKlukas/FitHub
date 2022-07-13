@@ -49,6 +49,33 @@ export default function ChartsData() {
     fetchData();
   }, [setData, setSalesDist]);
 
+  const RADIAN = Math.PI / 180;
+  const renderCustomizedLabel = ({
+    cx,
+    cy,
+    midAngle,
+    innerRadius,
+    outerRadius,
+    percent,
+    index,
+  }) => {
+    const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
+    const x = cx + radius * Math.cos(-midAngle * RADIAN);
+    const y = cy + radius * Math.sin(-midAngle * RADIAN);
+
+    return (
+      <text
+        x={x}
+        y={y}
+        fill="white"
+        textAnchor={x > cx ? "start" : "end"}
+        dominantBaseline="central"
+      >
+        {`${(percent * 100).toFixed(0)}%`}
+      </text>
+    );
+  };
+
   return (
     <Stack direction="row" spacing={3}>
       <Card sx={{ minWidth: 475, height: 450, backgroundColor: "#F2F2F2" }}>
@@ -61,13 +88,15 @@ export default function ChartsData() {
           </Typography>
           <PieChart width={440} height={330}>
             <Pie
+              key={Math.random()}
               dataKey="amount"
               isAnimationActive={true}
               data={salesDist.salesDistribution}
               innerRadius={50}
               outerRadius={120}
               fill="green"
-              label
+              labelLine={false}
+              label={renderCustomizedLabel}
             />
             <Tooltip />
           </PieChart>
