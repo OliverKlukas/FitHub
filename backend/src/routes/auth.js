@@ -13,8 +13,8 @@ router.get("/getCreators", AuthController.getContentCreatorNames);
 router.get("/getUsername/:ownerId", AuthController.getUsername);
 // register a new user
 router.post("/register", AuthController.register);
-// login
-router.post("/login", AuthController.login);
+// signin
+router.post("/signin", AuthController.signin);
 // display publicly available user data, checks if its for the callers own profile
 router.post("/userdata", AuthController.userdata);
 // logout

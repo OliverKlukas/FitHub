@@ -14,6 +14,8 @@ import UploadButton from "../components/buttons/upload_button";
 import { HighlightButton } from "../components/buttons/highlight_button";
 import { deleteUser, updateUser } from "../redux/actions";
 import { useNavigate } from "react-router-dom";
+import ConfirmDialog from "../components/profilecomponents/popups/confirm_dialog";
+
 /**
  * Provile View, gets rendered empty, then fetches data from backend and fills itself up with it
  * @param {*} props for user management
@@ -27,26 +29,28 @@ function Profile(props) {
   // state for backenddata, since we do not want to store all profiles in a global redux state
   const [data, setdata] = React.useState({
     name: "",
-    description: "",
+    title: "",
     isOwnProfile: false,
     isContentCreator: false,
     profilePicture: "",
     avgReviewRating: 0,
   });
+  // state for confirmation Dialog
+  const [confirmOpen, setConfirmOpen] = React.useState(false)
   // state for review data
   const [reviews, setReviews] = React.useState([]);
   // own state for uploaded picture, in case of update
   const [uploadedPicture, setUploadedPicture] = React.useState("");
-  // own state for description, in case of update
-  const [description, setDescription] = React.useState("");
+  // own state for title, in case of update
+  const [title, setTitle] = React.useState("");
 
-  const onChangeDescription = (e) => {
-    setDescription(e.target.value);
+  const onChangeTitle = (e) => {
+    setTitle(e.target.value);
   };
   const handleSubmit = async () => {
     const temp = {
       name: data.name,
-      description: description,
+      title: title,
       profilePicture: uploadedPicture[0],
       _id: user.user._id
     }
@@ -64,7 +68,7 @@ function Profile(props) {
         const res = await UserService.userdataloggedin(params.id, user.user.email);
         const temp = {
           name: `${res.firstname} ${res.lastname}`,
-          description: res.description,
+          title: res.title,
           isOwnProfile: res.isOwnProfile,
           isContentCreator: res.role === "contentCreator",
           profilePicture: res.profilePicture,
@@ -76,7 +80,7 @@ function Profile(props) {
         const res = await UserService.userdata(params.id);
         const temp = {
           name: `${res.firstname} ${res.lastname}`,
-          description: res.description,
+          title: res.title,
           isOwnProfile: res.isOwnProfile,
           isContentCreator: res.role === "contentCreator",
           profilePicture: res.profilePicture,
@@ -86,8 +90,9 @@ function Profile(props) {
         setdata(temp);
       }
     }
-    fetchData()
-  }, [setdata, params.id, user.user]);
+    fetchData();
+    setTitle(data.title);
+  }, [setdata, params.id, user.user, data.title]);
 
   return (
     <Box
@@ -97,21 +102,10 @@ function Profile(props) {
       }}
     >
       <Stack direction="column" spacing={2}>
-        <Stack direction="row" spacing={14} justifyContent="space-between">
-          {(data.isContentCreator) ?
+        <Stack direction="row" spacing={14} >
+          {(data.profilePicture === "") ?
             <Box
-              key="ContentCreatorImage"
-              component="img"
-              sx={{
-                height: 350,
-                width: 525,
-                maxHeight: { xs: 350, md: 251 },
-                maxWidth: { xs: 525, md: 375 },
-              }}
-              src={data.profilePicture}
-            />
-            : <Box
-              key="ContentCreatorImage"
+              key="ImageUploadButton"
               sx={{
                 height: 350,
                 width: 525,
@@ -127,36 +121,48 @@ function Profile(props) {
                 setUpload={setUploadedPicture}
               />
             </Box>
+            : <Box
+              key="Image"
+              component="img"
+              sx={{
+                height: 350,
+                width: 525,
+                maxHeight: { xs: 350, md: 251 },
+                maxWidth: { xs: 525, md: 375 },
+              }}
+              src={data.profilePicture}
+            />
           }
           <Stack direction="column" spacing={2}>
             <h1>{data.name}</h1>
-            {data.isOwnProfile ? [
-              <TextField
-                id="outlined-basic"
-                label="Edit Description and Update to save"
-                key={"editableProfileDescription"}
-                variant="outlined"
-                multiline
-                minRows={5}
-                maxRows={5}
-                defaultValue={data.description}
-                onChange={onChangeDescription}
-                sx={{
-                  width: "150%",
-                }}
-              ></TextField>
-            ] : [
-              <Typography
-                variant="body1"
-                key={"ownprofiledescription"}
-                sx={{
-                  width: "60%",
-                }}
-                gutterBottom
-              >
-                {data.description}
-              </Typography>
-            ]}
+            {
+              data.isOwnProfile ? [
+                <TextField
+                  id="outlined-basic"
+                  label="Edit Title and Update to save"
+                  key={"editableProfileTitle"}
+                  variant="outlined"
+                  multiline
+                  minRows={2}
+                  maxRows={2}
+                  defaultValue={data.title}
+                  onChange={onChangeTitle}
+                  sx={{
+                    width: "120%",
+                  }}
+                ></TextField>
+              ] : [
+                <Typography
+                  variant="body1"
+                  key={"ownprofiletitle"}
+                  sx={{
+                    width: "60%",
+                  }}
+                  gutterBottom
+                >
+                  {data.title}
+                </Typography>
+              ]}
             {data.isContentCreator ?
               <Stack direction="row" spacing={3}>
                 <Rating
@@ -184,7 +190,7 @@ function Profile(props) {
                   variant="contained"
                   onClick={handleSubmit}
                   disabled={uploadedPicture === "" &&
-                    description === ""
+                    title === ""
                   }
                 >
                   Save Changes
@@ -192,9 +198,29 @@ function Profile(props) {
                 <HighlightButton
                   key="DeleteAccountButton"
                   variant="contained"
-                  onClick={handleDelete}>
+                  onClick={() =>  setConfirmOpen(true)}>
                   Delete Account
                 </HighlightButton>
+                <ConfirmDialog
+                  title="Delete Account?"
+                  open={confirmOpen}
+                  setOpen={setConfirmOpen}
+                  onConfirm={handleDelete}
+                >
+                  Are you sure you want to delete your Account?
+                </ConfirmDialog>
+                {(data.profilePicture === "") ? []
+
+                  : [
+                    <UploadButton
+                      id="profilePictureUpload"
+                      uploadFormat="image/*"
+                      givenId="profilePicture-Upload"
+                      multiUpload={false}
+                      setUpload={setUploadedPicture}
+                    />
+                  ]
+                }
               </Stack>
             </Box>
           ] :
@@ -205,20 +231,9 @@ function Profile(props) {
 
             ]
 
-            ]}
+            ]
+          }
         </Stack>
-        {(data.isContentCreator && data.isOwnProfile) ?
-          <UploadButton
-            id="profilePictureUpload"
-            uploadFormat="image/*"
-            givenId="profilePicture-Upload"
-            multiUpload={false}
-            setUpload={setUploadedPicture}
-          />
-          : [
-
-          ]
-        }
         <Divider variant="fullWidth"></Divider>
         <Box
           sx={{

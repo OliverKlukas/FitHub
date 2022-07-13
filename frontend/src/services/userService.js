@@ -66,10 +66,10 @@ export default class UserService {
     });
   }
 
-  static login(mail, pass) {
+  static signin(mail, pass) {
     return new Promise((resolve, reject) => {
       HttpService.post(
-        `${UserService.baseURL()}/login`,
+        `${UserService.baseURL()}/signin`,
         {
           email: mail,
           password: pass,

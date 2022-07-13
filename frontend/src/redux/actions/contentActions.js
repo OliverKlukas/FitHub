@@ -103,6 +103,36 @@ export const getContent = (id) => {
 };
 
 /**
+ * Retrieves a list of filtered content item.
+ *
+ * @param id
+ * @returns {(function(*, *): Promise<void>)|*}
+ */
+ export function getContents() {
+  // when the backend call was successful and the contents are retrieved
+  // in the dispatcher the contents will be added to the global state
+  function onSuccess(contents) {
+    return { type: "GETCONTENTS_SUCCESS", contents: contents };
+  }
+  // when the backend call was failed
+  function onFailure(error) {
+    // error handling
+    console.log("Get all content failed with", error);
+  }
+
+  return async (dispatch) => {
+    try {
+      // ask for all content in the backend
+      const contents = await ContentService.getContents();
+      // call onSuccess in context of redux
+      dispatch(onSuccess(contents));
+    } catch (e) {
+      onFailure(e);
+    }
+  };
+};
+
+/**
  * Deletes content item by id.
  *
  * @param id

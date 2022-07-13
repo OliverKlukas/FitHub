@@ -72,6 +72,25 @@ export default class ContentService {
   }
 
   /**
+   * Retrieve a list of content objects.
+   *
+   * @returns {Promise<unknown>}
+   */
+  static getContents() {
+    return new Promise(async (resolve, reject) => {
+      HttpService.get(
+        this.baseURL(),
+        function (data) {
+          resolve(data);
+        },
+        function (textStatus) {
+          reject(textStatus);
+        }
+      );
+    });
+  }
+
+  /**
    * Delete single content by id.
    *
    * @param id

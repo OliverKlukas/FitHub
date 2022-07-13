@@ -145,7 +145,7 @@ const register = async (req, res) => {
  * @param {*} res jwt token
  * @returns
  */
-const login = async (req, res) => {
+const signin = async (req, res) => {
   // check if the body of the request contains all necessary properties
   if (!Object.prototype.hasOwnProperty.call(req.body, "password"))
     return res.status(400).json({
@@ -252,6 +252,7 @@ const userdata = async (req, res) => {
         firstname: requesteduser.firstName,
         lastname: requesteduser.lastName,
         description: requesteduser.description,
+        title: requesteduser.title,
         role: requesteduser.role,
         isOwnProfile: isownprofile,
         profilePicture: requesteduser.profilePicture,
@@ -271,6 +272,7 @@ const userdata = async (req, res) => {
         firstname: user.firstName,
         lastname: user.lastName,
         description: user.description,
+        title: user.title,
         role: user.role,
         isOwnProfile: false,
         profilePicture: user.profilePicture,
@@ -488,7 +490,7 @@ const getReviewAnalytics = async (req, res) => {
 
 module.exports = {
   register,
-  login,
+  signin,
   userdata,
   logout,
   updateuser,
