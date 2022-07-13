@@ -11,6 +11,9 @@ import Typography from "@mui/material/Typography";
 import { HighlightButton } from "../../buttons/highlight_button";
 import { StandardButton } from "../../buttons/standard_button";
 import { Stack, Snackbar, TextField } from "@mui/material";
+import emailjs from 'emailjs-com';
+import { useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
 
 const ReportDial = styled(Dialog)(({ theme }) => ({
   "& .MuiDialogContent-root": {
@@ -20,6 +23,7 @@ const ReportDial = styled(Dialog)(({ theme }) => ({
     padding: theme.spacing(1),
   },
 }));
+
 
 const ReportDialTitle = (props) => {
   const { children, onClose, ...other } = props;
@@ -50,10 +54,25 @@ ReportDialTitle.propTypes = {
   onClose: PropTypes.func.isRequired,
 };
 
-export default function ReportDialog() {
-  const [open, setOpen] = React.useState(false); // States for Popup
-
-  const [snackopen, setsnackOpen] = React.useState(false); // States for Snackbar
+/**
+ * 
+ * @param {*} props for state management
+ * @returns 
+ */
+export default function ReportDialog(props) {
+  const params = useParams()
+  // for state Management
+  const user = useSelector((state) => state.user);
+  // State for Popup
+  const [open, setOpen] = React.useState(false); 
+  // for sending email
+  const [form, setForm] = React.useState({
+    from_name : "",
+    message : "",
+    content_creator: "",
+  })
+  // States for Snackbar
+  const [snackopen, setsnackOpen] = React.useState(false); 
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -61,12 +80,34 @@ export default function ReportDialog() {
   const handleClose = () => {
     setOpen(false);
   };
+
+  // This should be executed in the Backend after a authorized API call, but for a mvp this is sufficient
   const handleSubmit = () => {
+    emailjs.send('service_dxcny4u', 'template_6ql26rb',{
+      from_name : form.from_name,
+      message : form.message,
+      content_creator: form.content_creator,
+    }, 'gTSwj-_BxWpg0P2Ff')
+    .then((result) => {
+        console.log(result);   
+    }, (error) => {
+        console.log(error.text);
+    });
     setOpen(false);
     setsnackOpen(true);
   };
   const handleSnackClose = () => {
     setsnackOpen(false);
+  };
+  const onChangeText = (e) => {
+      e.preventDefault();
+      setForm({
+        from_name: user.user.email,
+        message: e.target.value,
+        content_creator: params.id,
+      }
+        );
+        console.log(form);
   };
 
   return (
@@ -94,6 +135,7 @@ export default function ReportDialog() {
               multiline
               minRows={5}
               maxRows={5}
+              onChange={onChangeText}
             ></TextField>
           </Stack>
         </DialogContent>
