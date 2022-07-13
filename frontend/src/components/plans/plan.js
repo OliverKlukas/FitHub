@@ -3,8 +3,9 @@ import * as React from "react";
 import { HighlightButton } from "../../components/buttons/highlight_button";
 import { StandardButton } from "../../components/buttons/standard_button";
 import { Link as RouterLink } from "react-router-dom";
-import {useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 import UserService from "../../services/userService";
+import ReportDialog from "../profilecomponents/popups/report_dialog";
 
 /**
  * my plans view content component including an overview of price, content creator, a download button, a review button that links to the content creators profile and a customer support button.
@@ -58,8 +59,9 @@ export default function Plan({ item, transaction }) {
             <Typography variant="h3">Price: {item.price} €</Typography>
           </Stack>
           <Stack spacing={2}>
-            
-            <Typography variant="h4">by {author.firstname + " " + author.lastname}</Typography>
+            <Typography variant="h4">
+              by {author.firstname + " " + author.lastname}
+            </Typography>
             <Typography variant="h4">
               order placed:{" "}
               {transaction.boughtAt.substring(
@@ -74,30 +76,24 @@ export default function Plan({ item, transaction }) {
         <HighlightButton
           variant="contained"
           sx={{ width: 300 }}
-          component={RouterLink}
-          target="_blank"
-          to={"/sample.pdf"}
-          download
+          href={item.plan}
+          download={item.title}
         >
           Download
         </HighlightButton>
+        <ReportDialog width={300} content_creator_id={item.ownerId}/>
         <StandardButton
           variant="contained"
           sx={{ width: 300 }}
           component={RouterLink}
-          to={`/profile`}
-        >
-          Contact customer support
-        </StandardButton>
-        <StandardButton
-          variant="contained"
-          sx={{ width: 300 }}
-          component={RouterLink}
-          to={`/profile`}
+          to={`/profile/${item.ownerId}`}
         >
           Write a review
         </StandardButton>
       </Stack>
+      
     </Stack>
-  ) : (<CircularProgress/>);
+  ) : (
+    <CircularProgress />
+  );
 }
