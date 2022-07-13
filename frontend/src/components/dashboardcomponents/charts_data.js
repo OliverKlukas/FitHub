@@ -1,65 +1,144 @@
-import { Stack, Typography} from "@mui/material";
-import * as React from 'react';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, Line, PieChart, Pie  } from 'recharts';
-
+import { Stack, Typography } from "@mui/material";
+import React, { useEffect } from "react";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import UserService from "../../services/userService";
+import boughtPlanService from "../../services/boughtPlanService";
+import { connect, useSelector } from "react-redux";
+import { BarChart, Bar, XAxis, Tooltip, PieChart, Pie } from "recharts";
 
 export default function ChartsData() {
+  const user = useSelector((state) => state.user);
 
-    const data = [
-        { name: '1', Plan1: 1, Plan2: 2, Plan3: 3, avg: 2},
-        { name: '2', Plan1: 4, Plan2: 3, Plan3: 6, avg: 2},
-        { name: '3', Plan1: 3, Plan2: 7, Plan3: 8, avg: 2},
-        { name: '4', Plan1: 5, Plan2: 5, Plan3: 6, avg: 2},
-        { name: '5', Plan1: 2, Plan2: 6, Plan3: 8, avg: 2},
-    ];
+  const [data, setData] = React.useState({
+    gradingDistribution: [
+      { name: 1, amount: 0 },
+      { name: 2, amount: 0 },
+      { name: 4, amount: 0 },
+      { name: 4, amount: 0 },
+      { name: 5, amount: 0 },
+    ],
+    avgReviewRating: 0,
+  });
 
-    const data01 = [
-        { name: 'Plan A', value: 187 },
-        { name: 'Plan B', value: 187 },
-        { name: 'Plan C', value: 187 },
-        { name: 'Plan D', value: 187 },
-        { name: 'Plan E', value: 278 },
-        { name: 'Plan F', value: 189 },
-      ];
-    
+  const [salesDist, setSalesDist] = React.useState({
+    salesDistribution: [],
+    overallSales: 0,
+  });
+
+  useEffect(() => {
+    async function fetchData() {
+      if (user.user) {
+        const res = await UserService.getAnalytics(user.user._id);
+        const temp = {
+          gradingDistribution: res.gradingDistribution,
+          avgReviewRating: res.avgReviewRating,
+        };
+        setData(temp);
+
+        const resSales = await boughtPlanService.getSalesDistribution(
+          user.user._id
+        );
+        const tempSales = {
+          salesDistribution: resSales.salesDistribution,
+          overallSales: resSales.overallSales,
+        };
+        setSalesDist(tempSales);
+      }
+    }
+    fetchData();
+  }, [setData, setSalesDist]);
+
+  const RADIAN = Math.PI / 180;
+  const renderCustomizedLabel = ({
+    cx,
+    cy,
+    midAngle,
+    innerRadius,
+    outerRadius,
+    percent,
+    index,
+  }) => {
+    const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
+    const x = cx + radius * Math.cos(-midAngle * RADIAN);
+    const y = cy + radius * Math.sin(-midAngle * RADIAN);
+
     return (
-        <Stack direction="row" spacing={3}>
-            <Card sx={{ minWidth: 475, height: 450, backgroundColor: '#F2F2F2'}}>
-                <CardContent>
-                   <Typography variant="h5" component="div">
-                     Sales Distribution
-                   </Typography>
-                   <PieChart width={440} height={400}>
-                        <Pie
-                            dataKey="value"
-                            isAnimationActive={true}
-                            data={data01}
-                            innerRadius={50}
-                            outerRadius={120}
-                            fill="green"
-                            label
-                        />
-                        <Tooltip />
-                    </PieChart>
-                </CardContent>
-            </Card>
-            <Card sx={{ minWidth: 475, height: 450,backgroundColor: '#F2F2F2' }}>
-                <CardContent>
-                   <Typography sx={{ mb: 0.5 }} variant="h5" component="div">
-                     Review Development
-                   </Typography>
-                   <Typography sx={{ mb: 2 }} variant="body1" component="div">
-                     past 90 days
-                   </Typography>
-                   <BarChart width={425} height={350} data={data} >
-                     <XAxis dataKey="name" fontWeight="bold" fontSize="20"/>
-                     <Tooltip />
-                     <Bar dataKey="Plan1" stackId="a" fill="grey" />
-                   </BarChart>
-                </CardContent>
-            </Card>
-        </Stack>
+      <text
+        x={x}
+        y={y}
+        fill="white"
+        textAnchor={x > cx ? "start" : "end"}
+        dominantBaseline="central"
+      >
+        {`${(percent * 100).toFixed(0)}%`}
+      </text>
     );
+  };
+
+  return (
+    <Stack direction="row" spacing={3}>
+      <Card sx={{ minWidth: 475, height: 450, backgroundColor: "#F2F2F2" }}>
+        <CardContent>
+          <Typography variant="h5" component="div">
+            Sales Distribution
+          </Typography>
+          <Typography sx={{ mb: 2 }} variant="body1" component="div">
+            overall
+          </Typography>
+          <PieChart width={440} height={330}>
+            <Pie
+              key={Math.random()}
+              dataKey="amount"
+              isAnimationActive={true}
+              data={salesDist.salesDistribution}
+              innerRadius={50}
+              outerRadius={120}
+              fill="green"
+              labelLine={false}
+              label={renderCustomizedLabel}
+            />
+            <Tooltip />
+          </PieChart>
+          <Typography
+            sx={{ mb: 2 }}
+            variant="body1"
+            component="div"
+            textAlign="center"
+          >
+            Overall Sales:{" "}
+            {salesDist.overallSales === 0
+              ? "no reviews yet"
+              : salesDist.overallSales}
+          </Typography>
+        </CardContent>
+      </Card>
+      <Card sx={{ minWidth: 475, height: 450, backgroundColor: "#F2F2F2" }}>
+        <CardContent>
+          <Typography sx={{ mb: 0.5 }} variant="h5" component="div">
+            Review Development
+          </Typography>
+          <Typography sx={{ mb: 2 }} variant="body1" component="div">
+            past 90 days
+          </Typography>
+          <BarChart width={425} height={325} data={data.gradingDistribution}>
+            <XAxis dataKey="name" fontWeight="bold" fontSize="20" />
+            <Tooltip />
+            <Bar dataKey="amount" fill="grey" />
+          </BarChart>
+          <Typography
+            sx={{ mb: 2 }}
+            variant="body1"
+            component="div"
+            textAlign="center"
+          >
+            average rating:{" "}
+            {data.avgReviewRating === 0
+              ? "no reviews yet"
+              : data.avgReviewRating}
+          </Typography>
+        </CardContent>
+      </Card>
+    </Stack>
+  );
 }

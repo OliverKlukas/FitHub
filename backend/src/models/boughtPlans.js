@@ -13,10 +13,23 @@ const mongoose = require("mongoose");
  *
  */
 const BoughtPlansSchema = new mongoose.Schema({
-    userId: { type: String, required: true },
-    contentId: { type: String, required: true },
-    // is set automatically to the current timestamp when payment is completed (default: Date.now)
-    boughtAt: { type: Date, default: Date.now },
+  userId: { type: String, required: true },
+  contentId: { type: String, required: true },
+  // is set automatically to the current timestamp when payment is completed (default: Date.now)
+  boughtAt: { type: Date, default: Date.now },
+  price: {
+    type: String,
+    required: true,
+  },
+  ownerId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    required: true,
+  },
+  title: {
+    type: String,
+    required: true,
+  },
 });
 
 module.exports = mongoose.model("BoughtPlans", BoughtPlansSchema);

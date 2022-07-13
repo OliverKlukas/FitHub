@@ -60,6 +60,44 @@ export default class boughtPlanService {
       HttpService.get(
         `${this.baseURL()}/${id}`,
         function (data) {
+          if (data !== undefined || Object.keys(data).length !== 0) {
+            resolve(data);
+          } else {
+            reject("Error while retrieving boughtPlan");
+          }
+        },
+        function (textStatus) {
+          reject(textStatus);
+        }
+      );
+    });
+  }
+
+  static getSalesDistribution(id) {
+    return new Promise((resolve, reject) => {
+      HttpService.post(
+        `${this.baseURL()}/getSalesDistribution`,
+        {
+          userId: id,
+        },
+        function (data) {
+          resolve(data);
+        },
+        function (textStatus) {
+          reject(textStatus);
+        }
+      );
+    });
+  }
+
+  static getFinancials(id) {
+    return new Promise((resolve, reject) => {
+      HttpService.post(
+        `${this.baseURL()}/getFinancials`,
+        {
+          userId: id,
+        },
+        function (data) {
           resolve(data);
         },
         function (textStatus) {

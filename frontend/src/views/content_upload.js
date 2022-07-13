@@ -26,6 +26,8 @@ import { CancelButton } from "../components/buttons/cancel_button";
 import { StandardButton } from "../components/buttons/standard_button";
 import { red } from "@mui/material/colors";
 import { useSelector } from "react-redux";
+import InsightsDrawer from "../components/drawer/insights_drawer";
+import Divider from "@mui/material/Divider";
 
 const preInputValue = "Type here...";
 const fitnessGoal = ["weight-loss", "weight-gain", "muscle-growth", "cardio"];
@@ -59,6 +61,7 @@ function ContentUpload(props) {
   const [category, setCategory] = useState(defaultCategory);
   const [title, setTitle] = useState("");
   const [price, setPrice] = useState("");
+  let priceModf = "";
   const [description, setDescription] = useState("");
   const [duration, setDuration] = useState("");
   const [intensity, setIntensity] = useState("");
@@ -110,13 +113,29 @@ function ContentUpload(props) {
 
   // User input verification and hand-off to backend database publication.
   function handlePublishContent() {
-    // TODO: verify that the above defined hooks match our criteria, i.e. with regex that we could put i.e. into utils folder and use project wide
+    if (price.length !== 0) {
+      if (price.includes(".")) {
+        priceModf = price.replace(".", ",");
+      } else {
+        priceModf = price;
+      }
+
+      if (!priceModf.includes(",")) {
+        priceModf = priceModf + ",00";
+      } else if (priceModf.substring(priceModf.indexOf(",")).length === 0) {
+        priceModf = priceModf + "00";
+      } else if (priceModf.substring(priceModf.indexOf(",")).length === 1) {
+        priceModf = priceModf + "0";
+      }
+    }
+
     validatePrice();
     validateTitle();
     validateDescription();
     validateTags();
     validateDuration();
     validateIntensity();
+
     if (
       !titleError &&
       !priceError &&
@@ -181,7 +200,7 @@ function ContentUpload(props) {
         category: category,
         title: title,
         description: description,
-        price: price,
+        price: priceModf,
         duration: parseInt(duration),
         intensity: parseInt(intensity),
         support: support,
@@ -205,9 +224,7 @@ function ContentUpload(props) {
     // ([.,][0-9]{1,2})? -> ? means optionl (inside bracket)
     // [.,] -> comma or point
     // [0-9]{1,2} -> 1 or 2 times a number
-    // \s? -> optional space
-    // (€)? -> optional euro sign
-    if (price.match(/^([0-9]+([.,][0-9]{1,2})?\s?(€)?)$/) === null) {
+    if (price.match(/^([0-9]+([.,][0-9]{1,2})?)$/) === null) {
       setPriceError(true); //error input field
     } else {
       setPriceError(false);
@@ -304,528 +321,533 @@ function ContentUpload(props) {
   };
 
   return (
-    <Stack
-      padding={3}
-      backgroundColor="#EEEEEE"
-      borderRadius="8px"
-      spacing={2}
-      width="90%"
-    >
-      <Typography variant="h1" fontWeight="bold">
-        Offer your content
-      </Typography>
-      <Typography variant="h3">General information</Typography>
-      <Stack spacing={3} direction="row" alignItems="center">
-        <Typography
-          sx={{ minWidth: 100 }}
-          variant="subtitle1"
-          fontWeight="bold"
-        >
-          Category:
+    <Stack direction="row" marginTop={5} spacing={5}>
+      <InsightsDrawer currTab="Upload" />
+      <Divider orientation="vertical" flexItem />
+      <Stack
+        padding={3}
+        backgroundColor="#EEEEEE"
+        borderRadius="8px"
+        spacing={2}
+        width="90%"
+      >
+        <Typography variant="h1" fontWeight="bold">
+          Offer your content
         </Typography>
-        <FormControl>
-          <RadioGroup
-            row
-            aria-labelledby="category-radio-buttons-group-label"
-            name="row-radio-buttons-group"
-            defaultValue={defaultCategory}
-            onChange={(event) => setCategory(event.target.value)}
+        <Typography variant="h3">General information</Typography>
+        <Stack spacing={3} direction="row" alignItems="center">
+          <Typography
+            sx={{ minWidth: 100 }}
+            variant="subtitle1"
+            fontWeight="bold"
           >
-            <FormControlLabel
-              value="training"
-              control={<Radio />}
-              label="Training plan"
+            Category:
+          </Typography>
+          <FormControl>
+            <RadioGroup
+              row
+              aria-labelledby="category-radio-buttons-group-label"
+              name="row-radio-buttons-group"
+              defaultValue={defaultCategory}
+              onChange={(event) => setCategory(event.target.value)}
+            >
+              <FormControlLabel
+                value="training"
+                control={<Radio />}
+                label="Training plan"
+              />
+              <FormControlLabel
+                value="nutrition"
+                control={<Radio />}
+                label="Nutrition plan"
+              />
+              <FormControlLabel
+                value="coaching"
+                control={<Radio />}
+                label="Coaching"
+              />
+            </RadioGroup>
+          </FormControl>
+        </Stack>
+        <Stack spacing={2} direction="row" alignItems="baseline">
+          <Typography
+            sx={{ minWidth: 100 }}
+            variant="subtitle1"
+            fontWeight="bold"
+          >
+            Title:
+          </Typography>
+          <TextField
+            id="title-input"
+            placeholder={preInputValue}
+            value={title}
+            onBlur={validateTitle}
+            onChange={(event) => setTitle(event.target.value)}
+            error={titleError}
+            helperText={
+              titleError
+                ? 'Enter min 3 letters and maximum 10 words, allowed symbols: <>!?();:.,-~+*#"%'
+                : "Please enter a short and catchy title that best describes your fitness offering"
+            }
+            variant="filled"
+            size="small"
+          />
+        </Stack>
+        <Stack spacing={2} direction="row" alignItems="baseline">
+          <Typography
+            sx={{ minWidth: 100 }}
+            variant="subtitle1"
+            fontWeight="bold"
+          >
+            Price:
+          </Typography>
+          <TextField
+            sx={{ maxWidth: 200 }}
+            error={priceError}
+            id="price-input"
+            placeholder={preInputValue}
+            value={price}
+            onChange={(event) => setPrice(event.target.value)}
+            onBlur={validatePrice}
+            helperText={
+              priceError
+                ? "Unaccepted price format! Shape to format like 50,00 (example)"
+                : "Prices must include VAT and represent the total costs you expect buyers to pay"
+            }
+            variant="filled"
+            size="small"
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <EuroSymbol />
+                </InputAdornment>
+              ),
+            }}
+          />
+        </Stack>
+        <Stack spacing={2} direction="row" alignItems="baseline">
+          <Typography
+            sx={{ minWidth: 100 }}
+            variant="subtitle1"
+            fontWeight="bold"
+          >
+            Description:
+          </Typography>
+          <TextField
+            id="description-input"
+            multiline
+            value={description}
+            onChange={(event) => setDescription(event.target.value)}
+            onBlur={validateDescription}
+            error={descriptionError}
+            rows={4}
+            variant="filled"
+            placeholder={preInputValue}
+            size="small"
+            helperText={
+              descriptionError
+                ? 'Please enter min 5 letters, max 30 words, allowed symbols: <>!?();:.,-~+*#"%'
+                : "Please enter a description that conveys what buyers can expect from this offering"
+            }
+          />
+        </Stack>
+        <Stack spacing={2} direction="row" alignItems="center">
+          <Typography
+            sx={{ minWidth: 100 }}
+            variant="subtitle1"
+            fontWeight="bold"
+          >
+            Scope:
+          </Typography>
+          <Stack spacing={2} direction="row">
+            <TextField
+              sx={{ maxWidth: 200 }}
+              id="duration-input"
+              label="Duration"
+              onBlur={validateDuration}
+              multiline
+              value={duration}
+              onChange={(event) => setDuration(event.target.value)}
+              type="number"
+              variant="filled"
+              placeholder={preInputValue}
+              helperText={
+                durationError
+                  ? "display the amount of weeks by entering a number between 1-99"
+                  : "Amount of weeks"
+              }
+              size="small"
+              error={durationError}
             />
-            <FormControlLabel
-              value="nutrition"
-              control={<Radio />}
-              label="Nutrition plan"
+            <TextField
+              sx={{ maxWidth: 200 }}
+              id="intensity-input"
+              label="Intensity"
+              onBlur={validateIntensity}
+              error={intensityError}
+              multiline
+              value={intensity}
+              onChange={(event) => setIntensity(event.target.value)}
+              variant="filled"
+              placeholder={preInputValue}
+              helperText={
+                intensityError
+                  ? category === "nutrition"
+                    ? "enter a number between 1-99 meals per week"
+                    : "enter a number between 1-99 trainings per week"
+                  : category === "nutrition"
+                  ? "Meals per day"
+                  : "Trainings per week"
+              }
+              size="small"
             />
-            <FormControlLabel
-              value="coaching"
-              control={<Radio />}
-              label="Coaching"
-            />
-          </RadioGroup>
-        </FormControl>
-      </Stack>
-      <Stack spacing={2} direction="row" alignItems="baseline">
-        <Typography
-          sx={{ minWidth: 100 }}
-          variant="subtitle1"
-          fontWeight="bold"
-        >
-          Title:
-        </Typography>
-        <TextField
-          id="title-input"
-          placeholder={preInputValue}
-          value={title}
-          onBlur={validateTitle}
-          onChange={(event) => setTitle(event.target.value)}
-          error={titleError}
-          helperText={
-            titleError
-              ? 'Enter min 3 letters and maximum 10 words, allowed symbols: <>!?();:.,-~+*#"%'
-              : "Please enter a short and catchy title that best describes your fitness offering"
-          }
-          variant="filled"
-          size="small"
-        />
-      </Stack>
-      <Stack spacing={2} direction="row" alignItems="baseline">
-        <Typography
-          sx={{ minWidth: 100 }}
-          variant="subtitle1"
-          fontWeight="bold"
-        >
-          Price:
-        </Typography>
-        <TextField
-          sx={{ maxWidth: 200 }}
-          error={priceError}
-          id="price-input"
-          placeholder={preInputValue}
-          value={price}
-          onChange={(event) => setPrice(event.target.value)}
-          onBlur={validatePrice}
-          helperText={
-            priceError
-              ? "Unaccepted price format! Shape to format like 50,00 (example)"
-              : "Prices must include VAT and represent the total costs you expect buyers to pay"
-          }
-          variant="filled"
-          size="small"
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <EuroSymbol />
-              </InputAdornment>
-            ),
-          }}
-        />
-      </Stack>
-      <Stack spacing={2} direction="row" alignItems="baseline">
-        <Typography
-          sx={{ minWidth: 100 }}
-          variant="subtitle1"
-          fontWeight="bold"
-        >
-          Description:
-        </Typography>
-        <TextField
-          id="description-input"
-          multiline
-          value={description}
-          onChange={(event) => setDescription(event.target.value)}
-          onBlur={validateDescription}
-          error={descriptionError}
-          rows={4}
-          variant="filled"
-          placeholder={preInputValue}
-          size="small"
-          helperText={
-            descriptionError
-              ? 'Please enter min 5 letters, max 30 words, allowed symbols: <>!?();:.,-~+*#"%'
-              : "Please enter a description that conveys what buyers can expect from this offering"
-          }
-        />
-      </Stack>
-      <Stack spacing={2} direction="row" alignItems="center">
-        <Typography
-          sx={{ minWidth: 100 }}
-          variant="subtitle1"
-          fontWeight="bold"
-        >
-          Scope:
-        </Typography>
+          </Stack>
+        </Stack>
         <Stack spacing={2} direction="row">
-          <TextField
-            sx={{ maxWidth: 200 }}
-            id="duration-input"
-            label="Duration"
-            onBlur={validateDuration}
-            multiline
-            value={duration}
-            onChange={(event) => setDuration(event.target.value)}
-            type="number"
-            variant="filled"
-            placeholder={preInputValue}
-            helperText={
-              durationError
-                ? "display the amount of weeks by entering a number between 1-99"
-                : "Amount of weeks"
-            }
-            size="small"
-            error={durationError}
-          />
-          <TextField
-            sx={{ maxWidth: 200 }}
-            id="intensity-input"
-            label="Intensity"
-            onBlur={validateIntensity}
-            error={intensityError}
-            multiline
-            value={intensity}
-            onChange={(event) => setIntensity(event.target.value)}
-            variant="filled"
-            placeholder={preInputValue}
-            helperText={
-              intensityError
-                ? category === "nutrition"
-                  ? "enter a number between 1-99 meals per day"
-                  : "enter a number between 1-99 trainings per week"
-                : category === "nutrition"
-                ? "Meals per day"
-                : "Trainings per week"
-            }
-            size="small"
-          />
-        </Stack>
-      </Stack>
-      <Stack spacing={2} direction="row">
-        <Typography
-          sx={{ minWidth: 100 }}
-          variant="subtitle1"
-          fontWeight="bold"
-        >
-          Tags:
-        </Typography>
-        <Box>
-          <Grid
-            container
-            justifyContent="flex-start"
-            maxWidth={600}
-            spacing={3}
-            columns={{ xs: 1, sm: 2 }}
+          <Typography
+            sx={{ minWidth: 100 }}
+            variant="subtitle1"
+            fontWeight="bold"
           >
-            <Grid item xs={1} sm={1}>
-              <Autocomplete
-                multiple
-                id="goal-tags"
-                onBlur={validateTags}
-                options={fitnessGoal}
-                value={goalTags}
-                onChange={(event, value) => setGoalTags(value)}
-                renderInput={(params) => (
-                  <TextField {...params} label="Fitness goal" />
-                )}
-              />
+            Tags:
+          </Typography>
+          <Box>
+            <Grid
+              container
+              justifyContent="flex-start"
+              maxWidth={600}
+              spacing={3}
+              columns={{ xs: 1, sm: 2 }}
+            >
+              <Grid item xs={1} sm={1}>
+                <Autocomplete
+                  multiple
+                  id="goal-tags"
+                  onBlur={validateTags}
+                  options={fitnessGoal}
+                  value={goalTags}
+                  onChange={(event, value) => setGoalTags(value)}
+                  renderInput={(params) => (
+                    <TextField {...params} label="Fitness goal" />
+                  )}
+                />
+              </Grid>
+              <Grid item xs={1} sm={1}>
+                <Autocomplete
+                  multiple
+                  id="goal-tags"
+                  options={lifestyle}
+                  onBlur={validateTags}
+                  value={lifestyleTags}
+                  onChange={(event, value) => setLifestyleTags(value)}
+                  renderInput={(params) => (
+                    <TextField {...params} label="Lifestyle" />
+                  )}
+                />
+              </Grid>
+              <Grid item xs={1} sm={1}>
+                <Autocomplete
+                  multiple
+                  id="level-tags"
+                  options={fitnessLevel}
+                  onBlur={validateTags}
+                  value={levelTags}
+                  onChange={(event, value) => setLevelTags(value)}
+                  renderInput={(params) => (
+                    <TextField {...params} label="Fitness level" />
+                  )}
+                />
+              </Grid>
+              <Grid item xs={1} sm={1}>
+                <Typography
+                  variant="body2"
+                  fontSize="small"
+                  sx={
+                    tagsError
+                      ? {
+                          color: red["A700"],
+                        }
+                      : { color: "default" }
+                  }
+                >
+                  Please type and select fitting tags (at least one) for your
+                  content offering. These will be used to better reach your
+                  target user group on FitHub.
+                </Typography>
+              </Grid>
             </Grid>
-            <Grid item xs={1} sm={1}>
-              <Autocomplete
-                multiple
-                id="goal-tags"
-                options={lifestyle}
-                onBlur={validateTags}
-                value={lifestyleTags}
-                onChange={(event, value) => setLifestyleTags(value)}
-                renderInput={(params) => (
-                  <TextField {...params} label="Lifestyle" />
-                )}
-              />
-            </Grid>
-            <Grid item xs={1} sm={1}>
-              <Autocomplete
-                multiple
-                id="level-tags"
-                options={fitnessLevel}
-                onBlur={validateTags}
-                value={levelTags}
-                onChange={(event, value) => setLevelTags(value)}
-                renderInput={(params) => (
-                  <TextField {...params} label="Fitness level" />
-                )}
-              />
-            </Grid>
-            <Grid item xs={1} sm={1}>
-              <Typography
-                variant="body2"
-                fontSize="small"
-                sx={
-                  tagsError
-                    ? {
-                        color: red["A700"],
-                      }
-                    : { color: "default" }
-                }
+          </Box>
+        </Stack>
+        <Typography variant="h3">Uploads</Typography>
+        <Stack spacing={2} direction="row">
+          <Typography sx={{ minWidth: 200 }} variant="subtitle1">
+            Marketing material:
+          </Typography>
+          <Stack spacing={1}>
+            <UploadButton
+              uploadFormat="image/*"
+              givenId="marketing-upload"
+              multiUpload={true}
+              setUpload={setMedia}
+              setSuccess={setMediaError}
+            />
+            <Typography
+              variant="body2"
+              fontSize="small"
+              maxWidth={300}
+              sx={
+                mediaError
+                  ? {
+                      color: red["A700"],
+                    }
+                  : { color: "default" }
+              }
+            >
+              Please upload pictures that represents your offer (example dishes,
+              workouts etc). Be aware of the max size of 16MB and respect our{" "}
+              <Link
+                color="#393E46"
+                fontSize={14}
+                fontWeight={300}
+                underline="always"
+                target="_blank"
+                href="/terms-and-conditions"
               >
-                Please type and select fitting tags (at least one) for your
-                content offering. These will be used to better reach your target
-                user group on FitHub.
-              </Typography>
-            </Grid>
-          </Grid>
-        </Box>
-      </Stack>
-      <Typography variant="h3">Uploads</Typography>
-      <Stack spacing={2} direction="row">
-        <Typography sx={{ minWidth: 200 }} variant="subtitle1">
-          Marketing material:
-        </Typography>
-        <Stack spacing={1}>
-          <UploadButton
-            uploadFormat="image/*"
-            givenId="marketing-upload"
-            multiUpload={true}
-            setUpload={setMedia}
-            setSuccess={setMediaError}
-          />
-          <Typography
-            variant="body2"
-            fontSize="small"
-            maxWidth={300}
-            sx={
-              mediaError
-                ? {
-                    color: red["A700"],
-                  }
-                : { color: "default" }
-            }
-          >
-            Please upload pictures that represents your offer (example dishes,
-            workouts etc). Be aware of the max size of 16MB and respect our{" "}
-            <Link
-              color="#393E46"
-              fontSize={14}
-              fontWeight={300}
-              underline="always"
-              target="_blank"
-              href="/terms-and-conditions"
+                Terms & Conditions
+              </Link>{" "}
+              including image rights
+            </Typography>
+          </Stack>
+        </Stack>
+        <Stack spacing={2} direction="row">
+          <Typography sx={{ minWidth: 200 }} variant="subtitle1">
+            Full plan:
+          </Typography>
+          <Stack spacing={1}>
+            <UploadButton
+              uploadFormat=".pdf"
+              givenId="plan-upload"
+              multiUpload={false}
+              setUpload={setPlan}
+              setSuccess={setPlanError}
+            />
+            <Typography
+              variant="body2"
+              fontSize="small"
+              maxWidth={300}
+              sx={
+                planError
+                  ? {
+                      color: red["A700"],
+                    }
+                  : { color: "default" }
+              }
             >
-              Terms & Conditions
-            </Link>{" "}
-            including image rights
-          </Typography>
+              Please upload the pdf file of max 16MB that contains the complete
+              training plan that buyers are going to receive
+            </Typography>
+          </Stack>
         </Stack>
-      </Stack>
-      <Stack spacing={2} direction="row">
-        <Typography sx={{ minWidth: 200 }} variant="subtitle1">
-          Full plan:
-        </Typography>
-        <Stack spacing={1}>
-          <UploadButton
-            uploadFormat=".pdf"
-            givenId="plan-upload"
-            multiUpload={false}
-            setUpload={setPlan}
-            setSuccess={setPlanError}
-          />
-          <Typography
-            variant="body2"
-            fontSize="small"
-            maxWidth={300}
-            sx={
-              planError
-                ? {
-                    color: red["A700"],
-                  }
-                : { color: "default" }
-            }
-          >
-            Please upload the pdf file of max 16MB that contains the complete
-            training plan that buyers are going to receive
+        <Stack spacing={2} direction="row">
+          <Typography sx={{ minWidth: 200 }} variant="subtitle1">
+            Sample:
           </Typography>
-        </Stack>
-      </Stack>
-      <Stack spacing={2} direction="row">
-        <Typography sx={{ minWidth: 200 }} variant="subtitle1">
-          Sample:
-        </Typography>
-        <Stack spacing={1}>
-          <UploadButton
-            uploadFormat=".pdf"
-            givenId="sample-upload"
-            multiUpload={false}
-            setUpload={setSample}
-            setSuccess={setSampleError}
-          />
-          <Typography
-            variant="body2"
-            fontSize="small"
-            maxWidth={300}
-            sx={
-              sampleError
-                ? {
-                    color: red["A700"],
-                  }
-                : { color: "default" }
-            }
-          >
-            Please upload a sample pdf file of max 16MB which gives buyers an
-            impression of the full plan
-          </Typography>
-        </Stack>
-      </Stack>
-      <Typography variant="h3">Additional options</Typography>
-      <Stack spacing={0.5}>
-        <Stack direction="row" alignItems="center">
-          <Checkbox
-            value={marketing}
-            onChange={(event) => setMarketing(event.target.checked)}
-          />
-          <Typography variant="body1">
-            Yes, email me for marketing events like vouchers & sales weekends
-          </Typography>
-        </Stack>
-        <Stack direction="row" alignItems="center">
-          <Checkbox
-            value={support}
-            onChange={(event) => setSupport(event.target.checked)}
-          />
-          <Typography variant="body1">
-            Yes, I am offering full-time support for the buyers
-          </Typography>
-        </Stack>
-        <Stack direction="row" alignItems="center">
-          <Checkbox
-            value={feature}
-            onChange={(event) => setFeatured(event.target.checked)}
-          />
-          <Typography variant="body1">
-            Feature me in discovery for a increasing fee of 15% instead of 10%
-            per transaction
-          </Typography>
-        </Stack>
-      </Stack>
-      <Typography variant="h3">Legal notices</Typography>
-      <Stack spacing={0.5}>
-        <Stack direction="row" alignItems="center">
-          <Checkbox
-            checked={qualityChecked}
-            onChange={handleQualityChange}
-            sx={
-              missedQualityCheck
-                ? {
-                    color: red["A700"],
-                  }
-                : { color: "default" }
-            }
-          />
-          <Typography
-            variant="body1"
-            sx={
-              missedQualityCheck
-                ? {
-                    color: red["A700"],
-                  }
-                : { color: "default" }
-            }
-          >
-            Yes, I ensure delivery of the expected quality and know intentional
-            fooling attempts will result in penalties like an account ban
-          </Typography>
-        </Stack>
-        <Stack direction="row" alignItems="center">
-          <Checkbox
-            checked={termsChecked}
-            onChange={handleTermsChange}
-            sx={
-              missedTermsCheck
-                ? {
-                    color: red["A700"],
-                  }
-                : { color: "default" }
-            }
-          />
-          <Typography
-            variant="body1"
-            sx={
-              missedTermsCheck
-                ? {
-                    color: red["A700"],
-                  }
-                : { color: "default" }
-            }
-          >
-            Yes, I hereby accept the{" "}
-            <Link
-              color="#393E46"
-              fontSize={14}
-              fontWeight={300}
-              underline="always"
-              target="_blank"
-              href="/terms-and-conditions"
+          <Stack spacing={1}>
+            <UploadButton
+              uploadFormat=".pdf"
+              givenId="sample-upload"
+              multiUpload={false}
+              setUpload={setSample}
+              setSuccess={setSampleError}
+            />
+            <Typography
+              variant="body2"
+              fontSize="small"
+              maxWidth={300}
+              sx={
+                sampleError
+                  ? {
+                      color: red["A700"],
+                    }
+                  : { color: "default" }
+              }
             >
-              Terms & Conditions
-            </Link>{" "}
-            of FitHub
-          </Typography>
+              Please upload a sample pdf file of max 16MB which gives buyers an
+              impression of the full plan
+            </Typography>
+          </Stack>
         </Stack>
-      </Stack>
-      <Stack spacing={2} direction="row">
-        <CancelButton variant="contained" onClick={handleCancelSubmit}>
-          Cancel
-        </CancelButton>
-        <StandardButton variant="contained" onClick={handlePublishContent}>
-          Publish
-        </StandardButton>
-      </Stack>
-      <Snackbar
-        open={pubFailure}
-        autoHideDuration={6000}
-        onClose={() => setPubFailure(false)}
-      >
-        <Alert
+        <Typography variant="h3">Additional options</Typography>
+        <Stack spacing={0.5}>
+          <Stack direction="row" alignItems="center">
+            <Checkbox
+              value={marketing}
+              onChange={(event) => setMarketing(event.target.checked)}
+            />
+            <Typography variant="body1">
+              Yes, email me for marketing events like vouchers & sales weekends
+            </Typography>
+          </Stack>
+          <Stack direction="row" alignItems="center">
+            <Checkbox
+              value={support}
+              onChange={(event) => setSupport(event.target.checked)}
+            />
+            <Typography variant="body1">
+              Yes, I am offering full-time support for the buyers
+            </Typography>
+          </Stack>
+          <Stack direction="row" alignItems="center">
+            <Checkbox
+              value={feature}
+              onChange={(event) => setFeatured(event.target.checked)}
+            />
+            <Typography variant="body1">
+              Feature me in discovery for a increasing fee of 15% instead of 10%
+              per transaction
+            </Typography>
+          </Stack>
+        </Stack>
+        <Typography variant="h3">Legal notices</Typography>
+        <Stack spacing={0.5}>
+          <Stack direction="row" alignItems="center">
+            <Checkbox
+              checked={qualityChecked}
+              onChange={handleQualityChange}
+              sx={
+                missedQualityCheck
+                  ? {
+                      color: red["A700"],
+                    }
+                  : { color: "default" }
+              }
+            />
+            <Typography
+              variant="body1"
+              sx={
+                missedQualityCheck
+                  ? {
+                      color: red["A700"],
+                    }
+                  : { color: "default" }
+              }
+            >
+              Yes, I ensure delivery of the expected quality and know
+              intentional fooling attempts will result in penalties like an
+              account ban
+            </Typography>
+          </Stack>
+          <Stack direction="row" alignItems="center">
+            <Checkbox
+              checked={termsChecked}
+              onChange={handleTermsChange}
+              sx={
+                missedTermsCheck
+                  ? {
+                      color: red["A700"],
+                    }
+                  : { color: "default" }
+              }
+            />
+            <Typography
+              variant="body1"
+              sx={
+                missedTermsCheck
+                  ? {
+                      color: red["A700"],
+                    }
+                  : { color: "default" }
+              }
+            >
+              Yes, I hereby accept the{" "}
+              <Link
+                color="#393E46"
+                fontSize={14}
+                fontWeight={300}
+                underline="always"
+                target="_blank"
+                href="/terms-and-conditions"
+              >
+                Terms & Conditions
+              </Link>{" "}
+              of FitHub
+            </Typography>
+          </Stack>
+        </Stack>
+        <Stack spacing={2} direction="row">
+          <CancelButton variant="contained" onClick={handleCancelSubmit}>
+            Cancel
+          </CancelButton>
+          <StandardButton variant="contained" onClick={handlePublishContent}>
+            Publish
+          </StandardButton>
+        </Stack>
+        <Snackbar
+          open={pubFailure}
+          autoHideDuration={6000}
           onClose={() => setPubFailure(false)}
-          severity="error"
-          sx={{ width: "100%" }}
         >
-          Publication of content failed!
-        </Alert>
-      </Snackbar>
-      <Snackbar
-        open={pubSuccess}
-        autoHideDuration={1800}
-        onClose={handlePublicationSuccess}
-      >
-        <Alert
+          <Alert
+            onClose={() => setPubFailure(false)}
+            severity="error"
+            sx={{ width: "100%" }}
+          >
+            Publication of content failed!
+          </Alert>
+        </Snackbar>
+        <Snackbar
+          open={pubSuccess}
+          autoHideDuration={1800}
           onClose={handlePublicationSuccess}
-          severity="success"
-          sx={{ width: "100%" }}
         >
-          Successfully published your content!
-        </Alert>
-      </Snackbar>
-      <Snackbar
-        open={uploadSnack}
-        autoHideDuration={3600}
-        onClose={handleUploadSnack}
-      >
-        <Alert
+          <Alert
+            onClose={handlePublicationSuccess}
+            severity="success"
+            sx={{ width: "100%" }}
+          >
+            Successfully published your content!
+          </Alert>
+        </Snackbar>
+        <Snackbar
+          open={uploadSnack}
+          autoHideDuration={3600}
           onClose={handleUploadSnack}
-          severity="error"
-          sx={{ width: "100%" }}
         >
-          Upload your content before publishing!
-        </Alert>
-      </Snackbar>
-      <Snackbar
-        open={checkFailure}
-        autoHideDuration={1800}
-        onClose={handleCheckFailure}
-      >
-        <Alert
+          <Alert
+            onClose={handleUploadSnack}
+            severity="error"
+            sx={{ width: "100%" }}
+          >
+            Upload your content before publishing!
+          </Alert>
+        </Snackbar>
+        <Snackbar
+          open={checkFailure}
+          autoHideDuration={1800}
           onClose={handleCheckFailure}
-          severity="error"
-          sx={{ width: "100%" }}
         >
-          Mandatory checks missing!
-        </Alert>
-      </Snackbar>
-      <Snackbar
-        open={tagsSnack}
-        autoHideDuration={1800}
-        onClose={handleTagsSnack}
-      >
-        <Alert
+          <Alert
+            onClose={handleCheckFailure}
+            severity="error"
+            sx={{ width: "100%" }}
+          >
+            Mandatory checks missing!
+          </Alert>
+        </Snackbar>
+        <Snackbar
+          open={tagsSnack}
+          autoHideDuration={1800}
           onClose={handleTagsSnack}
-          severity="error"
-          sx={{ width: "100%" }}
         >
-          Provide at least one tag for each category!
-        </Alert>
-      </Snackbar>
+          <Alert
+            onClose={handleTagsSnack}
+            severity="error"
+            sx={{ width: "100%" }}
+          >
+            Provide at least one tag for each category!
+          </Alert>
+        </Snackbar>
+      </Stack>
     </Stack>
   );
 }

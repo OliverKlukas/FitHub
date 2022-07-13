@@ -102,7 +102,7 @@ function Payment(props) {
 
   // close the snackbar
   const handleErrorClose = () => {
-    setError(null)
+    setError(null);
     setErrorOpen(false);
   };
 
@@ -112,6 +112,9 @@ function Payment(props) {
       await props.addboughtPlan({
         userId: user.user._id,
         contentId: id,
+        price: singleContent.content.price,
+        ownerId: singleContent.content.ownerId,
+        title: singleContent.content.title,
       });
       navigate("/plans");
       window.location.reload();

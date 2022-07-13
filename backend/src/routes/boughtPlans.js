@@ -15,5 +15,16 @@ router.post("/", middleware.checkAuthentication, boughtPlansController.create);
 // Get boughtPlans item.
 router.get("/:id", middleware.checkAuthentication, boughtPlansController.get);
 
+router.post(
+  "/getSalesDistribution",
+  middleware.checkAuthentication,
+  boughtPlansController.getSalesDistribution
+);
+
+router.post(
+  "/getFinancials",
+  middleware.checkAuthentication,
+  boughtPlansController.getFinancials
+);
 
 module.exports = router;
