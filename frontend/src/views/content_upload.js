@@ -473,10 +473,10 @@ function ContentUpload(props) {
             helperText={
               intensityError
                 ? category === "nutrition"
-                  ? "enter a number between 1-99 meals per week"
+                  ? "enter a number between 1-99 meals per day"
                   : "enter a number between 1-99 trainings per week"
                 : category === "nutrition"
-                ? "Meals per week"
+                ? "Meals per day"
                 : "Trainings per week"
             }
             size="small"

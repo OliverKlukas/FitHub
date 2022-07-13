@@ -1,24 +1,11 @@
-import { Stack, Typography } from "@mui/material";
+import { CircularProgress, Stack, Typography } from "@mui/material";
 import * as React from "react";
 import { HighlightButton } from "../../components/buttons/highlight_button";
 import { StandardButton } from "../../components/buttons/standard_button";
 import { Link as RouterLink } from "react-router-dom";
-
-/**
- * get image src path.
- *
- * Adapted from: https://mui.com/material-ui/react-image-list/#CustomImageList.js
- *
- * @param image - String path to image resource.
- * @param width - Number desired width of image.
- * @param height - Number desired height of image.
- * @return {{src: string}} - Returns src variable for img.
- */
-function srcset(image, width, height) {
-  return {
-    src: `${image}?w=${width}&h=${height}&fit=crop&auto=format`,
-  };
-}
+import { useEffect, useState } from "react";
+import UserService from "../../services/userService";
+import ReportDialog from "../profilecomponents/popups/report_dialog";
 
 /**
  * my plans view content component including an overview of price, content creator, a download button, a review button that links to the content creators profile and a customer support button.
@@ -26,12 +13,23 @@ function srcset(image, width, height) {
  * @param item - To be displayed content item, expected to adhere to the database scheme of content.
  * @return {JSX.Element} - Returns content item that will be displayed in the myplans view.
  */
-export default function Plan({ item }) {
-  // fixed image width and height for the my plans view
-  const imgWidth = 200;
-  const imgHeight = 200;
+export default function Plan({ item, transaction }) {
+  // Retrieve author of content item.
+  const [author, setAuthor] = useState(null);
 
-  return (
+  // Function to fetch username from service.
+  async function fetchUser() {
+    return await UserService.userdata(item.ownerId);
+  }
+
+  // Trigger retrieval of states and backend data.
+  useEffect(() => {
+    fetchUser().then((res) => {
+      setAuthor(res);
+    });
+  }, [author]);
+
+  return author ? (
     <Stack
       direction={{ xs: "column", md: "row" }}
       padding={2}
@@ -46,8 +44,13 @@ export default function Plan({ item }) {
     >
       <Stack direction="row" spacing={2}>
         <img
-          style={{ borderRadius: "10px" }}
-          {...srcset(item.img, imgWidth, imgHeight)}
+          style={{
+            width: "200px",
+            height: "200px",
+            borderRadius: "10px",
+            objectFit: "cover",
+          }}
+          src={item.media[0]}
           alt={item.title}
         />
         <Stack justifyContent="space-between">
@@ -56,8 +59,16 @@ export default function Plan({ item }) {
             <Typography variant="h3">Price: {item.price} €</Typography>
           </Stack>
           <Stack spacing={2}>
-            <Typography variant="h4">by {item.author.name}</Typography>
-            <Typography variant="h4">{item.duration}</Typography>
+            <Typography variant="h4">
+              by {author.firstname + " " + author.lastname}
+            </Typography>
+            <Typography variant="h4">
+              order placed:{" "}
+              {transaction.boughtAt.substring(
+                0,
+                transaction.boughtAt.indexOf("T")
+              )}
+            </Typography>
           </Stack>
         </Stack>
       </Stack>
@@ -65,30 +76,24 @@ export default function Plan({ item }) {
         <HighlightButton
           variant="contained"
           sx={{ width: 300 }}
-          component={RouterLink}
-          target="_blank"
-          to={"/sample.pdf"}
-          download
+          href={item.plan}
+          download={item.title}
         >
           Download
         </HighlightButton>
+        <ReportDialog width={300} content_creator_id={item.ownerId}/>
         <StandardButton
           variant="contained"
           sx={{ width: 300 }}
           component={RouterLink}
-          to={`/profile`}
-        >
-          Contact customer support
-        </StandardButton>
-        <StandardButton
-          variant="contained"
-          sx={{ width: 300 }}
-          component={RouterLink}
-          to={`/profile`}
+          to={`/profile/${item.ownerId}`}
         >
           Write a review
         </StandardButton>
       </Stack>
+      
     </Stack>
+  ) : (
+    <CircularProgress />
   );
 }

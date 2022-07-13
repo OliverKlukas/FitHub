@@ -60,6 +60,7 @@ ReportDialTitle.propTypes = {
  * @returns 
  */
 export default function ReportDialog(props) {
+  const { width, content_creator_id } = props
   const params = useParams()
   // for state Management
   const user = useSelector((state) => state.user);
@@ -104,7 +105,7 @@ export default function ReportDialog(props) {
       setForm({
         from_name: user.user.email,
         message: e.target.value,
-        content_creator: params.id,
+        content_creator: params.id ? params.id : content_creator_id,
       }
         );
         console.log(form);
@@ -112,7 +113,7 @@ export default function ReportDialog(props) {
 
   return (
     <div>
-      <StandardButton variant="contained" onClick={handleClickOpen}>
+      <StandardButton variant="contained" onClick={handleClickOpen} sx = {{width: width}}>
         report this content creator
       </StandardButton>
       <ReportDial
