@@ -25,11 +25,11 @@ const getUser = () => {
 
 export default function user(state = getUser(), action) {
   switch (action.type) {
-    case "LOGIN_SUCCESS":
+    case "SIGNIN_SUCCESS":
       return { user: action.user };
-    case "LOGIN_FAILURE":
+    case "SIGNIN_FAILURE":
       return { error: "Password or username incorrect." };
-    case "LOGIN_RESET":
+    case "SIGNIN_RESET":
       return {};
     case "LOGOUT":
       return {};
