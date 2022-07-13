@@ -213,10 +213,8 @@ function Payment(props) {
                   spacing={4}
                 >
                   <Typography variant="h3">Duration</Typography>
-                  <Typography variant="h4">
-                    {singleContent.content.duration} weeks with{" "}
-                    {singleContent.content.intensity} trainings per week
-                  </Typography>
+                  <Typography variant="h4">{singleContent.content.duration} weeks with {" "}
+                        {singleContent.content.intensity} {singleContent.content.category === "nutrition" ? ("meals per day") : ("sessions per week")}</Typography>
                 </Stack>
                 <Divider sx={{ my: 2, bgcolor: "#222831" }} />
                 <Stack
