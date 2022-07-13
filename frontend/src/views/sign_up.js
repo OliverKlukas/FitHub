@@ -105,11 +105,8 @@ function SignUp(props) {
      * If it is secure enough, it checks if the two passwords match
      */
     const validatePasswords = () => {
-        if (
-            password.match(
-                /^(?=(.*[a-z]){2,})(?=(.*[A-Z]){1,})(?=(.*[0-9]){0,})(?=(.*[!@#$%^&*()\-__+.]){1,}).{8,}$/
-            ) === null
-        ) {
+        const pwregex = new RegExp(/^(?=(.*[a-z]){2,})(?=(.*[A-Z]){1,})(?=(.*[0-9]){1,})(?=(.*[!@#$%^&*()\-__+.]){0,}).{8,}$/)
+        if (pwregex.test(password)) {
             setPasswordError(false)
             if (password !== "" && password2 !== "") {
                 if (password !== password2) {
@@ -121,7 +118,7 @@ function SignUp(props) {
             }
         } else {
             setPasswordError(true);
-            setPasswordErrorMessage("Password is not strong enough: Needs uppercase letters, signs and at least 8 letters");
+            setPasswordErrorMessage("Password needs at least 1 uppercase letter, 1 number and at least 8 letters");
         }
     };
     // validates email adress, checks for valid types of emails
@@ -209,7 +206,7 @@ function SignUp(props) {
                             onBlur={validateFirstName}
                             helperText={
                                 firstnameerror
-                                    ? "First name is too long or contains signs and/or numbers"
+                                    ? "First name is empty, too long or contains signs and numbers"
                                     : ""
                             }
                         ></TextField>
@@ -221,7 +218,7 @@ function SignUp(props) {
                             onBlur={validateLastName}
                             helperText={
                                 lastnameerror
-                                    ? "Last name is too long or contains signs and/or numbers"
+                                    ? "Last name is empty, too long or contains signs and numbers"
                                     : ""
                             }
                         ></TextField>
@@ -330,7 +327,7 @@ function SignUp(props) {
                                             : { color: "default" }
                                     }
                                 >
-                                     Be aware of the max size of 16MB and respect our{" "}
+                                    Be aware of the max size of 16MB and respect our{" "}
                                     <Link
                                         color="#393E46"
                                         fontSize={14}
