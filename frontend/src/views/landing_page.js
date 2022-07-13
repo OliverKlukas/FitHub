@@ -20,7 +20,7 @@ const content = [
     title: "Coaching",
   },
 ];
-
+ 
 /**
  *
  * @param {props} props for user state management
@@ -29,6 +29,7 @@ const content = [
 function LandingPage(props) {
   const user = useSelector((state) => state.user);
 
+  console.log(user.user)
   const [header, setHeader] = React.useState({
     img: "https://images.unsplash.com/photo-1593079831268-3381b0db4a77",
     title: "Welcome to FitHub,",
@@ -41,7 +42,7 @@ function LandingPage(props) {
     if (user.user) {
       const temp = {
         img: "https://images.unsplash.com/photo-1593079831268-3381b0db4a77",
-        title: "Welcome to FitHub, " + `${user.user.fname} ${user.user.lname}`,
+        title: "Welcome to FitHub, " + `${user.user.fname}`,
         subtitle: "Lets get started, offer your content right away",
       };
       setHeader(temp);
@@ -49,7 +50,7 @@ function LandingPage(props) {
   }, [user]);
 
   //building own profile link -> /profile/prename/lastname
-  const profilelink = `/profile/${user.user.fname}/${user.user.lname}`;
+  const profilelink = `/profile/${user.user._id}`;
 
   return (
     <Stack sx={{ marginX: 6 }} spacing={1}>
