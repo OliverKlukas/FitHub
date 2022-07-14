@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { TextField, Stack, Typography, Grid, Divider, Snackbar, Alert } from "@mui/material";
+import { TextField, Stack, Typography, Grid, Divider, } from "@mui/material";
 import { HighlightButton } from "../components/buttons/highlight_button";
 import { StandardButton } from "../components/buttons/standard_button";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
@@ -24,7 +24,6 @@ function SignIn(props) {
   // States for displaying Error Messages and ensuring the signin data is changed after incorrect signin
   const [emailerror, setEmailError] = React.useState(false);
   const [passworderror, setPassworderror] = React.useState(false);
-  const [signinerror, setSigninError] = React.useState(false);
   const [emailerrormessage, setEmailErrorMessage] =React.useState("");
 
   // navigates to discovery once a user is logged in and reloads the page to ensure all data from the redux store is loaded
@@ -99,7 +98,7 @@ function SignIn(props) {
                 ? emailerrormessage
                 : ""
             }
-            error={emailerror || signinerror}
+            error={emailerror}
           ></TextField>
           <TextField
             label="Password"
@@ -107,20 +106,15 @@ function SignIn(props) {
             type="password"
             variant="outlined"
             onChange={onChangePassword}
-            error={passworderror || signinerror}
+            error={passworderror}
           ></TextField>
           <HighlightButton
             variant="contained"
             onClick={handleSubmit}
-            disabled={email === "" || password === "" || emailerror || signinerror}
+            disabled={email === "" || password === "" || emailerror}
           >
             Sign-In
           </HighlightButton>
-          {signinerror ? [
-              <Typography key="signinerror" variant="caption">Either Email or password is Incorrect</Typography>
-          ] : [
-
-          ]}
           <Divider>New to FitHub?</Divider>
           <StandardButton
             variant="contained"
