@@ -108,7 +108,6 @@ export default function ReportDialog(props) {
         content_creator: params.id ? params.id : content_creator_id,
       }
         );
-        console.log(form);
   };
 
   return (

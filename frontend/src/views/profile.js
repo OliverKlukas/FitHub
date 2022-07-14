@@ -224,7 +224,7 @@ function Profile(props) {
               </Stack>
             </Box>
           ] :
-            [data.isContentCreator ? <Stack direction="column" spacing={4}>
+            [(data.isContentCreator && user.user) ? <Stack direction="column" spacing={4}>
               <RatingDialog id={params.id}></RatingDialog>
               <ReportDialog></ReportDialog>
             </Stack> : [

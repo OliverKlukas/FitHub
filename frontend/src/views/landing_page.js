@@ -29,6 +29,7 @@ const content = [
 function LandingPage(props) {
   const user = useSelector((state) => state.user);
 
+  console.log(user.user);
   const [header, setHeader] = React.useState({
     img: "https://images.unsplash.com/photo-1593079831268-3381b0db4a77",
     title: "Welcome to FitHub,",
