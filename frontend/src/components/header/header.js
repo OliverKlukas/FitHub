@@ -15,6 +15,7 @@ import MenuList from "@mui/material/MenuList";
 import { LinkButton } from "../buttons/link_button";
 import { useSelector, connect } from "react-redux";
 import { logout } from "../../redux/actions";
+import { useNavigate } from "react-router-dom";
 
 /**
  *  Header bar component that is visible on all views.
@@ -27,6 +28,8 @@ function Header(props) {
   const user = useSelector((state) => state.user);
   // Names needed for Link to Own Profile, get set with useeffect()
   const [id, setid] = React.useState("");
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (user.user) {
@@ -80,6 +83,7 @@ function Header(props) {
   };
   const handlelogout = () => {
     props.dispatch(logout);
+    navigate("/discovery");
     window.location.reload();
     return false;
   };
