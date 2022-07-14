@@ -16,6 +16,7 @@ import { LinkButton } from "../buttons/link_button";
 import { useSelector, connect } from "react-redux";
 import { logout } from "../../redux/actions";
 import NotificationsIcon from '@mui/icons-material/Notifications';
+import UserService from "../../services/userService";
 
 /**
  *  Header bar component that is visible on all views.
@@ -28,19 +29,33 @@ function Header(props) {
   const user = useSelector((state) => state.user);
   // Names needed for Link to Own Profile, get set with useeffect()
   const [id, setid] = React.useState("");
-  // state for new Notifications (5 right now for testing)
+  // state for new Notifications, Total Notifications
   const [newnotifications, setNewNotifications] = React.useState(5);
+  // state for new Reviews
+  const [newreview, setNewReviews] = React.useState(0);
+  // state for new Messages
+  const [newMessages, setNewMessages] = React.useState(0);
 
   useEffect(() => {
     async function fetchNotifications() {
-      //TODO
+      const res = await UserService.getNewNotifications();
+      console.log(res);
+      if (isNaN(res.newReviewsCounter)) {
+      } else {
+        setNewReviews(res.newReviewsCounter);
+      }
+      if (isNaN(res.newMessagesCounter)) {
+      } else {
+        setNewMessages(res.newMessagesCounter)
+      }
+      setNewNotifications(newreview+newMessages);
     }
     if (user.user) {
       setid(user.user._id);
       fetchNotifications();
 
     }
-  }, [id, user.user]);
+  }, [id, newMessages, newreview, user.user]);
   // Header Center for a Content Creator
   const pagesContentCreator = {
     discovery: "Discovery",
