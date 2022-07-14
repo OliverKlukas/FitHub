@@ -133,4 +133,21 @@ export default class ContentService {
       );
     });
   }
+
+  static getMyContent(id) {
+    return new Promise((resolve, reject) => {
+      HttpService.post(
+        `${this.baseURL()}/getMyContent`,
+        {
+          userId: id,
+        },
+        function (data) {
+          resolve(data);
+        },
+        function (textStatus) {
+          reject(textStatus);
+        }
+      );
+    });
+  }
 }
