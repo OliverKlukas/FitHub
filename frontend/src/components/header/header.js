@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Link, Stack } from "@mui/material";
+import { Link, Stack, Badge } from "@mui/material";
 // import { ReactComponent as AvatarFemale } from "../../resources/avatar_female.svg";
 import { ReactComponent as AvatarMale } from "../../resources/avatar_male.svg";
 import { ReactComponent as Logo } from "../../resources/logo_standard.svg";
@@ -15,6 +15,7 @@ import MenuList from "@mui/material/MenuList";
 import { LinkButton } from "../buttons/link_button";
 import { useSelector, connect } from "react-redux";
 import { logout } from "../../redux/actions";
+import NotificationsIcon from '@mui/icons-material/Notifications';
 
 /**
  *  Header bar component that is visible on all views.
@@ -27,10 +28,17 @@ function Header(props) {
   const user = useSelector((state) => state.user);
   // Names needed for Link to Own Profile, get set with useeffect()
   const [id, setid] = React.useState("");
+  // state for new Notifications (5 right now for testing)
+  const [newnotifications, setNewNotifications] = React.useState(5);
 
   useEffect(() => {
+    async function fetchNotifications() {
+      //TODO
+    }
     if (user.user) {
       setid(user.user._id);
+      fetchNotifications();
+
     }
   }, [id, user.user]);
   // Header Center for a Content Creator
@@ -97,10 +105,10 @@ function Header(props) {
             href={
               user.user
                 ? [
-                    user.user.role === "contentCreator"
-                      ? icondirectioncreator
-                      : icondirection,
-                  ]
+                  user.user.role === "contentCreator"
+                    ? icondirectioncreator
+                    : icondirection,
+                ]
                 : icondirection
             }
           >
@@ -163,119 +171,131 @@ function Header(props) {
         >
           {user.user
             ? [
-                user.user.role === "customer"
-                  ? [
-                      Object.keys(pagesCustomer).map((url) => (
-                        <LinkButton
-                          key={url}
-                          variant="text"
-                          component={RouterLink}
-                          to={url}
-                        >
-                          {pagesCustomer[url]}
-                        </LinkButton>
-                      )),
-                    ]
-                  : [
-                      Object.keys(pagesContentCreator).map((url) => (
-                        <LinkButton
-                          key={url}
-                          variant="text"
-                          component={RouterLink}
-                          to={url}
-                        >
-                          {pagesContentCreator[url]}
-                        </LinkButton>
-                      )),
-                    ],
-              ]
+              user.user.role === "customer"
+                ? [
+                  Object.keys(pagesCustomer).map((url) => (
+                    <LinkButton
+                      key={url}
+                      variant="text"
+                      component={RouterLink}
+                      to={url}
+                    >
+                      {pagesCustomer[url]}
+                    </LinkButton>
+                  )),
+                ]
+                : [
+                  Object.keys(pagesContentCreator).map((url) => (
+                    <LinkButton
+                      key={url}
+                      variant="text"
+                      component={RouterLink}
+                      to={url}
+                    >
+                      {pagesContentCreator[url]}
+                    </LinkButton>
+                  )),
+                ],
+            ]
             : [
-                Object.keys(pagesLoggedOut).map((url) => (
-                  <LinkButton
-                    key={url}
-                    variant="text"
-                    component={RouterLink}
-                    to={url}
-                  >
-                    {pagesLoggedOut[url]}
-                  </LinkButton>
-                )),
-              ]}
+              Object.keys(pagesLoggedOut).map((url) => (
+                <LinkButton
+                  key={url}
+                  variant="text"
+                  component={RouterLink}
+                  to={url}
+                >
+                  {pagesLoggedOut[url]}
+                </LinkButton>
+              )),
+            ]}
         </Stack>
       </Box>
       {user.user
         ? [
-            <Box key={"UserLoggedIn"}>
-              <IconButton onClick={handleOpenSetMenu}>
-                <AvatarMale />
-              </IconButton>
-              <Menu
-                sx={{ mt: "60px" }}
-                id="menu-appbar"
-                anchorEl={anchorElSet}
-                anchorOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-                }}
-                keepMounted
-                transformOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-                }}
-                open={Boolean(anchorElSet)}
-                onClose={handleCloseSetMenu}
+          <Box key={"UserLoggedIn"}>
+            <Badge badgeContent={newnotifications} max={99} overlap="circular"
+              anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'left',
+              }} color="warning">
+                <NotificationsIcon
+                fontSize="large"
+                sx={{
+                  mr: "10px"
+                }}/>
+            </Badge>
+            <IconButton onClick={handleOpenSetMenu}>
+              <AvatarMale />
+            </IconButton>
+
+            <Menu
+              sx={{ mt: "60px" }}
+              id="menu-appbar"
+              anchorEl={anchorElSet}
+              anchorOrigin={{
+                vertical: "top",
+                horizontal: "right",
+              }}
+              keepMounted
+              transformOrigin={{
+                vertical: "top",
+                horizontal: "right",
+              }}
+              open={Boolean(anchorElSet)}
+              onClose={handleCloseSetMenu}
+            >
+              <MenuList
+                id="composition-menu"
+                aria-labelledby="composition-button"
               >
-                <MenuList
-                  id="composition-menu"
-                  aria-labelledby="composition-button"
-                >
-                  <MenuItem key="profile" onClick={handleCloseSetMenu}>
-                    <Link
-                      href={`/profile/${id}`}
-                      underline="none"
-                      color="inherit"
-                    >
-                      Profile
-                    </Link>
-                  </MenuItem>
-                  <MenuItem key="logout" onClick={handlelogout}>
-                    Logout
-                  </MenuItem>
-                </MenuList>
-              </Menu>
-            </Box>,
-          ]
+                <MenuItem key="profile" onClick={handleCloseSetMenu}>
+                  <Link
+                    href={`/profile/${id}`}
+                    underline="none"
+                    color="inherit"
+                  >
+                    Profile
+                  </Link>
+                </MenuItem>
+                <MenuItem key="logout" onClick={handlelogout}>
+                  Logout
+                </MenuItem>
+              </MenuList>
+            </Menu>
+          </Box>,
+        ]
         : [
-            <Box key={"UserLoggedOut"}>
-              <IconButton onClick={handleOpenSetMenu}>
-                <AvatarMale />
-              </IconButton>
-              <Menu
-                sx={{ mt: "60px" }}
-                id="menu-appbar"
-                anchorEl={anchorElSet}
-                anchorOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-                }}
-                keepMounted
-                transformOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-                }}
-                open={Boolean(anchorElSet)}
-                onClose={handleCloseSetMenu}
-              >
-                {Object.keys(settings).map((url) => (
-                  <MenuItem key={url} onClick={handleCloseSetMenu}>
-                    <Link key={url} href={url} underline="none" color="inherit">
-                      {settings[url]}
-                    </Link>
-                  </MenuItem>
-                ))}
-              </Menu>
-            </Box>,
-          ]}
+          <Box key={"UserLoggedOut"}>
+            <IconButton onClick={handleOpenSetMenu}>
+              <AvatarMale />
+            </IconButton>
+            <Menu
+              sx={{ mt: "60px" }}
+              id="menu-appbar"
+              anchorEl={anchorElSet}
+              anchorOrigin={{
+                vertical: "top",
+                horizontal: "right",
+              }}
+              keepMounted
+              transformOrigin={{
+                vertical: "top",
+                horizontal: "right",
+              }}
+              open={Boolean(anchorElSet)}
+              onClose={handleCloseSetMenu}
+            >
+              {Object.keys(settings).map((url) => (
+                <MenuItem key={url} onClick={handleCloseSetMenu}>
+                  <Link key={url} href={url} underline="none" color="inherit">
+                    {settings[url]}
+                  </Link>
+                </MenuItem>
+              ))}
+            </Menu>
+          </Box>,
+        ]}
     </Stack>
   );
 }
