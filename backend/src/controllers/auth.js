@@ -306,7 +306,7 @@ const logout = (req, res) => {
 const addreview = async (req, res) => {
   try {
     const ratedUserId = req.params.id;
-    const ratedUser = UserModel.findById(ratedUserId).exec();
+    const ratedUser = await UserModel.findById(ratedUserId).exec();
     let counter = ratedUser.newReviewsCounter;
     counter++;
 

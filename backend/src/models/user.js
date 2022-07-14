@@ -58,9 +58,11 @@ const UserSchema = new mongoose.Schema(
     },
     newReviewsCounter: {
       type: Number,
+      default: 0,
     },
     newMessagesCounter: {
       type: Number,
+      default: 0,
     },
     reviews: [ReviewSchema],
   },
