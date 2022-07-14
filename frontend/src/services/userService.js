@@ -223,4 +223,17 @@ export default class UserService {
       );
     });
   }
+  static getNewNotifications() {
+    return new Promise((resolve, reject) => {
+      HttpService.get(
+        `${this.baseURL()}/notificationsnumber`,
+        function (data) {
+          resolve(data);
+        },
+        function (textStatus) {
+          reject(textStatus);
+        }
+      );
+    });
+  }
 }

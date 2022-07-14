@@ -16,6 +16,7 @@ import { LinkButton } from "../buttons/link_button";
 import { useSelector, connect } from "react-redux";
 import { logout } from "../../redux/actions";
 import NotificationsIcon from '@mui/icons-material/Notifications';
+import UserService from "../../services/userService";
 
 /**
  *  Header bar component that is visible on all views.
@@ -28,19 +29,30 @@ function Header(props) {
   const user = useSelector((state) => state.user);
   // Names needed for Link to Own Profile, get set with useeffect()
   const [id, setid] = React.useState("");
-  // state for new Notifications (5 right now for testing)
-  const [newnotifications, setNewNotifications] = React.useState(5);
+  // state for new Reviews
+  const [newReviews, setNewReviews] = React.useState(0);
+  // state for new Messages
+  const [newMessages, setNewMessages] = React.useState(0);
 
   useEffect(() => {
     async function fetchNotifications() {
-      //TODO
+      const res = await UserService.getNewNotifications();
+      console.log(res);
+      if (isNaN(res.newReviewsCounter)) {
+      } else {
+        setNewReviews(res.newReviewsCounter);
+      }
+      if (isNaN(res.newMessagesCounter)) {
+      } else {
+        setNewMessages(res.newMessagesCounter)
+      }
     }
     if (user.user) {
       setid(user.user._id);
       fetchNotifications();
 
     }
-  }, [id, user.user]);
+  }, [id, newMessages, newReviews, user.user]);
   // Header Center for a Content Creator
   const pagesContentCreator = {
     discovery: "Discovery",
@@ -65,6 +77,7 @@ function Header(props) {
   // Anchor hook to open/close the navigation menu when option selected or clicked off.
   const [anchorElSet, setAnchorElSet] = React.useState(null);
 
+
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
@@ -86,44 +99,33 @@ function Header(props) {
   const handleCloseSetMenu = () => {
     setAnchorElSet(null);
   };
+
+  // Anchor hook to open/close the user settings menu when option selected or clicked off.
+  const [anchorElNotifications, setAnchorElNotifications] = React.useState(null);
+  const handleOpenNotificationsMenu = (event) => {
+    setAnchorElNotifications(event.currentTarget);
+  };
+  const handleCloseNotificationsMenu = () => {
+    setAnchorElNotifications(null);
+  };
+
   const handlelogout = () => {
     props.dispatch(logout);
     window.location.reload();
     return false;
   };
 
+
   return (
-    <Stack
-      direction="row"
-      justifyContent="space-between"
-      alignItems="center"
-      my={2}
-    >
+    <Stack direction="row" justifyContent="space-between" alignItems="center" my={2}>
       <Box>
         <Box sx={{ display: { xs: "none", md: "flex" } }}>
-          <Link
-            href={
-              user.user
-                ? [
-                  user.user.role === "contentCreator"
-                    ? icondirectioncreator
-                    : icondirection,
-                ]
-                : icondirection
-            }
-          >
+          <Link href={user.user ? [user.user.role === "contentCreator" ? icondirectioncreator : icondirection] : icondirection}>
             <Logo />
           </Link>
         </Box>
         <Box sx={{ display: { xs: "flex", md: "none" } }}>
-          <IconButton
-            size="large"
-            aria-label="account of current user"
-            aria-controls="menu-appbar"
-            aria-haspopup="true"
-            onClick={handleOpenNavMenu}
-            color="inherit"
-          >
+          <IconButton size="large" aria-label="account of current user" aria-controls="menu-appbar" aria-haspopup="true" onClick={handleOpenNavMenu} color="inherit">
             <MenuIcon />
           </IconButton>
           <Menu
@@ -163,35 +165,20 @@ function Header(props) {
             </Stack>
           </Link>
         </Box>
-        <Stack
-          direction="row"
-          spacing={4}
-          pr={16}
-          sx={{ display: { xs: "none", md: "flex" } }}
-        >
+        <Stack direction="row" spacing={4} pr={16} sx={{ display: { xs: "none", md: "flex" } }}>
           {user.user
             ? [
               user.user.role === "customer"
                 ? [
                   Object.keys(pagesCustomer).map((url) => (
-                    <LinkButton
-                      key={url}
-                      variant="text"
-                      component={RouterLink}
-                      to={url}
-                    >
+                    <LinkButton key={url} variant="text" component={RouterLink} to={url}>
                       {pagesCustomer[url]}
                     </LinkButton>
                   )),
                 ]
                 : [
                   Object.keys(pagesContentCreator).map((url) => (
-                    <LinkButton
-                      key={url}
-                      variant="text"
-                      component={RouterLink}
-                      to={url}
-                    >
+                    <LinkButton key={url} variant="text" component={RouterLink} to={url}>
                       {pagesContentCreator[url]}
                     </LinkButton>
                   )),
@@ -199,12 +186,7 @@ function Header(props) {
             ]
             : [
               Object.keys(pagesLoggedOut).map((url) => (
-                <LinkButton
-                  key={url}
-                  variant="text"
-                  component={RouterLink}
-                  to={url}
-                >
+                <LinkButton key={url} variant="text" component={RouterLink} to={url}>
                   {pagesLoggedOut[url]}
                 </LinkButton>
               )),
@@ -214,17 +196,60 @@ function Header(props) {
       {user.user
         ? [
           <Box key={"UserLoggedIn"}>
-            <Badge badgeContent={newnotifications} max={99} overlap="circular"
+            <IconButton onClick={handleOpenNotificationsMenu}>
+              <Badge
+                badgeContent={newMessages + newReviews}
+                max={99}
+                overlap="circular"
+                anchorOrigin={{
+                  vertical: "bottom",
+                  horizontal: "left",
+                }}
+                color="warning"
+              >
+                <NotificationsIcon fontSize="large" />
+              </Badge>
+            </IconButton>
+
+            <Menu
+              sx={{ mt: "60px" }}
+              id="notifications-appbar"
+              anchorEl={anchorElNotifications}
               anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'left',
-              }} color="warning">
-                <NotificationsIcon
-                fontSize="large"
-                sx={{
-                  mr: "10px"
-                }}/>
-            </Badge>
+                vertical: "top",
+                horizontal: "right",
+              }}
+              keepMounted
+              transformOrigin={{
+                vertical: "top",
+                horizontal: "right",
+              }}
+              open={Boolean(anchorElNotifications)}
+              onClose={handleCloseNotificationsMenu}
+            >
+              <MenuList id="notifications-menu" aria-labelledby="notification-button">
+                {newMessages > 0 ? (
+                  <MenuItem key="messages" onClick={handleCloseNotificationsMenu}>
+                    {/*TODO: replace /profile/${id} with the link to the messages of the user*/}
+                    <Link href={`/profile/${id}`} underline="none" color="inherit">
+                      You have {newMessages} new Messages!
+                    </Link>
+                  </MenuItem>
+                ) : (
+                  []
+                )}
+                {newReviews > 0 ? (
+                  <MenuItem key="reviews" onClick={handleCloseNotificationsMenu}>
+                    <Link href={`/profile/${id}`} underline="none" color="inherit">
+                      You have {newReviews} new Reviews!
+                    </Link>
+                  </MenuItem>
+                ) : (
+                  []
+                )}
+              </MenuList>
+            </Menu>
+
             <IconButton onClick={handleOpenSetMenu}>
               <AvatarMale />
             </IconButton>
@@ -245,16 +270,9 @@ function Header(props) {
               open={Boolean(anchorElSet)}
               onClose={handleCloseSetMenu}
             >
-              <MenuList
-                id="composition-menu"
-                aria-labelledby="composition-button"
-              >
+              <MenuList id="composition-menu" aria-labelledby="composition-button">
                 <MenuItem key="profile" onClick={handleCloseSetMenu}>
-                  <Link
-                    href={`/profile/${id}`}
-                    underline="none"
-                    color="inherit"
-                  >
+                  <Link href={`/profile/${id}`} underline="none" color="inherit">
                     Profile
                   </Link>
                 </MenuItem>

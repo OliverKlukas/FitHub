@@ -305,7 +305,10 @@ const logout = (req, res) => {
  */
 const addreview = async (req, res) => {
   try {
-    let ratedUserId = req.params.id;
+    const ratedUserId = req.params.id;
+    const ratedUser = await UserModel.findById(ratedUserId).exec();
+    let counter = ratedUser.newReviewsCounter;
+    counter++;
 
     // find a Content Creator that has the id and is reviewed by the user
     // returns null if the user has not reviewed this Content Creator
@@ -313,6 +316,15 @@ const addreview = async (req, res) => {
       _id: ratedUserId,
       "reviews.creatorId": req.userId,
     });
+
+    // Update the newNotificationCounter
+    await UserModel.findByIdAndUpdate(
+      ratedUserId,
+      {newReviewsCounter: counter,},
+      {
+      new: true,
+      runValidators: true,
+    }).exec();
 
     // check if user has already reviewed this Content Creator
     if (alreadyratedUser !== null) {
@@ -465,7 +477,6 @@ const getUsername = async (req, res) => {
     const username = user.firstName + " " + user.lastName;
     return res.status(200).json(username);
   } catch (err) {
-    console.log(err);
     return res.status(500).json({
       error: "Internal server error: " + err.message,
     });
@@ -481,9 +492,23 @@ const getReviewAnalytics = async (req, res) => {
       avgReviewRating: requesteduser.avgReviewRating,
     });
   } catch (err) {
-    console.log(err);
     return res.status(500).json({
       error: "Internal server error: " + err.message,
+    });
+  }
+};
+
+const getNewNotifications = async (req, res) => {
+  try {
+    const requesteduser = await UserModel.findById(req.userId).exec();
+
+    return res.status(200).json({
+      newReviewsCounter: requesteduser.newReviewsCounter,
+      newMessagesCounter: requesteduser.newMessagesCounter,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      error: "Internal server error" + err.message,
     });
   }
 };
@@ -501,4 +526,5 @@ module.exports = {
   getUsername,
   checkEmail,
   getReviewAnalytics,
+  getNewNotifications,
 };
