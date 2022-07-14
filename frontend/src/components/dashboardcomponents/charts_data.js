@@ -78,7 +78,7 @@ export default function ChartsData() {
 
   return (
     <Stack direction="row" spacing={3}>
-      <Card sx={{ minWidth: 475, height: 450, backgroundColor: "#F2F2F2" }}>
+      <Card sx={{ width: 475, height: 450, backgroundColor: "#F2F2F2" }}>
         <CardContent>
           <Typography variant="h5" component="div">
             Sales Distribution
@@ -116,10 +116,10 @@ export default function ChartsData() {
       <Card sx={{ minWidth: 475, height: 450, backgroundColor: "#F2F2F2" }}>
         <CardContent>
           <Typography sx={{ mb: 0.5 }} variant="h5" component="div">
-            Review Development
+            Review Summary
           </Typography>
           <Typography sx={{ mb: 2 }} variant="body1" component="div">
-            past 90 days
+            overall
           </Typography>
           <BarChart
             key={Math.random()}

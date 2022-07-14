@@ -74,6 +74,13 @@ const get = async (req, res) => {
   }
 };
 
+/**
+ * get Sales Distribution by Plans
+ *
+ * @param req
+ * @param res
+ * @returns {Promise<*>}
+ */
 const getSalesDistribution = async (req, res) => {
   try {
     const boughtPlans = await boughtPlansModel.find({}).exec();
@@ -114,6 +121,13 @@ const getSalesDistribution = async (req, res) => {
   }
 };
 
+/**
+ * get overall financial data (i.e. revenue, payout, MTD change, customers)
+ *
+ * @param req
+ * @param res
+ * @returns {Promise<*>}
+ */
 const getFinancials = async (req, res) => {
   try {
     const boughtPlans = await boughtPlansModel.find({}).exec();
