@@ -79,7 +79,9 @@ function Profile(props) {
         }
         setReviews(res.reviews);
         setdata(temp);
-        await UserService.cleanReviewCounter();
+        if (data.isOwnProfile) {
+          await UserService.cleanReviewCounter();
+        };
       } else {
         const res = await UserService.userdata(params.id);
         const temp = {
