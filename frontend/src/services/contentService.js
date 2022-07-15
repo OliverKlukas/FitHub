@@ -134,6 +134,11 @@ export default class ContentService {
     });
   }
 
+  /**
+   * get all content offered by a specific
+   * @param id userId of creator
+   * @returns
+   */
   static getMyContent(id) {
     return new Promise((resolve, reject) => {
       HttpService.post(

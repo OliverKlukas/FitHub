@@ -2,9 +2,10 @@ import { CircularProgress, Stack, Typography } from "@mui/material";
 import * as React from "react";
 import { HighlightButton } from "../../components/buttons/highlight_button";
 import { StandardButton } from "../../components/buttons/standard_button";
-import { Link as RouterLink } from "react-router-dom";
 import { useEffect, useState } from "react";
 import UserService from "../../services/userService";
+import ContentService from "../../services/contentService";
+import ConfirmDialog from "../profilecomponents/popups/confirm_dialog";
 
 /**
  * get image src path.
@@ -51,6 +52,26 @@ export default function OffContent({ item }) {
     return retstring;
   };
 
+  // state for confirmation Dialog
+  const [confirmOpen, setConfirmOpen] = React.useState(false);
+
+  // state for confirmation Dialog
+  const [confirmReOpen, setConfirmReOpen] = React.useState(false);
+
+  const handleDelete = async () => {
+    let updateItem = item;
+    updateItem.deleteflag = true;
+    await ContentService.updateContent(updateItem);
+    //window.location.reload(false);
+  };
+
+  const handleReactivation = async () => {
+    let updateItem = item;
+    updateItem.deleteflag = false;
+    await ContentService.updateContent(updateItem);
+    //window.location.reload(false);
+  };
+
   //console.log(item);
 
   return author ? (
@@ -89,26 +110,58 @@ export default function OffContent({ item }) {
           </Stack>
         </Stack>
       </Stack>
-      <Stack justifyContent="space-between" spacing={2}>
-        <HighlightButton
-          variant="contained"
-          sx={{ width: 300 }}
-          href={item.plan}
-          download={item.title}
-        >
-          Delete
-        </HighlightButton>
-        <StandardButton variant="contained" sx={{ width: 300 }}>
-          Update
-        </StandardButton>
-        <StandardButton
-          variant="contained"
-          sx={{ width: 300 }}
-          href={item.plan}
-          download={item.title}
-        >
-          Download
-        </StandardButton>
+      <Stack>
+        {item.deleteflag ? (
+          <Stack>
+            <HighlightButton
+              key="ReactivateAccountButton"
+              variant="contained"
+              onClick={() => setConfirmReOpen(true)}
+              sx={{ width: 300 }}
+            >
+              Reactivate
+            </HighlightButton>
+            <ConfirmDialog
+              title="Reactivate content?"
+              open={confirmReOpen}
+              setOpen={setConfirmReOpen}
+              onConfirm={handleReactivation}
+            >
+              Your content will be visibile again in discovery!
+            </ConfirmDialog>
+          </Stack>
+        ) : (
+          <Stack justifyContent="space-between" spacing={2}>
+            <StandardButton variant="contained" sx={{ width: 300 }}>
+              Update
+            </StandardButton>
+            <StandardButton
+              variant="contained"
+              sx={{ width: 300 }}
+              href={item.plan}
+              download={item.title}
+            >
+              Download
+            </StandardButton>
+            <HighlightButton
+              key="DeleteAccountButton"
+              variant="contained"
+              onClick={() => setConfirmOpen(true)}
+              sx={{ width: 300 }}
+            >
+              Delete
+            </HighlightButton>
+            <ConfirmDialog
+              title="Hide content from buyers?"
+              open={confirmOpen}
+              setOpen={setConfirmOpen}
+              onConfirm={handleDelete}
+            >
+              Your content will be visible for existing buyers, but hidden in
+              discovery!
+            </ConfirmDialog>
+          </Stack>
+        )}
       </Stack>
     </Stack>
   ) : (

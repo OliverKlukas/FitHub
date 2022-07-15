@@ -23,34 +23,69 @@ const mongoose = require("mongoose");
  *
  */
 const ContentSchema = new mongoose.Schema({
-    ownerId: {type: mongoose.Schema.Types.ObjectId, ref: "User"},
-    category: {
-        type: String, enum: ["training", "nutrition", "coaching"], required: true
-    }, title: {
-        type: String, required: true
-    }, description: {
-        type: String, required: true
-    }, price: {
-        type: String, required: true
-    }, duration: {
-        type: Number, min: 1, required: true
-    }, intensity: {
-        type: Number, min: 1, required: true
-    }, support: {
-        type: Boolean, required: true
-    }, tags: [{
-        type: String, required: true
-    }], featured: {
-        type: Boolean, required: true
-    }, media: {
-        type: [{
-            type: String
-        }], required: true
-    }, plan: {
-        type: String, required: true
-    }, sample: {
-        type: String, required: true
+  ownerId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+  category: {
+    type: String,
+    enum: ["training", "nutrition", "coaching"],
+    required: true,
+  },
+  title: {
+    type: String,
+    required: true,
+  },
+  description: {
+    type: String,
+    required: true,
+  },
+  price: {
+    type: String,
+    required: true,
+  },
+  duration: {
+    type: Number,
+    min: 1,
+    required: true,
+  },
+  intensity: {
+    type: Number,
+    min: 1,
+    required: true,
+  },
+  support: {
+    type: Boolean,
+    required: true,
+  },
+  tags: [
+    {
+      type: String,
+      required: true,
     },
-})
+  ],
+  featured: {
+    type: Boolean,
+    required: true,
+  },
+  media: {
+    type: [
+      {
+        type: String,
+      },
+    ],
+    required: true,
+  },
+  plan: {
+    type: String,
+    required: true,
+  },
+  sample: {
+    type: String,
+    required: true,
+  },
+  deleteflag: {
+    type: Boolean,
+    required: true,
+    default: false,
+  },
+});
 
 module.exports = mongoose.model("Content", ContentSchema);
