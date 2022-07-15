@@ -8,6 +8,7 @@ import {
     FormControlLabel,
     FormControl,
     FormLabel,
+    Link,
 } from "@mui/material";
 import React, { useEffect } from "react";
 import { HighlightButton } from "../components/buttons/highlight_button";
@@ -16,6 +17,7 @@ import UploadButton from "../components/buttons/upload_button";
 import { registerContentCreator, registerCustomer } from "../redux/actions";
 import { connect, useSelector } from "react-redux";
 import UserService from "../services/userService";
+import { red } from "@mui/material/colors";
 
 /**
  * SignUp View
@@ -34,6 +36,7 @@ function SignUp(props) {
     const [firstnameerror, setFirstNameError] = React.useState(false);
     const [lastnameerror, setLastNameError] = React.useState(false);
     const [neitherselectererror, setNeitherSelectedError] = React.useState(true);
+    const [mediaError, setMediaError] = React.useState(false);
 
     // states for input to pass to the backend
     const [firstname, setFirstName] = React.useState("");
@@ -51,11 +54,20 @@ function SignUp(props) {
 
     useEffect(() => {
         if (user.user) {
-            navigate("/landing");
+            if (isContentCreator) {
+                navigate("/landing");
+            } else {
+                navigate("/discovery")
+            }
+
             window.location.reload();
         }
-    }, [user, props.history, navigate]);
+    }, [user, props.history, navigate, isContentCreator]);
 
+
+    /**
+     * calls the redux logic to dispatch the entered Information
+     */
     const handleSubmit = () => {
         if (isContentCreator) {
             props.dispatch(registerContentCreator(email, password, firstname, lastname, title, uploadedPicture[0]))
@@ -97,11 +109,8 @@ function SignUp(props) {
      * If it is secure enough, it checks if the two passwords match
      */
     const validatePasswords = () => {
-        if (
-            password.match(
-                /^(?=(.*[a-z]){2,})(?=(.*[A-Z]){1,})(?=(.*[0-9]){0,})(?=(.*[!@#$%^&*()\-__+.]){1,}).{8,}$/
-            ) === null
-        ) {
+        const pwregex = new RegExp(/^(?=(.*[a-z]){2,})(?=(.*[A-Z]){1,})(?=(.*[0-9]){1,})(?=(.*[!@#$%^&*()\-__+.]){0,}).{8,}$/)
+        if (pwregex.test(password)) {
             setPasswordError(false)
             if (password !== "" && password2 !== "") {
                 if (password !== password2) {
@@ -113,7 +122,7 @@ function SignUp(props) {
             }
         } else {
             setPasswordError(true);
-            setPasswordErrorMessage("Password is not strong enough: Needs uppercase letters, signs and at least 8 letters");
+            setPasswordErrorMessage("Password needs at least 1 uppercase letter, 1 number and at least 8 letters");
         }
     };
     // validates email adress, checks for valid types of emails
@@ -169,7 +178,7 @@ function SignUp(props) {
     }
     // validates Title, check if the input is too long or too short, 5-80 characters
     const validateTitle = () => {
-        const titleregex = new RegExp("^(?=(.*[a-z]){2,})(?=(.*[A-Z]){1,})(?=(.*[0-9]){0,})(?=(.*[!@#$%^&*()\-__+. ]){0,}).{5,80}$")
+        const titleregex = new RegExp("^(?=(.*[a-z]){2,})(?=(.*[A-Z]){0,})(?=(.*[0-9]){0,})(?=(.*[!@#$%^&*()/-__+. ]){0,}).{5,80}$")
         if (
             titleregex.test(title)
         ) {
@@ -201,9 +210,9 @@ function SignUp(props) {
                             onBlur={validateFirstName}
                             helperText={
                                 firstnameerror
-                                  ? "First name is too long or contains signs and/or numbers"
-                                  : ""
-                              }
+                                    ? "First name is empty, too long or contains signs and numbers"
+                                    : ""
+                            }
                         ></TextField>
                         <TextField
                             sx={{ maxWidth: 180 }}
@@ -213,9 +222,9 @@ function SignUp(props) {
                             onBlur={validateLastName}
                             helperText={
                                 lastnameerror
-                                  ? "Last name is too long or contains signs and/or numbers"
-                                  : ""
-                              }
+                                    ? "Last name is empty, too long or contains signs and numbers"
+                                    : ""
+                            }
                         ></TextField>
                     </Stack>
                     <FormControl>
@@ -249,9 +258,9 @@ function SignUp(props) {
                         error={emailerror}
                         helperText={
                             emailerror
-                              ? emailerrormessage
-                              : ""
-                          }
+                                ? emailerrormessage
+                                : ""
+                        }
                     ></TextField>
                     <Typography variant="h4">Choose a Password</Typography>
                     <Stack direction="row" spacing={5}>
@@ -266,9 +275,9 @@ function SignUp(props) {
                             onBlur={validatePasswords}
                             helperText={
                                 passworderror
-                                  ? passworderrormessage
-                                  : ""
-                              }
+                                    ? passworderrormessage
+                                    : ""
+                            }
                         ></TextField>
                         <TextField
                             sx={{ maxWidth: 180 }}
@@ -281,9 +290,9 @@ function SignUp(props) {
                             onBlur={validatePasswords}
                             helperText={
                                 passworderror
-                                  ? passworderrormessage
-                                  : ""
-                              }
+                                    ? passworderrormessage
+                                    : ""
+                            }
                         ></TextField>
                     </Stack>
                     {isContentCreator && (
@@ -297,18 +306,45 @@ function SignUp(props) {
                                 onBlur={validateTitle}
                                 helperText={
                                     titleerror
-                                      ? "Title needs to be at least 5 and at most 80 characters"
-                                      : ""
-                                  }
+                                        ? "Title needs to be at least 5 and at most 80 characters"
+                                        : ""
+                                }
                             ></TextField>
                             <Typography variant="h4">Upload a Profile Picture</Typography>
-                            <UploadButton
-                                id="profilePictureUpload"
-                                uploadFormat="image/*"
-                                givenId="profilePicture-Upload"
-                                multiUpload={false}
-                                setUpload={setUploadedPicture}
-                            />
+                            <Stack spacing={1}>
+                                <UploadButton
+                                    uploadFormat="image/*"
+                                    givenId="profilePictureUpload"
+                                    multiUpload={false}
+                                    setUpload={setUploadedPicture}
+                                    setSuccess={setMediaError}
+                                />
+                                <Typography
+                                    variant="body2"
+                                    fontSize="small"
+                                    maxWidth={300}
+                                    sx={
+                                        mediaError
+                                            ? {
+                                                color: red["A700"],
+                                            }
+                                            : { color: "default" }
+                                    }
+                                >
+                                    Be aware of the max size of 16MB and respect our{" "}
+                                    <Link
+                                        color="#393E46"
+                                        fontSize={14}
+                                        fontWeight={300}
+                                        underline="always"
+                                        target="_blank"
+                                        href="/terms-and-conditions"
+                                    >
+                                        Terms & Conditions
+                                    </Link>{" "}
+                                    including image rights
+                                </Typography>
+                            </Stack>
                         </Stack>
                     )}
                     <HighlightButton

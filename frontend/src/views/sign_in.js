@@ -1,13 +1,14 @@
 import React, { useEffect } from "react";
-import { TextField, Stack, Typography, Grid, Divider, Snackbar, Alert } from "@mui/material";
+import { TextField, Stack, Typography, Grid, Divider, } from "@mui/material";
 import { HighlightButton } from "../components/buttons/highlight_button";
 import { StandardButton } from "../components/buttons/standard_button";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { connect, useSelector } from "react-redux";
-import { login } from "../redux/actions"
+import { signin } from "../redux/actions"
+import UserService from "../services/userService";
 
 /**
- * Login View
+ * Signin View
  * @param {props} props for user state management
  */
 function SignIn(props) {
@@ -20,10 +21,10 @@ function SignIn(props) {
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
 
-  // States for displaying Error Messages and ensuring the login data is changed after incorrect login
+  // States for displaying Error Messages and ensuring the signin data is changed after incorrect signin
   const [emailerror, setEmailError] = React.useState(false);
   const [passworderror, setPassworderror] = React.useState(false);
-  const [loginerror, setLoginError] = React.useState(false);
+  const [emailerrormessage, setEmailErrorMessage] =React.useState("");
 
   // navigates to discovery once a user is logged in and reloads the page to ensure all data from the redux store is loaded
   useEffect(() => {
@@ -54,24 +55,28 @@ function SignIn(props) {
         ) === null
     ) {
       setEmailError(true);
+      setEmailErrorMessage("Not a valid Email");
     } else {
       setEmailError(false);
+      checkEmail();
     }
   };
 
   /**
-   * Submits the data to the backend, if a user was not able to login, sets the error states, so that a user can not login again until either of the textfields is modified,
+   * Submits the data to the backend, if a user was not able to signin, sets the error states, so that a user can not signin again until either of the textfields is modified,
    * and displays a error message to the user
    */
   const handleSubmit = async () => {
-      await props.dispatch(login(email, password));
-    if (!user.user) {
-      setLoginError(true);
-      setEmailError(true);
-      setPassworderror(true);
-    }
-
+    await props.dispatch(signin(email, password));
   };
+  const checkEmail = async () => {
+    const res = await UserService.checkEmail(email);
+    if (res.alreadyHasAccount === false) {
+        setEmailError(true);
+        setEmailErrorMessage("No Account with this Email");
+    };
+};
+
   return (
     <Grid
       container
@@ -88,6 +93,11 @@ function SignIn(props) {
             label="Email-Adress"
             onChange={onChangeEmail}
             onBlur={validateEmail}
+            helperText={
+              emailerror
+                ? emailerrormessage
+                : ""
+            }
             error={emailerror}
           ></TextField>
           <TextField
@@ -115,9 +125,6 @@ function SignIn(props) {
           </StandardButton>
         </Stack>
       </Grid>
-      <Snackbar open={loginerror} autoHideDuration={6000} onClose={() => setLoginError(false)}>
-        <Alert onClose={() => setLoginError(false)} severity="error" sx={{ width: '100%' }}>Either Email or password is Incorrect!</Alert>
-      </Snackbar>;
     </Grid>
   );
 }

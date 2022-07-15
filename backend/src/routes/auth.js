@@ -11,16 +11,50 @@ const AuthController = require("../controllers/auth");
 
 router.get("/getCreators", AuthController.getContentCreatorNames);
 router.get("/getUsername/:ownerId", AuthController.getUsername);
-router.post("/register", AuthController.register); // register a new user
-router.post("/login", AuthController.login); // login
-router.post("/userdata", AuthController.userdata); // display publicly available user data, checks if its for the callers own profile
-// router.get("/me", middleware.checkAuthentication, AuthController.me) // displays own user data, needs to be logged in
-router.post("/logout", middleware.checkAuthentication, AuthController.logout); // logout
-// router.post("/addreview", middleware.checkAuthentication, AuthController.addreview) //publishes a review
-// router.put("/updatereview", middleware.checkAuthentication, AuthController.updatereview) //update a review
-// router.delete("/deletereview", middleware.checkAuthentication, AuthController.deletereview) // delete a review
-router.delete("/delete", middleware.checkAuthentication, AuthController.deleteuser) // checks user, then deletes user
-router.put("/update", middleware.checkAuthentication, AuthController.updateuser) // checks user, then updates user
-router.get("/:email", AuthController.checkEmail) 
+// register a new user
+router.post("/register", AuthController.register);
+// signin
+router.post("/signin", AuthController.signin);
+// display publicly available user data, checks if its for the callers own profile
+router.post("/userdata", AuthController.userdata);
+// logout
+router.post("/logout", middleware.checkAuthentication, AuthController.logout);
+// adds a review to a user, if the user was already reviewed by the same reviewer, the review gets updated instead
+router.put(
+  "/addreview/:id",
+  middleware.checkAuthentication,
+  AuthController.addreview
+);
+// delete a review
+router.delete(
+  "/deletereview",
+  middleware.checkAuthentication,
+  AuthController.deletereview
+);
+// checks user, then deletes user
+router.delete(
+  "/delete",
+  middleware.checkAuthentication,
+  AuthController.deleteuser
+);
+// checks user, then updates user
+router.put(
+  "/update",
+  middleware.checkAuthentication,
+  AuthController.updateuser
+);
+router.get(
+  "/notificationsnumber",
+  middleware.checkAuthentication,
+  AuthController.getNewNotifications
+);
+// gets first and last name of a user through their email
+router.get("/:email", AuthController.checkEmail);
+// gets Information needed for the Dashboard
+router.post("/getReviewAnalytics", middleware.checkAuthentication, AuthController.getReviewAnalytics);
+// resets Review Counter
+router.post("/cleanReviewCounter", middleware.checkAuthentication, AuthController.cleanReviewCounter);
+// resets Message Counter
+router.post("/cleanMessageCounter", middleware.checkAuthentication, AuthController.cleanMessageCounter);
 
 module.exports = router;

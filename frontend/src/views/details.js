@@ -185,8 +185,8 @@ function Details(props) {
                 </Stack>
                 <Stack spacing={1}>
                     <Typography variant="h3">Duration</Typography>
-                    <Typography>{singleContent.content.duration} weeks with an intensity
-                        of {singleContent.content.intensity} sessions/week</Typography>
+                    <Typography>{singleContent.content.duration} weeks with {" "}
+                        {singleContent.content.intensity} {singleContent.content.category === "nutrition" ? ("meals per day") : ("sessions per week")}</Typography>
                 </Stack>
                 <Stack spacing={2}>
                     <Typography variant="h3">Sample Workout</Typography>

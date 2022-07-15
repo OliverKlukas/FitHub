@@ -29,7 +29,7 @@ export default class HttpService {
       });
 
       if (this.checkIfUnauthorized(resp)) {
-        window.location = "/login";
+        window.location = "/signin";
       } else {
         resp = await resp.json();
       }
@@ -64,7 +64,7 @@ export default class HttpService {
       });
 
       if (this.checkIfUnauthorized(resp)) {
-        window.location = "/login";
+        window.location = "/signin";
         return;
       } else {
         resp = await resp.json();
@@ -100,7 +100,7 @@ export default class HttpService {
       });
 
       if (this.checkIfUnauthorized(resp)) {
-        window.location = "/login";
+        window.location = "/signin";
         return;
       } else {
         resp = await resp.json();
@@ -134,7 +134,6 @@ export default class HttpService {
       });
 
       if (this.checkIfUnauthorized(resp)) {
-        window.location = "/login";
         return;
       } else {
         resp = await resp.json();

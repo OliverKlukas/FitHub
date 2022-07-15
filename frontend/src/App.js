@@ -38,55 +38,52 @@ function App() {
 
     const [choice, setChoice] = useState("");
 
-    return (
-        <ThemeProvider theme={FitHubTheme}>
-            <Provider store={store}>
-                <CssBaseline/>
-                <BrowserRouter>
-                    <Box sx={{marginX: 6}}>
-                        <Header gender="male" userType="content-creator"/>
-                        <Box minHeight="75vh">
-                            <Routes>
-                                <Route path="*" element={<PageNotFound/>}/>
-                                <Route
-                                    path="/"
-                                    element={<Navigate to="/discovery" replace/>}
-                                />
-                                <Route
-                                    path="/landing"
-                                    element={<LandingPage data={{setChoice}}/>}
-                                />
-                                <Route path="/discovery" element={<Discovery/>}/>
-                                <Route
-                                    path="/upload"
-                                    element={<ContentUpload data={{choice, setChoice}}/>}
-                                />
-                                <Route path="/about" element={<AboutUs/>}/>
-                                <Route
-                                    path="/profile/:id"
-                                    element={<Profile/>}
-                                />
-                                <Route path="/signup" element={<SignUp/>}/>
-                                <Route path="/details/:id" element={<Details/>}/>
-                                <Route path="/payment/:id" element={<Payment/>}/>
-                                <Route
-                                    path="/terms-and-conditions"
-                                    element={<TermsAndConditions/>}
-                                />
-                                <Route path="/myplans/:id" element={<MyPlans/>}/>
-                                <Route path="/signin" element={<SignIn/>}/>
-                                <Route path="/mycontent/:id" element={<MyContent/>}/>
-                                <Route path="/dashboard/:id" element={<Dashboard/>}/>
-                                <Route path="/mycustomers/:id" element={<CustomerOverview/>}/>
-                                <Route path="/chat" element={<ChatView/>}/>
-                            </Routes>
-                        </Box>
-                        <Footer/>
-                    </Box>
-                </BrowserRouter>
-            </Provider>
-        </ThemeProvider>
-    );
+  return (
+    <ThemeProvider theme={FitHubTheme}>
+      <Provider store={store}>
+        <CssBaseline />
+        <BrowserRouter>
+          <Box sx={{ marginX: 6 }}>
+            <Header gender="male" userType="content-creator" />
+            <Box minHeight="75vh">
+              <Routes>
+                <Route path="*" element={<PageNotFound />} />
+                <Route
+                  path="/"
+                  element={<Navigate to="/discovery" replace />}
+                />
+                <Route
+                  path="/landing"
+                  element={<LandingPage data={{ setChoice }} />}
+                />
+                <Route path="/discovery" element={<Discovery />} />
+                <Route path="/plans" element={<MyPlans />} />
+                <Route
+                  path="/upload"
+                  element={<ContentUpload data={{ choice, setChoice }} />}
+                />
+                <Route path="/about" element={<AboutUs />} />
+                <Route path="/profile/:id" element={<Profile />} />
+                <Route path="/signup" element={<SignUp />} />
+                <Route path="/details/:id" element={<Details />} />
+                <Route path="/payment/:id" element={<Payment />} />
+                <Route
+                  path="/terms-and-conditions"
+                  element={<TermsAndConditions />}
+                />
+                <Route path="/signin" element={<SignIn />} />
+                <Route path="/mycontent" element={<MyContent />} />
+                <Route path="/dashboard" element={<Dashboard />} />
+                <Route path="/mycustomers" element={<CustomerOverview />} />
+                  <Route path="/chat" element={<ChatView/>}/>
+              </Routes>
+            </Box>
+            <Footer />
+          </Box>
+        </BrowserRouter>
+      </Provider>
+    </ThemeProvider>
+  );
 }
 
 export default App;

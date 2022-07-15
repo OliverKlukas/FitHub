@@ -1,8 +1,18 @@
-import { Stack, Typography } from "@mui/material";
-import { useParams } from "react-router-dom";
-import { consumer } from "../utils/consumer";
-import { content } from "../utils/content";
+import {
+  Stack,
+  Typography,
+  CircularProgress,
+  Button,
+  Box,
+} from "@mui/material";
+import * as React from "react";
+import { connect, useSelector } from "react-redux";
 import Plan from "../components/plans/plan";
+import { getBoughtPlan, getContents } from "../redux/actions";
+import { useEffect } from "react";
+import ContentService from "../services/contentService";
+import MyContentDrawer from "../components/drawer/mycontent_drawer_customer";
+import Divider from "@mui/material/Divider";
 
 /**
  * Purchase history that displays every bought content item for a specific consumer with an option to download the item,
@@ -11,21 +21,63 @@ import Plan from "../components/plans/plan";
  *
  * @return {JSX.Element} returns My Plans page.
  */
-export default function MyPlans() {
-  // Match url id to consumer item.
-  const { id } = useParams();
-  // eslint-disable-next-line
-    const item = consumer.find((item) => item.id == id);
+function MyPlans(props) {
+  const user = useSelector((state) => state.user);
+
+  // State from the redux store for plans.
+  const planList = useSelector((state) => state.boughtPlan.boughtPlan);
+
+  // State from the redux store for contents.
+  const contentList = useSelector((state) => state.entities.contents);
+
+  // On open load the movie.
+  useEffect(() => {
+    if (!planList) {
+      props.getBoughtPlan(user.user._id);
+    }
+    if (!contentList) {
+      props.getContents();
+    }
+  }, [planList, user.user._id, contentList]);
 
   return (
-    <Stack spacing={4} marginTop={5}>
-      <Typography variant="h1">My Plans</Typography>
-      {/* eslint-disable-next-line */}
-            {content.map((con) => {
-        if (item.boughtContent.includes(con.id)) {
-          return <Plan item={con} key={con.img} />;
-        }
-      })}
+    <Stack direction="row" marginTop={5} spacing={5}>
+      <MyContentDrawer currTab="My Plans"></MyContentDrawer>
+      <Divider orientation="vertical" flexItem />
+      {planList && contentList ? (
+        <Stack spacing={4} width="100%">
+          <Typography variant="h1">My Plans</Typography>
+          {planList
+            .sort((a, b) =>
+              a.boughtAt > b.boughtAt ? -1 : b.boughtAt > a.boughtAt ? 1 : 0
+            )
+            .map((item) => {
+              let cont;
+              contentList.map((content) => {
+                if (item.contentId == content._id) {
+                  cont = content;
+                }
+              });
+              return (
+                <Plan item={cont} transaction={item} key={item._id}></Plan>
+              );
+            })}
+        </Stack>
+      ) : (
+        // Loading content.
+        <Box
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          minHeight="80vh"
+        >
+          <CircularProgress />
+        </Box>
+      )}
+      ;
     </Stack>
   );
 }
+
+// Connect() establishes the connection to the redux functionalities.
+export default connect(null, { getBoughtPlan, getContents })(MyPlans);

@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Link, Stack } from "@mui/material";
+import { Link, Stack, Badge } from "@mui/material";
 // import { ReactComponent as AvatarFemale } from "../../resources/avatar_female.svg";
 import { ReactComponent as AvatarMale } from "../../resources/avatar_male.svg";
 import { ReactComponent as Logo } from "../../resources/logo_standard.svg";
@@ -15,6 +15,8 @@ import MenuList from "@mui/material/MenuList";
 import { LinkButton } from "../buttons/link_button";
 import { useSelector, connect } from "react-redux";
 import { logout } from "../../redux/actions";
+import NotificationsIcon from '@mui/icons-material/Notifications';
+import UserService from "../../services/userService";
 
 /**
  *  Header bar component that is visible on all views.
@@ -27,19 +29,38 @@ function Header(props) {
   const user = useSelector((state) => state.user);
   // Names needed for Link to Own Profile, get set with useeffect()
   const [id, setid] = React.useState("");
+  // state for new Reviews
+  const [newReviews, setNewReviews] = React.useState(0);
+  // state for new Messages
+  const [newMessages, setNewMessages] = React.useState(0);
 
   useEffect(() => {
+    async function fetchNotifications() {
+      const res = await UserService.getNewNotifications();
+      console.log(res);
+      if (isNaN(res.newReviewsCounter)) {
+      } else {
+        setNewReviews(res.newReviewsCounter);
+      }
+      if (isNaN(res.newMessagesCounter)) {
+      } else {
+        setNewMessages(res.newMessagesCounter)
+      }
+    }
     if (user.user) {
       setid(user.user._id);
+      fetchNotifications();
+
     }
-  }, [id, user.user]);
+  }, [id, newMessages, newReviews, user.user]);
   // Header Center for a Content Creator
   const pagesContentCreator = {
     discovery: "Discovery",
-    upload: "Offer content",
+    dashboard: "My content",
     about: "About us",
   };
   const icondirection = "/discovery";
+  const icondirectioncreator = "/landing";
   // Header Center for a Customer
   const pagesCustomer = {
     discovery: "Discovery",
@@ -52,22 +73,20 @@ function Header(props) {
     signin: "Sign In",
     about: "About us",
   };
-
-  // Anchor hook to open/close the navigation menu when option selected or clicked off.
   const [anchorElSet, setAnchorElSet] = React.useState(null);
 
-  const handleOpenNavMenu = (event) => {
-    setAnchorElNav(event.currentTarget);
-  };
-  const handleCloseNavMenu = () => {
-    setAnchorElNav(null);
-  };
-  // Sub-urls and link names for available user menu options when the user is not logged in
-  const settings = {
-    contact: "Contact",
-    signin: "Sign in",
-    signup: "Sign up",
-  };
+    const handleOpenNavMenu = (event) => {
+        setAnchorElNav(event.currentTarget);
+    };
+    const handleCloseNavMenu = () => {
+        setAnchorElNav(null);
+    };
+    // Sub-urls and link names for available user menu options when the user is not logged in
+    const settings = {
+        contact: "Contact",
+        signin: "Sign in",
+        signup: "Sign up",
+    };
 
   // Anchor hook to open/close the user settings menu when option selected or clicked off.
   const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -77,34 +96,33 @@ function Header(props) {
   const handleCloseSetMenu = () => {
     setAnchorElSet(null);
   };
+
+  // Anchor hook to open/close the user settings menu when option selected or clicked off.
+  const [anchorElNotifications, setAnchorElNotifications] = React.useState(null);
+  const handleOpenNotificationsMenu = (event) => {
+    setAnchorElNotifications(event.currentTarget);
+  };
+  const handleCloseNotificationsMenu = () => {
+    setAnchorElNotifications(null);
+  };
+
   const handlelogout = () => {
     props.dispatch(logout);
     window.location.reload();
     return false;
   };
 
+
   return (
-    <Stack
-      direction="row"
-      justifyContent="space-between"
-      alignItems="center"
-      my={2}
-    >
+    <Stack direction="row" justifyContent="space-between" alignItems="center" my={2}>
       <Box>
         <Box sx={{ display: { xs: "none", md: "flex" } }}>
-          <Link href={icondirection}>
+          <Link href={user.user ? [user.user.role === "contentCreator" ? icondirectioncreator : icondirection] : icondirection}>
             <Logo />
           </Link>
         </Box>
         <Box sx={{ display: { xs: "flex", md: "none" } }}>
-          <IconButton
-            size="large"
-            aria-label="account of current user"
-            aria-controls="menu-appbar"
-            aria-haspopup="true"
-            onClick={handleOpenNavMenu}
-            color="inherit"
-          >
+          <IconButton size="large" aria-label="account of current user" aria-controls="menu-appbar" aria-haspopup="true" onClick={handleOpenNavMenu} color="inherit">
             <MenuIcon />
           </IconButton>
           <Menu
@@ -144,127 +162,155 @@ function Header(props) {
             </Stack>
           </Link>
         </Box>
-        <Stack
-          direction="row"
-          spacing={4}
-          pr={16}
-          sx={{ display: { xs: "none", md: "flex" } }}
-        >
+        <Stack direction="row" spacing={4} pr={16} sx={{ display: { xs: "none", md: "flex" } }}>
           {user.user
             ? [
-                user.user.role === "customer"
-                  ? [
-                      Object.keys(pagesCustomer).map((url) => (
-                        <LinkButton
-                          key={url}
-                          variant="text"
-                          component={RouterLink}
-                          to={url}
-                        >
-                          {pagesCustomer[url]}
-                        </LinkButton>
-                      )),
-                    ]
-                  : [
-                      Object.keys(pagesContentCreator).map((url) => (
-                        <LinkButton
-                          key={url}
-                          variant="text"
-                          component={RouterLink}
-                          to={url}
-                        >
-                          {pagesContentCreator[url]}
-                        </LinkButton>
-                      )),
-                    ],
-              ]
+              user.user.role === "customer"
+                ? [
+                  Object.keys(pagesCustomer).map((url) => (
+                    <LinkButton key={url} variant="text" component={RouterLink} to={url}>
+                      {pagesCustomer[url]}
+                    </LinkButton>
+                  )),
+                ]
+                : [
+                  Object.keys(pagesContentCreator).map((url) => (
+                    <LinkButton key={url} variant="text" component={RouterLink} to={url}>
+                      {pagesContentCreator[url]}
+                    </LinkButton>
+                  )),
+                ],
+            ]
             : [
-                Object.keys(pagesLoggedOut).map((url) => (
-                  <LinkButton
-                    key={url}
-                    variant="text"
-                    component={RouterLink}
-                    to={url}
-                  >
-                    {pagesLoggedOut[url]}
-                  </LinkButton>
-                )),
-              ]}
+              Object.keys(pagesLoggedOut).map((url) => (
+                <LinkButton key={url} variant="text" component={RouterLink} to={url}>
+                  {pagesLoggedOut[url]}
+                </LinkButton>
+              )),
+            ]}
         </Stack>
       </Box>
       {user.user
         ? [
-            <Box key={"UserLoggedIn"}>
-              <IconButton onClick={handleOpenSetMenu}>
-                <AvatarMale />
-              </IconButton>
-              <Menu
-                sx={{ mt: "60px" }}
-                id="menu-appbar"
-                anchorEl={anchorElSet}
+          <Box key={"UserLoggedIn"}>
+            <IconButton onClick={handleOpenNotificationsMenu}>
+              <Badge
+                badgeContent={newMessages + newReviews}
+                max={99}
+                overlap="circular"
                 anchorOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
+                  vertical: "bottom",
+                  horizontal: "left",
                 }}
-                keepMounted
-                transformOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-                }}
-                open={Boolean(anchorElSet)}
-                onClose={handleCloseSetMenu}
+                color="warning"
               >
-                <MenuList
-                  id="composition-menu"
-                  aria-labelledby="composition-button"
-                >
-                  <MenuItem key="profile" onClick={handleCloseSetMenu}>
-                    <Link
-                      href={`/profile/${id}`}
-                      underline="none"
-                      color="inherit"
-                    >
-                      Profile
+                <NotificationsIcon fontSize="large" />
+              </Badge>
+            </IconButton>
+
+            <Menu
+              sx={{ mt: "60px" }}
+              id="notifications-appbar"
+              anchorEl={anchorElNotifications}
+              anchorOrigin={{
+                vertical: "top",
+                horizontal: "right",
+              }}
+              keepMounted
+              transformOrigin={{
+                vertical: "top",
+                horizontal: "right",
+              }}
+              open={Boolean(anchorElNotifications)}
+              onClose={handleCloseNotificationsMenu}
+            >
+              <MenuList id="notifications-menu" aria-labelledby="notification-button">
+                {newMessages > 0 ? (
+                  <MenuItem key="messages" onClick={handleCloseNotificationsMenu}>
+                    {/*TODO: replace /profile/${id} with the link to the messages of the user*/}
+                    <Link href={`/profile/${id}`} underline="none" color="inherit">
+                      You have {newMessages} new Messages!
                     </Link>
                   </MenuItem>
-                  <MenuItem key="logout" onClick={handlelogout}>
-                    Logout
+                ) : (
+                  []
+                )}
+                {newReviews > 0 ? (
+                  <MenuItem key="reviews" onClick={handleCloseNotificationsMenu}>
+                    <Link href={`/profile/${id}`} underline="none" color="inherit">
+                      You have {newReviews} new Reviews!
+                    </Link>
                   </MenuItem>
-                </MenuList>
-              </Menu>
-            </Box>,
-          ]
+                ) : (
+                  []
+                )}
+              </MenuList>
+            </Menu>
+
+            <IconButton onClick={handleOpenSetMenu}>
+              <AvatarMale />
+            </IconButton>
+
+            <Menu
+              sx={{ mt: "60px" }}
+              id="menu-appbar"
+              anchorEl={anchorElSet}
+              anchorOrigin={{
+                vertical: "top",
+                horizontal: "right",
+              }}
+              keepMounted
+              transformOrigin={{
+                vertical: "top",
+                horizontal: "right",
+              }}
+              open={Boolean(anchorElSet)}
+              onClose={handleCloseSetMenu}
+            >
+              <MenuList id="composition-menu" aria-labelledby="composition-button">
+                <MenuItem key="profile" onClick={handleCloseSetMenu}>
+                  <Link href={`/profile/${id}`} underline="none" color="inherit">
+                    Profile
+                  </Link>
+                </MenuItem>
+                <MenuItem key="logout" onClick={handlelogout}>
+                  Logout
+                </MenuItem>
+              </MenuList>
+            </Menu>
+          </Box>,
+        ]
         : [
-            <Box key={"UserLoggedOut"}>
-              <IconButton onClick={handleOpenSetMenu}>
-                <AvatarMale />
-              </IconButton>
-              <Menu
-                sx={{ mt: "60px" }}
-                id="menu-appbar"
-                anchorEl={anchorElSet}
-                anchorOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-                }}
-                keepMounted
-                transformOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-                }}
-                open={Boolean(anchorElSet)}
-                onClose={handleCloseSetMenu}
-              >
-                {Object.keys(settings).map((url) => (
-                  <MenuItem key={url} onClick={handleCloseSetMenu}>
-                    <Link key={url} href={url} underline="none" color="inherit">
-                      {settings[url]}
-                    </Link>
-                  </MenuItem>
-                ))}
-              </Menu>
-            </Box>,
-          ]}
+          <Box key={"UserLoggedOut"}>
+            <IconButton onClick={handleOpenSetMenu}>
+              <AvatarMale />
+            </IconButton>
+            <Menu
+              sx={{ mt: "60px" }}
+              id="menu-appbar"
+              anchorEl={anchorElSet}
+              anchorOrigin={{
+                vertical: "top",
+                horizontal: "right",
+              }}
+              keepMounted
+              transformOrigin={{
+                vertical: "top",
+                horizontal: "right",
+              }}
+              open={Boolean(anchorElSet)}
+              onClose={handleCloseSetMenu}
+            >
+              {Object.keys(settings).map((url) => (
+                <MenuItem key={url} onClick={handleCloseSetMenu}>
+                  <Link key={url} href={url} underline="none" color="inherit">
+                    {settings[url]}
+                  </Link>
+                </MenuItem>
+              ))}
+            </Menu>
+          </Box>,
+        ]}
     </Stack>
   );
 }
