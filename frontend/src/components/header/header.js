@@ -37,7 +37,6 @@ function Header(props) {
   useEffect(() => {
     async function fetchNotifications() {
       const res = await UserService.getNewNotifications();
-      console.log(res);
       if (isNaN(res.newReviewsCounter)) {
       } else {
         setNewReviews(res.newReviewsCounter);
