@@ -62,8 +62,12 @@ function SignUp(props) {
 
             window.location.reload();
         }
-    }, [user, props.history, navigate]);
+    }, [user, props.history, navigate, isContentCreator]);
 
+
+    /**
+     * calls the redux logic to dispatch the entered Information
+     */
     const handleSubmit = () => {
         if (isContentCreator) {
             props.dispatch(registerContentCreator(email, password, firstname, lastname, title, uploadedPicture[0]))
@@ -174,7 +178,7 @@ function SignUp(props) {
     }
     // validates Title, check if the input is too long or too short, 5-80 characters
     const validateTitle = () => {
-        const titleregex = new RegExp("^(?=(.*[a-z]){2,})(?=(.*[A-Z]){0,})(?=(.*[0-9]){0,})(?=(.*[!@#$%^&*()\-__+. ]){0,}).{5,80}$")
+        const titleregex = new RegExp("^(?=(.*[a-z]){2,})(?=(.*[A-Z]){0,})(?=(.*[0-9]){0,})(?=(.*[!@#$%^&*()/-__+. ]){0,}).{5,80}$")
         if (
             titleregex.test(title)
         ) {

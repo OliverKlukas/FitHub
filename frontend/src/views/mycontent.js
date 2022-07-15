@@ -1,6 +1,6 @@
 import { Stack, Typography } from "@mui/material";
 import OffContent from "../components/plans/offcontent";
-import InsightsDrawer from "../components/drawer/insights_drawer";
+import CreatorDrawer from "../components/drawer/creator_drawer";
 import React, { useEffect } from "react";
 import Divider from "@mui/material/Divider";
 import contentService from "../services/contentService";
@@ -34,7 +34,7 @@ export default function MyContent() {
 
   return (
     <Stack direction="row" marginTop={5} spacing={5}>
-      <InsightsDrawer currTab="Content"></InsightsDrawer>
+      <CreatorDrawer currTab="Content"></CreatorDrawer>
       <Divider orientation="vertical" flexItem />
       <Stack spacing={4}>
         <Typography variant="h1">My Plans</Typography>

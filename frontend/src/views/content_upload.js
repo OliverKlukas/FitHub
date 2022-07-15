@@ -26,7 +26,7 @@ import { CancelButton } from "../components/buttons/cancel_button";
 import { StandardButton } from "../components/buttons/standard_button";
 import { red } from "@mui/material/colors";
 import { useSelector } from "react-redux";
-import InsightsDrawer from "../components/drawer/insights_drawer";
+import CreatorDrawer from "../components/drawer/creator_drawer";
 import Divider from "@mui/material/Divider";
 
 const preInputValue = "Type here...";
@@ -322,7 +322,7 @@ function ContentUpload(props) {
 
   return (
     <Stack direction="row" marginTop={5} spacing={5}>
-      <InsightsDrawer currTab="Upload" />
+      <CreatorDrawer currTab="Upload" />
       <Divider orientation="vertical" flexItem />
       <Stack
         padding={3}

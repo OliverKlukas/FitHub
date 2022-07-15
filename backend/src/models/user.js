@@ -56,6 +56,14 @@ const UserSchema = new mongoose.Schema(
     profilePicture: {
       type: String,
     },
+    newReviewsCounter: {
+      type: Number,
+      default: 0,
+    },
+    newMessagesCounter: {
+      type: Number,
+      default: 0,
+    },
     reviews: [ReviewSchema],
   },
   opts

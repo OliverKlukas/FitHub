@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Link, Stack } from "@mui/material";
+import { Link, Stack, Badge } from "@mui/material";
 // import { ReactComponent as AvatarFemale } from "../../resources/avatar_female.svg";
 import { ReactComponent as AvatarMale } from "../../resources/avatar_male.svg";
 import { ReactComponent as Logo } from "../../resources/logo_standard.svg";
@@ -16,6 +16,8 @@ import { LinkButton } from "../buttons/link_button";
 import { useSelector, connect } from "react-redux";
 import { logout } from "../../redux/actions";
 import { useNavigate } from "react-router-dom";
+import NotificationsIcon from "@mui/icons-material/Notifications";
+import UserService from "../../services/userService";
 
 /**
  *  Header bar component that is visible on all views.
@@ -28,36 +30,50 @@ function Header(props) {
   const user = useSelector((state) => state.user);
   // Names needed for Link to Own Profile, get set with useeffect()
   const [id, setid] = React.useState("");
+  // state for new Reviews
+  const [newReviews, setNewReviews] = React.useState(0);
+  // state for new Messages
+  const [newMessages, setNewMessages] = React.useState(0);
 
   const navigate = useNavigate();
 
   useEffect(() => {
+    async function fetchNotifications() {
+      const res = await UserService.getNewNotifications();
+      if (isNaN(res.newReviewsCounter)) {
+      } else {
+        setNewReviews(res.newReviewsCounter);
+      }
+      if (isNaN(res.newMessagesCounter)) {
+      } else {
+        setNewMessages(res.newMessagesCounter);
+      }
+    }
     if (user.user) {
       setid(user.user._id);
+      fetchNotifications();
     }
-  }, [id, user.user]);
+  }, [id, newMessages, newReviews, user.user]);
   // Header Center for a Content Creator
   const pagesContentCreator = {
     discovery: "Discovery",
-    dashboard: "My content",
-    about: "About us",
+    dashboard: "My Content",
+    about: "About Us",
   };
   const icondirection = "/discovery";
   const icondirectioncreator = "/landing";
   // Header Center for a Customer
   const pagesCustomer = {
     discovery: "Discovery",
-    plans: "My Plans",
-    about: "About us",
+    myContent: "My Content",
+    about: "About Us",
   };
   // Header Center if the user is not logged in
   const pagesLoggedOut = {
     discovery: "Discovery",
     signin: "Sign In",
-    about: "About us",
+    about: "About Us",
   };
-
-  // Anchor hook to open/close the navigation menu when option selected or clicked off.
   const [anchorElSet, setAnchorElSet] = React.useState(null);
 
   const handleOpenNavMenu = (event) => {
@@ -81,6 +97,17 @@ function Header(props) {
   const handleCloseSetMenu = () => {
     setAnchorElSet(null);
   };
+
+  // Anchor hook to open/close the user settings menu when option selected or clicked off.
+  const [anchorElNotifications, setAnchorElNotifications] =
+    React.useState(null);
+  const handleOpenNotificationsMenu = (event) => {
+    setAnchorElNotifications(event.currentTarget);
+  };
+  const handleCloseNotificationsMenu = () => {
+    setAnchorElNotifications(null);
+  };
+
   const handlelogout = () => {
     props.dispatch(logout);
     navigate("/discovery");
@@ -210,9 +237,81 @@ function Header(props) {
       {user.user
         ? [
             <Box key={"UserLoggedIn"}>
+              <IconButton onClick={handleOpenNotificationsMenu}>
+                <Badge
+                  badgeContent={newMessages + newReviews}
+                  max={99}
+                  overlap="circular"
+                  anchorOrigin={{
+                    vertical: "bottom",
+                    horizontal: "left",
+                  }}
+                  color="warning"
+                >
+                  <NotificationsIcon fontSize="large" />
+                </Badge>
+              </IconButton>
+
+              <Menu
+                sx={{ mt: "60px" }}
+                id="notifications-appbar"
+                anchorEl={anchorElNotifications}
+                anchorOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                open={Boolean(anchorElNotifications)}
+                onClose={handleCloseNotificationsMenu}
+              >
+                <MenuList
+                  id="notifications-menu"
+                  aria-labelledby="notification-button"
+                >
+                  {newMessages > 0 ? (
+                    <MenuItem
+                      key="messages"
+                      onClick={handleCloseNotificationsMenu}
+                    >
+                      {/*TODO: replace /profile/${id} with the link to the messages of the user*/}
+                      <Link
+                        href={`/profile/${id}`}
+                        underline="none"
+                        color="inherit"
+                      >
+                        You have {newMessages} new Messages!
+                      </Link>
+                    </MenuItem>
+                  ) : (
+                    []
+                  )}
+                  {newReviews > 0 ? (
+                    <MenuItem
+                      key="reviews"
+                      onClick={handleCloseNotificationsMenu}
+                    >
+                      <Link
+                        href={`/profile/${id}`}
+                        underline="none"
+                        color="inherit"
+                      >
+                        You have {newReviews} new Reviews!
+                      </Link>
+                    </MenuItem>
+                  ) : (
+                    []
+                  )}
+                </MenuList>
+              </Menu>
+
               <IconButton onClick={handleOpenSetMenu}>
                 <AvatarMale />
               </IconButton>
+
               <Menu
                 sx={{ mt: "60px" }}
                 id="menu-appbar"

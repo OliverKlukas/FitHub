@@ -3,11 +3,11 @@ import Link from "@mui/material/Link";
 import Stack from "@mui/material/Stack";
 import Divider from "@mui/material/Divider";
 
-export default function InsightsDrawer({ currTab }) {
+export default function CreatorDrawer({ currTab }) {
   let DashboardFontWeight = "normal";
   let ContentFontWeight = "normal";
   let UploadFontWeight = "normal";
-  let CustomerFontWeight = "normal";
+  let ChatFontWeight = "normal";
 
   if (currTab === "Dashboard") {
     DashboardFontWeight = "bold";
@@ -15,12 +15,12 @@ export default function InsightsDrawer({ currTab }) {
     ContentFontWeight = "bold";
   } else if (currTab === "Upload") {
     UploadFontWeight = "bold";
-  } else if (currTab === "Customer") {
-    CustomerFontWeight = "bold";
+  } else if (currTab === "Chat") {
+    ChatFontWeight = "bold";
   }
 
   return (
-    <Stack spacing={1}>
+    <Stack spacing={1} minWidth={"15vw"} minHeight={"75vh"}>
       <Link
         underline="hover"
         variant="subtitle1"
@@ -51,10 +51,10 @@ export default function InsightsDrawer({ currTab }) {
       <Link
         variant="subtitle1"
         underline="hover"
-        fontWeight={CustomerFontWeight}
-        href="/mycustomers"
+        fontWeight={ChatFontWeight}
+        href="/chat"
       >
-        Customers
+        Chat
       </Link>
     </Stack>
   );
