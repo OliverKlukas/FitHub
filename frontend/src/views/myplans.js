@@ -11,7 +11,7 @@ import Plan from "../components/plans/plan";
 import { getBoughtPlan, getContents } from "../redux/actions";
 import { useEffect } from "react";
 import ContentService from "../services/contentService";
-import MyContentDrawer from "../components/drawer/mycontent_drawer_customer";
+import CustomerDrawer from "../components/drawer/customer_drawer";
 import Divider from "@mui/material/Divider";
 
 /**
@@ -42,7 +42,7 @@ function MyPlans(props) {
 
   return (
     <Stack direction="row" marginTop={5} spacing={5}>
-      <MyContentDrawer currTab="My Plans"></MyContentDrawer>
+      <CustomerDrawer currTab="My Plans"></CustomerDrawer>
       <Divider orientation="vertical" flexItem />
       {planList && contentList ? (
         <Stack spacing={4} width="100%">

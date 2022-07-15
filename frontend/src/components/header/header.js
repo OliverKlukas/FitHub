@@ -55,22 +55,22 @@ function Header(props) {
   // Header Center for a Content Creator
   const pagesContentCreator = {
     discovery: "Discovery",
-    dashboard: "My content",
-    about: "About us",
+    dashboard: "My Content",
+    about: "About Us",
   };
   const icondirection = "/discovery";
   const icondirectioncreator = "/landing";
   // Header Center for a Customer
   const pagesCustomer = {
     discovery: "Discovery",
-    plans: "My Plans",
-    about: "About us",
+    myContent: "My Content",
+    about: "About Us",
   };
   // Header Center if the user is not logged in
   const pagesLoggedOut = {
     discovery: "Discovery",
     signin: "Sign In",
-    about: "About us",
+    about: "About Us",
   };
   const [anchorElSet, setAnchorElSet] = React.useState(null);
 

@@ -8,10 +8,13 @@ import VideoCallIcon from '@mui/icons-material/VideoCall';
 import IconButton from "@mui/material/IconButton";
 
 // TODO get from backend, might even put this into chat.js
-const messages = [{message: "Hi", sender: true}, {message: "Hi", sender: false}, {
-    message: "Wie geht's?",
+const messages = [{
+    message: "Hi, it's great to see that you bought my content! How do you like it?",
     sender: true
-}, {message: "Gut und dir?", sender: false}, {message: "Mir auch!", sender: true},];
+}, {message: "Hi, I enjoyed it very much so far! ", sender: false}, {
+    message: "I do have a question though! Could you explain to me what the best technique for the bench press exercises would look like?",
+    sender: false
+}, {message: "Sure thing! First of all, you need to pay attention...", sender: true}];
 
 /**
  * Implements the chat window with all messages between two partners, the message input and video call feature.

@@ -24,7 +24,6 @@ import reducers from "./redux/reducers";
 import thunkMiddleware from "redux-thunk";
 import MyContent from "./views/mycontent";
 import Dashboard from "./views/dashboard";
-import CustomerOverview from "./views/customer_overview";
 import ChatView from "./views/chat";
 
 /**
@@ -74,7 +73,6 @@ function App() {
                 <Route path="/signin" element={<SignIn />} />
                 <Route path="/mycontent" element={<MyContent />} />
                 <Route path="/dashboard" element={<Dashboard />} />
-                <Route path="/mycustomers" element={<CustomerOverview />} />
                   <Route path="/chat" element={<ChatView/>}/>
               </Routes>
             </Box>

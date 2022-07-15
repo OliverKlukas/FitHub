@@ -3,7 +3,7 @@ import Link from "@mui/material/Link";
 import Stack from "@mui/material/Stack";
 import Divider from "@mui/material/Divider";
 
-export default function MyContentDrawer({ currTab }) {
+export default function CustomerDrawer({ currTab }) {
   let myPlansFontWeight = "normal";
   let chatFontWeight = "normal";
 
@@ -14,7 +14,7 @@ export default function MyContentDrawer({ currTab }) {
   }
 
   return (
-    <Stack spacing={1}>
+    <Stack spacing={1} minWidth={"15vw"} minHeight={"75vh"}>
       <Link
         underline="hover"
         variant="subtitle1"
@@ -28,7 +28,7 @@ export default function MyContentDrawer({ currTab }) {
         variant="subtitle1"
         underline="hover"
         fontWeight={chatFontWeight}
-        href="/plans"
+        href="/chat"
       >
         Chat
       </Link>
