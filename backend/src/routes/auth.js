@@ -52,5 +52,9 @@ router.get(
 router.get("/:email", AuthController.checkEmail);
 // gets Information needed for the Dashboard
 router.post("/getReviewAnalytics", middleware.checkAuthentication, AuthController.getReviewAnalytics);
+// resets Review Counter
+router.post("/cleanReviewCounter", middleware.checkAuthentication, AuthController.cleanReviewCounter);
+// resets Message Counter
+router.post("/cleanMessageCounter", middleware.checkAuthentication, AuthController.cleanMessageCounter);
 
 module.exports = router;
