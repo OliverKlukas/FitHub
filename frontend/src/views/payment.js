@@ -24,6 +24,7 @@ import { useState, useEffect } from "react";
 import { connect, useSelector } from "react-redux";
 import { getContent } from "../redux/actions";
 import { addboughtPlan } from "../redux/actions/boughtPlans";
+import UserService from "../services/userService";
 
 /**
  * Payment page with the most important information about the content item, a link to our Terms and Conditions the customer has to accept and the payment method selection.
@@ -31,13 +32,13 @@ import { addboughtPlan } from "../redux/actions/boughtPlans";
  * @returns {JSX.Element} Returns payment page.
  */
 function Payment(props) {
-  // TODO: once user is connected I need the info from there
-  const creator = {
-    name: "Simon Plashek",
-    title: "professional bodybuilder & fitness coach",
-    img: "https://images.unsplash.com/photo-1584466977773-e625c37cdd50",
-    rating: 3,
-  };
+  // Retrieve author of content item.
+  const [author, setAuthor] = useState(null);
+
+  // Function to fetch username from service.
+  async function fetchUser() {
+    return await UserService.userdata(singleContent.content.ownerId);
+  }
 
   // get the user from redux
   const user = useSelector((state) => state.user);
@@ -50,10 +51,16 @@ function Payment(props) {
   // get the content
   const singleContent = useSelector((state) => state.singleContent);
 
-  // On open load the movie.
+  // Trigger retrieval of states and backend data.
   useEffect(() => {
-    props.getContent(id);
-  }, [singleContent.content, props, id]);
+    if (!singleContent.content) {
+      props.getContent(id);
+    } else {
+      fetchUser().then((res) => {
+        setAuthor(res);
+      });
+    }
+  }, [singleContent.content]);
 
   // if show is false, the standard payment view with payment method selection and terms and conditions accepting is displayed. If show true, only the paypal buttons will be displayed
   const [show, setShow] = useState(false);
@@ -142,7 +149,7 @@ function Payment(props) {
     setDialogOpen(true);
   }
 
-  return !singleContent.content && !singleContent.error ? (
+  return !singleContent.content || !author ? (
     // Loading content.
     <Box
       display="flex"
@@ -206,7 +213,7 @@ function Payment(props) {
                   spacing={4}
                 >
                   <Typography variant="h3">Content Creator</Typography>
-                  <Typography variant="h4">{creator.name}</Typography>
+                  <Typography variant="h4">{author.firstname + " " + author.lastname}</Typography>
                 </Stack>
                 <Divider sx={{ my: 2, bgcolor: "#222831" }} />
                 <Stack
@@ -216,8 +223,13 @@ function Payment(props) {
                   spacing={4}
                 >
                   <Typography variant="h3">Duration</Typography>
-                  <Typography variant="h4">{singleContent.content.duration} weeks with {" "}
-                        {singleContent.content.intensity} {singleContent.content.category === "nutrition" ? ("meals per day") : ("sessions per week")}</Typography>
+                  <Typography variant="h4">
+                    {singleContent.content.duration} weeks with{" "}
+                    {singleContent.content.intensity}{" "}
+                    {singleContent.content.category === "nutrition"
+                      ? "meals per day"
+                      : "sessions per week"}
+                  </Typography>
                 </Stack>
                 <Divider sx={{ my: 2, bgcolor: "#222831" }} />
                 <Stack

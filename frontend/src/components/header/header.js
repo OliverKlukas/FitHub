@@ -73,23 +73,20 @@ function Header(props) {
     signin: "Sign In",
     about: "About us",
   };
-
-  // Anchor hook to open/close the navigation menu when option selected or clicked off.
   const [anchorElSet, setAnchorElSet] = React.useState(null);
 
-
-  const handleOpenNavMenu = (event) => {
-    setAnchorElNav(event.currentTarget);
-  };
-  const handleCloseNavMenu = () => {
-    setAnchorElNav(null);
-  };
-  // Sub-urls and link names for available user menu options when the user is not logged in
-  const settings = {
-    about: "Contact",
-    signin: "Sign in",
-    signup: "Sign up",
-  };
+    const handleOpenNavMenu = (event) => {
+        setAnchorElNav(event.currentTarget);
+    };
+    const handleCloseNavMenu = () => {
+        setAnchorElNav(null);
+    };
+    // Sub-urls and link names for available user menu options when the user is not logged in
+    const settings = {
+        contact: "Contact",
+        signin: "Sign in",
+        signup: "Sign up",
+    };
 
   // Anchor hook to open/close the user settings menu when option selected or clicked off.
   const [anchorElNav, setAnchorElNav] = React.useState(null);
