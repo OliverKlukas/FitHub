@@ -11,6 +11,8 @@ import Plan from "../components/plans/plan";
 import { getBoughtPlan, getContents } from "../redux/actions";
 import { useEffect } from "react";
 import ContentService from "../services/contentService";
+import MyContentDrawer from "../components/drawer/mycontent_drawer_customer";
+import Divider from "@mui/material/Divider";
 
 /**
  * Purchase history that displays every bought content item for a specific consumer with an option to download the item,
@@ -38,29 +40,42 @@ function MyPlans(props) {
     }
   }, [planList, user.user._id, contentList]);
 
-  return planList && contentList ? (
-    <Stack spacing={4} marginTop={5}>
-      <Typography variant="h1">My Plans</Typography>
-      {planList.sort((a,b) => (a.boughtAt > b.boughtAt) ? -1 : ((b.boughtAt > a.boughtAt) ? 1 : 0)).map((item) => {
-        {
-          let cont;
-          contentList.map((content) => {
-            cont = content;
-          });
-          return <Plan item={cont} transaction={item} key={item._id}></Plan>;
-        }
-      })}
+  return (
+    <Stack direction="row" marginTop={5} spacing={5}>
+      <MyContentDrawer currTab="My Plans"></MyContentDrawer>
+      <Divider orientation="vertical" flexItem />
+      {planList && contentList ? (
+        <Stack spacing={4} width="100%">
+          <Typography variant="h1">My Plans</Typography>
+          {planList
+            .sort((a, b) =>
+              a.boughtAt > b.boughtAt ? -1 : b.boughtAt > a.boughtAt ? 1 : 0
+            )
+            .map((item) => {
+              let cont;
+              contentList.map((content) => {
+                if (item.contentId == content._id) {
+                  cont = content;
+                }
+              });
+              return (
+                <Plan item={cont} transaction={item} key={item._id}></Plan>
+              );
+            })}
+        </Stack>
+      ) : (
+        // Loading content.
+        <Box
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          minHeight="80vh"
+        >
+          <CircularProgress />
+        </Box>
+      )}
+      ;
     </Stack>
-  ) : (
-    // Loading content.
-    <Box
-      display="flex"
-      justifyContent="center"
-      alignItems="center"
-      minHeight="80vh"
-    >
-      <CircularProgress />
-    </Box>
   );
 }
 
