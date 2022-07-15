@@ -41,15 +41,19 @@ function MyPlans(props) {
   return planList && contentList ? (
     <Stack spacing={4} marginTop={5}>
       <Typography variant="h1">My Plans</Typography>
-      {planList.sort((a,b) => (a.boughtAt > b.boughtAt) ? -1 : ((b.boughtAt > a.boughtAt) ? 1 : 0)).map((item) => {
-        {
+      {planList
+        .sort((a, b) =>
+          a.boughtAt > b.boughtAt ? -1 : b.boughtAt > a.boughtAt ? 1 : 0
+        )
+        .map((item) => {
           let cont;
           contentList.map((content) => {
-            cont = content;
+            if (item.contentId == content._id) {
+              cont = content;
+            }
           });
           return <Plan item={cont} transaction={item} key={item._id}></Plan>;
-        }
-      })}
+        })}
     </Stack>
   ) : (
     // Loading content.
