@@ -26,7 +26,8 @@ function Profile(props) {
   const user = useSelector((state) => state.user);
 
   const navigate = useNavigate();
-  // state for backenddata, since we do not want to store all profiles in a global redux state
+  // state for backenddata, empty on first render, updated via useEffect, this is more scalable than storing
+  // all userdata in the redux store
   const [data, setdata] = React.useState({
     name: "",
     title: "",
@@ -62,6 +63,8 @@ function Profile(props) {
     navigate("/discovery");
   }
 
+  // this check can be circumvented, but is sufficient, since the update/delete calls check for authentication
+  // and therefore always update/delete the own profile
   useEffect(() => {
     async function fetchData() {
       if (user.user) {
