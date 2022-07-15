@@ -44,7 +44,7 @@ function SignIn(props) {
   };
 
   /**
-   * Validates the entered Email adress to be a valid email Adress
+   * Validates the entered Email address to be a valid email address
    */
   const validateEmail = () => {
     if (
@@ -90,7 +90,7 @@ function SignIn(props) {
         <Stack direction="column" spacing={3} alignItems="flexstart">
           <Typography variant="h1">Sign In</Typography>
           <TextField
-            label="Email-Adress"
+            label="Email-Address"
             onChange={onChangeEmail}
             onBlur={validateEmail}
             helperText={
