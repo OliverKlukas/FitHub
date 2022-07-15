@@ -513,6 +513,28 @@ const getNewNotifications = async (req, res) => {
   }
 };
 
+const cleanReviewCounter = async (req, res) => {
+  try {
+    UserModel.findByIdAndUpdate(req.userId, 
+      {newReviewsCounter: 0}).exec();
+  } catch (error) {
+    return res.status(500).json({
+      error: "Internal server error" + err.message,
+    });
+  }
+}
+
+const cleanMessageCounter = async (req, res) => {
+  try {
+    UserModel.findByIdAndUpdate(req.userId, 
+      {newMessagesCounter: 0}).exec();
+  } catch (error) {
+    return res.status(500).json({
+      error: "Internal server error" + err.message,
+    });
+  }
+}
+ 
 module.exports = {
   register,
   signin,
@@ -527,4 +549,6 @@ module.exports = {
   checkEmail,
   getReviewAnalytics,
   getNewNotifications,
+  cleanMessageCounter,
+  cleanReviewCounter,
 };

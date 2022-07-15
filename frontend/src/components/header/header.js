@@ -88,8 +88,6 @@ function Header(props) {
         signup: "Sign up",
     };
 
-
-
   // Anchor hook to open/close the user settings menu when option selected or clicked off.
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const handleOpenSetMenu = (event) => {
