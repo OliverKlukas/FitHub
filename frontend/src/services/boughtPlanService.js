@@ -106,4 +106,21 @@ export default class boughtPlanService {
       );
     });
   }
+
+  static getTimeline(id) {
+    return new Promise((resolve, reject) => {
+      HttpService.post(
+        `${this.baseURL()}/getTimeline`,
+        {
+          userId: id,
+        },
+        function (data) {
+          resolve(data);
+        },
+        function (textStatus) {
+          reject(textStatus);
+        }
+      );
+    });
+  }
 }
