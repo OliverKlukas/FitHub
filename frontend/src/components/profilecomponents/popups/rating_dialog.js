@@ -125,7 +125,7 @@ export default function RatingDialog(props) {
   };
 
   const putReview = async () => {
-    await UserService.addreview(value, text, id);
+    await UserService.addreview(value, text, id, title);
     window.location.reload();
   };
 
@@ -151,7 +151,7 @@ export default function RatingDialog(props) {
         </RatingDialTitle>
         <DialogContent dividers>
           <Stack spacing={1}>
-            <Typography>{author.firstName}</Typography>
+            <Typography>Igor</Typography>
             <Divider />
             <Stack direction="row" spacing={40}>
               <Typography>Overall rating</Typography>
