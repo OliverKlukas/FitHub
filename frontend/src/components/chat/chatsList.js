@@ -7,19 +7,19 @@ import UserService from "../../services/userService";
 /**
  * Implements list of chat partners the logged in person has.
  *
- * @param chatPartner - List of all chat partners of current user.
+ * @param chats - List of all chats of current user.
  * @param setActiveChat - Actively selected chat to inspect.
  * @return {JSX.Element}
  * @constructor
  */
-function ChatsList({chatPartner, setActiveChat}) {
+function ChatsList({chats, setActiveChat}) {
     return (<List sx={{
             width: '100%', maxWidth: '25vw', bgcolor: 'background.paper', overflow: 'auto', height: '75vh',
         }}
         >
-            {chatPartner.map((chatPartner) => {
-                return (<Box key={chatPartner.id}>
-                    <ChatListItem name={chatPartner.name} img={chatPartner.img} id={chatPartner.id} setActiveChat={setActiveChat}/>
+            {chats.map((chat) => {
+                return (<Box key={chat.partOne}>
+                    <ChatListItem name={chat.name} img={chat.img} id={chat.partOne} setActiveChat={setActiveChat}/>
                     <Divider variant="inset" component="li"/>
                 </Box>)
             })}

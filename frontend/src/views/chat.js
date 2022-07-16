@@ -25,23 +25,24 @@ function ChatView() {
     const [activeChat, setActiveChat] = useState("");       // TODO
 
     // Retrieve the chat partners.
-    const [chatPartner, setChatPartner] = useState(null);
+    const [chats, setChats] = useState(null);
 
     // Enable navigation via react router.
     const navigate = useNavigate();
 
     // Fetches chat partner names.
     async function fetchChats() {
-        return await ChatService.getChatPartner();
+        return await ChatService.getChats();
     }
 
     // Update chats on reload.
     useEffect(() => {
         // Only let singed in user use the chat window.
         if(user.user){
-            if (!chatPartner) {
+            if (!chats) {
                 fetchChats().then((res) => {
-                    setChatPartner([]);
+                    console.log("CHAT PARTNER RESPONSE", res);
+                    setChats([]);
                     Array.from(res).map(async (partnerId) => {
                         // Store all relevant information for chat inside one object.
                         const newChatPartner = {
@@ -51,10 +52,10 @@ function ChatView() {
                             chat: await ChatService.getChat(partnerId)
                         }
 
-                        setChatPartner(chatPartner => [...chatPartner, newChatPartner])
+                        setChats(chatPartner => [...chatPartner, newChatPartner])
                     })
-                    if(chatPartner && chatPartner.length !== 0){
-                        setActiveChat(chatPartner[0].id);
+                    if(chats && chats.length !== 0){
+                        setActiveChat(chats[0].id);
                     }
                 })
             }
@@ -66,7 +67,7 @@ function ChatView() {
     return (<Stack direction="row" marginTop={5} spacing={5}>
             {user.user.role === "customer" ? <CustomerDrawer currTab={"Chat"}/> : <CreatorDrawer currTab="Chat"/>}
             <Divider orientation="vertical" flexItem/>
-            {!chatPartner ?
+            {!chats ?
                 <Box display="flex" justifyContent="center" alignItems="center" width={"95%"} height={"75vh"}>
                     <CircularProgress/>
                 </Box> : <Stack spacing={5} direction={"row"}>
@@ -75,10 +76,10 @@ function ChatView() {
                             {user.user.role === "customer" ? "My Creators" : "My Customers"}
                         </Typography>
                         <Divider sx={{marginTop: 2}} flexItem/>
-                        <ChatsList chatPartner={chatPartner} setActiveChat={setActiveChat}/>
+                        <ChatsList chats={chats} setActiveChat={setActiveChat}/>
                     </Stack>
                     <Divider orientation={"vertical"} flexItem/>
-                    {chatPartner.length === 0 ?
+                    {chats.length === 0 ?
                         <Box display="flex" justifyContent="center" alignItems="center" width={"60vw"} height={"75vh"}>
                             <Typography variant={"h4"}> You don't seem to have any chats yet, check out the discovery to start conversations!</Typography>
                         </Box>

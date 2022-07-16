@@ -9,38 +9,14 @@ export default class ChatService {
     }
 
     /**
-     * Retrieve a single chat object by id.
-     *
-     * @param id
-     * @returns {Promise<unknown>}
-     */
-    static getChat(id) {
-        return new Promise(async (resolve, reject) => {
-            HttpService.get(
-                `${this.baseURL()}/getChat/${id}`,
-                function (data) {
-                    if (data !== undefined || Object.keys(data).length !== 0) {
-                        resolve(data);
-                    } else {
-                        reject("Error while retrieving chat");
-                    }
-                },
-                function (textStatus) {
-                    reject(textStatus);
-                }
-            );
-        });
-    }
-
-    /**
-     * Retrieve list of chat partner user ids for requesting user.
+     * Retrieve list of chats requesting user.
      *
      * @return {Promise<unknown>}
      */
-    static getChatPartner(){
+    static getChats(){
         return new Promise(async (resolve, reject) => {
             HttpService.get(
-                `${this.baseURL()}/getChatPartner`,
+                `${this.baseURL()}/`,
                 function (data) {
                     if (data !== undefined || Object.keys(data).length !== 0) {
                         resolve(data);

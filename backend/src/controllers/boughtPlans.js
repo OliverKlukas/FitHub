@@ -58,7 +58,7 @@ const create = async (req, res) => {
       partTwo: req.body.userId,
     },
     {
-      $push: { msgs: initialMessage }
+      $push: { message: initialMessage }
     }
     ).exec();
 
