@@ -122,7 +122,7 @@ function SignUp(props) {
             }
         } else {
             setPasswordError(true);
-            setPasswordErrorMessage("Password needs at least 1 uppercase letter, 1 number and at least 8 letters");
+            setPasswordErrorMessage("Password needs at least 2 lowercase, 1 uppercase, 1 number and at least 8 letters");
         }
     };
     // validates email adress, checks for valid types of emails
