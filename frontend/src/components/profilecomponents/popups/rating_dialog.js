@@ -56,11 +56,13 @@ RatingDialTitle.propTypes = {
  * Dialog for Submitting a Review
  * @returns 
  */
-export default function RatingDialog({id}) {
+export default function RatingDialog(props) {
+  const {width, id} = props
   // State for user management
   // States for Review
   const [value, setValue] = React.useState(3);
   const [text, setText] = React.useState("");
+  const [title, setTitle] = React.useState("");
   
   // State for text error
   const [texterror, setTextError] = React.useState(true)
@@ -104,8 +106,8 @@ export default function RatingDialog({id}) {
   
   return (
     <div>
-      <HighlightButton variant="contained" onClick={handleClickOpen}>
-        write a review
+      <HighlightButton variant="contained" onClick={handleClickOpen} sx = {{width: width}}>
+        Write a review
       </HighlightButton>
       <RatingDial
         onClose={handleClose}

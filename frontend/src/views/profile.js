@@ -105,12 +105,18 @@ function Profile(props) {
 
   return (
     <Stack>
-      <Stack direction="row" spacing={22} paddingLeft={4} paddingBottom={6} width="100%">
+      <Stack
+        direction="row"
+        spacing={22}
+        paddingLeft={4}
+        paddingBottom={6}
+        width="100%"
+      >
         {!(data.profilePicture === "") && (
           <Avatar
             sx={{
-              width: "250px",
-              height: "250px",
+              width: "270px",
+              height: "270px",
               boxShadow: 5,
             }}
             alt={data.name}
@@ -140,6 +146,24 @@ function Profile(props) {
             </Stack>
           ) : (
             <Typography variant="body1">{data.title}</Typography>
+          )}
+          {data.isContentCreator && !data.isOwnProfile && (
+            <Stack
+              direction="row"
+              spacing={3}
+              paddingTop={6}
+              alignItems="center"
+            >
+              <Rating
+                name="avgRating"
+                value={data.avgReviewRating}
+                readOnly
+                icon={<StarIcon color="warning"></StarIcon>}
+              />
+              <Typography variant="caption">
+                {reviews.length} {reviews.length === 1 ? "review" : "reviews"}
+              </Typography>
+            </Stack>
           )}
         </Stack>
         <Stack justifyContent="space-between" marginBottom={2}>
@@ -172,7 +196,7 @@ function Profile(props) {
               </ConfirmDialog>
             </Stack>
           )}
-          {data.isContentCreator && (
+          {data.isContentCreator && data.isOwnProfile && (
             <Stack direction="row" spacing={3} alignItems="center">
               <Rating
                 name="avgRating"
@@ -187,9 +211,9 @@ function Profile(props) {
           )}
         </Stack>
         {data.isContentCreator && user.user && !data.isOwnProfile && (
-          <Stack direction="column" spacing={4}>
-            <RatingDialog id={params.id}></RatingDialog>
-            <ReportDialog></ReportDialog>
+          <Stack direction="column" spacing={4} justifyContent="center">         
+            <ReportDialog width={280}></ReportDialog>
+            <RatingDialog width={280} id={params.id}></RatingDialog>
           </Stack>
         )}
       </Stack>
@@ -208,7 +232,7 @@ function Profile(props) {
           reviews.map((review) => {
             return (
               <Review
-                key={user.user._id}
+                key={review.creatorId}
                 reviewer={review.creatorId}
                 text={review.text}
                 date={review.date}
