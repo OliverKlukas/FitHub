@@ -49,7 +49,7 @@ router.get(
 // gets first and last name of a user through their email
 router.get("/:email", AuthController.checkEmail);
 // gets Information needed for the Dashboard
-router.post("/getReviewAnalytics", middleware.checkAuthentication, AuthController.getReviewAnalytics);
+router.get("/getReviewAnalytics", middleware.checkAuthentication, AuthController.getReviewAnalytics);
 // resets Review Counter
 router.post("/cleanReviewCounter", middleware.checkAuthentication, AuthController.cleanReviewCounter);
 // resets Message Counter

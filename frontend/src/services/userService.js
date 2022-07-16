@@ -209,11 +209,8 @@ export default class UserService {
 
   static getAnalytics(id) {
     return new Promise((resolve, reject) => {
-      HttpService.post(
+      HttpService.get(
         `${this.baseURL()}/getReviewAnalytics`,
-        {
-          userId: id,
-        },
         function (data) {
           resolve(data);
         },

@@ -485,7 +485,7 @@ const getUsername = async (req, res) => {
 
 const getReviewAnalytics = async (req, res) => {
   try {
-    const requesteduser = await UserModel.findById(req.body.userId).exec();
+    const requesteduser = await UserModel.findById(req.userId).exec();
 
     return res.status(200).json({
       gradingDistribution: requesteduser.gradingDistribution,
