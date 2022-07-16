@@ -78,7 +78,7 @@ export default function ChartsData() {
 
   return (
     <Stack direction="row" spacing={3}>
-      <Card sx={{ minWidth: 475, height: 450, backgroundColor: "#F2F2F2" }}>
+      <Card sx={{ width: 475, height: 450, backgroundColor: "#F2F2F2" }}>
         <CardContent>
           <Typography variant="h5" component="div">
             Sales Distribution
@@ -94,7 +94,7 @@ export default function ChartsData() {
               data={salesDist.salesDistribution}
               innerRadius={50}
               outerRadius={120}
-              fill="green"
+              fill="#00ADB5"
               labelLine={false}
               label={renderCustomizedLabel}
             />
@@ -116,15 +116,20 @@ export default function ChartsData() {
       <Card sx={{ minWidth: 475, height: 450, backgroundColor: "#F2F2F2" }}>
         <CardContent>
           <Typography sx={{ mb: 0.5 }} variant="h5" component="div">
-            Review Development
+            Review Summary
           </Typography>
           <Typography sx={{ mb: 2 }} variant="body1" component="div">
-            past 90 days
+            overall
           </Typography>
-          <BarChart width={425} height={325} data={data.gradingDistribution}>
+          <BarChart
+            key={Math.random()}
+            width={425}
+            height={325}
+            data={data.gradingDistribution}
+          >
             <XAxis dataKey="name" fontWeight="bold" fontSize="20" />
             <Tooltip />
-            <Bar dataKey="amount" fill="grey" />
+            <Bar dataKey="amount" fill="#00ADB5" />
           </BarChart>
           <Typography
             sx={{ mb: 2 }}
