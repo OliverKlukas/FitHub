@@ -54,22 +54,27 @@ RatingDialTitle.propTypes = {
 
 /**
  * Dialog for Submitting a Review
- * @returns 
+ * @returns
  */
-export default function RatingDialog({id}) {
+export default function RatingDialog(props) {
+  const { width, id, name } = props;
   // State for user management
   // States for Review
   const [value, setValue] = React.useState(3);
   const [text, setText] = React.useState("");
-  
+  const [title, setTitle] = React.useState("");
+
   // State for text error
-  const [texterror, setTextError] = React.useState(true)
+  const [texterror, setTextError] = React.useState(true);
+
+  // State for text error
+  const [titleerror, setTitleError] = React.useState(true);
 
   // State for popup
-  const [open, setOpen] = React.useState(false); 
+  const [open, setOpen] = React.useState(false);
 
   // State for Snackbar
-  const [snackopen, setsnackOpen] = React.useState(false); 
+  const [snackopen, setsnackOpen] = React.useState(false);
 
   // const today = new Date();
   // const dd = String(today.getDate()).padStart(2, "0");
@@ -78,6 +83,11 @@ export default function RatingDialog({id}) {
   const onChangeText = (e) => {
     setText(e.target.value);
     setTextError(false);
+  };
+
+  const onChangeTitle = (e) => {
+    setTitle(e.target.value);
+    setTitleError(false);
   };
 
   const handleClickOpen = () => {
@@ -98,14 +108,18 @@ export default function RatingDialog({id}) {
   };
 
   const putReview = async () => {
-    await ReviewService.addreview(value,text,id);
+    await ReviewService.addreview(value, text, id, title);
     window.location.reload();
-  }
-  
+  };
+
   return (
     <div>
-      <HighlightButton variant="contained" onClick={handleClickOpen}>
-        write a review
+      <HighlightButton
+        variant="contained"
+        onClick={handleClickOpen}
+        sx={{ width: width }}
+      >
+        Write a review
       </HighlightButton>
       <RatingDial
         onClose={handleClose}
@@ -115,15 +129,13 @@ export default function RatingDialog({id}) {
       >
         <RatingDialTitle id="customized-dialog-title" onClose={handleClose}>
           <Stack direction="row">
-            <Typography variant="h3">
-              Create Review
-            </Typography>
+            <Typography variant="h3">Create Review</Typography>
           </Stack>
         </RatingDialTitle>
         <DialogContent dividers>
           <Stack spacing={1}>
-            <Typography>Igor Something</Typography>
-            <Divider></Divider>
+            <Typography>{name}</Typography>
+            <Divider />
             <Stack direction="row" spacing={40}>
               <Typography>Overall rating</Typography>
               <Rating
@@ -136,6 +148,13 @@ export default function RatingDialog({id}) {
                 }}
               />
             </Stack>
+            <Divider />
+            <TextField
+              id="outlined-basic"
+              label="Title of your review"
+              variant="outlined"
+              onChange={onChangeTitle}
+            />
 
             <TextField
               id="outlined-basic"
@@ -145,14 +164,19 @@ export default function RatingDialog({id}) {
               minRows={5}
               maxRows={5}
               onChange={onChangeText}
-            ></TextField>
+            />
           </Stack>
         </DialogContent>
         <DialogActions>
           <StandardButton autoFocus onClick={handleClose} variant="contained">
             cancel
           </StandardButton>
-          <HighlightButton autoFocus onClick={handleSubmit} variant="contained" disabled={texterror}>
+          <HighlightButton
+            autoFocus
+            onClick={handleSubmit}
+            variant="contained"
+            disabled={texterror || titleerror}
+          >
             submit
           </HighlightButton>
         </DialogActions>

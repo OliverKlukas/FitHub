@@ -4,7 +4,7 @@ export default class ReviewService {
   static baseURL() {
     return "http://localhost:4000/review";
   }
-  static addreview(star, text, userId) {
+  static addreview(star, text, userId, title) {
     return new Promise((resolve, reject) => {
       HttpService.put(
         `${this.baseURL()}/addreview/${userId}`,
