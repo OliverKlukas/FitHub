@@ -339,6 +339,7 @@ const addreview = async (req, res) => {
             "reviews.$.creatorId": req.userId,
             "reviews.$.star": req.body.star,
             "reviews.$.text": req.body.text,
+            "reviews.$.title": req.body.title,
           },
         }
       );
@@ -351,6 +352,7 @@ const addreview = async (req, res) => {
         creatorId: req.userId,
         star: req.body.star,
         text: req.body.text,
+        title: req.body.title,
       };
       await UserModel.findByIdAndUpdate(ratedUserId, {
         $push: { reviews: review },
