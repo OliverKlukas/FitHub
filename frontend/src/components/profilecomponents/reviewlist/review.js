@@ -26,16 +26,18 @@ export default function Review({ reviewer, text, date, title, starValue }) {
         borderRadius: "8px",
       }}
     >
-      <Stack spacing={4}>
+      <Stack justifyContent="space-between">
         <Rating
           name="read-only"
           value={starValue}
           readOnly
           icon={<StarIcon color="warning"></StarIcon>}
         />
-        <Typography variant="caption">{date}</Typography>
+        <Typography variant="body2" paddingLeft="5px">
+          {date.substring(0, date.indexOf("T"))}
+        </Typography>
       </Stack>
-      <Stack spacing={4}>
+      <Stack spacing={3}>
         <Typography variant="h6">{title}</Typography>
         <Typography variant="body2">{text}</Typography>
       </Stack>

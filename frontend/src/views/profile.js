@@ -1,7 +1,6 @@
 import { Divider, Typography } from "@mui/material";
 import React, { useEffect } from "react";
 import { Stack, TextField, Avatar } from "@mui/material";
-import Box from "@mui/material/Box";
 import Rating from "@mui/material/Rating";
 import Review from "../components/profilecomponents/reviewlist/review";
 import StarIcon from "@mui/icons-material/Star";
@@ -211,9 +210,13 @@ function Profile(props) {
           )}
         </Stack>
         {data.isContentCreator && user.user && !data.isOwnProfile && (
-          <Stack direction="column" spacing={4} justifyContent="center">         
+          <Stack direction="column" spacing={4} justifyContent="center">
             <ReportDialog width={280}></ReportDialog>
-            <RatingDialog width={280} id={params.id}></RatingDialog>
+            <RatingDialog
+              width={280}
+              id={params.id}
+              name={data.name}
+            ></RatingDialog>
           </Stack>
         )}
       </Stack>
@@ -229,18 +232,22 @@ function Profile(props) {
       >
         {data.isContentCreator &&
           reviews.length > 0 &&
-          reviews.map((review) => {
-            return (
-              <Review
-                key={review.creatorId}
-                reviewer={review.creatorId}
-                text={review.text}
-                date={review.date}
-                title={review.title}
-                starValue={review.star}
-              />
-            );
-          })}
+          reviews
+            .sort((a, b) =>
+              a.createdAt > b.createdAt ? -1 : b.createdAt > a.createdAt ? 1 : 0
+            )
+            .map((review) => {
+              return (
+                <Review
+                  key={review.creatorId}
+                  reviewer={review.creatorId}
+                  text={review.text}
+                  date={review.createdAt}
+                  title={review.title}
+                  starValue={review.star}
+                />
+              );
+            })}
       </Stack>
     </Stack>
   );

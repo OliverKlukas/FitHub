@@ -58,28 +58,12 @@ RatingDialTitle.propTypes = {
  * @returns
  */
 export default function RatingDialog(props) {
-  const { width, id } = props;
+  const { width, id, name } = props;
   // State for user management
   // States for Review
   const [value, setValue] = React.useState(3);
   const [text, setText] = React.useState("");
   const [title, setTitle] = React.useState("");
-
-  // Retrieve author.
-  const [author, setAuthor] = useState(null);
-
-  // Function to fetch username from service.
-  async function fetchUser() {
-    return await UserService.userdata(id);
-  }
-  // Trigger retrieval of states and backend data.
-  useEffect(() => {
-    if (!author) {
-      fetchUser().then((res) => {
-        setAuthor(res);
-      });
-    }
-  }, [id]);
 
   // State for text error
   const [texterror, setTextError] = React.useState(true);
@@ -151,7 +135,7 @@ export default function RatingDialog(props) {
         </RatingDialTitle>
         <DialogContent dividers>
           <Stack spacing={1}>
-            <Typography>Igor</Typography>
+            <Typography>{name}</Typography>
             <Divider />
             <Stack direction="row" spacing={40}>
               <Typography>Overall rating</Typography>
