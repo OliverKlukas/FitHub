@@ -20,7 +20,7 @@ export default function CreatorDrawer({ currTab }) {
   }
 
   return (
-    <Stack spacing={1} minWidth={"15vw"} minHeight={"75vh"}>
+    <Stack spacing={1} minWidth={"5vw"} maxWidth={"15vw"} minHeight={"75vh"}>
       <Link
         underline="hover"
         variant="subtitle1"

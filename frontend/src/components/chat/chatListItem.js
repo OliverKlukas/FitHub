@@ -12,7 +12,12 @@ import * as React from "react";
  * @constructor
  */
 function ChatListItem(props) {
-    return (<ListItem alignItems="flex-start">
+    return (<ListItem alignItems="flex-start" sx={{
+        "&.ListItem-root":{
+            paddingX: 0,
+            paddingY: 8,
+        }
+    }}>
         <ListItemButton>
             <ListItemAvatar>
                 <Avatar sx={{

@@ -1,5 +1,5 @@
 import * as React from "react";
-import {Divider, Stack} from "@mui/material";
+import {Divider, Stack, Typography} from "@mui/material";
 import ChatsList from "../components/chat/chatsList";
 import ChatWindow from "../components/chat/chatWindow";
 import CreatorDrawer from "../components/drawer/creator_drawer";
@@ -22,9 +22,14 @@ function ChatView() {
     return (
         <Stack direction="row" marginTop={5} spacing={5}>
             {user.user.role === "customer" ? <CustomerDrawer currTab={"Chat"}/> : <CreatorDrawer currTab="Chat"/>}
+            <Divider orientation="vertical" flexItem/>
             <Stack spacing={1} direction={"row"}>
-                <Divider orientation="vertical" flexItem/>
-                <ChatsList/>
+                <Stack>
+                    <Typography variant={"h3"}>
+                        {user.user.role === "customer" ? "My Creators" : "My Customers"}
+                    </Typography>
+                    <ChatsList/>
+                </Stack>
                 <Divider orientation={"vertical"} flexItem/>
                 <ChatWindow name={"Simon Vogl"}/>
             </Stack>
