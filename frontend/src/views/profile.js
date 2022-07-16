@@ -105,17 +105,13 @@ function Profile(props) {
 
   return (
     <Stack>
-      <Stack direction="row" spacing={22} paddingBottom={6} width="100%">
+      <Stack direction="row" spacing={22} paddingLeft={4} paddingBottom={6} width="100%">
         {!(data.profilePicture === "") && (
           <Avatar
             sx={{
               width: "250px",
               height: "250px",
               boxShadow: 5,
-              ":hover": {
-                opacity: 0.8,
-                boxShadow: 15,
-              },
             }}
             alt={data.name}
             src={data.profilePicture}
@@ -124,41 +120,26 @@ function Profile(props) {
         <Stack direction="column" spacing={4}>
           <h1>{data.name}</h1>
           {data.isOwnProfile ? (
-            <Stack spacing={4} sx={{width: 370}}>
+            <Stack spacing={4} sx={{ width: 400 }}>
               <TextField
-                id="outlined-basic"
                 label="Edit Title and Update to save"
-                key={"editableProfileTitle"}
                 variant="outlined"
                 multiline
                 minRows={2}
                 maxRows={2}
                 defaultValue={data.title}
                 onChange={onChangeTitle}
-                sx={{
-                  width: "120%",
-                }}
               />
               <UploadButton
-                id="profilePictureUpload"
+                givenId="profilePictureUpload"
+                buttonText="Upload profile picture"
                 uploadFormat="image/*"
-                givenId="profilePicture-Upload"
                 multiUpload={false}
                 setUpload={setUploadedPicture}
-                buttonText="Upload profile picture"
               />
             </Stack>
           ) : (
-            <Typography
-              variant="body1"
-              key={"ownprofiletitle"}
-              sx={{
-                width: "60%",
-              }}
-              gutterBottom
-            >
-              {data.title}
-            </Typography>
+            <Typography variant="body1">{data.title}</Typography>
           )}
         </Stack>
         <Stack justifyContent="space-between" marginBottom={2}>
@@ -194,13 +175,13 @@ function Profile(props) {
           {data.isContentCreator && (
             <Stack direction="row" spacing={3} alignItems="center">
               <Rating
-                name="read-only"
+                name="avgRating"
                 value={data.avgReviewRating}
                 readOnly
                 icon={<StarIcon color="warning"></StarIcon>}
               />
               <Typography variant="caption">
-                {reviews.length} {reviews.length===1 ? "review" :"reviews"}
+                {reviews.length} {reviews.length === 1 ? "review" : "reviews"}
               </Typography>
             </Stack>
           )}
@@ -217,7 +198,6 @@ function Profile(props) {
 
       <Stack
         direction="column"
-        justifyContent="center"
         alignItems="center"
         spacing={2}
         padding={2}
@@ -239,7 +219,6 @@ function Profile(props) {
           })}
       </Stack>
     </Stack>
-    
   );
 }
 
