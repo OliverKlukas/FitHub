@@ -5,63 +5,24 @@ import HttpService from "./httpService";
  */
 export default class ChatService {
     static baseURL() {
-        return "http://localhost:4000/content";
+        return "http://localhost:4000/chat";
     }
 
     /**
-     * Retrieve list of all contents in db.
-     *
-     * @returns {Promise<unknown>}
-     */
-    static getContentList() {
-        return new Promise(async (resolve, reject) => {
-            HttpService.get(
-                this.baseURL(),
-                function (data) {
-                    resolve(data);
-                },
-                function (textStatus) {
-                    reject(textStatus);
-                }
-            );
-        });
-    }
-    /**
-     * Create a new content object in db.
-     *
-     * @param content
-     * @returns {Promise<unknown>}
-     */
-    static createContent(content) {
-        content.id = Math.floor(Math.random() * 100000000 + 1).toString();
-        return new Promise((resolve, reject) => {
-            HttpService.post(
-                this.baseURL(),
-                content,
-                function (data) {
-                    resolve(data);
-                },
-                function (textStatus) {
-                    reject(textStatus);
-                }
-            );
-        });
-    }
-    /**
-     * Retrieve a single content object.
+     * Retrieve a single chat object by id.
      *
      * @param id
      * @returns {Promise<unknown>}
      */
-    static getContent(id) {
+    static getChat(id) {
         return new Promise(async (resolve, reject) => {
             HttpService.get(
-                `${this.baseURL()}/${id}`,
+                `${this.baseURL()}/getChat/${id}`,
                 function (data) {
                     if (data !== undefined || Object.keys(data).length !== 0) {
                         resolve(data);
                     } else {
-                        reject("Error while retrieving content");
+                        reject("Error while retrieving chat");
                     }
                 },
                 function (textStatus) {
@@ -72,39 +33,19 @@ export default class ChatService {
     }
 
     /**
-     * Retrieve a list of content objects.
+     * Retrieve list of chat partner user ids for requesting user.
      *
-     * @returns {Promise<unknown>}
+     * @return {Promise<unknown>}
      */
-    static getContents() {
+    static getChatPartner(){
         return new Promise(async (resolve, reject) => {
             HttpService.get(
-                this.baseURL(),
+                `${this.baseURL()}/getChatPartner`,
                 function (data) {
-                    resolve(data);
-                },
-                function (textStatus) {
-                    reject(textStatus);
-                }
-            );
-        });
-    }
-
-    /**
-     * Delete single content by id.
-     *
-     * @param id
-     * @returns {Promise<unknown>}
-     */
-    static deleteContent(id) {
-        return new Promise((resolve, reject) => {
-            HttpService.remove(
-                `${this.baseURL()}/${id}`,
-                function (data) {
-                    if (data.message !== undefined) {
-                        resolve(data.message);
+                    if (data !== undefined || Object.keys(data).length !== 0) {
+                        resolve(data);
                     } else {
-                        reject("Error while deleting content");
+                        reject("Error while retrieving chat partner");
                     }
                 },
                 function (textStatus) {
@@ -115,15 +56,17 @@ export default class ChatService {
     }
 
     /**
-     * Update single content with new version.
-     * @param content
+     * Update single chat with new message.
+     *
+     * @param receiverId Identifier of receiving user.
+     * @param message String message of sender.
      * @returns {Promise<unknown>}
      */
-    static updateContent(content) {
+    static updateChat(receiverId, message) {
         return new Promise((resolve, reject) => {
             HttpService.put(
-                `${this.baseURL()}/${content._id}`,
-                content,
+                `${this.baseURL()}/updateChat/${receiverId}`,
+                {message},
                 function (data) {
                     resolve(data);
                 },

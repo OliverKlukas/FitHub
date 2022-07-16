@@ -23,7 +23,7 @@ const ChatSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    msgs: [Message],
+    messages: [Message],
 },
 );
 
