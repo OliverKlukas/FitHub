@@ -93,9 +93,9 @@ function ContentUpload(props) {
     setTagsSnack(false);
   };
 
-  //snackbar for 16MB upload boundry
+  //snackbar to notify user that content is missing
   const [uploadSnack, setUploadSnack] = useState(false);
-  // close the snackbar of upload boundry
+  // close the snackbar of missing content notification
   const handleUploadSnack = () => {
     setUploadSnack(false);
   };
@@ -219,6 +219,7 @@ function ContentUpload(props) {
     }
   }
 
+  //#region validation
   const validatePrice = () => {
     // [0-9]+ -> x times the numbers 0-9
     // ([.,][0-9]{1,2})? -> ? means optionl (inside bracket)
@@ -262,20 +263,20 @@ function ContentUpload(props) {
   };
 
   const validateDuration = () => {
-    //([0-9]){1,3} -> numbers with length min 1, max 3
-    if (duration.match(/^([1-9][0-9]?){1,1}$/) === null) {
-      setDurationError(true); //error input field
-    } else {
+    // numbers between 1-99
+    if (duration > 0 && duration <= 99) {
       setDurationError(false);
+    } else {
+      setDurationError(true); //error input field
     }
   };
 
   const validateIntensity = () => {
-    //([0-9]){1,3} -> numbers with length min 1, max 3
-    if (intensity.match(/^([1-9][0-9]?){1,1}$/) === null) {
-      setIntensityError(true); //error input field
-    } else {
+    // numbers between 1-99
+    if (intensity > 0 && intensity <= 99) {
       setIntensityError(false);
+    } else {
+      setIntensityError(true); //error input field
     }
   };
 
@@ -290,6 +291,8 @@ function ContentUpload(props) {
       setTagsError(false);
     }
   };
+
+  //#endregion
 
   //error handling
   const [priceError, setPriceError] = React.useState(false);
@@ -465,7 +468,6 @@ function ContentUpload(props) {
               id="duration-input"
               label="Duration"
               onBlur={validateDuration}
-              multiline
               value={duration}
               onChange={(event) => setDuration(event.target.value)}
               type="number"
@@ -485,7 +487,7 @@ function ContentUpload(props) {
               label="Intensity"
               onBlur={validateIntensity}
               error={intensityError}
-              multiline
+              type="number"
               value={intensity}
               onChange={(event) => setIntensity(event.target.value)}
               variant="filled"
@@ -493,7 +495,7 @@ function ContentUpload(props) {
               helperText={
                 intensityError
                   ? category === "nutrition"
-                    ? "enter a number between 1-99 meals per week"
+                    ? "enter a number between 1-99 meals per day"
                     : "enter a number between 1-99 trainings per week"
                   : category === "nutrition"
                   ? "Meals per day"

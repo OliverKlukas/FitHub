@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import UserService from "../../services/userService";
 import ContentService from "../../services/contentService";
 import ConfirmDialog from "../profilecomponents/popups/confirm_dialog";
+import UpdateContentPop from "../dashboardcomponents/update_content";
 
 /**
  * get image src path.
@@ -52,27 +53,23 @@ export default function OffContent({ item }) {
     return retstring;
   };
 
-  // state for confirmation Dialog
+  // state for confirmation Dialog of deletion
   const [confirmOpen, setConfirmOpen] = React.useState(false);
 
-  // state for confirmation Dialog
+  // state for confirmation Dialog of reactivation
   const [confirmReOpen, setConfirmReOpen] = React.useState(false);
 
   const handleDelete = async () => {
     let updateItem = item;
     updateItem.deleteflag = true;
     await ContentService.updateContent(updateItem);
-    //window.location.reload(false);
   };
 
   const handleReactivation = async () => {
     let updateItem = item;
     updateItem.deleteflag = false;
     await ContentService.updateContent(updateItem);
-    //window.location.reload(false);
   };
-
-  //console.log(item);
 
   return author ? (
     <Stack
@@ -132,9 +129,7 @@ export default function OffContent({ item }) {
           </Stack>
         ) : (
           <Stack justifyContent="space-between" spacing={2}>
-            <StandardButton variant="contained" sx={{ width: 300 }}>
-              Update
-            </StandardButton>
+            <UpdateContentPop item={item} />
             <StandardButton
               variant="contained"
               sx={{ width: 300 }}

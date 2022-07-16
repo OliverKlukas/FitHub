@@ -19,7 +19,6 @@ export default function MyContent() {
         const res = await contentService.getMyContent(user.user._id);
         const temp = {
           ownContent: res.ownContent,
-          test: res.test,
         };
         setData(temp);
       }
@@ -37,7 +36,7 @@ export default function MyContent() {
       <CreatorDrawer currTab="Content"></CreatorDrawer>
       <Divider orientation="vertical" flexItem />
       <Stack spacing={4}>
-        <Typography variant="h1">My Plans</Typography>
+        <Typography variant="h1">My Content</Typography>
         {data.ownContent
           .sort((a, b) =>
             dateFromObjectId(a._id) > dateFromObjectId(b._id)
