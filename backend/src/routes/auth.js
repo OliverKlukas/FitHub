@@ -17,18 +17,6 @@ router.post("/signin", AuthController.signin);
 router.post("/userdata", AuthController.userdata);
 // logout
 router.post("/logout", middleware.checkAuthentication, AuthController.logout);
-// adds a review to a user, if the user was already reviewed by the same reviewer, the review gets updated instead
-router.put(
-  "/addreview/:id",
-  middleware.checkAuthentication,
-  AuthController.addreview
-);
-// delete a review
-router.delete(
-  "/deletereview",
-  middleware.checkAuthentication,
-  AuthController.deletereview
-);
 // checks user, then deletes user
 router.delete(
   "/delete",

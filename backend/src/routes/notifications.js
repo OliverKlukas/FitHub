@@ -11,7 +11,7 @@ const NotificationsController = require("../controllers/notifications");
 router.get(
   "/notificationsnumber",
   middleware.checkAuthentication,
-  AuthController.getNewNotifications
+  NotificationsController.getNewNotifications
 );
 // resets Review Counter
 router.post("/cleanReviewCounter", middleware.checkAuthentication, NotificationsController.cleanReviewCounter);

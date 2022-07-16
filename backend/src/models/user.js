@@ -12,9 +12,13 @@ const ReviewSchema = new mongoose.Schema({
     min: 1,
     max: 5,
   },
+  title: {
+    type: String,
+  }, 
   text: {
     type: String,
-  },
+  }, 
+  createdAt: { type: Date, default: Date.now },
 });
 
 // Define the user schema

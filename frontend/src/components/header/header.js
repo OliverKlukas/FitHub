@@ -16,7 +16,7 @@ import { LinkButton } from "../buttons/link_button";
 import { useSelector, connect } from "react-redux";
 import { logout } from "../../redux/actions";
 import NotificationsIcon from '@mui/icons-material/Notifications';
-import UserService from "../../services/userService";
+import NotificationService from "../../services/notificationsService";
 
 /**
  *  Header bar component that is visible on all views.
@@ -36,7 +36,7 @@ function Header(props) {
 
   useEffect(() => {
     async function fetchNotifications() {
-      const res = await UserService.getNewNotifications();
+      const res = await NotificationService.getNewNotifications();
       if (isNaN(res.newReviewsCounter)) {
       } else {
         setNewReviews(res.newReviewsCounter);

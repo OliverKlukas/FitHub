@@ -15,6 +15,7 @@ import { HighlightButton } from "../components/buttons/highlight_button";
 import { deleteUser, updateUser } from "../redux/actions";
 import { useNavigate } from "react-router-dom";
 import ConfirmDialog from "../components/profilecomponents/popups/confirm_dialog";
+import NotificationService from "../services/notificationsService";
 
 /**
  * Provile View, gets rendered empty, then fetches data from backend and fills itself up with it
@@ -80,7 +81,7 @@ function Profile(props) {
         setReviews(res.reviews);
         setdata(temp);
         if (data.isOwnProfile) {
-          await UserService.cleanReviewCounter();
+          await NotificationService.cleanReviewCounter();
         };
       } else {
         const res = await UserService.userdata(params.id);

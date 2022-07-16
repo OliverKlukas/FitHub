@@ -8,6 +8,9 @@ const auth = require("./routes/auth");
 const content = require("./routes/content");
 const boughtPlans = require("./routes/boughtPlans");
 const middleware = require("./middleware");
+const reviews = require("./routes/review");
+const notifications = require("./routes/notifications");
+const chat = require("./routes/chat")
 
 const api = express();
 
@@ -32,5 +35,8 @@ api.get("/", (req, res) => {
 api.use("/auth", auth);
 api.use("/content", content);
 api.use("/boughtPlans", boughtPlans);
+api.use("/review", reviews);
+api.use("/notifications", notifications);
+api.use("/chat", chat);
 
 module.exports = api;

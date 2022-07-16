@@ -12,7 +12,7 @@ import { Divider, Rating, Snackbar, Stack, TextField } from "@mui/material";
 import StarIcon from "@mui/icons-material/Star";
 import { HighlightButton } from "../../buttons/highlight_button";
 import { StandardButton } from "../../buttons/standard_button";
-import UserService from "../../../services/userService";
+import ReviewService from "../../../services/reviewService";
 
 const RatingDial = styled(Dialog)(({ theme }) => ({
   "& .MuiDialogContent-root": {
@@ -98,7 +98,7 @@ export default function RatingDialog({id}) {
   };
 
   const putReview = async () => {
-    await UserService.addreview(value,text,id);
+    await ReviewService.addreview(value,text,id);
     window.location.reload();
   }
   
