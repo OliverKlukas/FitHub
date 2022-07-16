@@ -13,12 +13,11 @@ import * as React from "react";
  */
 function ChatListItem(props) {
     return (<ListItem alignItems="flex-start" sx={{
-        "&.ListItem-root":{
+        "&.MuiListItem-root":{
             paddingX: 0,
-            paddingY: 8,
         }
     }}>
-        <ListItemButton>
+        <ListItemButton >
             <ListItemAvatar>
                 <Avatar sx={{
                     bgcolor: "secondary.main",
