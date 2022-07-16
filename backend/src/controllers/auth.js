@@ -1,5 +1,3 @@
-/* eslint-disable prettier/prettier */
-/* eslint-disable valid-jsdoc */
 "use strict";
 
 const jwt = require("jsonwebtoken");
@@ -201,7 +199,7 @@ const signin = async (req, res) => {
 };
 /**
  *
- * @param {*} req middleware adds the _id
+ * @param {*} req middleware adds the userId
  * @param {*} res
  */
 const updateuser = async (req, res) => {
@@ -328,7 +326,7 @@ const addreview = async (req, res) => {
 
     // check if user has already reviewed this Content Creator
     if (alreadyratedUser !== null) {
-      // if the user has already reviewed update his voting entry
+      // if the user has already reviewed update his review 
       await UserModel.updateOne(
         {
           _id: ratedUserId,
@@ -485,7 +483,7 @@ const getUsername = async (req, res) => {
 
 const getReviewAnalytics = async (req, res) => {
   try {
-    const requesteduser = await UserModel.findById(req.userId).exec();
+    const requesteduser = await UserModel.findById(req.body.userId).exec();
 
     return res.status(200).json({
       gradingDistribution: requesteduser.gradingDistribution,
@@ -497,43 +495,6 @@ const getReviewAnalytics = async (req, res) => {
     });
   }
 };
-
-const getNewNotifications = async (req, res) => {
-  try {
-    const requesteduser = await UserModel.findById(req.userId).exec();
-
-    return res.status(200).json({
-      newReviewsCounter: requesteduser.newReviewsCounter,
-      newMessagesCounter: requesteduser.newMessagesCounter,
-    });
-  } catch (error) {
-    return res.status(500).json({
-      error: "Internal server error" + err.message,
-    });
-  }
-};
-
-const cleanReviewCounter = async (req, res) => {
-  try {
-    UserModel.findByIdAndUpdate(req.userId, 
-      {newReviewsCounter: 0}).exec();
-  } catch (error) {
-    return res.status(500).json({
-      error: "Internal server error" + err.message,
-    });
-  }
-}
-
-const cleanMessageCounter = async (req, res) => {
-  try {
-    UserModel.findByIdAndUpdate(req.userId, 
-      {newMessagesCounter: 0}).exec();
-  } catch (error) {
-    return res.status(500).json({
-      error: "Internal server error" + err.message,
-    });
-  }
-}
  
 module.exports = {
   register,
@@ -548,7 +509,4 @@ module.exports = {
   getUsername,
   checkEmail,
   getReviewAnalytics,
-  getNewNotifications,
-  cleanMessageCounter,
-  cleanReviewCounter,
 };
