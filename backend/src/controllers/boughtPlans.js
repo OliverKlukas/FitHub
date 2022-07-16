@@ -2,6 +2,7 @@
 
 const { countDocuments } = require("../models/boughtPlans");
 const boughtPlansModel = require("../models/boughtPlans");
+const ChatModel = require("../models/chat")
 
 /**
  * Returns list of all boughtPlan in database.
@@ -40,6 +41,28 @@ const create = async (req, res) => {
 
   // Handle the given boughtPlan creation request.
   try {
+    // Create the Chat between the Customer and the Owner
+    const initialMessage = {
+      senderId: req.body.ownerId,
+      text: "Thank you for buying my content, if you have any questions, you can contact me here!"
+    };
+    const chat = {
+      partOne: req.body.ownerId,
+      partTwo: req.body.userId,
+    };
+
+    await ChatModel.create(chat).exec();
+    
+    await ChatModel.updateOne({
+      partOne: req.body.ownerId,
+      partTwo: req.body.userId,
+    },
+    {
+      $push: { msgs: initialMessage }
+    }
+    ).exec();
+
+
     // Create boughtPlan in database with supplied request body.
     const boughtPlan = await boughtPlansModel.create(req.body);
 
