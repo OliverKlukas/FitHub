@@ -133,4 +133,26 @@ export default class ContentService {
       );
     });
   }
+
+  /**
+   * get all content offered by a specific
+   * @param id userId of creator
+   * @returns
+   */
+  static getMyContent(id) {
+    return new Promise((resolve, reject) => {
+      HttpService.post(
+        `${this.baseURL()}/getMyContent`,
+        {
+          userId: id,
+        },
+        function (data) {
+          resolve(data);
+        },
+        function (textStatus) {
+          reject(textStatus);
+        }
+      );
+    });
+  }
 }

@@ -21,4 +21,11 @@ router.put("/:id", middleware.checkAuthentication, ContentController.update);
 // Delete content item.
 router.delete("/:id", middleware.checkAuthentication, ContentController.remove);
 
+// Get contentset of specific user
+router.post(
+  "/getMyContent",
+  middleware.checkAuthentication,
+  ContentController.getMyContent
+);
+
 module.exports = router;
