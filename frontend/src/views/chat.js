@@ -38,31 +38,39 @@ function ChatView() {
     // Update chats on reload.
     useEffect(() => {
         // Only let singed in user use the chat window.
-        if(user.user){
+        if (user.user) {
             if (!chats) {
-                fetchChats().then((res) => {
+                fetchChats().then(async (res) => {
                     console.log("CHAT PARTNER RESPONSE", res);
-                    setChats([]);
-                    Array.from(res).map(async (partnerId) => {
-                        // Store all relevant information for chat inside one object.
-                        const newChatPartner = {
-                            id: partnerId,
-                            name: await UserService.getUsername(partnerId),
-                            img: await UserService.getUserImg(partnerId),
-                            chat: await ChatService.getChat(partnerId)
+                    const newChats = [];
+                    // Personalize chat into frontend chat object.
+                    await res.map(async (chat) => {
+                        const receiverId = chat.partOne === user.user._id ? chat.partTwo : chat.partTwo;
+                        let newChat = {};
+                        try {
+                            newChat = {
+                                receiverId: receiverId,
+                                receiverName: await UserService.getUsername(receiverId),
+                                messages: chat.messages,
+                                receiverImg: await UserService.getUserImg(receiverId),
+                            }
+                        } catch (e) {
+                            console.log("No profile picture", e);
+                            newChat = {
+                                receiverId: receiverId,
+                                receiverName: await UserService.getUsername(receiverId),
+                                messages: chat.messages,
+                                receiverImg: "",
+                            }
                         }
-
-                        setChats(chatPartner => [...chatPartner, newChatPartner])
-                    })
-                    if(chats && chats.length !== 0){
-                        setActiveChat(chats[0].id);
-                    }
+                        newChats.push(newChat);
+                    }).then(() => setChats(newChats));
                 })
             }
-        } else{
+        } else {
             navigate("/discovery");
         }
-    })
+    }, [user.user]);
 
     return (<Stack direction="row" marginTop={5} spacing={5}>
             {user.user.role === "customer" ? <CustomerDrawer currTab={"Chat"}/> : <CreatorDrawer currTab="Chat"/>}
@@ -81,7 +89,8 @@ function ChatView() {
                     <Divider orientation={"vertical"} flexItem/>
                     {chats.length === 0 ?
                         <Box display="flex" justifyContent="center" alignItems="center" width={"60vw"} height={"75vh"}>
-                            <Typography variant={"h4"}> You don't seem to have any chats yet, check out the discovery to start conversations!</Typography>
+                            <Typography variant={"h4"}> You don't seem to have any chats yet, check out the discovery to
+                                start conversations!</Typography>
                         </Box>
                         : <ChatWindow name={"Simon Vogl"}/>}
                 </Stack>}
