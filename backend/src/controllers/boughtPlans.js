@@ -51,7 +51,7 @@ const create = async (req, res) => {
       partTwo: req.body.userId,
     };
 
-    await ChatModel.create(chat).exec();
+    await ChatModel.create(chat);
     
     await ChatModel.updateOne({
       partOne: req.body.ownerId,
