@@ -25,13 +25,14 @@ export default class UserService {
       );
     });
   }
-  static addreview(star, text, userId) {
+  static addreview(star, text, userId, title) {
     return new Promise((resolve, reject) => {
       HttpService.put(
         `${this.baseURL()}/addreview/${userId}`,
         {
           star: star,
           text: text,
+          title: title,
         },
         function (data) {
           resolve(data);
