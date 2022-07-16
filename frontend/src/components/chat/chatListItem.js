@@ -7,23 +7,26 @@ import * as React from "react";
 /**
  * Implements single item of the chat partners list that includes name and picture.
  *
- * @param props
+ * @param name - Name of chat partner.
+ * @param img - Image of chat partner.
+ * @param id - Id of chat partner.
+ * @param setActiveChat - Hook that sets the selected chat partner.
  * @return {JSX.Element}
  * @constructor
  */
-function ChatListItem(props) {
+function ChatListItem({name, img, id, setActiveChat}) {
     return (<ListItem alignItems="flex-start" sx={{
         "&.MuiListItem-root":{
             paddingX: 0,
         }
     }}>
-        <ListItemButton >
+        <ListItemButton onClick={() => setActiveChat(id)}>
             <ListItemAvatar>
                 <Avatar sx={{
                     bgcolor: "secondary.main",
-                }} alt={props.name} src={props.img}/>
+                }} alt={name} src={img}/>
             </ListItemAvatar>
-            <Typography variant={"h4"}>{props.name}</Typography>
+            <Typography variant={"h4"}>{name}</Typography>
         </ListItemButton>
     </ListItem>);
 }

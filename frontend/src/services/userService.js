@@ -25,6 +25,7 @@ export default class UserService {
       );
     });
   }
+
   static addreview(star, text, userId) {
     return new Promise((resolve, reject) => {
       HttpService.put(
@@ -105,6 +106,7 @@ export default class UserService {
       );
     });
   }
+
   static userdata(id) {
     return new Promise((resolve, reject) => {
       HttpService.post(
@@ -121,6 +123,7 @@ export default class UserService {
       );
     });
   }
+
   static deleteUser() {
     return new Promise((resolve, reject) => {
       HttpService.remove(
@@ -159,21 +162,41 @@ export default class UserService {
   }
 
   /**
-   * Retrieves name of the owner of a content item.
+   * Retrieves user name based on id.
    *
-   * @param ownerId
+   * @param id
    * @return {Promise<unknown>}
    */
-  static getUsername(ownerId) {
+  static getUsername(id) {
     return new Promise(async (resolve, reject) => {
       HttpService.get(
-        `${this.baseURL()}/getUsername/${ownerId}`,
+        `${this.baseURL()}/getUsername/${id}`,
         function (data) {
           resolve(data);
         },
         function (textStatus) {
           reject(textStatus);
         }
+      );
+    });
+  }
+
+  /**
+   * Retrieves user img based on id.
+   *
+   * @param id
+   * @return {Promise<unknown>}
+   */
+  static getUserImg(id) {
+    return new Promise(async (resolve, reject) => {
+      HttpService.get(
+          `${this.baseURL()}/getUserImg/${id}`,
+          function (data) {
+            resolve(data);
+          },
+          function (textStatus) {
+            reject(textStatus);
+          }
       );
     });
   }
@@ -250,6 +273,7 @@ export default class UserService {
       );
     });
   }
+
   static cleanReviewCounter() {
     return new Promise((resolve, reject) => {
       HttpService.post(
