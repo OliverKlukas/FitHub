@@ -3,6 +3,7 @@
 const {countDocuments} = require("../models/boughtPlans");
 const boughtPlansModel = require("../models/boughtPlans");
 const ChatModel = require("../models/chat")
+const ContentModel = require("../models/content");
 
 /**
  * Returns list of all boughtPlan in database.
@@ -41,25 +42,28 @@ const create = async (req, res) => {
 
     // Handle the given boughtPlan creation request.
     try {
-        // Create the chat between the customer and content creator.
-        const chat = {
-            partOne: req.body.ownerId,
-            partTwo: req.body.userId,
-        };
-        await ChatModel.create(chat);
-        await ChatModel.updateOne({
+        // Create the chat between the customer and content creator, but only if support for content is desired.
+        const boughtContent = await ContentModel.findById(req.body.contentId).exec();
+        if(boughtContent.support){
+            const chat = {
                 partOne: req.body.ownerId,
                 partTwo: req.body.userId,
-            },
-            {
-                $push: {
-                    messages: {
-                        senderId: req.body.ownerId,
-                        text: "Thank you for buying my content, feel free to contact me here if you have any questions!"
+            };
+            await ChatModel.create(chat);
+            await ChatModel.updateOne({
+                    partOne: req.body.ownerId,
+                    partTwo: req.body.userId,
+                },
+                {
+                    $push: {
+                        messages: {
+                            senderId: req.body.ownerId,
+                            text: "Thank you for buying my content, feel free to contact me here if you have any questions!"
+                        }
                     }
                 }
-            }
-        ).exec();
+            ).exec();
+        }
 
         // Create boughtPlan in database with supplied request body.
         const boughtPlan = await boughtPlansModel.create(req.body);
