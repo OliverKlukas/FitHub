@@ -55,13 +55,14 @@ function ChatView() {
     useEffect(() => {
         // Only let singed in user use the chat window.
         if (user.user) {
+            // Initial loading of chat data.
             if (!chats) {
                 fetchChats();
             }
         } else {
             navigate("/discovery");
         }
-    }, [chats, navigate, user.user]);
+    });
 
     return (<Stack direction="row" marginTop={5} spacing={5}>
             {user.user.role === "customer" ? <CustomerDrawer currTab={"Chat"}/> : <CreatorDrawer currTab="Chat"/>}
@@ -83,7 +84,7 @@ function ChatView() {
                             <Typography variant={"h4"}> You don't seem to have any chats yet, check out the discovery to
                                 start conversations!</Typography>
                         </Box>
-                        : <ChatWindow chat={chats.find((chat) => chat.receiverId === activeChat)}/>}
+                        : <ChatWindow fetchChats={fetchChats} chat={chats.find((chat) => chat.receiverId === activeChat)}/>}
                 </Stack>}
         </Stack>
     );
