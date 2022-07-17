@@ -35,14 +35,14 @@ export default class ChatService {
      * Update single chat with new message.
      *
      * @param receiverId Identifier of receiving user.
-     * @param message String message of sender.
+     * @param textMessage String message of sender.
      * @returns {Promise<unknown>}
      */
-    static updateChat(receiverId, message) {
+    static updateChat(receiverId, textMessage) {
         return new Promise((resolve, reject) => {
-            HttpService.put(
+            HttpService.post(
                 `${this.baseURL()}/updateChat/${receiverId}`,
-                {message},
+                {textMessage},
                 function (data) {
                     resolve(data);
                 },

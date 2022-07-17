@@ -17,8 +17,8 @@ function ChatsList({chats, setActiveChat}) {
             width: '100%', maxWidth: '25vw', bgcolor: 'background.paper', overflow: 'auto', height: '75vh',
         }}
         >
-            {chats.map((chat) => {
-                return (<Box key={chat.receiverId}>
+            {chats.map((chat, index) => {
+                return (<Box key={chat.receiverId + index}>
                     <ChatListItem name={chat.receiverName} img={chat.receiverImg} id={chat.receiverId} setActiveChat={setActiveChat}/>
                     <Divider variant="inset" component="li"/>
                 </Box>)

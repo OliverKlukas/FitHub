@@ -18,10 +18,12 @@ const ChatSchema = new mongoose.Schema({
     partOne: {
         type: String,
         required: true,
+        unique: true,
     },
     partTwo: {
         type: String,
-        required: true
+        required: true,
+        unique: true,
     },
     messages: [Message],
 },

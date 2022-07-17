@@ -11,12 +11,11 @@ const ChatModel = require("../models/chat");
  */
 const getChats = async (req, res) => {
     try {
-        const chatPartner = await ChatModel.find({$or: [{partOne: req.userId}, {partTwo: req.userId}]}).exec();
-        return res.status(200).json(chatPartner);
+        const chats = await ChatModel.find({$or: [{partOne: req.userId}, {partTwo: req.userId}]}).exec();
+        return res.status(200).json(chats);
     } catch (error) {
         return res.status(500).json({
-            error: "internal server error",
-            message: error.message,
+            error: "internal server error", message: error.message,
         });
     }
 }
@@ -31,25 +30,20 @@ const getChats = async (req, res) => {
 const updateChat = async (req, res) => {
     try {
         await ChatModel.updateOne({
-                partOne: req.userId,
-                partTwo: req.params.id,
-            },
-            {
-                $push: {messages: {senderId: req.userId, text: req.body}}
-            }
-        ).exec();
+            $or: [{partOne: req.userId, partTwo: req.params.id}, {partOne: req.params.id, partTwo: req.userId}]
+        }, {
+            $push: {messages: {senderId: req.userId, text: req.body.textMessage}}
+        }).exec();
         return res.status(200).json({
             message: "Message Sent"
         })
     } catch (error) {
         return res.status(500).json({
-            error: "Internal server error",
-            message: err.message,
+            error: "Internal server error", message: error.message,
         });
     }
 };
 
 module.exports = {
-    getChats,
-    updateChat,
+    getChats, updateChat,
 }

@@ -496,9 +496,8 @@ const getUserImg = async (req, res) => {
     const user = await UserModel.findById(req.params.ownerId).exec();
     return res.status(200).json(user.profilePicture);
   } catch (err) {
-    return res.status(500).json({
-      error: "Internal server error: " + err.message,
-    });
+    // If there is no profile picture (as its optional) an empty string is responded.
+    return res.status(200).json("");
   }
 };
 

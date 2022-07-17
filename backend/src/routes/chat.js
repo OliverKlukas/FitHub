@@ -7,7 +7,7 @@ const middleware = require("../middleware");
 
 const chatController = require("../controllers/chat");
 
-// updates a chat with a new Message
+// Posts a new message in a chat.
 router.post("/updateChat/:id", middleware.checkAuthentication, chatController.updateChat)
 
 // Get all chat partners of the requesting user.
