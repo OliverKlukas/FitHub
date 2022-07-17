@@ -704,11 +704,18 @@ function ContentUpload(props) {
           <Stack direction="row" alignItems="center">
             <Checkbox
               value={support}
+              checked={category === "coaching" ? true : support}
               onChange={(event) => setSupport(event.target.checked)}
             />
-            <Typography variant="body1">
-              Yes, I am offering full-time support for the buyers
-            </Typography>
+            {category === "coaching" ? (
+              <Typography variant="body1" fontWeight="bold">
+                Coachings automatically offer support via the chat function
+              </Typography>
+            ) : (
+              <Typography variant="body1">
+                Yes, I am offering support via chat for the buyers
+              </Typography>
+            )}
           </Stack>
           <Stack direction="row" alignItems="center">
             <Checkbox

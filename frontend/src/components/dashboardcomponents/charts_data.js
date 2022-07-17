@@ -47,7 +47,7 @@ export default function ChartsData() {
       }
     }
     fetchData();
-  }, [setData, setSalesDist]);
+  }, [setData, setSalesDist, user.user]);
 
   const RADIAN = Math.PI / 180;
   const renderCustomizedLabel = ({
