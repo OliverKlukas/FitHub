@@ -2,7 +2,6 @@ import * as React from 'react';
 import List from '@mui/material/List';
 import ChatListItem from "./chatListItem";
 import {Box, Divider} from "@mui/material";
-import UserService from "../../services/userService";
 
 /**
  * Implements list of chat partners the logged in person has.

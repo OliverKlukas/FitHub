@@ -84,7 +84,7 @@ function ChatView() {
                     <Divider orientation={"vertical"} flexItem/>
                     {chats.length === 0 ?
                         <Box display="flex" justifyContent="center" alignItems="center" width={"60vw"} height={"75vh"}>
-                            <Typography variant={"h4"}> You don't seem to have any chats yet, check out the discovery to
+                            <Typography variant={"h4"}> You don't seem to have any chats yet, buy or sell content to
                                 start conversations!</Typography>
                         </Box>
                         : <ChatWindow fetchChats={fetchChats} chat={chats.find((chat) => chat.receiverId === activeChat)}/>}
