@@ -41,7 +41,7 @@ const create = async (req, res) => {
 
     // Handle the given boughtPlan creation request.
     try {
-        // Create the chat between the customer and content creator. // TODO here it is necessary to add that a chat may only be created between the two parties via request body and content id.
+        // Create the chat between the customer and content creator.
         const chat = {
             partOne: req.body.ownerId,
             partTwo: req.body.userId,
@@ -55,7 +55,7 @@ const create = async (req, res) => {
                 $push: {
                     messages: {
                         senderId: req.body.ownerId,
-                        text: "Thank you for buying my content, if you have any questions, you can contact me here!"
+                        text: "Thank you for buying my content, feel free to contact me here if you have any questions!"
                     }
                 }
             }

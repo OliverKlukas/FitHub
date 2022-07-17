@@ -17,7 +17,6 @@ import {useNavigate} from "react-router-dom";
  * @constructor
  */
 function ChatView() {
-
     // Retrieve current logged in user from redux state.
     const user = useSelector((state) => state.user);
 
@@ -33,7 +32,6 @@ function ChatView() {
     // Fetches chats from database and collects necessary data for chat view.
     async function fetchChats() {
         await ChatService.getChats().then(async (res) => {
-            console.log("RESPNSE", res); // TODO
             // Retrieve all relevant chat information via waiting for all promises in map to resolve.
             const newChats = await Promise.all(res.map(async (chat) => {
                 const receiverId = chat.partOne === user.user._id ? chat.partTwo : chat.partOne;
@@ -55,14 +53,19 @@ function ChatView() {
     useEffect(() => {
         // Only let singed in user use the chat window.
         if (user.user) {
-            // Initial loading of chat data.
+            // Initially load chat once, after that load it every 3 seconds in order to check for new messages.
             if (!chats) {
                 fetchChats();
+            } else {
+                const interval = setInterval(() => {
+                    fetchChats();
+                }, 5000);
+                return () => clearInterval(interval);
             }
         } else {
             navigate("/discovery");
         }
-    });
+    }, [user.user, chats]);
 
     return (<Stack direction="row" marginTop={5} spacing={5}>
             {user.user.role === "customer" ? <CustomerDrawer currTab={"Chat"}/> : <CreatorDrawer currTab="Chat"/>}

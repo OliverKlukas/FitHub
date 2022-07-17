@@ -10,7 +10,7 @@ import {Box, Typography} from "@mui/material";
  * @constructor
  */
 function Message(props) {
-    return (<ListItem
+    return (<ListItem ref={props.reference && props.reference}
         sx={{
             "&.MuiListItem-root": {
                 justifyContent: props.sender ? "flex-end" : "flex-start",

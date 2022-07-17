@@ -493,11 +493,17 @@ const getUsername = async (req, res) => {
 const getUserImg = async (req, res) => {
   try {
     // Get username based on the supplied id.
-    const user = await UserModel.findById(req.params.ownerId).exec();
-    return res.status(200).json(user.profilePicture);
+    const user = await UserModel.findById(req.params.id).exec();
+    // If there is no profile picture the name to build an avatar is send.
+    if(typeof user.profilePicture != "undefined"){
+      return res.status(200).json(user.profilePicture);
+    } else {
+      return res.status(200).json(user.firstName);
+    }
   } catch (err) {
-    // If there is no profile picture (as its optional) an empty string is responded.
-    return res.status(200).json("");
+    return res.status(500).json({
+      error: "Internal server error: " + err.message,
+    });
   }
 };
 

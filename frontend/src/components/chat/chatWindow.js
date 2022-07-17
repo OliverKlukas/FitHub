@@ -1,5 +1,5 @@
 import * as React from "react";
-import {useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import {Box, Divider, Stack, TextField, Typography} from "@mui/material";
 import List from "@mui/material/List";
 import Message from "./message";
@@ -19,12 +19,20 @@ import ChatService from "../../services/chatService";
 function ChatWindow({chat, fetchChats}) {
     const [newMessage, setNewMessage] = useState("");
 
+    // Scroll reference to ensure that the window is scrolled down whenever adding/receiving a new message.
+    const scrollRef = useRef(null);
+    useEffect(() => {
+        if(scrollRef.current){
+            scrollRef.current.scrollIntoView({behavior: "smooth"});
+        }
+    }, [chat]);
+
     // Triggered on enter in text field or on send button press.
-    function sendMessage() {
+    async function sendMessage() {
         if (newMessage !== "") {
             ChatService.updateChat(chat.receiverId, newMessage);
-            setNewMessage("");
             fetchChats();
+            setNewMessage("");
         }
     }
 
@@ -51,8 +59,13 @@ function ChatWindow({chat, fetchChats}) {
                     width: "100%", bgcolor: "background.paper", overflow: "auto", maxHeight: "70vh"
                 }}
                 >
-                    {chat.messages.map((msg, index) => (
-                        <Message key={index} text={msg.text} sender={msg.senderId !== chat.receiverId}/>))}
+                    {chat.messages.map((msg, index) => {
+                        if(index === (chat.messages.length-1)){
+                            return <Message reference={scrollRef} key={index} text={msg.text} sender={msg.senderId !== chat.receiverId}/>;
+                        } else {
+                            return <Message key={index} text={msg.text} sender={msg.senderId !== chat.receiverId}/>;
+                        }
+                    })}
                 </List>
                 <Stack alignItems={"center"} width={"100%"} direction={"row"}>
                     <TextField onKeyDown={(event) => event.key === "Enter" && sendMessage()} value={newMessage}
