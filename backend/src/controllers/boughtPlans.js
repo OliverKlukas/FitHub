@@ -95,6 +95,13 @@ const get = async (req, res) => {
     }
 };
 
+/**
+ * get Sales Distribution by Plans
+ *
+ * @param req
+ * @param res
+ * @returns {Promise<*>}
+ */
 const getSalesDistribution = async (req, res) => {
     try {
         const boughtPlans = await boughtPlansModel.find({}).exec();
@@ -135,6 +142,13 @@ const getSalesDistribution = async (req, res) => {
     }
 };
 
+/**
+ * get overall financial data (i.e. revenue, payout, MTD change, customers)
+ *
+ * @param req
+ * @param res
+ * @returns {Promise<*>}
+ */
 const getFinancials = async (req, res) => {
     try {
         const boughtPlans = await boughtPlansModel.find({}).exec();
@@ -272,10 +286,78 @@ const getFinancials = async (req, res) => {
     }
 };
 
+const getTimeline = async (req, res) => {
+    try {
+        const boughtPlans = await boughtPlansModel.find({}).exec();
+        const ownSales = []; //all sales of the creator
+        const offset = 24 * 60 * 60 * 1000; //for calculating in days
+        const vals = [];
+        const days = [];
+        const sales = [0, 0, 0, 0, 0, 0, 0, 0];
+
+        boughtPlans.map((item) => {
+            //check if content is from requested user
+            if (item.ownerId == req.body.userId) {
+                ownSales.push(item);
+            }
+        });
+
+        //calculate current calender week
+        const currentDate = new Date();
+        days.push(currentDate);
+
+        // get calender weeks
+        const firstDayYear = new Date(currentDate.getFullYear(), 0, 1);
+        const sumDays = Math.floor((currentDate - firstDayYear) / offset);
+        const calweek = Math.ceil(sumDays / 7);
+
+        for (let i = 0; i < 8; i++) {
+            vals.push("CW" + (calweek - i).toString());
+        }
+
+        // current calender week is last sunday until today
+        const lastSunday = new Date(currentDate - currentDate.getDay() * offset);
+        days.push(lastSunday);
+
+        // for loop to get all sundays
+        for (let i = 7; i < 56; i = i + 7) {
+            days.push(new Date(lastSunday - i * offset));
+        }
+
+        ownSales.map((item) => {
+            for (let i = 0; i < 8; i++) {
+                if (days[i + 1] < item.boughtAt && item.boughtAt <= days[i]) {
+                    sales[i] = sales[i] + 1;
+                }
+            }
+        });
+
+        return res.status(200).json({
+            timeline: [
+                {week: vals[7], sales: sales[7]},
+                {week: vals[6], sales: sales[6]},
+                {week: vals[5], sales: sales[5]},
+                {week: vals[4], sales: sales[4]},
+                {week: vals[3], sales: sales[3]},
+                {week: vals[2], sales: sales[2]},
+                {week: vals[1], sales: sales[1]},
+                {week: vals[0], sales: sales[0]},
+            ],
+        });
+    } catch (err) {
+        console.log(err);
+        return res.status(500).json({
+            error: "Internal Server Error",
+            message: err.message,
+        });
+    }
+};
+
 module.exports = {
     create,
     list,
     get,
     getSalesDistribution,
     getFinancials,
+    getTimeline,
 };

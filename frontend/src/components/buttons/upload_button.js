@@ -21,6 +21,8 @@ export default function UploadButton({
   multiUpload,
   setUpload,
   setSuccess = true,
+  buttonText = "Upload",
+  buttonDescription = "Select a file"
 }) {
   const [isFilePicked, setIsFilePicked] = useState(false);
   const [snackbar, setSnackbar] = React.useState(false);
@@ -58,13 +60,13 @@ export default function UploadButton({
 
     if (uploadSize > 16000000) {
       setUploadFail(true);
-      setSuccess(true);
+      setSuccess=true;
     } else {
       setUpload(newUpload);
       setFileNames(newFileNames);
       setIsFilePicked(true);
       setSnackbar(true);
-      setSuccess(false);
+      setSuccess=false;
     }
   }
 
@@ -80,7 +82,7 @@ export default function UploadButton({
           multiple={multiUpload}
         />
         <StandardButton variant="contained" component="span" upload="true">
-          Upload
+          {buttonText}
         </StandardButton>
       </label>
       {isFilePicked ? (
@@ -89,7 +91,7 @@ export default function UploadButton({
         </Typography>
       ) : (
         <Typography minWidth={100} variant="body2" fontSize="small">
-          Select a file
+          {buttonDescription}
         </Typography>
       )}
       <Snackbar

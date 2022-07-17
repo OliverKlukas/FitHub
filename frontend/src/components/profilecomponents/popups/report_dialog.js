@@ -113,7 +113,7 @@ export default function ReportDialog(props) {
   return (
     <div>
       <StandardButton variant="contained" onClick={handleClickOpen} sx = {{width: width}}>
-        report this content creator
+        Report this content creator
       </StandardButton>
       <ReportDial
         onClose={handleClose}

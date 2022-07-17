@@ -12,35 +12,35 @@ import StarIcon from "@mui/icons-material/Star";
  * @param {*} date date the review was submitted
  * @param {*} title title of the review
  * @param {*} starValue stars that the reviewer gave
- * @returns 
+ * @returns {JSX.Element}
  */
-export default function Review(reviewer, text, date, title, starValue) {
+export default function Review({ reviewer, text, date, title, starValue }) {
   return (
-    <Box
+    <Stack
+      direction="row"
+      padding={2}
+      spacing={20}
       sx={{
         width: "100%",
         backgroundColor: "#EEEEEE",
-        alignment: "right",
-        borderRadius: "12px",
+        borderRadius: "8px",
       }}
     >
-      <Stack direction="row" spacing={4}>
+      <Stack justifyContent="space-between">
         <Rating
           name="read-only"
           value={starValue}
           readOnly
           icon={<StarIcon color="warning"></StarIcon>}
         />
-        <Typography variant="h6" component="div" gutterBottom>
-          {title}
+        <Typography variant="body2" paddingLeft="5px">
+          {date.substring(0, date.indexOf("T"))}
         </Typography>
       </Stack>
-      <Typography variant="body2" component="div" gutterBottom>
-        {text}
-      </Typography>
-      <Typography variant="caption" display="block" gutterBottom>
-        {date}
-      </Typography>
-    </Box>
+      <Stack spacing={3}>
+        <Typography variant="h6">{title}</Typography>
+        <Typography variant="body2">{text}</Typography>
+      </Stack>
+    </Stack>
   );
 }

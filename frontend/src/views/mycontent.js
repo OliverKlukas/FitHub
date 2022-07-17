@@ -1,30 +1,55 @@
 import { Stack, Typography } from "@mui/material";
-import { useParams } from "react-router-dom";
-import { creator } from "../utils/creator";
-import { content } from "../utils/content";
 import OffContent from "../components/plans/offcontent";
 import CreatorDrawer from "../components/drawer/creator_drawer";
-import * as React from "react";
+import React, { useEffect } from "react";
 import Divider from "@mui/material/Divider";
+import contentService from "../services/contentService";
+import { useSelector } from "react-redux";
 
 export default function MyContent() {
-  // Match url id to consumer item.
+  const user = useSelector((state) => state.user);
 
-  const id = 3000;
-  const item = creator.find((item) => item.id === id);
+  const [data, setData] = React.useState({
+    ownContent: [],
+  });
+
+  useEffect(() => {
+    async function fetchData() {
+      if (user.user) {
+        const res = await contentService.getMyContent(user.user._id);
+        const temp = {
+          ownContent: res.ownContent,
+        };
+        setData(temp);
+      }
+    }
+    fetchData();
+  }, [setData]);
+
+  const dateFromObjectId = function (objectId) {
+    const date = new Date(parseInt(objectId.substring(0, 8), 16) * 1000);
+    return date;
+  };
 
   return (
     <Stack direction="row" marginTop={5} spacing={5}>
       <CreatorDrawer currTab="Content"></CreatorDrawer>
       <Divider orientation="vertical" flexItem />
       <Stack spacing={4}>
-        <Typography variant="h1">My Plans</Typography>
-        {/* eslint-disable-next-line */}
-        {content.map((con) => {
-          if (item.offeredContent.includes(con.id)) {
-            return <OffContent item={con} key={con.img} />;
-          }
-        })}
+        <Typography variant="h1">My Content</Typography>
+        {data.ownContent
+          .sort((a, b) =>
+            dateFromObjectId(a._id) > dateFromObjectId(b._id)
+              ? -1
+              : dateFromObjectId(b._id) > dateFromObjectId(a._id)
+              ? 1
+              : 0
+          )
+          .map((item) => {
+            {
+              return <OffContent key={Math.random()} item={item}></OffContent>;
+            }
+          })}
       </Stack>
     </Stack>
   );

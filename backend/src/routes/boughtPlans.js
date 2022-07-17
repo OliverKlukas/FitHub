@@ -27,4 +27,10 @@ router.post(
   boughtPlansController.getFinancials
 );
 
+router.post(
+  "/getTimeline",
+  middleware.checkAuthentication,
+  boughtPlansController.getTimeline
+);
+
 module.exports = router;

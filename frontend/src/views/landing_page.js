@@ -31,7 +31,7 @@ function LandingPage(props) {
   const user = useSelector((state) => state.user);
 
   const navigate = useNavigate();
-  
+
   // state for the profile Link, updated via useEffect after render
   const [profilelink, setProfileLink] = React.useState("");
 
@@ -51,15 +51,13 @@ function LandingPage(props) {
         title: `Welcome to FitHub, ${user.user.fname}`,
         subtitle: "Lets get started, offer your content right away",
       };
-      setProfileLink(`/profile/${user.user._id}`)
+      setProfileLink(`/profile/${user.user._id}`);
       setHeader(temp);
     } else {
       navigate("/discovery");
       window.location.reload();
     }
   }, [navigate, user]);
-
-
 
   return (
     <Stack sx={{ marginX: 6 }} spacing={1}>
