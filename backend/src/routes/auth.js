@@ -1,8 +1,6 @@
-/* eslint-disable prettier/prettier */
 "use strict";
 
 const express = require("express");
-// eslint-disable-next-line new-cap
 const router = express.Router();
 
 const middleware = require("../middleware");
@@ -10,7 +8,8 @@ const middleware = require("../middleware");
 const AuthController = require("../controllers/auth");
 
 router.get("/getCreators", AuthController.getContentCreatorNames);
-router.get("/getUsername/:ownerId", AuthController.getUsername);
+router.get("/getUsername/:id", AuthController.getUsername);
+router.get("/getUserImg/:id", AuthController.getUserImg);
 // register a new user
 router.post("/register", AuthController.register);
 // signin

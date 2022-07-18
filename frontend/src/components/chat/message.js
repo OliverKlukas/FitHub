@@ -10,14 +10,16 @@ import {Box, Typography} from "@mui/material";
  * @constructor
  */
 function Message(props) {
-    return (<ListItem
+    return (<ListItem ref={props.reference && props.reference}
         sx={{
-            display: "flex", "&.MuiListItem-root": {
+            "&.MuiListItem-root": {
                 justifyContent: props.sender ? "flex-end" : "flex-start",
+                maxWidth: "65vw",
             }
         }}
     >
         <Box sx={{
+            maxWidth: "100%",
             backgroundColor: props.sender ? "secondary.main" : "warning.main",
             borderRadius: 5,
             borderTopRightRadius: props.sender && 0,
@@ -25,9 +27,8 @@ function Message(props) {
             paddingX: 2,
             paddingY: 1,
         }}>
-            <Typography color={"#ffffff"}>{props.text}</Typography>
+            <Typography sx={{ wordWrap: "break-word"}} color={"#ffffff"}>{props.text}</Typography>
         </Box>
-
     </ListItem>);
 
 }

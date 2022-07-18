@@ -65,6 +65,9 @@ In two separate terminals please run:
 ├── README.md
 └── sample_content
 ```
+## PayPal Developer Account Credentials
+Username: sb-o9ke017668203@personal.example.com Password: 46854685
+Username: sb-bx3c817668204@business.example.com Password: M+(Ae7u0
 
 # Team
 | ![Max](./frontend/src/resources/Maximilian.jpeg) | ![Simon](./frontend/src/resources/Simon_Vogl.jpg) | ![Johannes](./frontend/src/resources/Johannes.jpg) | ![Oliver](./frontend/src/resources/Oliver.jpg) |
