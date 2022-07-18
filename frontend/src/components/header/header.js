@@ -8,7 +8,7 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import IconButton from "@mui/material/IconButton";
 import Box from "@mui/material/Box";
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
 import MenuIcon from "@mui/icons-material/Menu";
 import MenuList from "@mui/material/MenuList";
 import { LinkButton } from "../buttons/link_button";
@@ -88,9 +88,12 @@ function Header(props) {
   const [anchorNavigation, setAnchorNavigation] = React.useState(null);
   const [anchorNotifications, setAnchorNotifications] = React.useState(null);
 
+  const navigate = useNavigate();
+
   // Logout and change redux state.
   const handleLogout = () => {
     props.dispatch(logout);
+    navigate("/signin");
     window.location.reload();
     return false;
   };
