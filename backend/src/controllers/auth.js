@@ -562,6 +562,25 @@ const cleanMessageCounter = async (req, res) => {
     }
 }
 
+const increaseMessageCounter = async (req, res) => {
+    try {
+        const ratedUserId = req.params.id;
+        const ratedUser = await UserModel.findById(ratedUserId).exec();
+        let counter = ratedUser.newReviewsCounter;
+        counter++;
+
+        await UserModel.findByIdAndUpdate(
+            ratedUserId,
+            {newMessagesCounter: counter,},
+            {
+                new: true,
+                runValidators: true,
+            }).exec();
+    } catch (error) {
+        
+    }
+}
+
 module.exports = {
     register,
     signin,
@@ -578,5 +597,6 @@ module.exports = {
     getNewNotifications,
     cleanMessageCounter,
     cleanReviewCounter,
-    getUserImg
+    getUserImg,
+    increaseMessageCounter,
 };

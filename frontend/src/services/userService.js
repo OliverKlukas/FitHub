@@ -291,4 +291,18 @@ export default class UserService {
             );
         });
     }
+    static increaseMessageCounter(id) {
+        return new Promise((resolve, reject) => {
+            HttpService.post(
+                `${this.baseURL()}/increaseMessageCounter/${id}`,
+                {},
+                function (data) {
+                    resolve(data);
+                },
+                function (textStatus) {
+                    reject(textStatus);
+                }
+            );
+        });
+    }
 }

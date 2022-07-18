@@ -93,7 +93,7 @@ function Header(props) {
   // Logout and change redux state.
   const handleLogout = () => {
     props.dispatch(logout);
-    navigate("/signin");
+    navigate("/discovery");
     window.location.reload();
     return false;
   };
@@ -234,9 +234,9 @@ function Header(props) {
                     key="messages"
                     onClick={() => setAnchorNotifications(null)}
                   >
-                    {/*TODO: replace /profile/${id} with the link to the messages of the user*/}
                     <Link
-                      href={`/profile/${id}`}
+                      href={`/chat`}
+                      onClick={() => UserService.cleanMessageCounter()}
                       underline="none"
                       color="inherit"
                     >
@@ -253,6 +253,7 @@ function Header(props) {
                   >
                     <Link
                       href={`/profile/${id}`}
+                      onClick={() => UserService.cleanReviewCounter()}
                       underline="none"
                       color="inherit"
                     >

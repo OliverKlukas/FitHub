@@ -7,6 +7,7 @@ import SendIcon from '@mui/icons-material/Send';
 import Avatar from "@mui/material/Avatar";
 import IconButton from "@mui/material/IconButton";
 import ChatService from "../../services/chatService";
+import UserService from "../../services/userService"
 
 /**
  * Implements the chat window with all messages between two partners, the message input and video call feature.
@@ -31,6 +32,7 @@ function ChatWindow({chat, fetchChats}) {
     async function sendMessage() {
         if (newMessage !== "") {
             ChatService.updateChat(chat.receiverId, newMessage);
+            UserService.increaseMessageCounter(chat.receiverId);
             fetchChats();
             setNewMessage("");
         }
