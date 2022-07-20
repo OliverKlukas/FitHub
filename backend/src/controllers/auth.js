@@ -200,7 +200,7 @@ const signin = async (req, res) => {
     }
 };
 /**
- *
+ * Updates a users information, unchanged information is overwritten with the original information
  * @param {*} req middleware adds the _id
  * @param {*} res
  */
@@ -233,7 +233,10 @@ const userdata = async (req, res) => {
             error: "Bad Request",
             message: "The request body must contain a userId property",
         });
-    // this insecure logged in check is sufficient, since the data is publicly available anyway, and the check is just needed for display logic in the frontend
+    /** this insecure logged in check is better than a middleware call, since the data returned by this call
+    ** needs to be availabe to logged out users as well
+    ** and the check is just needed for display logic in the frontend
+    */ 
     let isloggedIn = false;
     if (Object.prototype.hasOwnProperty.call(req.body, "email")) {
         isloggedIn = true;
@@ -241,7 +244,9 @@ const userdata = async (req, res) => {
     if (isloggedIn) {
         try {
             let isownprofile = false;
-            const requesteduser = await UserModel.findById(req.body.userId).exec(); // get requested user from database
+             // get requested user from database
+            const requesteduser = await UserModel.findById(req.body.userId).exec();
+            // get requester from database, to find out if the requester is requesting his own profile
             const requester = await UserModel.findOne({
                 email: req.body.email,
             });
@@ -267,7 +272,8 @@ const userdata = async (req, res) => {
         }
     } else {
         try {
-            const user = await UserModel.findById(req.body.userId).exec(); // get requested user from database
+            // get requested user from database
+            const user = await UserModel.findById(req.body.userId).exec(); 
             return res.status(200).json({
                 firstname: user.firstName,
                 lastname: user.lastName,
@@ -298,7 +304,7 @@ const logout = (req, res) => {
 };
 
 /**
- *
+ * Adds a new review and updates the review notifications counter of the reviewed creator
  * @param {*} req Int 1-5 Star, String text, ContentCreatorID in params, userId/creatorId added by middleware
  * @param {*} res
  * @returns
@@ -370,26 +376,9 @@ const addreview = async (req, res) => {
     }
 };
 
-// deletes review, somewhat untested, needs the reviewId and the CreatorId, only if the creatorid is equal does the request resolve, should also TODO check middleware
-const deletereview = (req, res) => {
-    try {
-        UserModel.findOneAndDelete({
-            creatorId: req.userId,
-        });
-        return res.status(200).json({
-            message: "Succesfully deleted Review",
-        });
-    } catch (error) {
-        return res.status(500).json({
-            error: "Internal Server error",
-            message: error.message,
-        });
-    }
-};
-
 /**
- *
- * @param {*} req id, comes from middleware
+ * deletes a userAccount, Warning Message displayed in frontent, Authorization checked by middleware<
+ * @param {*} req id comes from middleware
  * @param {*} res
  * @returns
  */
@@ -467,7 +456,6 @@ const checkEmail = async (req, res) => {
 
 /**
  * Retrieves only the name of a user by its id.
- *
  * @param req - expects an userId to be supplied.
  * @param res
  * @return {Promise<void>}
@@ -509,7 +497,12 @@ const getUserImg = async (req, res) => {
     }
 };
 
-
+/**
+ * gets gradingDistribution and avgReviewRating for the Dashboard
+ * @param {*} req 
+ * @param {*} res 
+ * @returns 
+ */
 const getReviewAnalytics = async (req, res) => {
     try {
         const requesteduser = await UserModel.findById(req.body.userId).exec();
@@ -525,6 +518,13 @@ const getReviewAnalytics = async (req, res) => {
     }
 };
 
+
+/**
+ * gets the two notification counters, for the notifications in the header
+ * @param {*} req userID is added by middleware
+ * @param {*} res 
+ * @returns 
+ */
 const getNewNotifications = async (req, res) => {
     try {
         const requesteduser = await UserModel.findById(req.userId).exec();
@@ -540,6 +540,12 @@ const getNewNotifications = async (req, res) => {
     }
 };
 
+/**
+ * resets the own ReviewCounter, is called when the notification for reviews is pressed in the header
+ * @param {} req userId is added by middleware
+ * @param {*} res 
+ * @returns 
+ */
 const cleanReviewCounter = async (req, res) => {
     try {
         UserModel.findByIdAndUpdate(req.userId,
@@ -551,6 +557,12 @@ const cleanReviewCounter = async (req, res) => {
     }
 }
 
+/**
+ * resets the Message Counter, called when the notification for message is pressed in the header
+ * @param {*} req userID is added by middleware
+ * @param {*} res 
+ * @returns 
+ */
 const cleanMessageCounter = async (req, res) => {
     try {
         UserModel.findByIdAndUpdate(req.userId,
@@ -562,6 +574,11 @@ const cleanMessageCounter = async (req, res) => {
     }
 }
 
+/**
+ * While the ReviewCounter is increased in the addreview call, the message counter is "manually" increased here
+ * @param {*} req id is written as params
+ * @param {*} res 
+ */
 const increaseMessageCounter = async (req, res) => {
     try {
         const ratedUserId = req.params.id;
@@ -589,7 +606,6 @@ module.exports = {
     updateuser,
     deleteuser,
     addreview,
-    deletereview,
     getContentCreatorNames,
     getUsername,
     checkEmail,

@@ -52,6 +52,7 @@ function SignUp(props) {
     const [emailerrormessage, setEmailErrorMessage] = React.useState("");
     const [passworderrormessage, setPasswordErrorMessage] = React.useState("")
 
+    // navigates to a page once a user is logged in
     useEffect(() => {
         if (user.user) {
             if (isContentCreator) {
@@ -350,7 +351,7 @@ function SignUp(props) {
                     <HighlightButton
                         variant="contained"
                         onClick={handleSubmit}
-                        // TODO add link again once submit is working
+                        // disabled the submit button until all fields are nonempty and there are no more errors
                         disabled={
                             firstname === "" ||
                             lastname === "" ||
