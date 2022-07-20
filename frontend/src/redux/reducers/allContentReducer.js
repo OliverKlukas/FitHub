@@ -1,4 +1,4 @@
-export default function entities(state = {}, action) {
+export default function allContent(state = {}, action) {
   switch (action.type) {
     case "GETCONTENTLIST_SUCCESS":
       return { contentList: action.contentList };

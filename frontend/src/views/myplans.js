@@ -2,7 +2,6 @@ import {
   Stack,
   Typography,
   CircularProgress,
-  Button,
   Box,
 } from "@mui/material";
 import * as React from "react";
@@ -10,25 +9,24 @@ import { connect, useSelector } from "react-redux";
 import Plan from "../components/plans/plan";
 import { getBoughtPlan, getContents } from "../redux/actions";
 import { useEffect } from "react";
-import ContentService from "../services/contentService";
 import CustomerDrawer from "../components/drawer/customer_drawer";
 import Divider from "@mui/material/Divider";
 
 /**
  * Purchase history that displays every bought content item for a specific consumer with an option to download the item,
- * contact our customer support (forward to the content creators profile)
- * and write a review (forward to the content creators profile)
+ * contact our customer support and write a review (forward to the content creators profile)
  *
  * @return {JSX.Element} returns My Plans page.
  */
 function MyPlans(props) {
+  // State from the redux store for our user.
   const user = useSelector((state) => state.user);
 
   // State from the redux store for plans.
   const planList = useSelector((state) => state.boughtPlan.boughtPlan);
 
   // State from the redux store for contents.
-  const contentList = useSelector((state) => state.entities.contents);
+  const contentList = useSelector((state) => state.allContent.contents);
 
   // On open load the movie.
   useEffect(() => {

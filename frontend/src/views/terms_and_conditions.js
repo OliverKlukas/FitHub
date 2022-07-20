@@ -6,7 +6,6 @@ import { Stack, Typography, Link, Box } from "@mui/material";
  *
  * @returns {JSX.Element} Returns payment page.
  */
-
 function TermsAndConditions() {
     return (
         <Stack spacing={3}>

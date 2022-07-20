@@ -69,6 +69,10 @@ function SignIn(props) {
   const handleSubmit = async () => {
     await props.dispatch(signin(email, password));
   };
+
+  /**
+   * Checks if there is an Account associated with the Email
+   */
   const checkEmail = async () => {
     const res = await UserService.checkEmail(email);
     if (res.alreadyHasAccount === false) {

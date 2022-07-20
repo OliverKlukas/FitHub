@@ -1,8 +1,6 @@
-/* eslint-disable prettier/prettier */
 "use strict";
 
 const express = require("express");
-// eslint-disable-next-line new-cap
 const router = express.Router();
 
 const middleware = require("../middleware");
@@ -10,7 +8,8 @@ const middleware = require("../middleware");
 const AuthController = require("../controllers/auth");
 
 router.get("/getCreators", AuthController.getContentCreatorNames);
-router.get("/getUsername/:ownerId", AuthController.getUsername);
+router.get("/getUsername/:id", AuthController.getUsername);
+router.get("/getUserImg/:id", AuthController.getUserImg);
 // register a new user
 router.post("/register", AuthController.register);
 // signin
@@ -24,12 +23,6 @@ router.put(
   "/addreview/:id",
   middleware.checkAuthentication,
   AuthController.addreview
-);
-// delete a review
-router.delete(
-  "/deletereview",
-  middleware.checkAuthentication,
-  AuthController.deletereview
 );
 // checks user, then deletes user
 router.delete(
@@ -56,5 +49,7 @@ router.post("/getReviewAnalytics", middleware.checkAuthentication, AuthControlle
 router.post("/cleanReviewCounter", middleware.checkAuthentication, AuthController.cleanReviewCounter);
 // resets Message Counter
 router.post("/cleanMessageCounter", middleware.checkAuthentication, AuthController.cleanMessageCounter);
+// increase Message Counter
+router.post("/increaseMessageCounter/:id", middleware.checkAuthentication, AuthController.increaseMessageCounter);
 
 module.exports = router;

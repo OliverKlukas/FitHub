@@ -21,12 +21,12 @@ import ConfirmDialog from "../components/profilecomponents/popups/confirm_dialog
  * @returns
  */
 function Profile(props) {
-  const params = useParams();
+  const params = useParams();  
   const user = useSelector((state) => state.user);
 
   const navigate = useNavigate();
+
   // state for backenddata, empty on first render, updated via useEffect, this is more scalable than storing
-  // all userdata in the redux store
   const [data, setdata] = React.useState({
     name: "",
     title: "",
@@ -35,18 +35,23 @@ function Profile(props) {
     profilePicture: "",
     avgReviewRating: 0,
   });
+
   // state for confirmation Dialog
   const [confirmOpen, setConfirmOpen] = React.useState(false);
+
   // state for review data
   const [reviews, setReviews] = React.useState([]);
+
   // own state for uploaded picture, in case of update
   const [uploadedPicture, setUploadedPicture] = React.useState("");
+
   // own state for title, in case of update
   const [title, setTitle] = React.useState("");
 
   const onChangeTitle = (e) => {
     setTitle(e.target.value);
   };
+
   const handleSubmit = async () => {
     const temp = {
       name: data.name,
@@ -57,6 +62,7 @@ function Profile(props) {
     await props.dispatch(updateUser(temp));
     window.location.reload(false);
   };
+  
   const handleDelete = async () => {
     await props.dispatch(deleteUser());
     navigate("/discovery");
