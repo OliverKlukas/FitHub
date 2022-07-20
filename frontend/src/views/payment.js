@@ -18,8 +18,7 @@ import {
 } from "@mui/material";
 import { Link as RouterLink, useParams, useNavigate } from "react-router-dom";
 import { HighlightButton } from "../components/buttons/highlight_button";
-import { PayPalButtons } from "@paypal/react-paypal-js";
-import { PayPalScriptProvider } from "@paypal/react-paypal-js";
+import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import { useState, useEffect } from "react";
 import { connect, useSelector } from "react-redux";
 import { getContent } from "../redux/actions";
@@ -29,7 +28,8 @@ import UserService from "../services/userService";
 /**
  * Payment page with the most important information about the content item, a link to our Terms and Conditions the customer has to accept and the payment method selection.
  *
- * @returns {JSX.Element} Returns payment page.
+ * @param {*} props
+ * @returns {JSX.Element}
  */
 function Payment(props) {
   // Retrieve author of content item.
@@ -42,8 +42,6 @@ function Payment(props) {
 
   // get the user from redux
   const user = useSelector((state) => state.user);
-
-  //const cookies = new Cookies();cookies.set(key1, value1, {secure: true, sameSite: 'none'});cookies.set(key2, value2, {secure: true, sameSite: 'none'});
 
   // Match url id to content item.
   const { id } = useParams();
@@ -60,7 +58,7 @@ function Payment(props) {
         setAuthor(res);
       });
     }
-  }, [singleContent.content]);
+  }, [singleContent.content, id, props]);
 
   // if show is false, the standard payment view with payment method selection and terms and conditions accepting is displayed. If show true, only the paypal buttons will be displayed
   const [show, setShow] = useState(false);
@@ -113,7 +111,7 @@ function Payment(props) {
     setErrorOpen(false);
   };
 
-  // Merge all hooks together and publish it to mongodb. After completing the database entry, the user is redirect to myplans
+  // publish the boudht plan to mongodb. After completing the database entry, the user is redirect to myplans
   async function publishboughtPlan() {
     try {
       await props.addboughtPlan({
@@ -130,25 +128,36 @@ function Payment(props) {
     }
   }
 
+  // as soon as the payment is succesful, create the database entry for the transaction
   const handleApprove = (orderId) => {
     publishboughtPlan();
   };
 
+  // error handling snackbar (if error occurs and the snackbar is not open yet.)
   if (error && !erroropen) {
     setErrorOpen(true);
   }
 
+  // display popup if the user is not signed in or signed in as a content creator
   const [dialogOpen, setDialogOpen] = React.useState(false);
 
+  // redirect the user to the sign in page if not logged in
   const handleDialogClose = () => {
     setDialogOpen(false);
     navigate("/signin");
   };
 
+  // if the user is not logged in -> must sign in
   if (!user.user && !dialogOpen) {
     setDialogOpen(true);
   }
 
+  // if the user is logged in as a content creator -> must sign in as a customer
+  if (user.user && !(user.user.role === "customer") && !dialogOpen) {
+    setDialogOpen(true);
+  }
+
+  // check if content and author of content already loaded
   return !singleContent.content || !author ? (
     // Loading content.
     <Box
@@ -159,8 +168,6 @@ function Payment(props) {
     >
       <CircularProgress />
     </Box>
-  ) : singleContent.error ? (
-    <Alert severity="error">Loading content went wrong, sorry!</Alert>
   ) : (
     <PayPalScriptProvider
       options={{
@@ -213,7 +220,9 @@ function Payment(props) {
                   spacing={4}
                 >
                   <Typography variant="h3">Content Creator</Typography>
-                  <Typography variant="h4">{author.firstname + " " + author.lastname}</Typography>
+                  <Typography variant="h4">
+                    {author.firstname + " " + author.lastname}
+                  </Typography>
                 </Stack>
                 <Divider sx={{ my: 2, bgcolor: "#222831" }} />
                 <Stack
@@ -337,7 +346,7 @@ function Payment(props) {
             Buy Now
           </HighlightButton>
         )}
-        {show ? (
+        {show && (
           <PayPalButtons
             style={{
               layout: "vertical",
@@ -366,11 +375,11 @@ function Payment(props) {
             onCancel={() => {
               setError("transaction canceled.");
             }}
-            onError={(err) => {
+            onError={() => {
               setError("transaction failed.");
             }}
           />
-        ) : null}
+        )}
         <Snackbar
           open={snackopen}
           autoHideDuration={6000}
@@ -400,10 +409,10 @@ function Payment(props) {
         </Snackbar>
         <Dialog open={dialogOpen} onClose={handleDialogClose}>
           <DialogTitle>
-            You have to sign in before you can purchase a plan
+            You have to sign in as a customer before you can purchase a plan
           </DialogTitle>
           <DialogActions>
-            <Button onClick={handleDialogClose}>Sign in</Button>
+            <Button onClick={handleDialogClose}>Okay</Button>
           </DialogActions>
         </Dialog>
       </Stack>
