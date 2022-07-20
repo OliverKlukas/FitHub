@@ -8,7 +8,7 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import IconButton from "@mui/material/IconButton";
 import Box from "@mui/material/Box";
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
 import MenuIcon from "@mui/icons-material/Menu";
 import MenuList from "@mui/material/MenuList";
 import { LinkButton } from "../buttons/link_button";
@@ -88,9 +88,12 @@ function Header(props) {
   const [anchorNavigation, setAnchorNavigation] = React.useState(null);
   const [anchorNotifications, setAnchorNotifications] = React.useState(null);
 
+  const navigate = useNavigate();
+
   // Logout and change redux state.
   const handleLogout = () => {
     props.dispatch(logout);
+    navigate("/discovery");
     window.location.reload();
     return false;
   };
@@ -231,9 +234,9 @@ function Header(props) {
                     key="messages"
                     onClick={() => setAnchorNotifications(null)}
                   >
-                    {/*TODO: replace /profile/${id} with the link to the messages of the user*/}
                     <Link
-                      href={`/profile/${id}`}
+                      href={`/chat`}
+                      onClick={() => UserService.cleanMessageCounter()}
                       underline="none"
                       color="inherit"
                     >
@@ -250,6 +253,7 @@ function Header(props) {
                   >
                     <Link
                       href={`/profile/${id}`}
+                      onClick={() => UserService.cleanReviewCounter()}
                       underline="none"
                       color="inherit"
                     >
