@@ -24,12 +24,6 @@ router.put(
   middleware.checkAuthentication,
   AuthController.addreview
 );
-// delete a review
-router.delete(
-  "/deletereview",
-  middleware.checkAuthentication,
-  AuthController.deletereview
-);
 // checks user, then deletes user
 router.delete(
   "/delete",
