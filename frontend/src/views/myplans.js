@@ -14,12 +14,12 @@ import Divider from "@mui/material/Divider";
 
 /**
  * Purchase history that displays every bought content item for a specific consumer with an option to download the item,
- * contact our customer support (forward to the content creators profile)
- * and write a review (forward to the content creators profile)
+ * contact our customer support and write a review (forward to the content creators profile)
  *
  * @return {JSX.Element} returns My Plans page.
  */
 function MyPlans(props) {
+  // State from the redux store for our user.
   const user = useSelector((state) => state.user);
 
   // State from the redux store for plans.

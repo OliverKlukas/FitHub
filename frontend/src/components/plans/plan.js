@@ -11,6 +11,7 @@ import ReportDialog from "../profilecomponents/popups/report_dialog";
  * my plans view content component including an overview of price, content creator, a download button, a review button that links to the content creators profile and a customer support button.
  *
  * @param item - To be displayed content item, expected to adhere to the database scheme of content.
+ * @param transaction - the data from the transaction 
  * @return {JSX.Element} - Returns content item that will be displayed in the myplans view.
  */
 export default function Plan({ item, transaction }) {
