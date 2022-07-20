@@ -2,7 +2,6 @@ import {
   Stack,
   Typography,
   CircularProgress,
-  Button,
   Box,
 } from "@mui/material";
 import * as React from "react";
@@ -10,7 +9,6 @@ import { connect, useSelector } from "react-redux";
 import Plan from "../components/plans/plan";
 import { getBoughtPlan, getContents } from "../redux/actions";
 import { useEffect } from "react";
-import ContentService from "../services/contentService";
 import CustomerDrawer from "../components/drawer/customer_drawer";
 import Divider from "@mui/material/Divider";
 

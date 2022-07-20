@@ -28,7 +28,7 @@ import UserService from "../services/userService";
 /**
  * Payment page with the most important information about the content item, a link to our Terms and Conditions the customer has to accept and the payment method selection.
  *
- * @param {*} props 
+ * @param {*} props
  * @returns {JSX.Element}
  */
 function Payment(props) {
@@ -111,7 +111,7 @@ function Payment(props) {
     setErrorOpen(false);
   };
 
-  // Merge all hooks together and publish it to mongodb. After completing the database entry, the user is redirect to myplans
+  // publish the boudht plan to mongodb. After completing the database entry, the user is redirect to myplans
   async function publishboughtPlan() {
     try {
       await props.addboughtPlan({
@@ -128,28 +128,36 @@ function Payment(props) {
     }
   }
 
+  // as soon as the payment is succesful, create the database entry for the transaction
   const handleApprove = (orderId) => {
     publishboughtPlan();
   };
 
+  // error handling snackbar (if error occurs and the snackbar is not open yet.)
   if (error && !erroropen) {
     setErrorOpen(true);
   }
 
+  // display popup if the user is not signed in or signed in as a content creator
   const [dialogOpen, setDialogOpen] = React.useState(false);
 
+  // redirect the user to the sign in page if not logged in
   const handleDialogClose = () => {
     setDialogOpen(false);
     navigate("/signin");
   };
 
+  // if the user is not logged in -> must sign in
   if (!user.user && !dialogOpen) {
     setDialogOpen(true);
   }
+
+  // if the user is logged in as a content creator -> must sign in as a customer
   if (user.user && !(user.user.role === "customer") && !dialogOpen) {
     setDialogOpen(true);
   }
 
+  // check if content and author of content already loaded
   return !singleContent.content || !author ? (
     // Loading content.
     <Box
@@ -212,7 +220,9 @@ function Payment(props) {
                   spacing={4}
                 >
                   <Typography variant="h3">Content Creator</Typography>
-                  <Typography variant="h4">{author.firstname + " " + author.lastname}</Typography>
+                  <Typography variant="h4">
+                    {author.firstname + " " + author.lastname}
+                  </Typography>
                 </Stack>
                 <Divider sx={{ my: 2, bgcolor: "#222831" }} />
                 <Stack
@@ -336,7 +346,7 @@ function Payment(props) {
             Buy Now
           </HighlightButton>
         )}
-        {show ? (
+        {show && (
           <PayPalButtons
             style={{
               layout: "vertical",
@@ -369,7 +379,7 @@ function Payment(props) {
               setError("transaction failed.");
             }}
           />
-        ) : null}
+        )}
         <Snackbar
           open={snackopen}
           autoHideDuration={6000}
