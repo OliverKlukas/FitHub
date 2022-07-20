@@ -1,6 +1,5 @@
 "use Strict";
 
-const {countDocuments} = require("../models/boughtPlans");
 const boughtPlansModel = require("../models/boughtPlans");
 const ChatModel = require("../models/chat")
 const ContentModel = require("../models/content");
