@@ -18,8 +18,7 @@ import {
 } from "@mui/material";
 import { Link as RouterLink, useParams, useNavigate } from "react-router-dom";
 import { HighlightButton } from "../components/buttons/highlight_button";
-import { PayPalButtons } from "@paypal/react-paypal-js";
-import { PayPalScriptProvider } from "@paypal/react-paypal-js";
+import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import { useState, useEffect } from "react";
 import { connect, useSelector } from "react-redux";
 import { getContent } from "../redux/actions";
@@ -29,7 +28,8 @@ import UserService from "../services/userService";
 /**
  * Payment page with the most important information about the content item, a link to our Terms and Conditions the customer has to accept and the payment method selection.
  *
- * @returns {JSX.Element} Returns payment page.
+ * @param {*} props 
+ * @returns {JSX.Element}
  */
 function Payment(props) {
   // Retrieve author of content item.
@@ -42,8 +42,6 @@ function Payment(props) {
 
   // get the user from redux
   const user = useSelector((state) => state.user);
-
-  //const cookies = new Cookies();cookies.set(key1, value1, {secure: true, sameSite: 'none'});cookies.set(key2, value2, {secure: true, sameSite: 'none'});
 
   // Match url id to content item.
   const { id } = useParams();
@@ -60,7 +58,7 @@ function Payment(props) {
         setAuthor(res);
       });
     }
-  }, [singleContent.content]);
+  }, [singleContent.content, id, props]);
 
   // if show is false, the standard payment view with payment method selection and terms and conditions accepting is displayed. If show true, only the paypal buttons will be displayed
   const [show, setShow] = useState(false);
@@ -148,6 +146,9 @@ function Payment(props) {
   if (!user.user && !dialogOpen) {
     setDialogOpen(true);
   }
+  if (user.user && !(user.user.role === "customer") && !dialogOpen) {
+    setDialogOpen(true);
+  }
 
   return !singleContent.content || !author ? (
     // Loading content.
@@ -159,8 +160,6 @@ function Payment(props) {
     >
       <CircularProgress />
     </Box>
-  ) : singleContent.error ? (
-    <Alert severity="error">Loading content went wrong, sorry!</Alert>
   ) : (
     <PayPalScriptProvider
       options={{
@@ -366,7 +365,7 @@ function Payment(props) {
             onCancel={() => {
               setError("transaction canceled.");
             }}
-            onError={(err) => {
+            onError={() => {
               setError("transaction failed.");
             }}
           />
@@ -400,10 +399,10 @@ function Payment(props) {
         </Snackbar>
         <Dialog open={dialogOpen} onClose={handleDialogClose}>
           <DialogTitle>
-            You have to sign in before you can purchase a plan
+            You have to sign in as a customer before you can purchase a plan
           </DialogTitle>
           <DialogActions>
-            <Button onClick={handleDialogClose}>Sign in</Button>
+            <Button onClick={handleDialogClose}>Okay</Button>
           </DialogActions>
         </Dialog>
       </Stack>
