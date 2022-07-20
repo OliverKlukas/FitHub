@@ -43,7 +43,6 @@ const UserSchema = new mongoose.Schema(
         },
         // role of the user
         role: {
-            // potentially add a admin role for "Employees"
             type: String,
             // role can only take the values "customer" and "contentCreator"
             enum: ["customer", "contentCreator"],
@@ -75,6 +74,7 @@ const UserSchema = new mongoose.Schema(
 UserSchema.set("versionKey", false);
 ReviewSchema.set("versionKey", false);
 
+// addes the avgReviewRating property to Users, calculated by mapping over the reviews
 UserSchema.virtual("avgReviewRating").get(function () {
     let avgstar = 0;
     let stars = 0;
@@ -92,6 +92,8 @@ UserSchema.virtual("avgReviewRating").get(function () {
     return avgstar;
 });
 
+
+// needed for the Dashboard, adds the gradingDistribution property, maps over reviews and assigns names to int ratings
 UserSchema.virtual("gradingDistribution").get(function () {
     let onestar = 0;
     let twostar = 0;
