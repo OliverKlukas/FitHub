@@ -38,37 +38,41 @@ const create = async (req, res) => {
         });
     }
 
-    // Create a chat between customer and creator in case it does not exist yet and if support for content is desired.
     try {
         const boughtContent = await ContentModel.findById(req.body.contentId).exec();
-
-        // Add a new chat for the bought content if necessary.
+        // Create a chat between customer and creator in case it does not exist yet and if support for content is desired.
         if (boughtContent.support) {
             await ChatModel.exists({
-                $or: [{partOne: req.userId, partTwo: req.params.id}, {
-                    partOne: req.params.id, partTwo: req.userId
+                $or: [{partOne: req.userId, partTwo: boughtContent.ownerId}, {
+                    partOne: boughtContent.ownerId, partTwo: req.userId
                 }]
-            }, async function (err) {
-                // No chat created yet.
+            }, async function (err, doc) {
                 if (err) {
-                    const chat = {
-                        partOne: req.body.ownerId, partTwo: req.body.userId,
-                    };
-                    await ChatModel.create(chat);
-                    await ChatModel.updateOne({
-                        partOne: req.body.ownerId, partTwo: req.body.userId,
-                    }, {
-                        $push: {
-                            messages: {
-                                senderId: req.body.ownerId,
-                                text: "Thank you for buying my content, feel free to contact me here if you have any questions!"
+                    return res.status(500).json({
+                        error: "Internal server error:" + err,
+                    });
+                }
+                else {
+                    // No chat created yet.
+                    if (doc == null){
+                        const chat = {
+                            partOne: req.body.ownerId, partTwo: req.body.userId,
+                        };
+                        await ChatModel.create(chat);
+                        await ChatModel.updateOne({
+                            partOne: req.body.ownerId, partTwo: req.body.userId,
+                        }, {
+                            $push: {
+                                messages: {
+                                    senderId: req.body.ownerId,
+                                    text: "Thank you for buying my content, feel free to contact me here if you have any questions!"
+                                }
                             }
-                        }
-                    }).exec();
+                        }).exec();
+                    }
                 }
             });
         }
-
         const boughtPlan = await boughtPlansModel.create(req.body);
         return res.status(201).json(boughtPlan);
     } catch (err) {
