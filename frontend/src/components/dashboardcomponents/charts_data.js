@@ -4,7 +4,7 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import UserService from "../../services/userService";
 import boughtPlanService from "../../services/boughtPlanService";
-import { connect, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { BarChart, Bar, XAxis, Tooltip, PieChart, Pie } from "recharts";
 
 export default function ChartsData() {
@@ -26,6 +26,11 @@ export default function ChartsData() {
     overallSales: 0,
   });
 
+  /**
+   * fetching following data from:
+   * 1. User: grading distribution & average rating
+   * 2. boughtPlans: sales distribution (which plans how many times) & overall sales as counter
+   */
   useEffect(() => {
     async function fetchData() {
       if (user.user) {
@@ -47,8 +52,9 @@ export default function ChartsData() {
       }
     }
     fetchData();
-  }, [setData, setSalesDist]);
+  }, [setData, setSalesDist, user.user]);
 
+  //costum pie chart from recharts -> percentage shown in inner circle
   const RADIAN = Math.PI / 180;
   const renderCustomizedLabel = ({
     cx,
@@ -96,7 +102,7 @@ export default function ChartsData() {
               outerRadius={120}
               fill="#00ADB5"
               labelLine={false}
-              label={renderCustomizedLabel}
+              label={renderCustomizedLabel} //function implemented above
             />
             <Tooltip />
           </PieChart>
