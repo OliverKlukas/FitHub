@@ -20,9 +20,8 @@ export default function UploadButton({
   givenId,
   multiUpload,
   setUpload,
-  setSuccess = true,
   buttonText = "Upload",
-  buttonDescription = "Select a file"
+  buttonDescription = "Select a file",
 }) {
   const [isFilePicked, setIsFilePicked] = useState(false);
   const [snackbar, setSnackbar] = React.useState(false);
@@ -60,13 +59,11 @@ export default function UploadButton({
 
     if (uploadSize > 16000000) {
       setUploadFail(true);
-      setSuccess=true;
     } else {
       setUpload(newUpload);
       setFileNames(newFileNames);
       setIsFilePicked(true);
       setSnackbar(true);
-      setSuccess=false;
     }
   }
 

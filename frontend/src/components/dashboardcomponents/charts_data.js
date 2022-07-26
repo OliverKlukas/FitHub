@@ -4,7 +4,7 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import UserService from "../../services/userService";
 import boughtPlanService from "../../services/boughtPlanService";
-import { connect, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { BarChart, Bar, XAxis, Tooltip, PieChart, Pie } from "recharts";
 
 export default function ChartsData() {
