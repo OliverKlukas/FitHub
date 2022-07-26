@@ -83,7 +83,7 @@ export default function UpdateContent(props) {
   // State for Popup
   const [open, setOpen] = React.useState(false);
 
-  // States for Snackbar
+  // States for Success Snackbar
   const [snackopen, setsnackOpen] = React.useState(false);
 
   const handleClickOpen = () => {
@@ -107,7 +107,7 @@ export default function UpdateContent(props) {
   const currentLifestyle = [];
 
   // sort existing tags to tag category
-  item.tags.map((tag) => {
+  item.tags.forEach((tag) => {
     if (fitnessGoal.includes(tag)) currentGoals.push(tag);
     if (fitnessLevel.includes(tag)) currentLevel.push(tag);
     if (lifestyle.includes(tag)) currentLifestyle.push(tag);
@@ -143,10 +143,6 @@ export default function UpdateContent(props) {
   const [mediaError, setMediaError] = React.useState(false);
   const [planError, setPlanError] = React.useState(false);
   const [sampleError, setSampleError] = React.useState(false);
-
-  // Handle publishing failure and success.
-  const [pubFailure, setPubFailure] = useState(false);
-  const [pubSuccess, setPubSuccess] = useState(false);
 
   //#endregion hooks
 
@@ -226,12 +222,6 @@ export default function UpdateContent(props) {
   //#endregion
 
   //#region snackbars
-  //snackbar missing tags
-  const [tagsSnack, setTagsSnack] = useState(false);
-  // close the snackbar of tags
-  const handleTagsSnack = () => {
-    setTagsSnack(false);
-  };
 
   //snackbar to notify user that content is missing
   const [uploadSnack, setUploadSnack] = useState(false);
@@ -267,8 +257,9 @@ export default function UpdateContent(props) {
       await ContentService.updateContent(temp);
       setOpen(false);
       setsnackOpen(true);
+      window.location.reload(false);
     } catch (error) {
-      setPubFailure(true);
+      setUploadSnack(true);
     }
   }
 
@@ -318,7 +309,8 @@ export default function UpdateContent(props) {
         intensityError ||
         media.length === 0 ||
         plan.length === 0 ||
-        sample.length === 0
+        sample.length === 0 ||
+        tagsError
       ) {
         setUploadSnack(true);
         if (media.length === 0) {
@@ -330,8 +322,6 @@ export default function UpdateContent(props) {
         if (sample.length === 0) {
           setSampleError(true);
         }
-      } else if (tagsError) {
-        setTagsSnack(true);
       }
     }
   }
