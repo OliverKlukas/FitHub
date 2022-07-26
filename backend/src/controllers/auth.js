@@ -535,7 +535,7 @@ const getNewNotifications = async (req, res) => {
         });
     } catch (error) {
         return res.status(500).json({
-            error: "Internal server error" + err.message,
+            error: "Internal server error" + error.message,
         });
     }
 };

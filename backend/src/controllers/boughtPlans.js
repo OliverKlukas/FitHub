@@ -34,43 +34,44 @@ const create = async (req, res) => {
     // Check if the body of the request is not empty.
     if (Object.keys(req.body).length === 0) {
         return res.status(400).json({
-            error: "Bad Request",
-            message: "The request body is empty",
+            error: "Bad Request", message: "The request body is empty",
         });
     }
 
-    // Handle the given boughtPlan creation request.
+    // Create a chat between customer and creator in case it does not exist yet and if support for content is desired.
     try {
-        // Create the chat between the customer and content creator, but only if support for content is desired.
         const boughtContent = await ContentModel.findById(req.body.contentId).exec();
-        if(boughtContent.support){
-            const chat = {
-                partOne: req.body.ownerId,
-                partTwo: req.body.userId,
-            };
-            await ChatModel.create(chat);
-            await ChatModel.updateOne({
-                    partOne: req.body.ownerId,
-                    partTwo: req.body.userId,
-                },
-                {
-                    $push: {
-                        messages: {
-                            senderId: req.body.ownerId,
-                            text: "Thank you for buying my content, feel free to contact me here if you have any questions!"
+
+        // Add a new chat for the bought content if necessary.
+        if (boughtContent.support) {
+            await ChatModel.exists({
+                $or: [{partOne: req.userId, partTwo: req.params.id}, {
+                    partOne: req.params.id, partTwo: req.userId
+                }]
+            }, async function (err) {
+                // No chat created yet.
+                if (err) {
+                    const chat = {
+                        partOne: req.body.ownerId, partTwo: req.body.userId,
+                    };
+                    await ChatModel.create(chat);
+                    await ChatModel.updateOne({
+                        partOne: req.body.ownerId, partTwo: req.body.userId,
+                    }, {
+                        $push: {
+                            messages: {
+                                senderId: req.body.ownerId,
+                                text: "Thank you for buying my content, feel free to contact me here if you have any questions!"
+                            }
                         }
-                    }
+                    }).exec();
                 }
-            ).exec();
+            });
         }
 
-        // Create boughtPlan in database with supplied request body.
         const boughtPlan = await boughtPlansModel.create(req.body);
-
-        // Return success status with created boughtPlan as json.
         return res.status(201).json(boughtPlan);
     } catch (err) {
-        console.log(err);
         return res.status(500).json({
             error: "Internal server error:" + err.message,
         });
@@ -127,20 +128,17 @@ const getSalesDistribution = async (req, res) => {
         //get the amount of plans sold for each exclusive plan
         plans.map((item) => {
             countPlans.push({
-                name: item,
-                amount: ownSales.filter((x) => x == item).length,
+                name: item, amount: ownSales.filter((x) => x == item).length,
             });
         });
 
         return res.status(200).json({
-            salesDistribution: countPlans,
-            overallSales: ownSales.length,
+            salesDistribution: countPlans, overallSales: ownSales.length,
         });
     } catch (err) {
         console.log(err);
         return res.status(500).json({
-            error: "Internal Server Error",
-            message: err.message,
+            error: "Internal Server Error", message: err.message,
         });
     }
 };
@@ -176,19 +174,11 @@ const getFinancials = async (req, res) => {
 
         //setting dates for current period (calculate payout)
         const currDate = new Date();
-        const firstCurrDay = new Date(
-            currDate.getFullYear(),
-            currDate.getMonth(),
-            1
-        );
+        const firstCurrDay = new Date(currDate.getFullYear(), currDate.getMonth(), 1);
 
         //setting dates for last period (calculate chage)
         const periodStart = new Date(currDate - 31 * offset);
-        const firstLastDay = new Date(
-            periodStart.getFullYear(),
-            periodStart.getMonth(),
-            1
-        );
+        const firstLastDay = new Date(periodStart.getFullYear(), periodStart.getMonth(), 1);
 
         boughtPlans.map((item) => {
             //check if content is from requested user
@@ -225,13 +215,7 @@ const getFinancials = async (req, res) => {
 
         // current payout to string
         payoutCurrPeriodString = payoutCurrPeriod.toString();
-        payoutCurrPeriodString =
-            payoutCurrPeriodString.substring(0, payoutCurrPeriodString.length - 2) +
-            "," +
-            payoutCurrPeriodString.substring(
-                payoutCurrPeriodString.length - 2,
-                payoutCurrPeriodString.length
-            );
+        payoutCurrPeriodString = payoutCurrPeriodString.substring(0, payoutCurrPeriodString.length - 2) + "," + payoutCurrPeriodString.substring(payoutCurrPeriodString.length - 2, payoutCurrPeriodString.length);
         if (payoutCurrPeriodString === ",0") {
             payoutCurrPeriodString = "0";
         }
@@ -247,9 +231,7 @@ const getFinancials = async (req, res) => {
         });
 
         if (payoutCurrPeriod !== 0) {
-            changeRate = Math.round(
-                ((payoutCurrPeriod - payoutLastPeriod) / payoutCurrPeriod) * 100
-            );
+            changeRate = Math.round(((payoutCurrPeriod - payoutLastPeriod) / payoutCurrPeriod) * 100);
         }
 
         const changeRateString = changeRate.toString().replace("-", "- ");
@@ -266,10 +248,7 @@ const getFinancials = async (req, res) => {
 
         // overall payments back to string
         ovRevString = overallRev.toString();
-        ovRevString =
-            ovRevString.substring(0, ovRevString.length - 2) +
-            "," +
-            ovRevString.substring(ovRevString.length - 2, ovRevString.length);
+        ovRevString = ovRevString.substring(0, ovRevString.length - 2) + "," + ovRevString.substring(ovRevString.length - 2, ovRevString.length);
         if (ovRevString === ",0") {
             ovRevString = "0";
         }
@@ -283,8 +262,7 @@ const getFinancials = async (req, res) => {
     } catch (err) {
         console.log(err);
         return res.status(500).json({
-            error: "Internal Server Error",
-            message: err.message,
+            error: "Internal Server Error", message: err.message,
         });
     }
 };
@@ -336,31 +314,20 @@ const getTimeline = async (req, res) => {
         });
 
         return res.status(200).json({
-            timeline: [
-                {week: vals[7], sales: sales[7]},
-                {week: vals[6], sales: sales[6]},
-                {week: vals[5], sales: sales[5]},
-                {week: vals[4], sales: sales[4]},
-                {week: vals[3], sales: sales[3]},
-                {week: vals[2], sales: sales[2]},
-                {week: vals[1], sales: sales[1]},
-                {week: vals[0], sales: sales[0]},
-            ],
+            timeline: [{week: vals[7], sales: sales[7]}, {week: vals[6], sales: sales[6]}, {
+                week: vals[5], sales: sales[5]
+            }, {week: vals[4], sales: sales[4]}, {week: vals[3], sales: sales[3]}, {
+                week: vals[2], sales: sales[2]
+            }, {week: vals[1], sales: sales[1]}, {week: vals[0], sales: sales[0]},],
         });
     } catch (err) {
         console.log(err);
         return res.status(500).json({
-            error: "Internal Server Error",
-            message: err.message,
+            error: "Internal Server Error", message: err.message,
         });
     }
 };
 
 module.exports = {
-    create,
-    list,
-    get,
-    getSalesDistribution,
-    getFinancials,
-    getTimeline,
+    create, list, get, getSalesDistribution, getFinancials, getTimeline,
 };
