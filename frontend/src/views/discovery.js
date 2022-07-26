@@ -86,7 +86,6 @@ function Discovery(props) {
           gap={40}
         >
           {contentList.map((item) => {
-            console.log(item); // TODO
             if (
               parseFloat(item.price) >= priceRange[0] &&
               parseFloat(item.price) <= priceRange[1] &&
