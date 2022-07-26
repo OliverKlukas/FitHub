@@ -29,7 +29,10 @@ import { useSelector } from "react-redux";
 import CreatorDrawer from "../components/drawer/creator_drawer";
 import Divider from "@mui/material/Divider";
 
+// placeholder for empty input fields
 const preInputValue = "Type here...";
+
+// values for tags
 const fitnessGoal = ["weight-loss", "weight-gain", "muscle-growth", "cardio"];
 const fitnessLevel = ["beginner", "advanced", "professional"];
 const lifestyle = ["vegan", "vegetarian", "pescatarian", "meat-based"];
@@ -47,14 +50,15 @@ function ContentUpload(props) {
   //get the logged in user
   const user = useSelector((state) => state.user);
 
-  let defaultCategory = "training";
+  //#region hooks
+  const [defaultCategory, setDefaultCategory] = useState("training");
 
   if (
     props.data.choice === "training" ||
     props.data.choice === "nutrition" ||
     props.data.choice === "coaching"
   ) {
-    defaultCategory = props.data.choice;
+    setDefaultCategory(props.data.choice);
   }
 
   // Hooks to save filled out upload form, all need pre-defined value.
@@ -78,7 +82,9 @@ function ContentUpload(props) {
   // Handle publishing failure and success.
   const [pubFailure, setPubFailure] = useState(false);
   const [pubSuccess, setPubSuccess] = useState(false);
+  //#endregion hooks
 
+  //#region snackbar & success handling
   //snackbar missing mandatory checkboxes
   const [checkFailure, setCheckFailure] = useState(false);
   // close the snackbar of mandatory checkboxes
@@ -110,6 +116,8 @@ function ContentUpload(props) {
   function handleCancelSubmit() {
     navigate("/landing");
   }
+
+  //#endregion snackbar & success handling
 
   // User input verification and hand-off to backend database publication.
   function handlePublishContent() {
@@ -204,7 +212,7 @@ function ContentUpload(props) {
         duration: parseInt(duration),
         intensity: parseInt(intensity),
         support: support,
-        tags: goalTags.concat(levelTags, lifestyleTags, [
+        tags: goalTags.concat(levelTags, lifestyleTags, [category === "coaching" ? "coaching" : category + " plan"], [
           user.user.fname + " " + user.user.lname,
         ]),
         featured: feature,
@@ -294,6 +302,7 @@ function ContentUpload(props) {
 
   //#endregion
 
+  //#region error hooks
   //error handling
   const [priceError, setPriceError] = React.useState(false);
   const [titleError, setTitleError] = React.useState(false);
@@ -313,6 +322,8 @@ function ContentUpload(props) {
   // will be true as mandatory checks arent fullfilled
   const [missedTermsCheck, setMissedTermsCheck] = React.useState(false);
   const [missedQualityCheck, setMissedQualityCheck] = React.useState(false);
+
+  //#endregion error hooks
 
   // change acceptance state of the terms and conditions if the checkbox is clicked
   const handleTermsChange = (event) => {
@@ -693,11 +704,18 @@ function ContentUpload(props) {
           <Stack direction="row" alignItems="center">
             <Checkbox
               value={support}
+              checked={category === "coaching" ? true : support}
               onChange={(event) => setSupport(event.target.checked)}
             />
-            <Typography variant="body1">
-              Yes, I am offering full-time support for the buyers
-            </Typography>
+            {category === "coaching" ? (
+              <Typography variant="body1" fontWeight="bold">
+                Coachings automatically offer support via the chat function
+              </Typography>
+            ) : (
+              <Typography variant="body1">
+                Yes, I am offering support via chat for the buyers
+              </Typography>
+            )}
           </Stack>
           <Stack direction="row" alignItems="center">
             <Checkbox
@@ -820,7 +838,7 @@ function ContentUpload(props) {
             severity="error"
             sx={{ width: "100%" }}
           >
-            Upload your content before publishing!
+            Missing content for uploading
           </Alert>
         </Snackbar>
         <Snackbar

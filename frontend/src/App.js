@@ -1,9 +1,9 @@
 import * as React from "react";
-import {useState} from "react";
+import { useState } from "react";
 import Discovery from "./views/discovery";
-import {BrowserRouter, Navigate, Route, Routes} from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import AboutUs from "./views/about_us";
-import {CssBaseline, ThemeProvider} from "@mui/material";
+import { CssBaseline, ThemeProvider } from "@mui/material";
 import FitHubTheme from "./utils/theme";
 import Header from "./components/header/header";
 import Profile from "./views/profile";
@@ -18,8 +18,8 @@ import MyPlans from "./views/myplans";
 import LandingPage from "./views/landing_page";
 import ContentUpload from "./views/content_upload";
 import SignIn from "./views/sign_in";
-import {Provider} from "react-redux";
-import {applyMiddleware, createStore} from "redux";
+import { Provider } from "react-redux";
+import { applyMiddleware, createStore } from "redux";
 import reducers from "./redux/reducers";
 import thunkMiddleware from "redux-thunk";
 import MyContent from "./views/mycontent";
@@ -32,10 +32,14 @@ import ChatView from "./views/chat";
  * @return {JSX.Element}
  */
 function App() {
-    // create store for redux
-    const store = createStore(reducers, applyMiddleware(thunkMiddleware));
+  // create store for redux
+  const store = createStore(reducers, applyMiddleware(thunkMiddleware));
 
-    const [choice, setChoice] = useState("");
+  /**
+   * hook for category
+   * setter: landing page -> forwarded to
+   */
+  const [choice, setChoice] = useState("");
 
   return (
     <ThemeProvider theme={FitHubTheme}>
@@ -73,7 +77,7 @@ function App() {
                 <Route path="/signin" element={<SignIn />} />
                 <Route path="/mycontent" element={<MyContent />} />
                 <Route path="/dashboard" element={<Dashboard />} />
-                  <Route path="/chat" element={<ChatView/>}/>
+                <Route path="/chat" element={<ChatView />} />
               </Routes>
             </Box>
             <Footer />
