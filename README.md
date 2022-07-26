@@ -5,7 +5,7 @@
 FitHub is the platform where fitness content creators sell their training and nutrition plans to fitness enthusiasts and health-conscious consumers. We want to help fitness content creators reaching a larger audience than on social media, while also providing a trustworthy and simple-to-use solution for fitness enthusiasts to find training plans, fitness plans or coachings suited for their preferences.
 
 # Technical documentation
-Please install all prerequisites and always run frontend and backend simultaneously. In order to experience the full FitHub experience we encourage you to register as a content creator and create at least one fitness content.
+Please install all prerequisites and always run frontend and backend simultaneously. In order to experience the full FitHub experience we encourage you to register as a content creator and create at least one fitness content. Also we generally advise you to use Google Chrome for the best performance.
 
 ## Prerequisites
 - Node: v16.x
