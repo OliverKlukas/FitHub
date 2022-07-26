@@ -78,7 +78,7 @@ function Header(props) {
 
   // Sub-urls and link names for available user menu options when the user is not logged in
   const settings = {
-    contact: "Contact",
+    about: "About Us",
     signin: "Sign in",
     signup: "Sign up",
   };

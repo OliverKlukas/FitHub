@@ -244,7 +244,7 @@ export default function UpdateContent(props) {
         duration: parseInt(duration),
         intensity: parseInt(intensity),
         support: support,
-        tags: goalTags.concat(levelTags, lifestyleTags, [
+        tags: goalTags.concat(levelTags, lifestyleTags, [category === "coaching" ? "coaching" : category + " plan"], [
           user.user.fname + " " + user.user.lname,
         ]),
         featured: feature,
