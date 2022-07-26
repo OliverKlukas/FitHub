@@ -44,7 +44,7 @@ function MyPlans(props) {
       <Divider orientation="vertical" flexItem />
       {planList && contentList ? (
         <Stack spacing={4} width="100%">
-          <Typography variant="h1">My Plans</Typography>
+          <Typography variant="h1">Purchases</Typography>
           {planList
             .sort((a, b) =>
               a.boughtAt > b.boughtAt ? -1 : b.boughtAt > a.boughtAt ? 1 : 0
