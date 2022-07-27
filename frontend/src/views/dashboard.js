@@ -1,5 +1,4 @@
-import { Stack, Typography } from "@mui/material";
-import { useParams } from "react-router-dom";
+import { Stack } from "@mui/material";
 import CreatorDrawer from "../components/drawer/creator_drawer";
 import * as React from "react";
 import Divider from "@mui/material/Divider";

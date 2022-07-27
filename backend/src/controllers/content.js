@@ -146,13 +146,19 @@ const get = async (req, res) => {
   }
 };
 
+/**
+ * returns a list of all the content a user has uploaded
+ * @param {*} req userId added by middleware
+ * @param {*} res 
+ * @returns 
+ */
 const getMyContent = async (req, res) => {
   try {
     const contents = await ContentModel.find({}).exec();
     const mycontents = [];
 
     contents.map((item) => {
-      if (item.ownerId == req.body.userId) {
+      if (item.ownerId == req.userId) {
         mycontents.push(item);
       }
     });

@@ -34,17 +34,16 @@ export default function OffContent({ item }) {
   // Retrieve author of content item.
   const [author, setAuthor] = useState(null);
 
+  // Trigger retrieval of states and backend data.
+  useEffect(() => {
   // Function to fetch username from service.
   async function fetchUser() {
     return await UserService.userdata(item.ownerId);
   }
-
-  // Trigger retrieval of states and backend data.
-  useEffect(() => {
     fetchUser().then((res) => {
       setAuthor(res);
     });
-  }, [author]);
+  }, [item.ownerId]);
 
   const dateFromObjectId = function (objectId) {
     const date = new Date(parseInt(objectId.substring(0, 8), 16) * 1000);
