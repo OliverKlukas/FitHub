@@ -132,9 +132,6 @@ function ContentUpload(props) {
         priceModf = priceModf + "0";
       }
     }
-
-    if (category === "coaching") setSupport(true);
-
     validatePrice();
     validateTitle();
     validateDescription();
@@ -209,7 +206,7 @@ function ContentUpload(props) {
         price: priceModf,
         duration: parseInt(duration),
         intensity: parseInt(intensity),
-        support: support,
+        support: category === "coaching" ? true : support,
         tags: goalTags.concat(
           levelTags,
           lifestyleTags,
