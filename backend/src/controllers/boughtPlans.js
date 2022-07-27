@@ -3,6 +3,7 @@
 const boughtPlansModel = require("../models/boughtPlans");
 const ChatModel = require("../models/chat")
 const ContentModel = require("../models/content");
+const UserModel = require("../models/user")
 
 /**
  * Returns list of all boughtPlan in database.
@@ -58,6 +59,19 @@ const create = async (req, res) => {
                         const chat = {
                             partOne: boughtContent.ownerId, partTwo: req.body.userId,
                         };
+                        // updates Notifications Counter
+                        const buyerId = req.body.userId;
+                        const buyerUser = await UserModel.findById(buyerId).exec();
+                        let counter = buyerUser.newReviewsCounter;
+                        counter++;
+                
+                        await UserModel.findByIdAndUpdate(
+                            buyerId,
+                            {newMessagesCounter: counter,},
+                            {
+                                new: true,
+                                runValidators: true,
+                            }).exec();
                         await ChatModel.create(chat);
                         await ChatModel.updateOne({
                             partOne: boughtContent.ownerId, partTwo: req.body.userId,
