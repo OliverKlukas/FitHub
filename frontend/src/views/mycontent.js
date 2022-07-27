@@ -45,8 +45,8 @@ export default function MyContent() {
               ? 1
               : 0
           )
-          .map((item) => {            
-              return <OffContent key={Math.random()} item={item}></OffContent>;            
+          .map((item) => {
+            return <OffContent key={item._id} item={item}></OffContent>;
           })}
       </Stack>
     </Stack>
