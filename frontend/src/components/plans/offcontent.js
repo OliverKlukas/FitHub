@@ -9,22 +9,6 @@ import ConfirmDialog from "../profilecomponents/popups/confirm_dialog";
 import UpdateContentPop from "../dashboardcomponents/update_content";
 
 /**
- * get image src path.
- *
- * Adapted from: https://mui.com/material-ui/react-image-list/#CustomImageList.js
- *
- * @param image - String path to image resource.
- * @param width - Number desired width of image.
- * @param height - Number desired height of image.
- * @returns {{src: string}} - Returns src variable for img.
- */
-function srcset(image, width, height) {
-  return {
-    src: `${image}?w=${width}&h=${height}&fit=crop&auto=format`,
-  };
-}
-
-/**
  * my plans view content component including an overview of price, content creator, a download button, a review button that links to the content creators profile and a customer support button.
  *
  * @param item - To be displayed content item, expected to adhere to the database scheme of content.
@@ -36,10 +20,10 @@ export default function OffContent({ item }) {
 
   // Trigger retrieval of states and backend data.
   useEffect(() => {
-  // Function to fetch username from service.
-  async function fetchUser() {
-    return await UserService.userdata(item.ownerId);
-  }
+    // Function to fetch username from service.
+    async function fetchUser() {
+      return await UserService.userdata(item.ownerId);
+    }
     fetchUser().then((res) => {
       setAuthor(res);
     });
