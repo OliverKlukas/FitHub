@@ -28,7 +28,7 @@ export default function FinancialData() {
       }
     }
     fetchData();
-  }, [setData]);
+  }, [setData, user.user]);
 
   return (
     <Stack direction="row" spacing={3}>

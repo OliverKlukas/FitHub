@@ -75,6 +75,11 @@ function ContentUpload(props) {
   const [feature, setFeatured] = useState(false);
   const [marketing, setMarketing] = useState(false);
 
+  // state for Terms and Conditions Checkbox
+  const [termsChecked, setTermsChecked] = React.useState(false);
+  // state for Terms and Conditions Checkbox
+  const [qualityChecked, setQualityChecked] = React.useState(false);
+
   // Handle publishing failure and success.
   const [pubFailure, setPubFailure] = useState(false);
   const [pubSuccess, setPubSuccess] = useState(false);
@@ -206,7 +211,7 @@ function ContentUpload(props) {
         price: priceModf,
         duration: parseInt(duration),
         intensity: parseInt(intensity),
-        support: category === "coaching" ? true : support,
+        support: category === "coaching" ? true : support, // if coaching is selected -> support is mandatory
         tags: goalTags.concat(
           levelTags,
           lifestyleTags,
@@ -228,7 +233,7 @@ function ContentUpload(props) {
   //#region validation
   const validatePrice = () => {
     // [0-9]+ -> x times the numbers 0-9
-    // ([.,][0-9]{1,2})? -> ? means optionl (inside bracket)
+    // ([.,][0-9]{1,2})? -> ? means optionl (inside bracket) -> cents are optional
     // [.,] -> comma or point
     // [0-9]{1,2} -> 1 or 2 times a number
     if (price.match(/^([0-9]+([.,][0-9]{1,2})?)$/) === null) {
@@ -239,7 +244,7 @@ function ContentUpload(props) {
   };
 
   const validateTitle = () => {
-    //[a-zA-Z\-0-9<>!?();:.,-~+*#"%ß\u00c4\u00e4\u00d6\u00f6\u00dc\u00fc]+ -> x times all these chars (äöüÄÖÜ unicode)
+    //[a-zA-Z\-0-9<>!?();:.,-~+*#"%ß\u00c4\u00e4\u00d6\u00f6\u00dc\u00fc]+ -> x times all these chars ( incl. äöüÄÖÜ as unicode)
     //(\s+)? -> optional space(s)
     //{3,10} -> min 3 chars, max 10 words
     if (
@@ -312,22 +317,17 @@ function ContentUpload(props) {
   const [planError, setPlanError] = React.useState(false);
   const [sampleError, setSampleError] = React.useState(false);
 
-  // state for Terms and Conditions Checkbox
-  const [termsChecked, setTermsChecked] = React.useState(false);
-  // state for Terms and Conditions Checkbox
-  const [qualityChecked, setQualityChecked] = React.useState(false);
-
   // will be true as mandatory checks arent fullfilled
   const [missedTermsCheck, setMissedTermsCheck] = React.useState(false);
   const [missedQualityCheck, setMissedQualityCheck] = React.useState(false);
 
   //#endregion error hooks
 
-  // change acceptance state of the terms and conditions if the checkbox is clicked
+  // change state of the terms and conditions if the checkbox is clicked
   const handleTermsChange = (event) => {
     setTermsChecked(event.target.checked);
   };
-  // change acceptance state of the terms and conditions if the checkbox is clicked
+  // change state of the quality assurance if the checkbox is clicked
   const handleQualityChange = (event) => {
     setQualityChecked(event.target.checked);
   };
@@ -615,7 +615,8 @@ function ContentUpload(props) {
               }
             >
               Please upload pictures that represents your offer (example dishes,
-              workouts etc). Be aware of the total max size for all upload content of 16MB and respect our{" "}
+              workouts etc). Be aware of the total max size for all upload
+              content of 16MB and respect our{" "}
               <Link
                 color="#393E46"
                 fontSize={14}
@@ -654,9 +655,9 @@ function ContentUpload(props) {
                   : { color: "default" }
               }
             >
-              Please upload the pdf file of that contains the complete
-              training plan that buyers are going to receive.
-              Be aware of the total max size for all upload content of 16MB.
+              Please upload the pdf file of that contains the complete training
+              plan that buyers are going to receive. Be aware of the total max
+              size for all upload content of 16MB.
             </Typography>
           </Stack>
         </Stack>
@@ -684,8 +685,9 @@ function ContentUpload(props) {
                   : { color: "default" }
               }
             >
-              Please upload a sample pdf file which gives buyers an
-              impression of the full plan. Be aware of the total max size for all upload content of 16MB.
+              Please upload a sample pdf file which gives buyers an impression
+              of the full plan. Be aware of the total max size for all upload
+              content of 16MB.
             </Typography>
           </Stack>
         </Stack>

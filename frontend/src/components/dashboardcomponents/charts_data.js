@@ -101,7 +101,7 @@ export default function ChartsData() {
               outerRadius={120}
               fill="#00ADB5"
               labelLine={false}
-              label={renderCustomizedLabel} //function implemented above
+              label={renderCustomizedLabel} // function implemented top -> percentage inside pie
             />
             <Tooltip />
           </PieChart>
@@ -127,7 +127,7 @@ export default function ChartsData() {
             overall
           </Typography>
           <BarChart
-            key={Math.random()}
+            key={Math.random()} // allows animations as rerendered
             width={425}
             height={325}
             data={data.gradingDistribution}

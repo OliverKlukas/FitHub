@@ -26,6 +26,11 @@ export default function MyContent() {
     fetchData();
   }, [user.user]);
 
+  /** get the date out of the contents object id
+   *
+   * @param objectId - object ID of the content (=> MongoDB timestamp)
+   * @returns - date
+   */
   const dateFromObjectId = function (objectId) {
     const date = new Date(parseInt(objectId.substring(0, 8), 16) * 1000);
     return date;

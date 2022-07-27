@@ -16,6 +16,7 @@ import {
 export default function SalesTimeline() {
   const user = useSelector((state) => state.user);
 
+  // data will be structured like {week x : amount sales}
   const [data, setData] = React.useState({
     timeline: [],
   });
@@ -31,7 +32,7 @@ export default function SalesTimeline() {
       }
     }
     fetchData();
-  }, [setData]);
+  }, [setData, user.user]);
 
   return (
     <Card sx={{ minWidth: 975, backgroundColor: "#F2F2F2" }}>
