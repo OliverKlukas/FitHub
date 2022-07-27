@@ -358,7 +358,7 @@ function Payment(props) {
               return actions.order.create({
                 purchase_units: [
                   {
-                    description: singleContent.content.description,
+                    description: singleContent.content.title,
                     amount: {
                       value: parseFloat(
                         singleContent.content.price.replace(",", ".")
