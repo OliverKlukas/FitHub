@@ -133,6 +133,8 @@ function ContentUpload(props) {
       }
     }
 
+    if (category === "coaching") setSupport(true);
+
     validatePrice();
     validateTitle();
     validateDescription();

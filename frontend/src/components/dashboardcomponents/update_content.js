@@ -284,6 +284,8 @@ export default function UpdateContent(props) {
       }
     }
 
+    if (category === "coaching") setSupport(true);
+
     validatePrice();
     validateTitle();
     validateDescription();
