@@ -619,7 +619,7 @@ export default function UpdateContent(props) {
                     }
                   >
                     Please upload pictures that represents your offer (example
-                    dishes, workouts etc). Be aware of the max size of 16MB and
+                    dishes, workouts etc). Be aware of the max size for all upload content of 16MB and
                     respect our{" "}
                     <Link
                       color="#393E46"
@@ -631,7 +631,7 @@ export default function UpdateContent(props) {
                     >
                       Terms & Conditions
                     </Link>{" "}
-                    including image rights
+                    including image rights.
                   </Typography>
                 </Stack>
               </Stack>
@@ -659,8 +659,8 @@ export default function UpdateContent(props) {
                         : { color: "default" }
                     }
                   >
-                    Please upload the pdf file of max 16MB that contains the
-                    complete training plan that buyers are going to receive
+                    Please upload the pdf file that contains the
+                    complete training plan that buyers are going to receive. Be aware of the max size for all upload content of 16MB.
                   </Typography>
                 </Stack>
               </Stack>
@@ -689,8 +689,8 @@ export default function UpdateContent(props) {
                         : { color: "default" }
                     }
                   >
-                    Please upload a sample pdf file of max 16MB which gives
-                    buyers an impression of the full plan
+                    Please upload a sample pdf file which gives
+                    buyers an impression of the full plan. Be aware of the max size for all upload content of 16MB.
                   </Typography>
                 </Stack>
               </Stack>
