@@ -106,7 +106,7 @@ export default function UpdateContent(props) {
   const currentLevel = [];
   const currentLifestyle = [];
 
-  // sort existing tags to tag category
+  // sort existing tags to tag category (in db all tags summarized)
   item.tags.forEach((tag) => {
     if (fitnessGoal.includes(tag)) currentGoals.push(tag);
     if (fitnessLevel.includes(tag)) currentLevel.push(tag);
@@ -619,8 +619,8 @@ export default function UpdateContent(props) {
                     }
                   >
                     Please upload pictures that represents your offer (example
-                    dishes, workouts etc). Be aware of the max size for all upload content of 16MB and
-                    respect our{" "}
+                    dishes, workouts etc). Be aware of the max size for all
+                    upload content of 16MB and respect our{" "}
                     <Link
                       color="#393E46"
                       fontSize={14}
@@ -659,8 +659,9 @@ export default function UpdateContent(props) {
                         : { color: "default" }
                     }
                   >
-                    Please upload the pdf file that contains the
-                    complete training plan that buyers are going to receive. Be aware of the max size for all upload content of 16MB.
+                    Please upload the pdf file that contains the complete
+                    training plan that buyers are going to receive. Be aware of
+                    the max size for all upload content of 16MB.
                   </Typography>
                 </Stack>
               </Stack>
@@ -689,8 +690,9 @@ export default function UpdateContent(props) {
                         : { color: "default" }
                     }
                   >
-                    Please upload a sample pdf file which gives
-                    buyers an impression of the full plan. Be aware of the max size for all upload content of 16MB.
+                    Please upload a sample pdf file which gives buyers an
+                    impression of the full plan. Be aware of the max size for
+                    all upload content of 16MB.
                   </Typography>
                 </Stack>
               </Stack>

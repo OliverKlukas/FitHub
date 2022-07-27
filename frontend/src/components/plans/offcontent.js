@@ -29,6 +29,11 @@ export default function OffContent({ item }) {
     });
   }, [item.ownerId]);
 
+  /**
+   *
+   * @param objectId - content object ID (=> timestamp)
+   * @returns date in a common format
+   */
   const dateFromObjectId = function (objectId) {
     const date = new Date(parseInt(objectId.substring(0, 8), 16) * 1000);
     const retstring =
@@ -42,12 +47,14 @@ export default function OffContent({ item }) {
   // state for confirmation Dialog of reactivation
   const [confirmReOpen, setConfirmReOpen] = React.useState(false);
 
+  // update item with delete flag -> not shown in discovery anymore
   const handleDelete = async () => {
     let updateItem = item;
     updateItem.deleteflag = true;
     await ContentService.updateContent(updateItem);
   };
 
+  // update item delete flag to false -> again shown in discovery
   const handleReactivation = async () => {
     let updateItem = item;
     updateItem.deleteflag = false;

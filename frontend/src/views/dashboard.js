@@ -6,6 +6,16 @@ import FinancialData from "../components/dashboardcomponents/financial_data";
 import ChartsData from "../components/dashboardcomponents/charts_data";
 import SalesTimeline from "../components/dashboardcomponents/sales_timeline";
 
+/**
+ * Divider -> left vertical side bar to switch betwenn views
+ *
+ *
+ * FinancialData -> upper boxes with payout, growth
+ * ChartsData -> PieChart, Barchart
+ * SalesTimeline -> bottom timeline
+ *
+ * @returns
+ */
 export default function Dashboard() {
   return (
     <Stack direction="row" marginTop={5} spacing={5}>
