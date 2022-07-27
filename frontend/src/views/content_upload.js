@@ -50,17 +50,13 @@ function ContentUpload(props) {
   //get the logged in user
   const user = useSelector((state) => state.user);
 
-  //#region hooks
-  const [defaultCategory, setDefaultCategory] = useState("training");
-
-  if (
-    props.data.choice === "training" ||
-    props.data.choice === "nutrition" ||
-    props.data.choice === "coaching"
-  ) {
-    setDefaultCategory(props.data.choice);
+  let defaultCategory = "training";
+  // no check for trainining required - training would already be set (as default)
+  if (props.data.choice === "nutrition" || props.data.choice === "coaching") {
+    defaultCategory = props.data.choice;
   }
 
+  //#region hooks
   // Hooks to save filled out upload form, all need pre-defined value.
   const [category, setCategory] = useState(defaultCategory);
   const [title, setTitle] = useState("");
@@ -137,6 +133,8 @@ function ContentUpload(props) {
       }
     }
 
+    if (category === "coaching") setSupport(true);
+
     validatePrice();
     validateTitle();
     validateDescription();
@@ -212,9 +210,12 @@ function ContentUpload(props) {
         duration: parseInt(duration),
         intensity: parseInt(intensity),
         support: support,
-        tags: goalTags.concat(levelTags, lifestyleTags, [category === "coaching" ? "coaching" : category + " plan"], [
-          user.user.fname + " " + user.user.lname,
-        ]),
+        tags: goalTags.concat(
+          levelTags,
+          lifestyleTags,
+          [category === "coaching" ? "coaching" : category + " plan"],
+          [user.user.fname + " " + user.user.lname]
+        ),
         featured: feature,
         media: media,
         plan: plan[0],
