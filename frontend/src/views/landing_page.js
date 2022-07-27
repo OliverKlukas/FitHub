@@ -57,14 +57,14 @@ function LandingPage(props) {
       navigate("/discovery");
       window.location.reload();
     }
-  }, [navigate, user]);
+  }, [navigate, user.user]);
 
   return (
     <Stack sx={{ marginX: 6 }} spacing={1}>
       <LandingImage
         ilink={profilelink}
         iwidth={950}
-        iheight={200}
+        iheight={150}
         item={header}
       />
       <Stack direction="row" spacing={1}>

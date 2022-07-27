@@ -244,9 +244,12 @@ export default function UpdateContent(props) {
         duration: parseInt(duration),
         intensity: parseInt(intensity),
         support: support,
-        tags: goalTags.concat(levelTags, lifestyleTags, [category === "coaching" ? "coaching" : category + " plan"], [
-          user.user.fname + " " + user.user.lname,
-        ]),
+        tags: goalTags.concat(
+          levelTags,
+          lifestyleTags,
+          [category === "coaching" ? "coaching" : category + " plan"],
+          [user.user.fname + " " + user.user.lname]
+        ),
         featured: feature,
         media: media,
         plan: plan[0],
@@ -280,6 +283,8 @@ export default function UpdateContent(props) {
         priceModf = priceModf + "0";
       }
     }
+
+    if (category === "coaching") setSupport(true);
 
     validatePrice();
     validateTitle();
@@ -695,12 +700,18 @@ export default function UpdateContent(props) {
               <Stack direction="row" alignItems="center">
                 <Checkbox
                   value={support}
-                  defaultChecked={item.support}
+                  checked={category === "coaching" ? true : support}
                   onChange={(event) => setSupport(event.target.checked)}
                 />
-                <Typography variant="body1">
-                  Yes, I am offering full-time support for the buyers
-                </Typography>
+                {category === "coaching" ? (
+                  <Typography variant="body1" fontWeight="bold">
+                    Coachings automatically offer support via the chat function
+                  </Typography>
+                ) : (
+                  <Typography variant="body1">
+                    Yes, I am offering support via chat for the buyers
+                  </Typography>
+                )}
               </Stack>
               <Stack direction="row" alignItems="center">
                 <Checkbox

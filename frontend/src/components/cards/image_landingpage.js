@@ -1,4 +1,4 @@
-import { Card, CardActionArea } from "@mui/material";
+import { CardActionArea } from "@mui/material";
 import ImageListItemBar from "@mui/material/ImageListItemBar";
 import * as React from "react";
 import { useNavigate } from "react-router-dom";
