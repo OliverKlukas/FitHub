@@ -39,7 +39,7 @@ function App() {
    * hook for category
    * setter: landing page -> forwarded to
    */
-  const [choice, setChoice] = useState("");
+  const [choice, setChoice] = useState();
 
   return (
     <ThemeProvider theme={FitHubTheme}>
@@ -63,7 +63,7 @@ function App() {
                 <Route path="/plans" element={<MyPlans />} />
                 <Route
                   path="/upload"
-                  element={<ContentUpload data={{ choice, setChoice }} />}
+                  element={<ContentUpload data={{ choice }} />}
                 />
                 <Route path="/about" element={<AboutUs />} />
                 <Route path="/profile/:id" element={<Profile />} />

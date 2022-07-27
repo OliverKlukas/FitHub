@@ -56,15 +56,15 @@ const create = async (req, res) => {
                     // No chat created yet.
                     if (doc == null){
                         const chat = {
-                            partOne: req.body.ownerId, partTwo: req.body.userId,
+                            partOne: boughtContent.ownerId, partTwo: req.body.userId,
                         };
                         await ChatModel.create(chat);
                         await ChatModel.updateOne({
-                            partOne: req.body.ownerId, partTwo: req.body.userId,
+                            partOne: boughtContent.ownerId, partTwo: req.body.userId,
                         }, {
                             $push: {
                                 messages: {
-                                    senderId: req.body.ownerId,
+                                    senderId: boughtContent.ownerId,
                                     text: "Thank you for buying my content, feel free to contact me here if you have any questions!"
                                 }
                             }

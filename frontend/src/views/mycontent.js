@@ -24,7 +24,7 @@ export default function MyContent() {
       }
     }
     fetchData();
-  }, [setData]);
+  }, [user.user]);
 
   const dateFromObjectId = function (objectId) {
     const date = new Date(parseInt(objectId.substring(0, 8), 16) * 1000);
@@ -45,10 +45,8 @@ export default function MyContent() {
               ? 1
               : 0
           )
-          .map((item) => {
-            {
-              return <OffContent key={Math.random()} item={item}></OffContent>;
-            }
+          .map((item) => {            
+              return <OffContent key={Math.random()} item={item}></OffContent>;            
           })}
       </Stack>
     </Stack>

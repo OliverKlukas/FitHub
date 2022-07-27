@@ -243,10 +243,13 @@ export default function UpdateContent(props) {
         price: priceModf,
         duration: parseInt(duration),
         intensity: parseInt(intensity),
-        support: support,
-        tags: goalTags.concat(levelTags, lifestyleTags, [category === "coaching" ? "coaching" : category + " plan"], [
-          user.user.fname + " " + user.user.lname,
-        ]),
+        support: category === "coaching" ? true : support,
+        tags: goalTags.concat(
+          levelTags,
+          lifestyleTags,
+          [category === "coaching" ? "coaching" : category + " plan"],
+          [user.user.fname + " " + user.user.lname]
+        ),
         featured: feature,
         media: media,
         plan: plan[0],
@@ -280,6 +283,8 @@ export default function UpdateContent(props) {
         priceModf = priceModf + "0";
       }
     }
+
+    if (category === "coaching") setSupport(true);
 
     validatePrice();
     validateTitle();
@@ -614,7 +619,7 @@ export default function UpdateContent(props) {
                     }
                   >
                     Please upload pictures that represents your offer (example
-                    dishes, workouts etc). Be aware of the max size of 16MB and
+                    dishes, workouts etc). Be aware of the max size for all upload content of 16MB and
                     respect our{" "}
                     <Link
                       color="#393E46"
@@ -626,7 +631,7 @@ export default function UpdateContent(props) {
                     >
                       Terms & Conditions
                     </Link>{" "}
-                    including image rights
+                    including image rights.
                   </Typography>
                 </Stack>
               </Stack>
@@ -654,8 +659,8 @@ export default function UpdateContent(props) {
                         : { color: "default" }
                     }
                   >
-                    Please upload the pdf file of max 16MB that contains the
-                    complete training plan that buyers are going to receive
+                    Please upload the pdf file that contains the
+                    complete training plan that buyers are going to receive. Be aware of the max size for all upload content of 16MB.
                   </Typography>
                 </Stack>
               </Stack>
@@ -684,8 +689,8 @@ export default function UpdateContent(props) {
                         : { color: "default" }
                     }
                   >
-                    Please upload a sample pdf file of max 16MB which gives
-                    buyers an impression of the full plan
+                    Please upload a sample pdf file which gives
+                    buyers an impression of the full plan. Be aware of the max size for all upload content of 16MB.
                   </Typography>
                 </Stack>
               </Stack>
@@ -695,12 +700,18 @@ export default function UpdateContent(props) {
               <Stack direction="row" alignItems="center">
                 <Checkbox
                   value={support}
-                  defaultChecked={item.support}
+                  checked={category === "coaching" ? true : support}
                   onChange={(event) => setSupport(event.target.checked)}
                 />
-                <Typography variant="body1">
-                  Yes, I am offering full-time support for the buyers
-                </Typography>
+                {category === "coaching" ? (
+                  <Typography variant="body1" fontWeight="bold">
+                    Coachings automatically offer support via the chat function
+                  </Typography>
+                ) : (
+                  <Typography variant="body1">
+                    Yes, I am offering support via chat for the buyers
+                  </Typography>
+                )}
               </Stack>
               <Stack direction="row" alignItems="center">
                 <Checkbox
