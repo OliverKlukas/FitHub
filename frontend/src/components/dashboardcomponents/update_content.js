@@ -243,7 +243,7 @@ export default function UpdateContent(props) {
         price: priceModf,
         duration: parseInt(duration),
         intensity: parseInt(intensity),
-        support: support,
+        support: category === "coaching" ? true : support,
         tags: goalTags.concat(
           levelTags,
           lifestyleTags,
