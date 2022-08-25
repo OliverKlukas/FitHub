@@ -2,7 +2,7 @@
 ![FitHub Logo](./frontend/src/resources/logo_standard.svg)
 
 # Disclaimer
-This project was jointly developed as part of the university course [Software Engineering for Business Applications: Web Application Engineering](https://wwwmatthes.in.tum.de/pages/1mqqqoqe7gapz/Software-Engineering-for-Business-Applications-SEBA-Master) by the team members shown below. The website is a MERN-stack implementation of our business idea for the course that we validated, ideated and pitched in multiple iteration in order to apply customer-centric engineering in a real world scenario.
+This project was jointly developed by the four team members shown below as part of the university course [Software Engineering for Business Applications: Web Application Engineering](https://wwwmatthes.in.tum.de/pages/1mqqqoqe7gapz/Software-Engineering-for-Business-Applications-SEBA-Master). The website is a MERN-stack implementation of our business idea for the course that we ideated, validated and pitched in multiple iterations in order to apply customer-centric engineering in a real world scenario.
   
 The project is officially finished as of 28th of July 2022 and will not be updated or maintained. It is not an actual platform but rather just a fully functional proof of concept. All code is the shared intellectual property of the four team members. The application is not licensed and any transactions done using the PayPal payment system will be sent to a developer account and refunded.
 
