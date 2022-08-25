@@ -1,6 +1,11 @@
 # SEBA Master 2022 - Team 48 - FitHub
 ![FitHub Logo](./frontend/src/resources/logo_standard.svg)
 
+# Disclaimer
+This project was jointly developed as part of the university course [Software Engineering for Business Applications: Web Application Engineering](https://wwwmatthes.in.tum.de/pages/1mqqqoqe7gapz/Software-Engineering-for-Business-Applications-SEBA-Master) by the team members shown below. The website is a MERN-stack implementation of our business idea for the course that we validated, ideated and pitched in multiple iteration in order to apply customer-centric engineering in a real world scenario.
+  
+The project is officially finished as of 28th of July 2022 and will not be updated or maintained. It is not an actual platform but rather just a fully functional proof of concept. All code is the shared intellectual property of the four team members. The application is not licensed and any transactions done using the PayPal payment system will be sent to a developer account and refunded.
+
 # Our mission
 FitHub is the platform where fitness content creators sell their training and nutrition plans to fitness enthusiasts and health-conscious consumers. We want to help fitness content creators reaching a larger audience than on social media, while also providing a trustworthy and simple-to-use solution for fitness enthusiasts to find training plans, fitness plans or coachings suited for their preferences.
 
@@ -65,14 +70,9 @@ In two separate terminals please run:
 ├── README.md
 └── sample_content
 ```
-## PayPal Developer Account Credentials
-- Username: sb-o9ke017668203@personal.example.com Password: 46854685
-- Username: sb-bx3c817668204@business.example.com Password: M+(Ae7u0
 
 # Team
 | ![Max](./frontend/src/resources/Maximilian.jpeg) | ![Simon](./frontend/src/resources/Simon_Vogl.jpg) | ![Johannes](./frontend/src/resources/Johannes.jpg) | ![Oliver](./frontend/src/resources/Oliver.jpg) |
 |-------------------------------------------------|---------------------------------------------------|----------------------------------------------------|------------------------------------------------| 
-| Maximilian Schumergruber (@00000000014AAA89)    | Simon Vogl (@00000000014AE5CA)                    | Johannes Loebbecke (@loebbeckeJohannes)            | Oliver Klukas (@ga87daw)                       | 
+| Maximilian Schumergruber   | Simon Vogl                 | Johannes Loebbecke            | Oliver Klukas                    | 
 
-# Disclaimer
-This project is officially finished as of 28th of July 2022 and will not be updated or maintained. It is not an actual platform but rather just a fully functional proof of concept. All code is the shared intellectual property of the four aforementioned team members. The application is not licensed and any transactions done using the PayPal payment system will be sent to a developer account and refunded.
